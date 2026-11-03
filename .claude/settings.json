@@ -20,7 +20,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python \"$CLAUDE_PROJECT_DIR/.claude/hooks/git_schutz.py\""
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/git_schutz.py\""
           }
         ]
       }
@@ -31,7 +31,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python \"$CLAUDE_PROJECT_DIR/.claude/hooks/lint_pruefung.py\""
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/lint_pruefung.py\""
           }
         ]
       }
