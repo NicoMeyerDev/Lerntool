@@ -40,6 +40,21 @@ Priorität: Auth, Datenbanken, API, Testing, CI/CD, Monitoring.
 Themen: IT-Sicherheit und Recht (Schutzziele, Phasen von Angriffen, KRITIS, Ethical Hacking, OWASP), Python für Automation, Netzwerke und Protokolle, Linux (Konsole, SSH, Fail2ban), Web-Schwachstellen (XSS, Injection), Cloud (Container, Orchestrierung, Skalierung, WAF), DevSecOps (Security-by-Design, CI/CD, SAST/DAST, Observability), Datenschutz und Medienrecht, Passwort-Sicherheit.
 Praktische Labs (Kali, Metasploitable, Juice Shop) nur als Theorie und Quiz abbilden.
 
+## Themenblock 5: AI Engineering
+Einstieg erst nach dem Start von PHP/Laravel und Englisch (Priorität nach Block 1 und 2).
+Themen:
+1. Grundlagen von Sprachmodellen (Tokens, Kontextfenster, Temperatur, Grenzen, typische Fehler wie erfundene Antworten)
+2. Prompting (klare Anweisungen, Beispiele, Rollen, strukturierte Ausgabe)
+3. Modelle über eine API ansprechen (Anfragen, Antworten, Fehlerbehandlung, Kosten und Limits)
+4. Strukturierte Ausgaben und Tool-Nutzung (Function Calling)
+5. Wissen anbinden (Embeddings, Vektorsuche, RAG)
+6. Agenten (Aufbau, Schleifen, Grenzen, Kontrolle durch Regeln und Prüf-Agenten)
+7. Qualität und Sicherheit (Bewertung von Ausgaben, Tests für KI-Funktionen, Prompt-Injection, Datenschutz)
+8. KI-Funktionen in eine Anwendung einbauen (Backend-Anbindung, Kostenkontrolle, Zwischenspeicher)
+
+Praxisprojekt: Die KI-Auswertung der Lern-App selbst (Schwächenanalyse, adaptive Aufgaben) als echtes Anwendungsbeispiel.
+Quellen: offizielle Dokumentation der Modellanbieter (z. B. Anthropic) und anerkannte Fachquellen. Das Feld verändert sich schnell, deshalb prüft der Quellenprüfer bei jeder Aussage, ob sie noch zur aktuellen Version passt.
+
 ## Konzept-Vergleiche
 Auth, Datenbanken, API, Testing, Docker und CI/CD als gemeinsame Lektionen mit zwei Umsetzungen: Django und Laravel.
 
