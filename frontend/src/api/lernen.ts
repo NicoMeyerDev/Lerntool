@@ -12,6 +12,7 @@ import {
 
 import { apiAnfrage } from './client'
 import {
+  dashboardSchema,
   fortschrittListeSchema,
   fortschrittSchema,
   lektionSchema,
@@ -22,6 +23,7 @@ import {
   testStartSchema,
   themaDetailSchema,
   themenSchema,
+  type Dashboard,
   type Fortschritt,
   type Lektion,
   type Projekt,
@@ -230,5 +232,20 @@ export function useProjektPunkt(
       queryClient.setQueryData(['projekt', projektId], projekt)
       return queryClient.invalidateQueries({ queryKey: FORTSCHRITT_SCHLUESSEL })
     },
+  })
+}
+
+/**
+ * Lädt das Dashboard (XP, Level, Statistik, Abzeichen, Meilensteine).
+ *
+ * Wird nach jeder Änderung des Fortschritts neu geladen, weil es denselben
+ * Abfrage-Schlüssel-Anfang nutzt.
+ *
+ * @returns Abfrage-Zustand mit dem Dashboard.
+ */
+export function useDashboard(): UseQueryResult<Dashboard> {
+  return useQuery({
+    queryKey: [...FORTSCHRITT_SCHLUESSEL, 'dashboard'],
+    queryFn: () => apiAnfrage('/api/dashboard/', dashboardSchema),
   })
 }

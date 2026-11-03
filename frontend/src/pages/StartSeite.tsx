@@ -1,14 +1,15 @@
 /**
- * Startseite nach der Anmeldung: Themen und Systemstatus.
+ * Startseite nach der Anmeldung: Themen, Dashboard und Systemstatus.
  */
 import { Link } from 'react-router'
 
 import { useThemen } from '../api/lernen'
+import { DashboardUebersicht } from '../components/DashboardUebersicht'
 import { HealthStatus } from '../components/HealthStatus'
 import { Fehler, Laden } from '../components/Zustand'
 
 /**
- * Zeigt alle Themen als Karten und darunter den Systemstatus.
+ * Zeigt alle Themen als Karten, darunter das Dashboard und den Systemstatus.
  *
  * @returns Die Startseite.
  */
@@ -39,6 +40,7 @@ export function StartSeite() {
           ))}
         </ul>
       )}
+      <DashboardUebersicht />
       <HealthStatus />
     </div>
   )
