@@ -24,6 +24,7 @@ Regeln: Immer die oberste offene Aufgabe aus „Jetzt“ bearbeiten. Aufgaben au
 - [ ] **C4 Englisch, Gliederung:** Einstieg ab SAP 2122. Pfad Alltag und Ausland, dann Fachenglisch IT, am Ende optional Sprachtest. Nur Lesen, Hören und Schreiben, kein Mikrofon.
 
 ## Später (nicht anfangen)
+- [ ] **E1 AI Engineering, Gliederung und Phase 1:** Themen 1-3 aus `/docs/LERNPLAN.md`, Block 5, in Abschnitte und Quizze zerlegen. Mit `quellenpruefer`, aktuelle Doku zwingend.
 - [ ] **D1 Wiederholung Backend:** Themen 1-10 der Backend-Roadmap in Abschnitte und Quizze zerlegen. Priorität: Auth, Datenbanken, API, Testing, CI/CD, Monitoring.
 - [ ] **D2 Wiederholung DevSecOps:** Themen 1-10 der DevSecOps-Roadmap. Praktische Labs (Kali, Metasploitable, Juice Shop) nur als Theorie und Quiz, Labs nur in der eigenen Umgebung.
 - [ ] **D3 Konzept-Vergleiche Django und Laravel:** Auth, Datenbanken, API, Testing, Docker, CI/CD als gemeinsame Lektionen mit zwei Umsetzungen.
