@@ -109,6 +109,16 @@ function LektionInhalt({ lektion }: { lektion: Lektion }) {
         </p>
       )}
 
+      {lektion.test_id !== null && (
+        <Link
+          to={`/tests/${String(lektion.test_id)}`}
+          className="flex min-h-12 items-center justify-between gap-3 rounded-card border border-accent-violet/50 bg-accent-violet/10 p-4 font-semibold hover:border-accent-violet"
+        >
+          <span>Test zu dieser Lektion (mit Zeitlimit)</span>
+          <span aria-hidden="true">→</span>
+        </Link>
+      )}
+
       {lektion.quellen.length > 0 && (
         <section aria-labelledby="quellen" className="border-t border-border pt-4 text-sm">
           <h2 id="quellen" className="font-semibold text-text-muted">

@@ -7,67 +7,9 @@
 import { useState, type SyntheticEvent } from 'react'
 
 import { useQuiz, useQuizAbgabe } from '../api/lernen'
-import type { Quiz, QuizErgebnis } from '../api/schemas'
+import type { Quiz } from '../api/schemas'
+import { ErgebnisKopf, FragenListe } from './FragenListe'
 import { Fehler, Laden } from './Zustand'
-
-/** Zustand einer Antwortmöglichkeit nach der Auswertung. */
-type Markierung = 'richtig' | 'falsch-gewaehlt' | 'neutral'
-
-/**
- * Bestimmt die Markierung einer Antwort für die Auswertung.
- *
- * @param antwortId - Die angezeigte Antwort.
- * @param auswertung - Auswertung der zugehörigen Frage oder `undefined` vor der Abgabe.
- * @returns Wie die Antwort hervorgehoben wird.
- */
-function markierung(
-  antwortId: number,
-  auswertung: QuizErgebnis['fragen'][number] | undefined,
-): Markierung {
-  if (auswertung === undefined) {
-    return 'neutral'
-  }
-  if (antwortId === auswertung.richtige_antwort_id) {
-    return 'richtig'
-  }
-  if (antwortId === auswertung.gewaehlte_antwort_id) {
-    return 'falsch-gewaehlt'
-  }
-  return 'neutral'
-}
-
-/** Tailwind-Klassen je Markierung. */
-const MARKIERUNGS_KLASSEN: Record<Markierung, string> = {
-  richtig: 'border-success bg-success/10',
-  'falsch-gewaehlt': 'border-danger bg-danger/10',
-  neutral: 'border-border bg-surface',
-}
-
-/**
- * Zusammenfassung der Auswertung: Punkte, Bestwert und eine kurze Rückmeldung.
- *
- * @param props.ergebnis - Die Auswertung vom Backend.
- * @returns Eine hervorgehobene Ergebnis-Karte.
- */
-function ErgebnisKopf({ ergebnis }: { ergebnis: QuizErgebnis }) {
-  const alleRichtig = ergebnis.punkte === ergebnis.max_punkte
-  return (
-    <div
-      role="status"
-      className="rounded-card border border-accent-violet/50 bg-accent-violet/10 p-4"
-    >
-      <p className="text-2xl font-bold">
-        {ergebnis.punkte} von {ergebnis.max_punkte} richtig
-      </p>
-      <p className="mt-1 text-text-muted">
-        {alleRichtig
-          ? 'Stark – alles richtig!'
-          : 'Schau dir unten die Erklärungen an und versuch es noch einmal.'}{' '}
-        Bestwert: {ergebnis.bestwert} von {ergebnis.max_punkte}.
-      </p>
-    </div>
-  )
-}
 
 /**
  * Formular mit den Fragen eines geladenen Quiz.
@@ -99,48 +41,14 @@ function QuizFormular({ quiz }: { quiz: Quiz }) {
     <form onSubmit={abgeben} className="space-y-6">
       {ergebnis !== undefined && <ErgebnisKopf ergebnis={ergebnis} />}
 
-      {quiz.fragen.map((frage, index) => {
-        const auswertung = ergebnis?.fragen.find((f) => f.frage_id === frage.id)
-        return (
-          <fieldset key={frage.id} className="space-y-2">
-            <legend className="mb-2 font-semibold">
-              {index + 1}. {frage.text}
-            </legend>
-            {frage.antworten.map((antwort) => {
-              const art = markierung(antwort.id, auswertung)
-              return (
-                <label
-                  key={antwort.id}
-                  className={`flex min-h-12 cursor-pointer items-center gap-3 rounded-lg border px-4 py-2 ${MARKIERUNGS_KLASSEN[art]}`}
-                >
-                  <input
-                    type="radio"
-                    name={`frage-${String(frage.id)}`}
-                    value={antwort.id}
-                    checked={auswahl[frage.id] === antwort.id}
-                    disabled={ergebnis !== undefined}
-                    onChange={() => {
-                      setAuswahl((alt) => ({ ...alt, [frage.id]: antwort.id }))
-                    }}
-                    className="size-5 accent-accent-cyan"
-                  />
-                  <span className="flex-1">{antwort.text}</span>
-                  {art === 'richtig' && <span className="text-sm text-success">✓ richtig</span>}
-                  {art === 'falsch-gewaehlt' && (
-                    <span className="text-sm text-danger">✗ deine Antwort</span>
-                  )}
-                </label>
-              )
-            })}
-            {auswertung !== undefined && auswertung.erklaerung !== '' && (
-              <p className="rounded-lg bg-surface-raised p-3 text-sm text-text-muted">
-                <span className="font-semibold text-text">Erklärung: </span>
-                {auswertung.erklaerung}
-              </p>
-            )}
-          </fieldset>
-        )
-      })}
+      <FragenListe
+        fragen={quiz.fragen}
+        auswahl={auswahl}
+        onWaehle={(frageId, antwortId) => {
+          setAuswahl((alt) => ({ ...alt, [frageId]: antwortId }))
+        }}
+        ergebnis={ergebnis}
+      />
 
       {abgabe.isError && <Fehler text={`Abgabe fehlgeschlagen: ${abgabe.error.message}`} />}
 

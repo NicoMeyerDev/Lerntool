@@ -15,14 +15,20 @@ import {
   fortschrittListeSchema,
   fortschrittSchema,
   lektionSchema,
+  projektSchema,
   quizErgebnisSchema,
   quizSchema,
+  testSchema,
+  testStartSchema,
   themaDetailSchema,
   themenSchema,
   type Fortschritt,
   type Lektion,
+  type Projekt,
   type Quiz,
   type QuizErgebnis,
+  type TestAufgabe,
+  type TestStart,
   type Thema,
   type ThemaDetail,
 } from './schemas'
@@ -133,5 +139,96 @@ export function useAbschnittGelesen(): UseMutationResult<Fortschritt, Error, num
         method: 'POST',
       }),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: FORTSCHRITT_SCHLUESSEL }),
+  })
+}
+
+/**
+ * Lädt einen Test (ohne Lösung) mit Zeitlimit.
+ *
+ * @param id - ID des Tests.
+ * @returns Abfrage-Zustand mit dem Test.
+ */
+export function useTest(id: number): UseQueryResult<TestAufgabe> {
+  return useQuery({
+    queryKey: ['test', id],
+    queryFn: () => apiAnfrage(`/api/tests/${String(id)}/`, testSchema),
+    enabled: Number.isInteger(id) && id >= 1,
+  })
+}
+
+/**
+ * Startet einen Testversuch. Der Server startet die Uhr und liefert die Restzeit;
+ * ein bereits laufender Versuch wird fortgesetzt.
+ *
+ * @param testId - ID des Tests.
+ * @returns Mutation, die Start und Restzeit liefert.
+ */
+export function useTestStart(testId: number): UseMutationResult<TestStart, Error, void> {
+  return useMutation({
+    mutationFn: () =>
+      apiAnfrage(`/api/tests/${String(testId)}/start/`, testStartSchema, { method: 'POST' }),
+  })
+}
+
+/**
+ * Gibt einen Test ab. Das Backend prüft das Zeitlimit, wertet aus und speichert den Bestwert.
+ *
+ * @param testId - ID des Tests.
+ * @returns Mutation, die die Auswertung liefert.
+ */
+export function useTestAbgabe(testId: number): UseMutationResult<QuizErgebnis, Error, Auswahl[]> {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (antworten: Auswahl[]) =>
+      apiAnfrage(`/api/tests/${String(testId)}/abgabe/`, quizErgebnisSchema, {
+        method: 'POST',
+        body: { antworten },
+      }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: FORTSCHRITT_SCHLUESSEL }),
+  })
+}
+
+/**
+ * Lädt eine Projektaufgabe mit Checkliste und Stand.
+ *
+ * @param id - ID der Projektaufgabe.
+ * @returns Abfrage-Zustand mit der Projektaufgabe.
+ */
+export function useProjekt(id: number): UseQueryResult<Projekt> {
+  return useQuery({
+    queryKey: ['projekt', id],
+    queryFn: () => apiAnfrage(`/api/projekte/${String(id)}/`, projektSchema),
+    enabled: Number.isInteger(id) && id >= 1,
+  })
+}
+
+/** Eingabe für {@link useProjektPunkt}: welcher Punkt abgehakt oder zurückgenommen wird. */
+export interface PunktAenderung {
+  punktId: number
+  erledigt: boolean
+}
+
+/**
+ * Hakt einen Punkt der Projekt-Checkliste ab oder nimmt den Haken zurück.
+ *
+ * Das Backend liefert den neuen Stand; er ersetzt die geladene Projektaufgabe.
+ *
+ * @param projektId - ID der Projektaufgabe.
+ * @returns Mutation, die den neuen Stand liefert.
+ */
+export function useProjektPunkt(
+  projektId: number,
+): UseMutationResult<Projekt, Error, PunktAenderung> {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: ({ punktId, erledigt }: PunktAenderung) =>
+      apiAnfrage(`/api/projekte/${String(projektId)}/punkte/${String(punktId)}/`, projektSchema, {
+        method: 'PUT',
+        body: { erledigt },
+      }),
+    onSuccess: (projekt) => {
+      queryClient.setQueryData(['projekt', projektId], projekt)
+      return queryClient.invalidateQueries({ queryKey: FORTSCHRITT_SCHLUESSEL })
+    },
   })
 }
