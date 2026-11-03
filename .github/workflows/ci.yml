@@ -28,6 +28,8 @@ jobs:
           --health-retries 10
     env:
       DATABASE_URL: postgres://test:test@localhost:5432/test
+      # Nur für die CI, kein echtes Geheimnis.
+      DJANGO_SECRET_KEY: ci-nur-zum-testen-kein-geheimnis
     defaults:
       run:
         working-directory: backend
