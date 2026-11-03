@@ -1,6 +1,6 @@
 # Lerntool
 
-Lern-App mit Django-Backend (REST-API über Django REST Framework) und PostgreSQL. Das Frontend folgt später in `/frontend`.
+Lern-App mit Django-Backend (REST-API über Django REST Framework) und PostgreSQL. Das Frontend (React, Vite, Tailwind, PWA) liegt in `/frontend`.
 
 ## Struktur
 
@@ -9,8 +9,15 @@ backend/
   config/      Django-Konfiguration: settings.py, env.py (Umgebungsvariablen), urls.py
   core/        Health-Endpunkt (Views, Services, URLs)
   tests/       pytest-Tests
+frontend/
+  src/api/         API-Aufrufe ans Backend
+  src/components/  React-Komponenten
+  src/test/        Test-Setup (Vitest)
+  public/          statische Dateien, PWA-Icons
+  vite.config.ts   Vite, Proxy, PWA
+  eslint.config.js ESLint
 docs/          Backlog, Lernplan, Entscheidungen, offene Punkte, Changelog
-.github/workflows/ci.yml   CI (Linter, Typen, Tests)
+.github/workflows/ci.yml   CI (Backend: Linter, Typen, Tests; Frontend: Lint, Prettier, Tests, Build)
 ```
 
 ## Backend einrichten
@@ -54,3 +61,24 @@ Eine ausführliche Windows-Anleitung folgt mit Aufgabe A3.
 ## API
 
 `GET /api/health/` liefert `200 {"status":"ok","datenbank":"ok"}`, bei nicht erreichbarer Datenbank `503`.
+
+## Frontend einrichten
+
+Voraussetzung: Node 22.
+
+```bash
+cd frontend
+npm ci
+cp .env.example .env   # optional
+```
+
+Variable in `frontend/.env` (nie committen): `VITE_API_URL` ist lokal leer, der Vite-Proxy leitet `/api` an `http://localhost:8000` weiter.
+
+Eine ausführliche Windows-Anleitung folgt mit Aufgabe A3.
+
+## Befehle (im Ordner `frontend`)
+
+- Starten: `npm run dev` (vorher das Backend auf Port 8000 starten; die Startseite zeigt den Systemstatus)
+- Tests: `npm test`
+- Linter, Format: `npm run lint`, `npm run format`, `npm run format:check`
+- Build: `npm run build`
