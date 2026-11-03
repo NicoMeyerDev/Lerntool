@@ -15,7 +15,7 @@ Regeln: Immer die oberste offene Aufgabe aus „Jetzt“ bearbeiten. Aufgaben au
 - [x] **B3 Lektions- und Quiz-Ansicht:** Lektion lesen, Quiz nach jedem Abschnitt, Ergebnis mit kurzer Auswertung.
 - [x] **B4 Test und Projekt:** Test mit 30-Minuten-Timer nach jedem Themenfeld, Projektaufgabe mit Checkliste und Auswertung.
 - [x] **B5 Dashboard:** Fortschrittsbalken, Statistiken, XP und Level, Abzeichen, Meilensteine.
-- [ ] **B6 Wochen- und Tagesplan:** Feste Blöcke (Vormittag Theorie, Nachmittag Praxis), 5 Tage pro Woche, Freitag Test und Wochenauswertung.
+- [x] **B6 Wochen- und Tagesplan:** Feste Blöcke (Vormittag Theorie, Nachmittag Praxis), 5 Tage pro Woche, Freitag Test und Wochenauswertung.
 
 ### C. Inhalte (jede Aufgabe mit `quellenpruefer`)
 - [ ] **C1 Curriculum Laravel, Gliederung:** 6 Phasen (PHP-Basics, Laravel-Kern, API und Auth, Docker, Kubernetes, AWS/Cloudflare), jede in Abschnitte, Themenfelder und ein Projekt zerlegt. Abschlussprojekt ist die Garmin-Auswertung. Frontend ausgeklammert.

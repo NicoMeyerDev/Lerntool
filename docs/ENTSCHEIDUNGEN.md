@@ -104,3 +104,11 @@ Format: Datum – Entscheidung – Grund – Alternativen.
 - **Dashboard auf der Startseite unter den Themen** statt eigener Seite: weniger Navigation, Fortschritt ist sofort sichtbar. Das Frontend rechnet nichts, es zeigt nur an. Nach jeder Änderung des Fortschritts wird es neu geladen (gleicher Abfrage-Schlüssel wie der Fortschritt).
 - **Trefferquote** = richtige Antworten / mögliche in den gespeicherten Bestwerten von Quizzen und Tests; ohne Ergebnis „noch kein Ergebnis“.
 - **Folge der Berechnung aus dem Fortschritt:** Ändert sich später die Fragenzahl eines Quiz, ersetzt die neue Abgabe den Bestwert (B2); die XP können dadurch sinken. Für eine persönliche Lern-App akzeptabel und ehrlicher als veraltete Werte.
+
+## 2026-11-03 – B6 Wochen- und Tagesplan
+
+- **Blöcke fest im Code** (`backend/lernen/wochenplan.py`), gemäß `docs/LERNPLAN.md` („Tagesstruktur“): Montag bis Donnerstag Vormittag Theorie (ca. 3 Std.), Nachmittag Praxis und Quiz (ca. 2–3 Std.) sowie Englisch (30–45 Min.); Freitag Test, Wiederholung, Wochenauswertung und Englisch. **Keine festen Uhrzeiten**, da der Lernplan keine vorgibt. **Keine Themenzuordnung** je Block, da das Curriculum (C-Aufgaben) noch fehlt. Alternative: Blöcke in der Datenbank (ohne Eingabemöglichkeit nutzlos, mehr Aufwand).
+- **Wochenauswertung aus `Fortschritt.erledigt_am`** (`auto_now`): Ein Eintrag zählt nur in der Woche seiner letzten Änderung, eine früher erledigte und später erneut bearbeitete Aufgabe wandert also in die neue Woche. Alternative: Verlaufstabelle mit jedem Ereignis (nicht im Backlog). Die Oberfläche zeigt dazu einen Hinweis.
+- **Woche = Montag 0 Uhr bis Sonntag** in der Zeitzone Europe/Berlin, als halboffenes Intervall (Beginn eingeschlossen, nächster Montag ausgeschlossen). So gibt es keine Doppelzählung an der Wochengrenze.
+- **Endpunkt `GET /api/wochenplan/?datum=JJJJ-MM-TT`** liefert die Woche, die das Datum enthält (ohne Angabe: heute). Erlaubt sind die Jahre 2000–2100, sonst `400` (Überlaufschutz bei Datumsrechnung).
+- **Frontend:** eigene Seite `/plan`, die gewählte Woche steht in der URL (`?woche=`), damit Zurück-Taste und Neuladen funktionieren. Link „Plan“ in der Kopfzeile. Das Frontend zeigt nur an und rechnet nichts.

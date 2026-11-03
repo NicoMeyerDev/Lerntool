@@ -235,6 +235,7 @@ Alle Endpunkte außer `health` und `login` brauchen den Header `Authorization: T
 | `POST /api/abschnitte/<id>/gelesen/` | Abschnitt als gelesen markieren |
 | `GET /api/fortschritt/` | eigener Fortschritt |
 | `GET /api/dashboard/` | XP, Level, Statistik, Themenfortschritt, Abzeichen und Meilensteine des angemeldeten Nutzers |
+| `GET /api/wochenplan/?datum=JJJJ-MM-TT` | Wochen- und Tagesplan der Woche (Mo–So, Europe/Berlin) mit festen Blöcken und Wochenauswertung; Jahr 2000–2100, sonst `400` |
 
 ## Fehlerbehebung
 
@@ -278,7 +279,7 @@ npm run dev                   # http://localhost:5173
 backend/
   config/          Django-Konfiguration: settings.py, env.py (Umgebungsvariablen), urls.py
   core/            Health-Endpunkt (Views, Services, URLs), Anmeldung (auth_views.py, anmeldung.py)
-  lernen/          Lerninhalte und Fortschritt: Modelle, Migrationen, API (serializers.py, services.py, dashboard.py, views.py, urls.py)
+  lernen/          Lerninhalte und Fortschritt: Modelle, Migrationen, API (serializers.py, services.py, dashboard.py, wochenplan.py, views.py, urls.py)
   tests/           pytest-Tests, gemeinsame Fixtures (conftest.py) und Testdaten-Fabrik (fabrik.py)
   manage.py        Django-Verwaltungsbefehle
   requirements.txt Python-Abhängigkeiten
@@ -286,12 +287,12 @@ backend/
   .env.example     Vorlage für backend/.env
 frontend/
   src/main.tsx     Einstiegspunkt
-  src/App.tsx      Routen (Login, Start, Thema, Lektion, Test, Projekt)
+  src/App.tsx      Routen (Login, Start, Thema, Lektion, Test, Projekt, Plan)
   src/index.css    Design-Tokens und Grundstile
   src/api/         API-Aufrufe ans Backend: client.ts (fetch mit Token),
                    schemas.ts (zod-Prüfung der Antworten), lernen.ts (Query-Hooks)
   src/auth/        Token-Speicher und Anmelde-Kontext (AuthProvider)
-  src/pages/       Seiten: LoginSeite, StartSeite, ThemaSeite, LektionSeite, TestSeite, ProjektSeite
+  src/pages/       Seiten: LoginSeite, StartSeite, ThemaSeite, LektionSeite, TestSeite, ProjektSeite, PlanSeite
   src/components/  React-Komponenten (Layout, Markdown, QuizAnsicht, FragenListe, Fortschrittsbalken, DashboardUebersicht)
   src/lib/         kleine Hilfsfunktionen: Abschnittsnummer, Ladefehler-Text, URL-Prüfung,
                    zeit.ts (Zeitformat), useCountdown.ts (Test-Uhr)
