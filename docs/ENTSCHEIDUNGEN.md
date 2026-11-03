@@ -112,3 +112,12 @@ Format: Datum – Entscheidung – Grund – Alternativen.
 - **Woche = Montag 0 Uhr bis Sonntag** in der Zeitzone Europe/Berlin, als halboffenes Intervall (Beginn eingeschlossen, nächster Montag ausgeschlossen). So gibt es keine Doppelzählung an der Wochengrenze.
 - **Endpunkt `GET /api/wochenplan/?datum=JJJJ-MM-TT`** liefert die Woche, die das Datum enthält (ohne Angabe: heute). Erlaubt sind die Jahre 2000–2100, sonst `400` (Überlaufschutz bei Datumsrechnung).
 - **Frontend:** eigene Seite `/plan`, die gewählte Woche steht in der URL (`?woche=`), damit Zurück-Taste und Neuladen funktionieren. Link „Plan“ in der Kopfzeile. Das Frontend zeigt nur an und rechnet nichts.
+
+## 2026-11-03 – C1 Curriculum Laravel (Gliederung)
+
+- **Laravel 13 statt 12.** Laravel 13 erschien am 17.03.2026 und benötigt PHP 8.3 oder neuer. Laravel 12 bekommt nur noch Sicherheitsfixes (bis 24.02.2027). Wer jetzt neu lernt, soll die aktuelle Version lernen. Quelle: laravel.com/docs/13.x/releases. Alternative: Laravel 12 (läuft früher aus, kein Vorteil).
+- **PHP 8.5 als Lernversion statt 8.4.** PHP 8.4 verliert den aktiven Support am 31.12.2026, mitten im Lernzeitraum; 8.5 ist aktiv bis 31.12.2027. Die Lektionen vermeiden versionsspezifische Besonderheiten, sodass auch 8.4 funktioniert (der Laravel-Installationsbefehl installiert 8.4). Quelle: php.net/supported-versions.php. Alternative: 8.4 (kürzerer Support).
+- **Abschlussprojekt Garmin-Auswertung als zweite Projektaufgabe von Phase 6.** Projektaufgaben sind im Datenmodell an eine Phase gebunden, und es soll bei 6 Phasen bleiben. Beim Import wird es daher als zweites Projekt der Phase 6 geführt. Alternative: eine siebte Phase „Abschluss“ (weicht von der Vorgabe mit 6 Phasen ab).
+- **Teile 1 und 2 der Garmin-Auswertung** sind Projekte der Phasen 3 und 4.
+- **Zeitrichtwerte (20 Wochen) sind eine eigene Schätzung**, nicht aus einer Quelle belegt.
+- **TCX ist nur über die Garmin-XSD belegt** (www8.garmin.com/xmlschemas/TrainingCenterDatabasev2.xsd). Eine erklärende Garmin-Dokumentation wurde nicht gefunden; Aussagen zum Format stützen sich deshalb nur auf das Schema.
