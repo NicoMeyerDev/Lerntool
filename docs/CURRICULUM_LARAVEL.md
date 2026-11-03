@@ -18,7 +18,7 @@ Grundlage: [LERNPLAN.md](LERNPLAN.md), Themenblock 1. Diese Datei legt nur die *
 | Laravel 12 | Bugfixes liefen bis 13. August 2026, Sicherheitsfixes noch bis 24. Februar 2027 – deshalb nicht mehr für Neues wählen | [Laravel 13.x Release Notes](https://laravel.com/docs/13.x/releases) |
 | PHP | 8.3: aktiver Support bis 31.12.2025, Sicherheitsfixes bis 31.12.2027. 8.4: aktiv bis 31.12.2026, Sicherheitsfixes bis 31.12.2028. 8.5 (Release 20.11.2025): aktiv bis 31.12.2027, Sicherheitsfixes bis 31.12.2029. 8.2 endet am 31.12.2026 | [PHP: Supported Versions](https://www.php.net/supported-versions.php) |
 
-**Entscheidung für die Lektionen:** Laravel 13 mit **PHP 8.5**. Grund: von Laravel 13 unterstützt und bis 31.12.2027 aktiv gepflegt; PHP 8.4 verlöre den aktiven Support schon am 31.12.2026, mitten im Lernzeitraum. Die Lektionen vermeiden Besonderheiten einer einzelnen Version, sodass auch PHP 8.4 funktioniert (die Installationsbefehle der Laravel-Doku installieren 8.4). Begründung steht in `docs/ENTSCHEIDUNGEN.md`.
+**Entscheidung für die Lektionen:** Laravel 13 mit **PHP 8.5**. Grund: von Laravel 13 unterstützt und bis 31.12.2027 aktiv gepflegt; PHP 8.4 verlöre den aktiven Support schon am 31.12.2026, mitten im Lernzeitraum. Die Lektionen vermeiden Besonderheiten einer einzelnen Version, sodass auch PHP 8.4 funktioniert (die Installationsbefehle auf [laravel.com/docs/13.x/installation](https://laravel.com/docs/13.x/installation) installieren PHP 8.4). Begründung steht in `docs/ENTSCHEIDUNGEN.md`.
 
 ## Gesamtüberblick
 
@@ -158,7 +158,7 @@ Quelle: [Laravel 13.x Dokumentation](https://laravel.com/docs/13.x) und [PHP-Han
 
 ### 3.4 Schutz und Qualität
 1. Begrenzung von Anfragen ([Rate limiting](https://laravel.com/docs/13.x/routing#rate-limiting))
-2. Häufige Sicherheitsrisiken einer API (Bezug zum DevSecOps-Kurs; [OWASP API Security](https://owasp.org/API-Security/), Link in C-Ausarbeitung prüfen)
+2. Häufige Sicherheitsrisiken einer API (Bezug zum DevSecOps-Kurs; [OWASP API Security](https://api-security.owasp.org/))
 3. API-Tests mit Anmeldung ([HTTP tests](https://laravel.com/docs/13.x/http-tests))
 
 ### 3.5 Dateien und Hintergrundarbeit
@@ -206,7 +206,7 @@ Quelle: [Kubernetes-Dokumentation](https://kubernetes.io/docs/home/). Schwerpunk
 
 ### 5.2 Anwendungen betreiben
 1. Pods und Deployments ([Deployments](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/))
-2. Services und Ingress; die Ingress-API ist eingefroren, als Nachfolger nennt die Doku die Gateway API ([Service](https://kubernetes.io/docs/concepts/services-networking/service/), [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/), [Gateway API](https://gateway-api.sigs.k8s.io/))
+2. Services und Ingress; die Ingress-API ist eingefroren, die Doku empfiehlt stattdessen die Gateway API ([Service](https://kubernetes.io/docs/concepts/services-networking/service/), [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/), [Gateway API](https://gateway-api.sigs.k8s.io/))
 3. ConfigMaps und Secrets ([ConfigMaps](https://kubernetes.io/docs/concepts/configuration/configmap/), [Secrets](https://kubernetes.io/docs/concepts/configuration/secret/))
 4. Daten dauerhaft speichern ([Persistent Volumes](https://kubernetes.io/docs/concepts/storage/persistent-volumes/))
 
