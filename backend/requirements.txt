@@ -4,11 +4,13 @@ djangorestframework==3.18.3
 dj-database-url==3.1.2
 python-dotenv==1.2.4
 psycopg[binary]==3.3.7
+PyYAML==6.0.3
 
 # Entwicklung: Linter, Typprüfung, Tests
 ruff==0.17.3
 mypy==2.4.1
 django-stubs==6.1.2
 djangorestframework-stubs==3.18.2
+types-PyYAML==6.0.12.20261103
 pytest==9.2.0
 pytest-django==4.14.0

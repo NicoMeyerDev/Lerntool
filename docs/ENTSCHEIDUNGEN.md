@@ -121,3 +121,14 @@ Format: Datum – Entscheidung – Grund – Alternativen.
 - **Teile 1 und 2 der Garmin-Auswertung** sind Projekte der Phasen 3 und 4.
 - **Zeitrichtwerte (20 Wochen) sind eine eigene Schätzung**, nicht aus einer Quelle belegt.
 - **TCX ist nur über die Garmin-XSD belegt** (www8.garmin.com/xmlschemas/TrainingCenterDatabasev2.xsd). Eine erklärende Garmin-Dokumentation wurde nicht gefunden; Aussagen zum Format stützen sich deshalb nur auf das Schema.
+
+## 2026-11-03 – C2 Phase 1 PHP-Basics (Inhalte und Import)
+
+- **Inhalte liegen als YAML-Dateien** in `backend/inhalte/<thema>/<NN>-<phase>/<NN>-<lektion>.yaml`, dazu `thema.yaml` und `phase.yaml` (mit Projekt und Checkliste). Die Nummer im Namen legt die Reihenfolge fest, der Rest ist der Kurzname. Grund: Markdown-Langtexte sind in YAML-Blockscalars gut lesbar und prüfbar. Alternativen: JSON (Zeilenumbrüche mühsam zu escapen), reine Markdown-Dateien (eigener Parser nötig), Python-Dicts (Inhalt als Code).
+- **Neue Abhängigkeit PyYAML 6.0.3** (ausschließlich `safe_load`) und `types-PyYAML` für mypy.
+- **Befehl `python manage.py import_inhalte [Ordner]`**, Logik in `lernen/inhalte_import.py`. Zuerst wird alles geprüft: Quelle mit http(s)-Link je Lektion, je Frage genau eine richtige Antwort, Test höchstens 30 Minuten, ein Quiz je Abschnitt, ein Test je Lektion, keine doppelten Nummern oder Kurznamen. Danach wird in einer Transaktion gespeichert. Der Import ist wiederholbar und löscht nie (bei fehlenden Lektionen, Abschnitten oder Checkpunkten gibt es nur eine Warnung). Quellen, Fragen und Antworten werden ersetzt, weil daran kein Fortschritt hängt (er hängt an Abschnitt, Quiz, Test und Projekt). Beim Umsortieren werden Positionen vorübergehend verschoben, damit die Eindeutigkeits-Regeln nicht kollidieren.
+- **Bekannte Einschränkung:** Abschnitte, Projekte und Checklistenpunkte werden über ihre Position erkannt. Neue also nur hinten anhängen, sonst zeigt vorhandener Fortschritt auf anderen Inhalt. Ein Import während eines laufenden Tests oder Quiz im Browser kann dessen Abgabe ablehnen, weil sich die Frage-IDs ändern.
+- **`weitere_projekte` in `phase.yaml`** ist für das Abschlussprojekt (Phase 6) vorbereitet, laut `docs/CURRICULUM_LARAVEL.md`.
+- **Keine Tabellen in Lerntexten**, weil die Markdown-Darstellung im Frontend keine Tabellen kann (kein `remark-gfm`). Alternative: `remark-gfm` als neue Abhängigkeit.
+- **Umfang Phase 1:** 7 Themenfelder, 32 Abschnitte mit je 3 Quizfragen, 7 Tests mit je 8 Fragen (Zeitlimit 20–25 Minuten), Projekt „Trainingslog“ mit 8 Checklistenpunkten.
+- **Ergebnis der Quellenprüfung:** Klassen werden nie auf den globalen Namespace zurückgeführt, nur Funktionen und Konstanten (php.net, language.namespaces.fallback.php). Der Text wurde korrigiert.

@@ -1,0 +1,319 @@
+titel: Funktionen
+zusammenfassung: Eigene Funktionen schreiben, Typen deklarieren, Standardwerte und benannte Argumente, Gültigkeitsbereich, anonyme und Pfeilfunktionen.
+quellen:
+  - titel: PHP-Handbuch – Functions
+    url: https://www.php.net/manual/en/language.functions.php
+  - titel: PHP-Handbuch – Type declarations
+    url: https://www.php.net/manual/en/language.types.declarations.php
+  - titel: PHP-Handbuch – Function arguments
+    url: https://www.php.net/manual/en/functions.arguments.php
+  - titel: PHP-Handbuch – Variable scope
+    url: https://www.php.net/manual/en/language.variables.scope.php
+  - titel: PHP-Handbuch – Anonymous functions
+    url: https://www.php.net/manual/en/functions.anonymous.php
+  - titel: PHP-Handbuch – Arrow functions
+    url: https://www.php.net/manual/en/functions.arrow.php
+abschnitte:
+  - titel: Eine Funktion definieren und aufrufen
+    inhalt: |
+      Eine **Funktion** ist ein benannter Baustein mit Code. Du schreibst sie einmal und
+      rufst sie beliebig oft auf.
+
+      ```php
+      function begruessen($name)
+      {
+          return "Hallo " . $name . "!";
+      }
+
+      echo begruessen("Nico"); // Hallo Nico!
+      ```
+
+      - `function` leitet die Definition ein, danach folgt der Name.
+      - In den runden Klammern stehen die **Parameter** (Eingaben).
+      - `return` gibt einen Wert zurück und beendet die Funktion sofort.
+      - Beim **Aufruf** übergibst du **Argumente** (die echten Werte).
+
+      **Bild:** Eine Funktion ist wie ein Mixer. Du steckst Zutaten hinein (Parameter),
+      er arbeitet und gibt ein Ergebnis heraus (`return`).
+
+      Hat eine Funktion kein `return`, liefert sie `null`.
+
+      *Eselsbrücke Python:* `def` heißt in PHP `function`, und der Block steht in
+      geschweiften Klammern statt einer Einrückung.
+    quiz:
+      - frage: "Wozu dient `return` in einer Funktion?"
+        erklaerung: "`return` gibt einen Wert an den Aufrufer zurück und beendet die Funktion."
+        antworten:
+          - { text: "Es gibt einen Wert zurück und beendet die Funktion.", richtig: true }
+          - { text: "Es startet die Funktion erneut.", richtig: false }
+          - { text: "Es gibt den Wert nur auf dem Bildschirm aus.", richtig: false }
+      - frage: "Wie heißen die Werte, die du beim Aufruf übergibst?"
+        erklaerung: "Beim Aufruf übergibst du Argumente. In der Definition stehen die Parameter."
+        antworten:
+          - { text: "Argumente", richtig: true }
+          - { text: "Konstanten", richtig: false }
+          - { text: "Klassen", richtig: false }
+      - frage: "Was liefert eine Funktion ohne `return`?"
+        erklaerung: "Ohne `return` ist der Rückgabewert `null`."
+        antworten:
+          - { text: "0", richtig: false }
+          - { text: "null", richtig: true }
+          - { text: "einen leeren Text", richtig: false }
+  - titel: Typdeklarationen
+    inhalt: |
+      Du kannst festlegen, welchen **Typ** Parameter und Rückgabewert haben müssen.
+      Das macht Fehler früh sichtbar.
+
+      ```php
+      function addiere(int $a, int $b): int
+      {
+          return $a + $b;
+      }
+      ```
+
+      - `int $a` – der Parameter muss eine ganze Zahl sein.
+      - `: int` hinter der Klammer – die Funktion liefert eine ganze Zahl.
+      - `: void` – die Funktion gibt nichts zurück.
+      - `?string` – ein Text **oder** `null`.
+      - `int|float` – eine ganze Zahl **oder** eine Kommazahl.
+
+      **Strikte Typen:** Schreibe ganz oben in die Datei
+
+      ```php
+      <?php
+
+      declare(strict_types=1);
+      ```
+
+      Dann gilt der Typ wirklich streng: `addiere("5", 3)` löst einen `TypeError` aus.
+      Ohne diese Zeile wandelt PHP den Text `"5"` still in die Zahl 5 um.
+
+      **Regel für dich:** Typen immer angeben und `strict_types=1` an den Anfang jeder Datei.
+    quiz:
+      - frage: "Was bedeutet `: int` hinter der Parameterklammer einer Funktion?"
+        erklaerung: "Der Rückgabetyp legt fest, dass die Funktion eine ganze Zahl zurückgeben muss."
+        antworten:
+          - { text: "Die Funktion gibt eine ganze Zahl zurück.", richtig: true }
+          - { text: "Die Funktion darf nur einen Parameter haben.", richtig: false }
+          - { text: "Die Funktion läuft nur bis 10.", richtig: false }
+      - frage: "Was bedeutet `?string` als Typ?"
+        erklaerung: "Das Fragezeichen erlaubt zusätzlich `null`: ein Text oder kein Wert."
+        antworten:
+          - { text: "Der Text ist unsicher.", richtig: false }
+          - { text: "Ein Text oder null", richtig: true }
+          - { text: "Nur ein leerer Text", richtig: false }
+      - frage: "Was bewirkt `declare(strict_types=1);` am Dateianfang?"
+        erklaerung: "Mit strikten Typen werden Argumente nicht mehr still umgewandelt, ein falscher Typ löst einen TypeError aus."
+        antworten:
+          - { text: "Ein falscher Typ löst einen TypeError aus, statt still umgewandelt zu werden.", richtig: true }
+          - { text: "Alle Variablen werden Konstanten.", richtig: false }
+          - { text: "PHP läuft dadurch schneller.", richtig: false }
+  - titel: Standardwerte und benannte Argumente
+    inhalt: |
+      Ein Parameter kann einen **Standardwert** bekommen. Lässt du das Argument weg,
+      gilt der Standard.
+
+      ```php
+      function begruessen(string $name = "Gast", string $gruss = "Hallo"): string
+      {
+          return "$gruss $name!";
+      }
+
+      echo begruessen();                 // Hallo Gast!
+      echo begruessen("Nico");           // Hallo Nico!
+      ```
+
+      Parameter mit Standardwert stehen am besten **hinten**.
+
+      **Benannte Argumente** (seit PHP 8.0) schreiben den Parameternamen beim Aufruf dazu:
+
+      ```php
+      echo begruessen(gruss: "Servus");  // Servus Gast!
+      echo begruessen(name: "Nico", gruss: "Moin");
+      ```
+
+      Das ist gut lesbar und erlaubt, Parameter in beliebiger Reihenfolge zu setzen oder
+      einzelne zu überspringen.
+
+      **Bild:** Wie beim Bestellen: „Kaffee“ ohne Zusatz gibt dir den Standard (schwarz).
+      Mit „Milch: ja“ sagst du genau, was du ändern willst.
+    quiz:
+      - frage: "Was gibt `begruessen()` im Beispiel aus (alle Parameter mit Standardwert)?"
+        erklaerung: "Ohne Argumente gelten die Standardwerte: „Hallo“ und „Gast“."
+        antworten:
+          - { text: "Hallo Gast!", richtig: true }
+          - { text: "einen Fehler", richtig: false }
+          - { text: "Hallo !", richtig: false }
+      - frage: "Was ist ein benanntes Argument?"
+        erklaerung: "Beim Aufruf schreibst du den Namen des Parameters dazu, zum Beispiel `gruss: 'Servus'`."
+        antworten:
+          - { text: "Ein Argument, bei dem der Parametername beim Aufruf angegeben wird.", richtig: true }
+          - { text: "Ein Argument, das einen Namen aus Großbuchstaben haben muss.", richtig: false }
+          - { text: "Ein Argument, das immer ein Text ist.", richtig: false }
+      - frage: "Wo stehen Parameter mit Standardwert üblicherweise?"
+        erklaerung: "Am Ende der Parameterliste, damit die wichtigen Parameter zuerst übergeben werden."
+        antworten:
+          - { text: "am Ende der Parameterliste", richtig: true }
+          - { text: "am Anfang der Parameterliste", richtig: false }
+          - { text: "in einer eigenen Datei", richtig: false }
+  - titel: Gültigkeitsbereich von Variablen
+    inhalt: |
+      Eine Variable, die **in** einer Funktion entsteht, existiert nur dort. Das nennt man
+      den **Gültigkeitsbereich** (Scope).
+
+      ```php
+      $faktor = 3;
+
+      function verdopple(int $zahl): int
+      {
+          return $zahl * 2;
+      }
+
+      echo verdopple(4);   // 8
+      // echo $zahl;       // Fehler: $zahl gibt es hier draußen nicht
+      ```
+
+      Auch umgekehrt gilt: Eine Variable von **außen** (hier `$faktor`) ist innerhalb der
+      Funktion **nicht** sichtbar. PHP würde melden, dass sie nicht definiert ist.
+
+      **So machst du es richtig:** Gib alles, was die Funktion braucht, als Parameter hinein
+      und hole das Ergebnis über `return` heraus.
+
+      ```php
+      function vervielfache(int $zahl, int $faktor): int
+      {
+          return $zahl * $faktor;
+      }
+
+      echo vervielfache(4, $faktor); // 12
+      ```
+
+      **Bild:** Eine Funktion ist ein geschlossener Raum mit einem Schlitz in der Tür.
+      Was hineinsoll, schiebst du als Parameter durch. Was herauskommt, kommt durch `return`.
+
+      *Eselsbrücke Python:* Dort sehen Funktionen globale Variablen zum Lesen. In PHP nicht.
+    quiz:
+      - frage: "Kann eine Funktion ohne weitere Angabe (ohne `global`) eine Variable `$faktor` lesen, die außerhalb definiert wurde?"
+        erklaerung: "Nein. Variablen von außen sind in Funktionen nicht sichtbar. Man übergibt sie als Parameter."
+        antworten:
+          - { text: "Ja, automatisch.", richtig: false }
+          - { text: "Nein, man übergibt sie als Parameter.", richtig: true }
+          - { text: "Nur wenn sie eine Zahl ist.", richtig: false }
+      - frage: "Wo existiert eine Variable, die innerhalb einer Funktion angelegt wird?"
+        erklaerung: "Sie ist lokal und nur innerhalb der Funktion sichtbar."
+        antworten:
+          - { text: "überall im Skript", richtig: false }
+          - { text: "nur innerhalb der Funktion", richtig: true }
+          - { text: "nur in der nächsten Funktion", richtig: false }
+      - frage: "Wie bringst du das Ergebnis einer Funktion nach außen?"
+        erklaerung: "Über `return`."
+        antworten:
+          - { text: "mit return", richtig: true }
+          - { text: "mit extern", richtig: false }
+          - { text: "mit public", richtig: false }
+  - titel: Anonyme Funktionen und Pfeilfunktionen
+    inhalt: |
+      Eine Funktion kann auch **ohne Namen** in einer Variablen stehen
+      (anonyme Funktion oder Closure):
+
+      ```php
+      $verdopple = function (int $x): int {
+          return $x * 2;
+      };
+
+      echo $verdopple(5); // 10
+      ```
+
+      Brauchst du eine Variable von außen, holst du sie mit `use` hinein:
+
+      ```php
+      $faktor = 3;
+      $vervielfache = function (int $x) use ($faktor): int {
+          return $x * $faktor;
+      };
+      ```
+
+      Die **Pfeilfunktion** `fn` ist die Kurzform für einfache Fälle. Sie nimmt Variablen von
+      außen automatisch mit und hat nur einen Ausdruck:
+
+      ```php
+      $faktor = 3;
+      $vervielfache = fn(int $x): int => $x * $faktor;
+      ```
+
+      Das brauchst du später oft, zum Beispiel mit `array_map`:
+
+      ```php
+      $verdoppelt = array_map(fn(int $x): int => $x * 2, [1, 2, 3]);
+      // [2, 4, 6]
+      ```
+    quiz:
+      - frage: "Wie holst du in eine anonyme Funktion (`function`) eine Variable von außen?"
+        erklaerung: "Mit `use ($variable)` hinter der Parameterklammer."
+        antworten:
+          - { text: "mit use", richtig: true }
+          - { text: "mit import", richtig: false }
+          - { text: "mit extern", richtig: false }
+      - frage: "Was ist ein Merkmal der Pfeilfunktion `fn`?"
+        erklaerung: "Sie übernimmt Variablen von außen automatisch und besteht aus einem einzigen Ausdruck."
+        antworten:
+          - { text: "Sie übernimmt Variablen von außen automatisch.", richtig: true }
+          - { text: "Sie kann nur Texte verarbeiten.", richtig: false }
+          - { text: "Sie braucht immer ein return.", richtig: false }
+      - frage: "Was liefert `array_map(fn(int $x): int => $x * 2, [1, 2, 3])`?"
+        erklaerung: "`array_map` wendet die Funktion auf jedes Element an. Ergebnis: [2, 4, 6]."
+        antworten:
+          - { text: "[1, 2, 3]", richtig: false }
+          - { text: "[2, 4, 6]", richtig: true }
+          - { text: "12", richtig: false }
+test:
+  zeitlimit_minuten: 20
+  fragen:
+    - frage: "Welche Zeile definiert eine Funktion korrekt?"
+      erklaerung: "In PHP beginnt eine Funktionsdefinition mit dem Schlüsselwort `function`."
+      antworten:
+        - { text: "function quadrat(int $x): int { return $x * $x; }", richtig: true }
+        - { text: "def quadrat(x): return x * x", richtig: false }
+        - { text: "fun quadrat(x) = x * x", richtig: false }
+    - frage: "Was liefert `function f(int $a, int $b = 10): int { return $a + $b; }` beim Aufruf `f(5)`?"
+      erklaerung: "$b hat den Standardwert 10. Also 5 + 10 = 15."
+      antworten:
+        - { text: "5", richtig: false }
+        - { text: "15", richtig: true }
+        - { text: "einen Fehler", richtig: false }
+    - frage: "Was passiert mit `declare(strict_types=1);`, wenn du einer `int`-Funktion den Text `'abc'` übergibst?"
+      erklaerung: "Ein falscher Typ löst einen `TypeError` aus."
+      antworten:
+        - { text: "Es gibt einen TypeError.", richtig: true }
+        - { text: "PHP wandelt den Text in 0 um.", richtig: false }
+        - { text: "Die Funktion wird übersprungen.", richtig: false }
+    - frage: "Welcher Rückgabetyp passt zu einer Funktion, die nichts zurückgibt?"
+      erklaerung: "`void` bedeutet: kein Rückgabewert."
+      antworten:
+        - { text: "none", richtig: false }
+        - { text: "void", richtig: true }
+        - { text: "empty", richtig: false }
+    - frage: "Wie rufst du `begruessen(string $name = 'Gast', string $gruss = 'Hallo')` auf, um nur den Gruss zu ändern?"
+      erklaerung: "Mit einem benannten Argument kannst du gezielt einen Parameter setzen."
+      antworten:
+        - { text: "begruessen(gruss: 'Servus')", richtig: true }
+        - { text: "begruessen('Servus')", richtig: false }
+        - { text: "begruessen(gruss = 'Servus')", richtig: false }
+    - frage: "Welches Ergebnis hat dieser Code? function f() { return $x; } $x = 5; echo f();"
+      erklaerung: "Innerhalb der Funktion ist `$x` nicht definiert (Warnung „Undefined variable“). Die Funktion liefert null, nicht 5."
+      antworten:
+        - { text: "5", richtig: false }
+        - { text: "null, dazu eine Warnung wegen der undefinierten Variable", richtig: true }
+        - { text: "0", richtig: false }
+    - frage: "Welche Schreibweise ist eine gültige Pfeilfunktion?"
+      erklaerung: "Pfeilfunktionen beginnen mit `fn`, danach folgen Parameter, `=>` und ein Ausdruck."
+      antworten:
+        - { text: "fn(int $x): int => $x + 1", richtig: true }
+        - { text: "fn(int $x) { return $x + 1; }", richtig: false }
+        - { text: "(int $x) -> $x + 1", richtig: false }
+    - frage: "Was gibt eine Funktion zurück, in der kein `return` ausgeführt wird (und kein Rückgabetyp steht)?"
+      erklaerung: "Ohne `return` ist der Rückgabewert `null`."
+      antworten:
+        - { text: "null", richtig: true }
+        - { text: "0", richtig: false }
+        - { text: "false", richtig: false }

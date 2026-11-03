@@ -2,6 +2,8 @@
 
 ## 2026-11-03
 
+- C2 Phase 1 PHP-Basics: Lerninhalte als YAML-Dateien in `backend/inhalte/php-laravel/` (7 Themenfelder, 32 Abschnitte mit Quiz, 7 Tests, Projekt „Trainingslog“) und neuer Befehl `python manage.py import_inhalte` (Prüfung vor dem Speichern, wiederholbar, löscht nie; Logik in `backend/lernen/inhalte_import.py`). Neue Abhängigkeiten: PyYAML, types-PyYAML. Entscheidungen in `docs/ENTSCHEIDUNGEN.md`.
+
 - C1 Curriculum Laravel (Gliederung): neues Dokument `docs/CURRICULUM_LARAVEL.md` mit 6 Phasen, Abschnitten, Themenfeldern und Projekten (Abschlussprojekt Garmin-Auswertung). Entscheidungen zu Laravel 13, PHP 8.5, Projektzuordnung und Zeitschätzung in `docs/ENTSCHEIDUNGEN.md`.
 - B6 Wochen- und Tagesplan: neuer Endpunkt `GET /api/wochenplan/?datum=JJJJ-MM-TT` (Berechnung in `backend/lernen/wochenplan.py`) mit festen Tagesblöcken (Mo–Do Theorie, Praxis und Quiz, Englisch; Fr Test, Wiederholung, Wochenauswertung) und Wochenauswertung aus dem Fortschritt. Neue Seite `/plan` mit Wochenwechsel (`?woche=`) und Link „Plan“ in der Kopfzeile.
 - B5 Dashboard: neuer Endpunkt `GET /api/dashboard/` (Berechnung in `backend/lernen/dashboard.py`) mit XP, Level (alle 100 XP ein Level), Statistik, Themenfortschritt, 5 Abzeichen und 3 Meilensteinen. Das Dashboard steht auf der Startseite (`DashboardUebersicht`). Die XP-Regeln stehen in `docs/ENTSCHEIDUNGEN.md`. 144 Backend- und 93 Frontend-Tests.

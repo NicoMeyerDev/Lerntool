@@ -1,0 +1,269 @@
+titel: Fehlerbehandlung
+zusammenfassung: Fehler und Exceptions unterscheiden, mit try, catch und finally abfangen, eigene Exceptions werfen und Fehler nie verschlucken.
+quellen:
+  - titel: PHP-Handbuch – Error handling
+    url: https://www.php.net/manual/en/language.error-handling.php
+  - titel: PHP-Handbuch – Throwable errors
+    url: https://www.php.net/manual/en/language.error-handling.throwable.php
+  - titel: PHP-Handbuch – try...catch
+    url: https://www.php.net/manual/en/control-structures.try-catch.php
+  - titel: PHP-Handbuch – error_log
+    url: https://www.php.net/manual/en/function.error-log.php
+abschnitte:
+  - titel: Fehler und Exceptions
+    inhalt: |
+      Dein Code kann auf Probleme stoßen: eine Datei fehlt, eine Zahl ist ungültig, durch Null wird
+      geteilt. PHP meldet das auf zwei Wegen.
+
+      **Exceptions und Errors** sind Objekte, die man „werfen“ und „fangen“ kann. Beide
+      gehören zum gemeinsamen Typ `Throwable`.
+
+      - `Error` – schwere Fehler in der Sprache selbst, zum Beispiel `TypeError`
+        (falscher Typ) oder `DivisionByZeroError`.
+      - `Exception` – Probleme, die dein Programm melden und behandeln soll, zum Beispiel
+        `InvalidArgumentException`.
+
+      ```php
+      echo intdiv(10, 0); // wirft DivisionByZeroError
+      ```
+
+      Fängt niemand die Exception (oder den Error), bricht das Programm mit einer Fehlermeldung ab.
+
+      **Warnungen** (zum Beispiel „Undefined array key“) sind etwas anderes: Das Programm läuft
+      weiter, PHP gibt nur einen Hinweis aus.
+
+      **Bild:** Eine Exception ist ein Alarm im Gebäude. Ohne jemanden, der ihn hört (fängt),
+      wird das Gebäude geräumt (Programm stoppt).
+    quiz:
+      - frage: "Was passiert, wenn eine Exception geworfen und nirgends gefangen wird?"
+        erklaerung: "Das Programm bricht mit einer Fehlermeldung ab."
+        antworten:
+          - { text: "Das Programm bricht mit einer Fehlermeldung ab.", richtig: true }
+          - { text: "PHP ignoriert sie.", richtig: false }
+          - { text: "PHP startet das Programm neu.", richtig: false }
+      - frage: "Was wirft PHP bei `intdiv(10, 0)`?"
+        erklaerung: "Die Ganzzahldivision durch Null wirft einen `DivisionByZeroError`."
+        antworten:
+          - { text: "Einen DivisionByZeroError", richtig: true }
+          - { text: "Nichts, das Ergebnis ist 0", richtig: false }
+          - { text: "Nur eine Warnung", richtig: false }
+      - frage: "Wie unterscheidet sich eine Warnung („Undefined array key“) von einer Exception?"
+        erklaerung: "Bei einer Warnung läuft das Programm weiter, eine ungefangene Exception beendet es."
+        antworten:
+          - { text: "Bei einer Warnung läuft das Programm weiter.", richtig: true }
+          - { text: "Warnungen beenden immer das Programm.", richtig: false }
+          - { text: "Es gibt keinen Unterschied.", richtig: false }
+  - titel: try, catch und finally
+    inhalt: |
+      Mit `try` probierst du Code aus, der fehlschlagen kann. Mit `catch` fängst du den Fehler
+      und reagierst darauf.
+
+      ```php
+      try {
+          $ergebnis = intdiv(10, 0);
+          echo $ergebnis;
+      } catch (DivisionByZeroError $e) {
+          echo "Fehler: " . $e->getMessage();
+      } finally {
+          echo "\nFertig.";
+      }
+      ```
+
+      - Im `try`-Block steht der Code, der schiefgehen kann. Beim Fehler springt PHP sofort
+        in den passenden `catch`-Block.
+      - `$e` ist das Fehler-Objekt. `getMessage()` liefert den Text.
+      - Der `finally`-Block läuft **normalerweise immer**, ob Fehler oder nicht. Gut zum Aufräumen
+        (zum Beispiel eine Datei schließen).
+
+      Mehrere Fehlerarten fängst du so:
+
+      ```php
+      try {
+          // ...
+      } catch (TypeError | DivisionByZeroError $e) {
+          // beide gleich behandeln
+      } catch (Exception $e) {
+          // alle anderen Exceptions
+      }
+      ```
+
+      Der **erste** passende `catch`-Block gewinnt. Schreibe deshalb die genauen Typen zuerst
+      und die allgemeinen zuletzt.
+    quiz:
+      - frage: "Wann läuft der `finally`-Block?"
+        erklaerung: "`finally` läuft immer, egal ob ein Fehler auftrat oder nicht."
+        antworten:
+          - { text: "immer", richtig: true }
+          - { text: "nur, wenn ein Fehler auftritt", richtig: false }
+          - { text: "nur, wenn kein Fehler auftritt", richtig: false }
+      - frage: "Wie liest du den Fehlertext aus dem gefangenen Objekt `$e`?"
+        erklaerung: "Mit `$e->getMessage()`."
+        antworten:
+          - { text: "$e->getMessage()", richtig: true }
+          - { text: "$e->text", richtig: false }
+          - { text: "message($e)", richtig: false }
+      - frage: "In welcher Reihenfolge schreibst du mehrere `catch`-Blöcke?"
+        erklaerung: "Der erste passende Block gewinnt, daher zuerst die genauen, dann die allgemeinen Typen."
+        antworten:
+          - { text: "Die genauen Typen zuerst, die allgemeinen zuletzt.", richtig: true }
+          - { text: "Die allgemeinen zuerst, die genauen zuletzt.", richtig: false }
+          - { text: "Die Reihenfolge ist egal.", richtig: false }
+  - titel: Eigene Exceptions werfen
+    inhalt: |
+      Du kannst selbst einen Fehler melden, wenn Daten ungültig sind. Dafür gibt es `throw`.
+
+      ```php
+      function pruefeDistanz(float $km): void
+      {
+          if ($km <= 0) {
+              throw new InvalidArgumentException("Die Distanz muss größer als 0 sein.");
+          }
+      }
+
+      try {
+          pruefeDistanz(-3.0);
+      } catch (InvalidArgumentException $e) {
+          echo $e->getMessage();
+      }
+      ```
+
+      PHP bringt fertige Exception-Klassen mit, zum Beispiel:
+
+      - `InvalidArgumentException` – ein übergebener Wert ist ungültig
+      - `RuntimeException` – ein Problem zur Laufzeit
+
+      Für deine Anwendung baust du eigene, damit man genau weiß, was passiert ist:
+
+      ```php
+      class UngueltigerLauf extends InvalidArgumentException
+      {
+      }
+
+      throw new UngueltigerLauf("Distanz muss größer als 0 sein.");
+      ```
+
+      Wer `UngueltigerLauf` fängt, weiß sofort, worum es geht.
+
+      **Merke:** Prüfe Eingaben früh und wirf bei ungültigen Werten einen Fehler. So landen
+      keine kaputten Daten im Rest des Programms.
+    quiz:
+      - frage: "Wie meldest du in PHP selbst einen Fehler?"
+        erklaerung: "Mit `throw new SomeException(...)`."
+        antworten:
+          - { text: "throw new InvalidArgumentException('...');", richtig: true }
+          - { text: "raise InvalidArgumentException('...');", richtig: false }
+          - { text: "error('...');", richtig: false }
+      - frage: "Wie definierst du eine eigene Exception-Klasse?"
+        erklaerung: "Sie erbt von einer vorhandenen Exception-Klasse mit `extends`."
+        antworten:
+          - { text: "class UngueltigerLauf extends InvalidArgumentException {}", richtig: true }
+          - { text: "exception UngueltigerLauf {}", richtig: false }
+          - { text: "function UngueltigerLauf() {}", richtig: false }
+      - frage: "Warum ist es sinnvoll, Eingaben früh zu prüfen und bei Fehlern eine Exception zu werfen?"
+        erklaerung: "Damit keine ungültigen Daten im restlichen Programm Schaden anrichten."
+        antworten:
+          - { text: "Damit keine ungültigen Daten weiterverarbeitet werden.", richtig: true }
+          - { text: "Damit der Code kürzer wird.", richtig: false }
+          - { text: "Damit PHP schneller läuft.", richtig: false }
+  - titel: Fehler nicht verschlucken
+    inhalt: |
+      Das Schlimmste, was du tun kannst, ist einen Fehler zu fangen und **nichts** damit zu tun:
+
+      ```php
+      try {
+          $daten = ladeDatei("lauf.tcx");
+      } catch (Exception $e) {
+          // leer – so wird der Fehler verschluckt
+      }
+      ```
+
+      Das Programm läuft scheinbar weiter, aber niemand erfährt, dass die Datei fehlte. Der
+      Fehler taucht später an einer ganz anderen Stelle wieder auf und ist schwer zu finden.
+
+      **Besser:** Fange nur, was du wirklich behandeln kannst, und halte den Fehler fest.
+
+      ```php
+      try {
+          $daten = ladeDatei("lauf.tcx");
+      } catch (RuntimeException $e) {
+          error_log("Datei konnte nicht geladen werden: " . $e->getMessage());
+          echo "Die Datei konnte nicht geladen werden.\n";
+      }
+      ```
+
+      - `error_log()` schreibt die Meldung ins Fehlerprotokoll von PHP.
+      - Der Nutzer bekommt eine verständliche Meldung, keine technischen Details.
+      - Kannst du den Fehler nicht sinnvoll behandeln, lass ihn weiterfliegen.
+
+      **Regel für dieses Projekt:** Keine leeren `catch`-Blöcke. Jeder gefangene Fehler wird
+      behandelt oder protokolliert.
+    quiz:
+      - frage: "Was ist an einem leeren `catch`-Block problematisch?"
+        erklaerung: "Der Fehler wird verschluckt, niemand merkt es, und die Suche später wird schwer."
+        antworten:
+          - { text: "Der Fehler wird verschluckt und bleibt unbemerkt.", richtig: true }
+          - { text: "Er ist in PHP verboten und führt zu einem Syntaxfehler.", richtig: false }
+          - { text: "Er macht das Programm langsamer.", richtig: false }
+      - frage: "Welche Funktion schreibt eine Meldung ins Fehlerprotokoll?"
+        erklaerung: "`error_log()`."
+        antworten:
+          - { text: "error_log()", richtig: true }
+          - { text: "echo_log()", richtig: false }
+          - { text: "write_error()", richtig: false }
+      - frage: "Was solltest du tun, wenn du einen Fehler nicht sinnvoll behandeln kannst?"
+        erklaerung: "Dann fängst du ihn gar nicht erst, damit er weiter nach oben fliegt und gemeldet wird."
+        antworten:
+          - { text: "Ihn nicht fangen, sondern weiterfliegen lassen.", richtig: true }
+          - { text: "Ihn mit einem leeren catch verschlucken.", richtig: false }
+          - { text: "Das Programm neu starten.", richtig: false }
+test:
+  zeitlimit_minuten: 20
+  fragen:
+    - frage: "Welcher Typ ist die gemeinsame Basis von Error und Exception?"
+      erklaerung: "Beide gehören zu `Throwable`."
+      antworten:
+        - { text: "Throwable", richtig: true }
+        - { text: "Warning", richtig: false }
+        - { text: "Stringable", richtig: false }
+    - frage: "In welchen Block gehört Code, der fehlschlagen kann?"
+      erklaerung: "In den `try`-Block."
+      antworten:
+        - { text: "try", richtig: true }
+        - { text: "finally", richtig: false }
+        - { text: "else", richtig: false }
+    - frage: "Was passiert im Beispiel `try { intdiv(1, 0); } catch (DivisionByZeroError $e) { echo 'A'; } finally { echo 'B'; }`?"
+      erklaerung: "Der Fehler wird gefangen (A), danach läuft finally (B). Ausgegeben wird AB."
+      antworten:
+        - { text: "Es wird AB ausgegeben.", richtig: true }
+        - { text: "Es wird nur B ausgegeben.", richtig: false }
+        - { text: "Das Programm bricht ab.", richtig: false }
+    - frage: "Mit welchem Schlüsselwort löst du selbst eine Exception aus?"
+      erklaerung: "Mit `throw`."
+      antworten:
+        - { text: "throw", richtig: true }
+        - { text: "raise", richtig: false }
+        - { text: "fail", richtig: false }
+    - frage: "Welche Exception-Klasse passt, wenn ein übergebener Wert den richtigen Typ hat, aber nicht zulässig ist (zum Beispiel eine negative Distanz)?"
+      erklaerung: "`InvalidArgumentException` ist für ungültige Argumente gedacht."
+      antworten:
+        - { text: "InvalidArgumentException", richtig: true }
+        - { text: "DivisionByZeroError", richtig: false }
+        - { text: "TypeError", richtig: false }
+    - frage: "Du schreibst `catch (Exception $e)` vor `catch (InvalidArgumentException $e)`. Was passiert?"
+      erklaerung: "`InvalidArgumentException` ist eine Exception, der allgemeine Block fängt sie zuerst. Der spezielle bleibt ungenutzt."
+      antworten:
+        - { text: "Der allgemeine Block fängt sie zuerst, der spezielle wird nie erreicht.", richtig: true }
+        - { text: "Der spezielle Block fängt sie zuerst.", richtig: false }
+        - { text: "PHP meldet einen Syntaxfehler.", richtig: false }
+    - frage: "Was gehört in einen `catch`-Block, wenn du den Fehler fängst?"
+      erklaerung: "Der Fehler wird behandelt oder protokolliert, nie einfach verschluckt."
+      antworten:
+        - { text: "Behandlung oder Protokollierung des Fehlers", richtig: true }
+        - { text: "Nichts, das ist guter Stil.", richtig: false }
+        - { text: "Ein exit-Befehl ohne Meldung", richtig: false }
+    - frage: "Wozu eignet sich ein `finally`-Block?"
+      erklaerung: "Zum Aufräumen, das immer passieren soll, zum Beispiel eine Datei schließen."
+      antworten:
+        - { text: "Für Aufräumarbeiten, die immer laufen sollen.", richtig: true }
+        - { text: "Für Code, der nur bei Fehlern laufen soll.", richtig: false }
+        - { text: "Zum Starten einer Schleife.", richtig: false }
