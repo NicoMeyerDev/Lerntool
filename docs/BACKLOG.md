@@ -14,7 +14,7 @@ Regeln: Immer die oberste offene Aufgabe aus „Jetzt“ bearbeiten. Aufgaben au
 - [x] **B2 API:** Inhalte lesen, Quiz abgeben und auswerten, Fortschritt speichern. Einfacher Zugang für einen Nutzer (Entscheidung in `/docs/ENTSCHEIDUNGEN.md` festhalten).
 - [x] **B3 Lektions- und Quiz-Ansicht:** Lektion lesen, Quiz nach jedem Abschnitt, Ergebnis mit kurzer Auswertung.
 - [x] **B4 Test und Projekt:** Test mit 30-Minuten-Timer nach jedem Themenfeld, Projektaufgabe mit Checkliste und Auswertung.
-- [ ] **B5 Dashboard:** Fortschrittsbalken, Statistiken, XP und Level, Abzeichen, Meilensteine.
+- [x] **B5 Dashboard:** Fortschrittsbalken, Statistiken, XP und Level, Abzeichen, Meilensteine.
 - [ ] **B6 Wochen- und Tagesplan:** Feste Blöcke (Vormittag Theorie, Nachmittag Praxis), 5 Tage pro Woche, Freitag Test und Wochenauswertung.
 
 ### C. Inhalte (jede Aufgabe mit `quellenpruefer`)

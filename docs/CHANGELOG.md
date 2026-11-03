@@ -2,6 +2,7 @@
 
 ## 2026-11-03
 
+- B5 Dashboard: neuer Endpunkt `GET /api/dashboard/` (Berechnung in `backend/lernen/dashboard.py`) mit XP, Level (alle 100 XP ein Level), Statistik, Themenfortschritt, 5 Abzeichen und 3 Meilensteinen. Das Dashboard steht auf der Startseite (`DashboardUebersicht`). Die XP-Regeln stehen in `docs/ENTSCHEIDUNGEN.md`. 144 Backend- und 93 Frontend-Tests.
 - B4 Test und Projekt: Testversuche mit serverseitigem Zeitlimit (Start über die API, 30 s Kulanz bei der Abgabe, `409` bei abgelaufener Zeit), Auswertung mit Bestwert; Projekt-Checkliste mit Auswertung. Neue Seiten `/tests/:id` und `/projekte/:id`, gemeinsame Komponente `FragenListe` für Quiz und Test. 130 Backend- und 87 Frontend-Tests.
 - B3 Lektions- und Quiz-Ansicht: Login und Logout, Themenübersicht, Themenseite, Lektionsseite mit einem Abschnitt pro Bildschirm (`?abschnitt=n`), „Gelesen – weiter“, Fortschrittsbalken, Quiz mit Auswertung (Punkte, Bestwert, richtige und eigene Antwort, Erklärung, „Nochmal versuchen“) und Quellenliste. API-Antworten werden mit zod geprüft, Markdown wird ohne HTML dargestellt. Neue Abhängigkeiten: `react-router`, `zod`, `react-markdown`, `@testing-library/user-event`. 63 Frontend-Tests.
 - B2 API: Token-Login mit Bremse gegen Durchprobieren, Inhalte lesen (Quiz ohne Lösung), Quiz-Abgabe mit Auswertung und Bestwert, Abschnitt als gelesen markieren, eigener Fortschritt. Zugang über DRF-Token, Nutzer per `createsuperuser`. 101 Tests. Neue offene Punkte zu Token und Deployment in `docs/OFFEN.md`.

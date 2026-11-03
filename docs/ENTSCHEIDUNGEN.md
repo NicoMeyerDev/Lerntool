@@ -94,3 +94,13 @@ Format: Datum – Entscheidung – Grund – Alternativen.
 - **Projekt-Checkliste als eigene Modelle** (`ProjektPunkt`, `ProjektPunktErledigt`). Das Projekt gilt als erledigt, wenn alle Punkte abgehakt sind; dann entsteht ein Fortschritt „n von n“. Wird ein Haken zurückgenommen, entfällt dieser Fortschritt wieder (abgeleitete Daten). Ein Projekt ohne Punkte ist nie abgeschlossen. Die „Auswertung“ ist die Rückmeldung nach Anzahl erledigter Punkte, keine Note. Alternative: Selbstbewertung mit Freitext (nicht gefordert).
 - **Keine Eingabemöglichkeit für Checklisten-Punkte bis zum Inhaltsimport** (C-Aufgaben), da es keinen Django-Admin gibt (A1). Bis dahin sind sie nur über Tests und die Shell anlegbar.
 - **Neue Endpunkte:** `GET /api/tests/<id>/`, `POST …/start/`, `POST …/abgabe/`, `GET /api/projekte/<id>/`, `PUT /api/projekte/<id>/punkte/<punkt_id>/`.
+
+## 2026-11-03 – B5 Dashboard
+
+- **Alles wird aus dem vorhandenen Fortschritt berechnet** (`lernen/dashboard.py`, `GET /api/dashboard/`), keine eigene Tabelle für XP oder Abzeichen. Grund: Es kann nie von den echten Ergebnissen abweichen, und Regeländerungen wirken sofort rückwirkend. Alternative: gespeicherte XP/Abzeichen mit Vergabezeitpunkt (nötig erst, wenn „erreicht am“ oder Serien gefragt sind).
+- **XP-Regeln (Konstanten im Modul):** Abschnitt gelesen 10 XP, Quiz 5 XP je richtiger Frage (Bestwert), Test 10 XP je richtiger Frage (Bestwert), Projekt 50 XP. Tests zählen doppelt, weil sie unter Zeitdruck stehen. **Level:** alle 100 XP eins höher, Start bei Level 1. Einfach und verständlich; Zahlen sind Startwerte und lassen sich später anpassen.
+- **Abzeichen** (einmalig): Erster Schritt, Volltreffer (Quiz oder Test ohne Fehler), Testlauf, Projekt geschafft, Level 3. **Meilensteine** (Zähler mit nächster Stufe): Abschnitte gelesen (10/25/50), Quizze bearbeitet (5/15/30), XP (250/500/1000). Die Auswahl ist bewusst klein; mehr bei Bedarf.
+- **Nicht enthalten:** Tages-Serien (Streaks) und Zeitverläufe – dafür fehlt die Historie (`Fortschritt` speichert nur den letzten Stand), und der Wochen-/Tagesplan kommt mit B6.
+- **Dashboard auf der Startseite unter den Themen** statt eigener Seite: weniger Navigation, Fortschritt ist sofort sichtbar. Das Frontend rechnet nichts, es zeigt nur an. Nach jeder Änderung des Fortschritts wird es neu geladen (gleicher Abfrage-Schlüssel wie der Fortschritt).
+- **Trefferquote** = richtige Antworten / mögliche in den gespeicherten Bestwerten von Quizzen und Tests; ohne Ergebnis „noch kein Ergebnis“.
+- **Folge der Berechnung aus dem Fortschritt:** Ändert sich später die Fragenzahl eines Quiz, ersetzt die neue Abgabe den Bestwert (B2); die XP können dadurch sinken. Für eine persönliche Lern-App akzeptabel und ehrlicher als veraltete Werte.
