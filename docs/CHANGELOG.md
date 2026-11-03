@@ -2,6 +2,7 @@
 
 ## 2026-11-03
 
+- C1 Curriculum Laravel (Gliederung): neues Dokument `docs/CURRICULUM_LARAVEL.md` mit 6 Phasen, Abschnitten, Themenfeldern und Projekten (Abschlussprojekt Garmin-Auswertung). Entscheidungen zu Laravel 13, PHP 8.5, Projektzuordnung und Zeitschätzung in `docs/ENTSCHEIDUNGEN.md`.
 - B6 Wochen- und Tagesplan: neuer Endpunkt `GET /api/wochenplan/?datum=JJJJ-MM-TT` (Berechnung in `backend/lernen/wochenplan.py`) mit festen Tagesblöcken (Mo–Do Theorie, Praxis und Quiz, Englisch; Fr Test, Wiederholung, Wochenauswertung) und Wochenauswertung aus dem Fortschritt. Neue Seite `/plan` mit Wochenwechsel (`?woche=`) und Link „Plan“ in der Kopfzeile.
 - B5 Dashboard: neuer Endpunkt `GET /api/dashboard/` (Berechnung in `backend/lernen/dashboard.py`) mit XP, Level (alle 100 XP ein Level), Statistik, Themenfortschritt, 5 Abzeichen und 3 Meilensteinen. Das Dashboard steht auf der Startseite (`DashboardUebersicht`). Die XP-Regeln stehen in `docs/ENTSCHEIDUNGEN.md`. 144 Backend- und 93 Frontend-Tests.
 - B4 Test und Projekt: Testversuche mit serverseitigem Zeitlimit (Start über die API, 30 s Kulanz bei der Abgabe, `409` bei abgelaufener Zeit), Auswertung mit Bestwert; Projekt-Checkliste mit Auswertung. Neue Seiten `/tests/:id` und `/projekte/:id`, gemeinsame Komponente `FragenListe` für Quiz und Test. 130 Backend- und 87 Frontend-Tests.
