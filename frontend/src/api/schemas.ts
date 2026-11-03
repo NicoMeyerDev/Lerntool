@@ -191,3 +191,36 @@ export const dashboardSchema = z.object({
   ),
 })
 export type Dashboard = z.infer<typeof dashboardSchema>
+
+/** Wochen- und Tagesplan mit Wochenauswertung (Berechnung im Backend). */
+export const wochenplanSchema = z.object({
+  woche_start: z.string(),
+  woche_ende: z.string(),
+  vorherige_woche: z.string(),
+  naechste_woche: z.string(),
+  ist_aktuelle_woche: z.boolean(),
+  tage: z.array(
+    z.object({
+      datum: z.string(),
+      wochentag: z.string(),
+      ist_heute: z.boolean(),
+      bloecke: z.array(
+        z.object({
+          schluessel: z.string(),
+          tageszeit: z.string(),
+          titel: z.string(),
+          beschreibung: z.string(),
+          dauer: z.string(),
+        }),
+      ),
+    }),
+  ),
+  auswertung: z.object({
+    abschnitte_gelesen: z.number(),
+    quizze_bearbeitet: z.number(),
+    tests_bearbeitet: z.number(),
+    projekte_erledigt: z.number(),
+    trefferquote_prozent: z.number().nullable(),
+  }),
+})
+export type Wochenplan = z.infer<typeof wochenplanSchema>

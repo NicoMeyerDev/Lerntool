@@ -23,6 +23,7 @@ import {
   testStartSchema,
   themaDetailSchema,
   themenSchema,
+  wochenplanSchema,
   type Dashboard,
   type Fortschritt,
   type Lektion,
@@ -33,6 +34,7 @@ import {
   type TestStart,
   type Thema,
   type ThemaDetail,
+  type Wochenplan,
 } from './schemas'
 
 /** Abfrage-Schlüssel für den Fortschritt (wird nach Änderungen neu geladen). */
@@ -247,5 +249,24 @@ export function useDashboard(): UseQueryResult<Dashboard> {
   return useQuery({
     queryKey: [...FORTSCHRITT_SCHLUESSEL, 'dashboard'],
     queryFn: () => apiAnfrage('/api/dashboard/', dashboardSchema),
+  })
+}
+
+/**
+ * Lädt den Wochenplan samt Wochenauswertung.
+ *
+ * Gehört zum Fortschritt-Schlüssel, damit die Auswertung nach Änderungen neu lädt.
+ *
+ * @param woche - Ein Datum (JJJJ-MM-TT) der gewünschten Woche; `null` für die aktuelle.
+ * @returns Abfrage-Zustand mit dem Wochenplan.
+ */
+export function useWochenplan(woche: string | null): UseQueryResult<Wochenplan> {
+  return useQuery({
+    queryKey: [...FORTSCHRITT_SCHLUESSEL, 'wochenplan', woche],
+    queryFn: () =>
+      apiAnfrage(
+        woche === null ? '/api/wochenplan/' : `/api/wochenplan/?datum=${encodeURIComponent(woche)}`,
+        wochenplanSchema,
+      ),
   })
 }

@@ -1,10 +1,12 @@
 """API-Views der Lern-App. Nur Ein- und Ausgabe; die Logik liegt in `lernen.services`."""
 
 from dataclasses import asdict
+from datetime import date
 from typing import Any
 
 from django.db.models import Prefetch, QuerySet
 from django.shortcuts import get_object_or_404
+from django.utils import timezone
 from rest_framework import generics, status
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -46,6 +48,7 @@ from lernen.services import (
     werte_quiz_aus,
     werte_test_aus,
 )
+from lernen.wochenplan import MAX_JAHR, MIN_JAHR, erstelle_wochenplan
 
 
 class ThemaListeView(generics.ListAPIView[Thema]):
@@ -166,6 +169,36 @@ class DashboardView(APIView):
             200 mit XP, Level, Statistik, Themenfortschritt, Abzeichen und Meilensteinen.
         """
         return Response(asdict(erstelle_dashboard(angemeldeter_nutzer(request))))
+
+
+class WochenplanView(APIView):
+    """`GET /api/wochenplan/?datum=JJJJ-MM-TT`: Plan und Auswertung einer Lernwoche."""
+
+    def get(self, request: Request) -> Response:
+        """Liefert die Woche, in der `datum` liegt (ohne Angabe: die aktuelle Woche).
+
+        Args:
+            request: Die Anfrage mit optionalem Parameter `datum`.
+
+        Returns:
+            200 mit dem Wochenplan, 400 bei ungültigem Datum.
+        """
+        heute = timezone.localdate()
+        text = request.query_params.get("datum")
+        tag = heute
+        if text is not None:
+            try:
+                gewuenscht: date | None = date.fromisoformat(text)
+            except ValueError:
+                gewuenscht = None
+            if gewuenscht is None or not MIN_JAHR <= gewuenscht.year <= MAX_JAHR:
+                return Response(
+                    {"datum": f"Ungültiges Datum, erwartet JJJJ-MM-TT ({MIN_JAHR}–{MAX_JAHR})."},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+            tag = gewuenscht
+        plan = erstelle_wochenplan(angemeldeter_nutzer(request), tag, heute)
+        return Response(asdict(plan))
 
 
 class TestDetailView(generics.RetrieveAPIView[Test]):

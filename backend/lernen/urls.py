@@ -26,4 +26,5 @@ urlpatterns = [
     ),
     path("fortschritt/", views.FortschrittListeView.as_view(), name="fortschritt"),
     path("dashboard/", views.DashboardView.as_view(), name="dashboard"),
+    path("wochenplan/", views.WochenplanView.as_view(), name="wochenplan"),
 ]

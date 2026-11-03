@@ -6,6 +6,7 @@ import { Link, Route, Routes } from 'react-router'
 import { GeschuetzterBereich } from './components/Layout'
 import { LektionSeite } from './pages/LektionSeite'
 import { LoginSeite } from './pages/LoginSeite'
+import { PlanSeite } from './pages/PlanSeite'
 import { ProjektSeite } from './pages/ProjektSeite'
 import { StartSeite } from './pages/StartSeite'
 import { TestSeite } from './pages/TestSeite'
@@ -38,6 +39,7 @@ export default function App() {
       <Route path="/login" element={<LoginSeite />} />
       <Route element={<GeschuetzterBereich />}>
         <Route index element={<StartSeite />} />
+        <Route path="plan" element={<PlanSeite />} />
         <Route path="themen/:slug" element={<ThemaSeite />} />
         <Route path="lektionen/:id" element={<LektionSeite />} />
         <Route path="tests/:id" element={<TestSeite />} />
