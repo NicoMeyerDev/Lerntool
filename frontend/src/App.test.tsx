@@ -203,7 +203,10 @@ describe('Themenseite', () => {
 
     expect(await screen.findByRole('heading', { name: 'Phase 1: PHP-Basics' })).toBeInTheDocument()
     expect(screen.getByRole('link', { name: 'Arrays' })).toHaveAttribute('href', '/lektionen/7')
-    expect(screen.getByText('Projekt: Einkaufsliste')).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Projekt: Einkaufsliste' })).toHaveAttribute(
+      'href',
+      '/projekte/3',
+    )
   })
 
   it('meldet ein unbekanntes Thema', async () => {
