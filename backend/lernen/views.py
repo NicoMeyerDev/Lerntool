@@ -1,6 +1,7 @@
 """API-Views der Lern-App. Nur Ein- und Ausgabe; die Logik liegt in `lernen.services`."""
 
 from dataclasses import asdict
+from typing import Any
 
 from django.db.models import Prefetch, QuerySet
 from django.shortcuts import get_object_or_404
@@ -10,16 +11,40 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from core.anmeldung import angemeldeter_nutzer
-from lernen.models import Abschnitt, Fortschritt, Frage, Lektion, Phase, Quiz, Thema
+from lernen.models import (
+    Abschnitt,
+    Fortschritt,
+    Frage,
+    Lektion,
+    Phase,
+    Projektaufgabe,
+    ProjektPunkt,
+    Quiz,
+    Test,
+    Thema,
+)
 from lernen.serializers import (
     FortschrittSerializer,
     LektionDetailSerializer,
+    ProjektPunktSerializer,
+    ProjektPunktSetzenSerializer,
     QuizAbgabeSerializer,
     QuizSerializer,
+    TestSerializer,
     ThemaDetailSerializer,
     ThemaSerializer,
 )
-from lernen.services import UngueltigeAbgabe, markiere_abschnitt_gelesen, werte_quiz_aus
+from lernen.services import (
+    ProjektStand,
+    TestZeitAbgelaufen,
+    UngueltigeAbgabe,
+    markiere_abschnitt_gelesen,
+    projekt_stand,
+    setze_projektpunkt,
+    starte_test,
+    werte_quiz_aus,
+    werte_test_aus,
+)
 
 
 class ThemaListeView(generics.ListAPIView[Thema]):
@@ -125,3 +150,139 @@ class FortschrittListeView(generics.ListAPIView[Fortschritt]):
     def get_queryset(self) -> QuerySet[Fortschritt]:
         """Liefert nur die Einträge des angemeldeten Nutzers."""
         return Fortschritt.objects.filter(nutzer=angemeldeter_nutzer(self.request))
+
+
+class TestDetailView(generics.RetrieveAPIView[Test]):
+    """`GET /api/tests/<id>/`: Fragen und Antwortmöglichkeiten **ohne** Lösung."""
+
+    __test__ = False  # Kein pytest-Testfall, trotz des Namens.
+
+    serializer_class = TestSerializer
+
+    def get_queryset(self) -> QuerySet[Test]:
+        """Liefert die Tests mit vorgeladenen Fragen und Antworten."""
+        return Test.objects.prefetch_related(
+            Prefetch("fragen", queryset=Frage.objects.prefetch_related("antworten"))
+        )
+
+
+class TestStartView(APIView):
+    """`POST /api/tests/<id>/start/`: Testversuch starten oder fortsetzen."""
+
+    __test__ = False  # Kein pytest-Testfall, trotz des Namens.
+
+    def post(self, request: Request, pk: int) -> Response:
+        """Startet den Zeitlimit-Zähler auf dem Server.
+
+        Args:
+            request: Die Anfrage (ohne Inhalt).
+            pk: ID des Tests.
+
+        Returns:
+            200 mit Versuchs-ID, Start, Ende und Restzeit in Sekunden; 404, wenn es
+            den Test nicht gibt.
+        """
+        test = get_object_or_404(Test, pk=pk)
+        return Response(asdict(starte_test(test, angemeldeter_nutzer(request))))
+
+
+class TestAbgabeView(APIView):
+    """`POST /api/tests/<id>/abgabe/`: Antworten des laufenden Versuchs abgeben."""
+
+    __test__ = False  # Kein pytest-Testfall, trotz des Namens.
+
+    def post(self, request: Request, pk: int) -> Response:
+        """Wertet die Abgabe aus, wenn das Zeitlimit eingehalten wurde.
+
+        Args:
+            request: Anfrage mit `{"antworten": [{"frage": <id>, "antwort": <id>}, ...]}`.
+            pk: ID des Tests.
+
+        Returns:
+            200 mit Punkten, Bestwert und Auswertung je Frage; 400 bei ungültiger
+            Abgabe; 409, wenn kein Versuch läuft oder die Zeit abgelaufen ist; 404,
+            wenn es den Test nicht gibt.
+        """
+        test = get_object_or_404(Test, pk=pk)
+        eingabe = QuizAbgabeSerializer(data=request.data)
+        eingabe.is_valid(raise_exception=True)
+        auswahl = {
+            eintrag["frage"]: eintrag["antwort"] for eintrag in eingabe.validated_data["antworten"]
+        }
+        try:
+            ergebnis = werte_test_aus(test, angemeldeter_nutzer(request), auswahl)
+        except TestZeitAbgelaufen as fehler:
+            return Response({"detail": str(fehler)}, status=status.HTTP_409_CONFLICT)
+        except UngueltigeAbgabe as fehler:
+            return Response({"detail": str(fehler)}, status=status.HTTP_400_BAD_REQUEST)
+        return Response(asdict(ergebnis))
+
+
+def _projekt_antwort(projekt: Projektaufgabe, stand: ProjektStand) -> dict[str, Any]:
+    """Baut die Antwort für eine Projektaufgabe samt Stand des Nutzers.
+
+    Args:
+        projekt: Die Projektaufgabe.
+        stand: Der Stand des angemeldeten Nutzers.
+
+    Returns:
+        Aufgabe, Checkliste mit Haken und Auswertung (erledigt, gesamt, abgeschlossen).
+    """
+    punkte = [
+        {**punkt, "erledigt": punkt["id"] in stand.erledigt_ids}
+        for punkt in ProjektPunktSerializer(projekt.punkte.all(), many=True).data
+    ]
+    return {
+        "id": projekt.id,
+        "phase": projekt.phase_id,
+        "titel": projekt.titel,
+        "beschreibung": projekt.beschreibung,
+        "punkte": punkte,
+        "erledigt": stand.erledigt,
+        "gesamt": stand.gesamt,
+        "abgeschlossen": stand.abgeschlossen,
+    }
+
+
+class ProjektDetailView(APIView):
+    """`GET /api/projekte/<id>/`: Projektaufgabe mit Checkliste und Stand."""
+
+    def get(self, request: Request, pk: int) -> Response:
+        """Liefert Aufgabe, Checkliste und den Stand des angemeldeten Nutzers.
+
+        Args:
+            request: Die Anfrage.
+            pk: ID der Projektaufgabe.
+
+        Returns:
+            200 mit der Projektaufgabe; 404, wenn es sie nicht gibt.
+        """
+        projekt = get_object_or_404(Projektaufgabe, pk=pk)
+        stand = projekt_stand(projekt, angemeldeter_nutzer(request))
+        return Response(_projekt_antwort(projekt, stand))
+
+
+class ProjektPunktView(APIView):
+    """`PUT /api/projekte/<id>/punkte/<punkt_id>/`: Checklisten-Punkt abhaken."""
+
+    def put(self, request: Request, pk: int, punkt_id: int) -> Response:
+        """Hakt den Punkt ab oder nimmt den Haken zurück.
+
+        Args:
+            request: Anfrage mit `{"erledigt": true|false}`.
+            pk: ID der Projektaufgabe.
+            punkt_id: ID des Checklisten-Punkts.
+
+        Returns:
+            200 mit der aktualisierten Projektaufgabe; 400 bei ungültiger Eingabe;
+            404, wenn es Projekt oder Punkt (in diesem Projekt) nicht gibt.
+        """
+        punkt = get_object_or_404(
+            ProjektPunkt.objects.select_related("projektaufgabe"), pk=punkt_id, projektaufgabe_id=pk
+        )
+        eingabe = ProjektPunktSetzenSerializer(data=request.data)
+        eingabe.is_valid(raise_exception=True)
+        stand = setze_projektpunkt(
+            punkt, angemeldeter_nutzer(request), eingabe.validated_data["erledigt"]
+        )
+        return Response(_projekt_antwort(punkt.projektaufgabe, stand))

@@ -364,3 +364,88 @@ class Fortschritt(models.Model):
         """Gibt Nutzer und erledigtes Ziel zurück."""
         ziel = self.abschnitt or self.quiz or self.test or self.projektaufgabe
         return f"{self.nutzer}: {ziel}"
+
+
+class TestVersuch(models.Model):
+    """Ein gestarteter Testversuch. Der Server merkt sich den Start für das Zeitlimit.
+
+    Solange `abgegeben_am` leer ist, läuft der Versuch. Je Nutzer und Test gibt es
+    höchstens einen laufenden Versuch.
+    """
+
+    __test__ = False  # Kein pytest-Testfall, trotz des Namens.
+
+    nutzer = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="test_versuche"
+    )
+    test = models.ForeignKey(Test, on_delete=models.CASCADE, related_name="versuche")
+    gestartet_am = models.DateTimeField(auto_now_add=True)
+    abgegeben_am = models.DateTimeField(null=True, blank=True)
+
+    class Meta:
+        """Höchstens ein laufender Versuch je Nutzer und Test sowie Anzeigenamen."""
+
+        ordering = ["-gestartet_am"]
+        verbose_name = "Testversuch"
+        verbose_name_plural = "Testversuche"
+        constraints = [
+            models.UniqueConstraint(
+                fields=["nutzer", "test"],
+                condition=Q(abgegeben_am__isnull=True),
+                name="hoechstens_ein_laufender_versuch",
+            ),
+        ]
+
+    def __str__(self) -> str:
+        """Gibt Nutzer, Test und Startzeit zurück."""
+        return f"{self.nutzer}: {self.test} ({self.gestartet_am:%Y-%m-%d %H:%M})"
+
+
+class ProjektPunkt(models.Model):
+    """Ein Punkt der Checkliste einer Projektaufgabe."""
+
+    projektaufgabe = models.ForeignKey(
+        Projektaufgabe, on_delete=models.CASCADE, related_name="punkte"
+    )
+    text = models.CharField(max_length=300)
+    reihenfolge = models.PositiveIntegerField()
+
+    class Meta:
+        """Sortierung, Eindeutigkeit innerhalb der Projektaufgabe und Anzeigenamen."""
+
+        ordering = ["projektaufgabe", "reihenfolge"]
+        verbose_name = "Projektpunkt"
+        verbose_name_plural = "Projektpunkte"
+        constraints = [
+            models.UniqueConstraint(
+                fields=["projektaufgabe", "reihenfolge"], name="projektpunkt_reihenfolge_je_projekt"
+            ),
+        ]
+
+    def __str__(self) -> str:
+        """Gibt den Text des Punkts zurück."""
+        return self.text
+
+
+class ProjektPunktErledigt(models.Model):
+    """Ein Nutzer hat einen Punkt der Projekt-Checkliste abgehakt."""
+
+    nutzer = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="erledigte_projektpunkte"
+    )
+    punkt = models.ForeignKey(ProjektPunkt, on_delete=models.CASCADE, related_name="erledigt")
+
+    class Meta:
+        """Ein Eintrag je Nutzer und Punkt sowie Anzeigenamen."""
+
+        verbose_name = "Erledigter Projektpunkt"
+        verbose_name_plural = "Erledigte Projektpunkte"
+        constraints = [
+            models.UniqueConstraint(
+                fields=["nutzer", "punkt"], name="projektpunkt_einmal_je_nutzer"
+            ),
+        ]
+
+    def __str__(self) -> str:
+        """Gibt Nutzer und Punkt zurück."""
+        return f"{self.nutzer}: {self.punkt}"

@@ -17,8 +17,10 @@ from lernen.models import (
     Lektion,
     Phase,
     Projektaufgabe,
+    ProjektPunkt,
     Quelle,
     Quiz,
+    Test,
     Thema,
 )
 
@@ -194,6 +196,20 @@ class QuizSerializer(serializers.ModelSerializer[Quiz]):
         fields = ["id", "abschnitt", "fragen"]
 
 
+class TestSerializer(serializers.ModelSerializer[Test]):
+    """Test zum Beantworten: Zeitlimit, Fragen und Antworten ohne Lösung."""
+
+    __test__ = False  # Kein pytest-Testfall, trotz des Namens.
+
+    fragen = FrageOhneLoesungSerializer(many=True, read_only=True)
+
+    class Meta:
+        """Felder des Tests."""
+
+        model = Test
+        fields = ["id", "lektion", "zeitlimit_minuten", "fragen"]
+
+
 class AuswahlSerializer(serializers.Serializer[dict[str, int]]):
     """Eine beantwortete Frage: welche Antwort zu welcher Frage gewählt wurde."""
 
@@ -222,6 +238,22 @@ class QuizAbgabeSerializer(serializers.Serializer[dict[str, Any]]):
         if len(fragen) != len(set(fragen)):
             raise serializers.ValidationError("Jede Frage darf nur einmal beantwortet werden.")
         return antworten
+
+
+class ProjektPunktSerializer(serializers.ModelSerializer[ProjektPunkt]):
+    """Ein Punkt der Projekt-Checkliste (ohne Angabe, ob der Nutzer ihn abgehakt hat)."""
+
+    class Meta:
+        """Felder des Punkts."""
+
+        model = ProjektPunkt
+        fields = ["id", "text", "reihenfolge"]
+
+
+class ProjektPunktSetzenSerializer(serializers.Serializer[dict[str, bool]]):
+    """Eingabe zum Abhaken oder Zurücknehmen eines Checklisten-Punkts."""
+
+    erledigt = serializers.BooleanField()
 
 
 class FortschrittSerializer(serializers.ModelSerializer[Fortschritt]):
