@@ -54,3 +54,17 @@ Format: Datum – Entscheidung – Grund – Alternativen.
 - **Inhalt von Abschnitten und Projektaufgaben als Markdown-Text.** Darstellung folgt in B3.
 - **Migrationen sind von den Docstring-Regeln (ruff `D`, `E501`) ausgenommen** – von Django erzeugter Code.
 - **Kein Django-Admin** (siehe A1). Inhalte kommen in den C-Aufgaben per Import.
+
+## 2026-11-03 – B2 API
+
+- **Zugang für einen Nutzer: DRF-Token-Anmeldung** (`rest_framework.authtoken`). `POST /api/auth/login/` tauscht Benutzername und Passwort gegen ein Token, das das Frontend als `Authorization: Token …` mitschickt. Der Nutzer wird mit `python manage.py createsuperuser` angelegt (kein Registrieren). Grund: eingebaut in DRF, funktioniert auch, wenn Frontend und Backend später auf verschiedenen Domains laufen, keine CSRF-/Cookie-Einstellungen nötig. Alternativen: Session-Cookies mit CSRF (sicherer gegen Token-Diebstahl per XSS, aber bei getrennten Domains aufwendiger), JWT (zusätzliche Bibliothek, für einen Nutzer überdimensioniert). Sicherheitsfrage vor dem Deployment siehe `docs/OFFEN.md`.
+- **Standard: jede API braucht Anmeldung** (`IsAuthenticated`), Ausnahmen nur `/api/health/` und `/api/auth/login/`. So kann ein neuer Endpunkt nicht versehentlich offen sein.
+- **Login-Bremse: 10 Versuche pro Minute** (`ScopedRateThrottle`), gegen das Durchprobieren von Passwörtern. Zählt im lokalen Cache-Speicher; bei mehreren Server-Prozessen (Deployment) wäre ein gemeinsamer Cache nötig.
+- **Logout löscht das Token** – danach ist es ungültig.
+- **Quiz-Serializer verraten keine Lösung:** `ist_richtig` und `erklaerung` erscheinen erst in der Auswertung nach der Abgabe. Durch einen Test abgesichert.
+- **Quiz-Abgabe als Liste `{"frage", "antwort"}`**, nicht als Objekt mit Frage-IDs als Schlüssel (JSON-Schlüssel wären Texte). Unbeantwortete Fragen zählen als falsch; fremde Fragen/Antworten, doppelte Fragen und leere Quizze → 400.
+- **Gespeichert wird der Bestwert** je Nutzer und Quiz (Fortschritt soll nicht sinken). Ändert sich die Fragenzahl des Quiz, ersetzt die neue Abgabe den alten Wert. Einzelne Versuche werden nicht gespeichert (bei Bedarf später für die Schwächenanalyse).
+- **Wann ist ein Abschnitt erledigt? Wenn der Nutzer ihn als gelesen markiert** (`POST /api/abschnitte/<id>/gelesen/`). Das Quiz-Ergebnis steht getrennt im Fortschritt. Grund: einfach, und Lesen ohne bestandenes Quiz bleibt sichtbar (Hinweis auf Wiederholung). Alternative: erledigt erst bei bestandenem Quiz (braucht eine Bestehensgrenze, die es noch nicht gibt).
+- **Tests** (`TEST`-Modell) bekommen Lesen/Abgabe erst mit B4 (Timer); die Auswertungslogik ist so gebaut, dass sie dort wiederverwendet werden kann. **Für B4 zu entscheiden:** Eine leere Abgabe zeigt alle Lösungen – beim Quiz gewollt (Lernen), beim Test mit Timer ggf. erst nach Ablauf oder nur einmal.
+- **Logik in `lernen/services.py`, Views nur Ein-/Ausgabe** (CLAUDE.md §1). Abfragen mit `prefetch_related`, damit eine Lektion mit vielen Abschnitten in wenigen Datenbankabfragen lädt (Test prüft ≤ 6).
+- **Tests nutzen einen schnellen Passwort-Hasher** (`MD5PasswordHasher`, nur in `tests/conftest.py`), wie die Django-Doku empfiehlt; im Betrieb bleibt der sichere Standard. Testlaufzeit 35 s → 2 s.

@@ -1,10 +1,9 @@
 """Tests für das Datenmodell der Lern-App (Beziehungen, Sortierung, Datenbank-Regeln).
 
 Die Modelle werden als Modul `m` importiert, damit pytest das Modell `Test`
-nicht für eine Testklasse hält.
+nicht für eine Testklasse hält. Die Fixtures `inhalte` und `nutzer` stehen in
+`tests/conftest.py`.
 """
-
-from dataclasses import dataclass
 
 import pytest
 from django.contrib.auth.models import User
@@ -12,46 +11,9 @@ from django.core.exceptions import ValidationError
 from django.db import IntegrityError, transaction
 
 from lernen import models as m
+from tests.fabrik import Inhalte
 
 pytestmark = pytest.mark.django_db
-
-
-@dataclass
-class Inhalte:
-    """Eine vollständige, minimale Inhaltskette für die Tests."""
-
-    thema: m.Thema
-    phase: m.Phase
-    lektion: m.Lektion
-    abschnitt: m.Abschnitt
-    quiz: m.Quiz
-    test: m.Test
-    projekt: m.Projektaufgabe
-
-
-@pytest.fixture
-def inhalte() -> Inhalte:
-    """Legt Thema, Phase, Lektion, Abschnitt, Quiz, Test und Projektaufgabe an."""
-    thema = m.Thema.objects.create(titel="PHP/Laravel", slug="php-laravel", reihenfolge=1)
-    phase = m.Phase.objects.create(
-        thema=thema, titel="PHP-Basics", slug="php-basics", reihenfolge=1
-    )
-    lektion = m.Lektion.objects.create(phase=phase, titel="Arrays", slug="arrays", reihenfolge=1)
-    abschnitt = m.Abschnitt.objects.create(
-        lektion=lektion, titel="Was ist ein Array?", inhalt="Text", reihenfolge=1
-    )
-    quiz = m.Quiz.objects.create(abschnitt=abschnitt)
-    test = m.Test.objects.create(lektion=lektion)
-    projekt = m.Projektaufgabe.objects.create(
-        phase=phase, titel="Einkaufsliste", beschreibung="Aufgabe", reihenfolge=1
-    )
-    return Inhalte(thema, phase, lektion, abschnitt, quiz, test, projekt)
-
-
-@pytest.fixture
-def nutzer() -> User:
-    """Legt einen Nutzer an."""
-    return User.objects.create_user(username="lernender", password="geheim-123")
 
 
 # --- Aufbau und Beziehungen -------------------------------------------------

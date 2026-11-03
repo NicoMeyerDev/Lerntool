@@ -14,6 +14,15 @@ Punkte, die eine Entscheidung oder Aktion des Nutzers brauchen.
 - **Stand:** Laut [Python-Doku](https://docs.python.org/3/using/windows.html) bringt der Python install manager einen `python3`-Befehl mit, die Hooks sollten also auch unter Windows starten. Ausprobiert ist das nicht, ebenso wenig die übrigen Windows-Schritte im README (kein Windows-Rechner verfügbar).
 - **Bitte beim ersten Einrichten unter Windows:** `python3 --version` prüfen und melden, wo die Anleitung hakt. Fehlt `python3`, muss für die Hooks eine plattformübergreifende Lösung her (Sicherheitseinstellung, daher nicht ohne Rücksprache).
 
+## 2026-11-03 – Vor dem Deployment: Speicherort des Login-Tokens bestätigen
+
+- **Stand:** Die API nutzt DRF-Token (siehe ENTSCHEIDUNGEN, B2). Das Frontend (B3) muss das Token speichern. Üblich und einfach ist `localStorage`; das Token wäre dann bei einer XSS-Lücke im Frontend auslesbar. React schützt standardmäßig vor XSS, und die App rendert keine fremden Inhalte – das Risiko ist für eine Ein-Personen-App klein, aber nicht null.
+- **Warum nicht allein entschieden:** Betrifft Sicherheit (CLAUDE.md §7). Lokal ist es unkritisch; die Frage wird wichtig, sobald die App im Internet läuft.
+- **Ebenfalls vor dem Deployment bestätigen:**
+  - DRF-Tokens laufen nie ab; es gibt eines pro Nutzer, ungültig erst durch Logout. Für einen Nutzer vertretbar, im Internet eher eine Laufzeit (z. B. Neu-Login nach einigen Tagen) einbauen.
+  - Die Login-Bremse zählt pro IP-Adresse. Hinter dem Proxy von Render sähe sie nur die Proxy-IP; dann `NUM_PROXIES` in den DRF-Einstellungen setzen und einen gemeinsamen Cache verwenden.
+- **Vorschlag:** Für die Entwicklung `localStorage` verwenden. Vor dem Deployment entscheiden, ob das so bleibt oder auf Session-Cookies (HttpOnly, CSRF) umgestellt wird – das ist einfacher, wenn Frontend und Backend unter derselben Domain laufen.
+
 ## Erledigt
 
 ### 2026-11-03 – Dateinamen wichen von der CLAUDE.md ab

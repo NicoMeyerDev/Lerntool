@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
+    "rest_framework.authtoken",
     "core",
     "lernen",
 ]
@@ -86,6 +87,11 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 REST_FRAMEWORK = {
     "DEFAULT_RENDERER_CLASSES": ["rest_framework.renderers.JSONRenderer"],
+    # Zugang per Token (siehe docs/ENTSCHEIDUNGEN.md, B2). Ohne Anmeldung nur /api/health/.
+    "DEFAULT_AUTHENTICATION_CLASSES": ["rest_framework.authentication.TokenAuthentication"],
+    "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.IsAuthenticated"],
+    # Bremst das Durchprobieren von Passwörtern am Login.
+    "DEFAULT_THROTTLE_RATES": {"login": "10/min"},
 }
 
 LOGGING = {
