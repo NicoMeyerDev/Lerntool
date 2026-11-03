@@ -151,3 +151,43 @@ export const projektSchema = z.object({
   abgeschlossen: z.boolean(),
 })
 export type Projekt = z.infer<typeof projektSchema>
+
+/** Dashboard: Statistiken, XP, Level, Abzeichen und Meilensteine (Berechnung im Backend). */
+export const dashboardSchema = z.object({
+  xp: z.number(),
+  level: z.number(),
+  xp_im_level: z.number(),
+  xp_pro_level: z.number(),
+  statistik: z.object({
+    abschnitte_gelesen: z.number(),
+    abschnitte_gesamt: z.number(),
+    quizze_bearbeitet: z.number(),
+    quizze_gesamt: z.number(),
+    tests_bearbeitet: z.number(),
+    tests_gesamt: z.number(),
+    projekte_erledigt: z.number(),
+    projekte_gesamt: z.number(),
+    trefferquote_prozent: z.number().nullable(),
+  }),
+  themen: z.array(
+    z.object({ slug: z.string(), titel: z.string(), erledigt: z.number(), gesamt: z.number() }),
+  ),
+  abzeichen: z.array(
+    z.object({
+      schluessel: z.string(),
+      titel: z.string(),
+      beschreibung: z.string(),
+      erreicht: z.boolean(),
+    }),
+  ),
+  meilensteine: z.array(
+    z.object({
+      schluessel: z.string(),
+      titel: z.string(),
+      aktuell: z.number(),
+      ziel: z.number(),
+      erreicht: z.boolean(),
+    }),
+  ),
+})
+export type Dashboard = z.infer<typeof dashboardSchema>
