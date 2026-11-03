@@ -5,7 +5,7 @@ Regeln: Immer die oberste offene Aufgabe aus „Jetzt“ bearbeiten. Aufgaben au
 ## Jetzt
 
 ### A. Fundament
-- [ ] **A1 Backend-Gerüst:** Django und Django REST Framework in `/backend`. Einstellungen über Umgebungsvariablen, Datenbank über `DATABASE_URL` (PostgreSQL), `.env.example` ohne echte Werte, Endpunkt `/api/health/`, `requirements.txt` mit ruff, mypy, pytest. Fertig, wenn: alle Befehle aus CLAUDE.md Abschnitt 9 laufen, die CI ist grün, ein Test für `/api/health/` existiert.
+- [x] **A1 Backend-Gerüst:** Django und Django REST Framework in `/backend`. Einstellungen über Umgebungsvariablen, Datenbank über `DATABASE_URL` (PostgreSQL), `.env.example` ohne echte Werte, Endpunkt `/api/health/`, `requirements.txt` mit ruff, mypy, pytest. Fertig, wenn: alle Befehle aus CLAUDE.md Abschnitt 9 laufen, die CI ist grün, ein Test für `/api/health/` existiert.
 - [ ] **A2 Frontend-Gerüst:** React, Vite, TypeScript (strict), Tailwind, vite-plugin-pwa in `/frontend`. Dunkles Theme mit Design-Tokens, Startseite ruft `/api/health/` auf. Fertig, wenn: `npm run lint`, `npm test`, `npm run build` laufen und die CI grün ist.
 - [ ] **A3 README:** Lokales Setup unter Windows (Backend, Frontend, Datenbank), Befehle, Ordnerstruktur. Fertig, wenn: ein Neuling die App nach der Anleitung starten kann.
 
