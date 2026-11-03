@@ -1,0 +1,392 @@
+titel: Klassen und Objekte
+zusammenfassung: Bauplan und Bauwerk – Klassen, Objekte, Konstruktor, Sichtbarkeit, statische Mitglieder, Vererbung, Interfaces und Enums.
+quellen:
+  - titel: PHP-Handbuch – Classes and objects
+    url: https://www.php.net/manual/en/language.oop5.php
+  - titel: PHP-Handbuch – Constructors and destructors
+    url: https://www.php.net/manual/en/language.oop5.decon.php
+  - titel: PHP-Handbuch – Visibility
+    url: https://www.php.net/manual/en/language.oop5.visibility.php
+  - titel: PHP-Handbuch – Static keyword
+    url: https://www.php.net/manual/en/language.oop5.static.php
+  - titel: PHP-Handbuch – Class constants
+    url: https://www.php.net/manual/en/language.oop5.constants.php
+  - titel: PHP-Handbuch – Properties (readonly)
+    url: https://www.php.net/manual/en/language.oop5.properties.php
+  - titel: PHP-Handbuch – Inheritance
+    url: https://www.php.net/manual/en/language.oop5.inheritance.php
+  - titel: PHP-Handbuch – Object interfaces
+    url: https://www.php.net/manual/en/language.oop5.interfaces.php
+  - titel: PHP-Handbuch – Enumerations
+    url: https://www.php.net/manual/en/language.enumerations.php
+abschnitte:
+  - titel: Klasse, Objekt, Eigenschaften und Methoden
+    inhalt: |
+      Eine **Klasse** ist ein **Bauplan**. Ein **Objekt** ist ein **Haus**, das nach diesem
+      Bauplan gebaut wurde. Aus einem Plan kannst du viele Häuser bauen.
+
+      ```php
+      class Lauf
+      {
+          public float $km = 0.0;
+          public int $minuten = 0;
+
+          public function tempo(): float
+          {
+              return $this->minuten / $this->km;
+          }
+      }
+
+      $lauf = new Lauf();
+      $lauf->km = 5.0;
+      $lauf->minuten = 30;
+      echo $lauf->tempo(); // 6
+      ```
+
+      - **Eigenschaften** (`$km`, `$minuten`) sind die Daten des Objekts.
+      - **Methoden** (`tempo()`) sind Funktionen, die zum Objekt gehören.
+      - `new Lauf()` baut ein neues Objekt.
+      - Mit dem Pfeil `->` greifst du auf Eigenschaften und Methoden zu.
+      - `$this` ist „dieses Objekt selbst“, innerhalb der Klasse.
+
+      *Eselsbrücke Python:* `$this` entspricht `self`, `->` entspricht dem Punkt.
+    quiz:
+      - frage: "Was ist der Unterschied zwischen Klasse und Objekt?"
+        erklaerung: "Die Klasse ist der Bauplan, das Objekt ein daraus gebautes Exemplar."
+        antworten:
+          - { text: "Die Klasse ist der Bauplan, das Objekt ein Exemplar davon.", richtig: true }
+          - { text: "Das Objekt ist der Bauplan, die Klasse das Exemplar.", richtig: false }
+          - { text: "Es gibt keinen Unterschied.", richtig: false }
+      - frage: "Wie erzeugst du ein Objekt der Klasse `Lauf`?"
+        erklaerung: "Mit dem Schlüsselwort `new`."
+        antworten:
+          - { text: "$lauf = new Lauf();", richtig: true }
+          - { text: "$lauf = Lauf();", richtig: false }
+          - { text: "$lauf = create Lauf;", richtig: false }
+      - frage: "Wie rufst du die Methode `tempo()` am Objekt `$lauf` auf?"
+        erklaerung: "Mit dem Pfeil `->`."
+        antworten:
+          - { text: "$lauf.tempo()", richtig: false }
+          - { text: "$lauf->tempo()", richtig: true }
+          - { text: "$lauf::tempo", richtig: false }
+  - titel: Konstruktor und Sichtbarkeit
+    inhalt: |
+      Ein **Konstruktor** ist eine besondere Methode, die beim Erzeugen eines Objekts
+      automatisch läuft. Er heißt immer `__construct`.
+
+      ```php
+      class Lauf
+      {
+          public function __construct(
+              private float $km,
+              private int $minuten,
+          ) {
+          }
+
+          public function tempo(): float
+          {
+              return $this->minuten / $this->km;
+          }
+      }
+
+      $lauf = new Lauf(5.0, 30);
+      ```
+
+      Die Kurzschreibweise (seit PHP 8.0) legt Eigenschaften direkt in der Parameterliste an.
+
+      **Sichtbarkeit** bestimmt, wer an eine Eigenschaft oder Methode darf:
+
+      - `public` – jeder, auch von außen
+      - `protected` – die Klasse selbst und ihre Kindklassen
+      - `private` – nur die Klasse selbst
+
+      Mache Eigenschaften möglichst `private`. Von außen kommt man dann nur über deine
+      Methoden heran. So kann niemand den Lauf versehentlich auf `-5` km setzen.
+
+      Mit `readonly` (seit PHP 8.1) kann eine Eigenschaft nach dem Setzen nicht mehr geändert werden:
+
+      ```php
+      public function __construct(public readonly float $km) {}
+      ```
+    quiz:
+      - frage: "Wie heißt der Konstruktor einer PHP-Klasse?"
+        erklaerung: "Er heißt immer `__construct`."
+        antworten:
+          - { text: "__construct", richtig: true }
+          - { text: "__init__", richtig: false }
+          - { text: "new", richtig: false }
+      - frage: "Wer darf auf eine `private` Eigenschaft zugreifen?"
+        erklaerung: "Nur die Klasse selbst."
+        antworten:
+          - { text: "jeder", richtig: false }
+          - { text: "nur die Klasse selbst", richtig: true }
+          - { text: "die Klasse und alle Kindklassen", richtig: false }
+      - frage: "Was bewirkt `readonly` bei einer Eigenschaft?"
+        erklaerung: "Der Wert kann nach dem Setzen nicht mehr geändert werden."
+        antworten:
+          - { text: "Der Wert kann nach dem Setzen nicht mehr geändert werden.", richtig: true }
+          - { text: "Die Eigenschaft ist nur lesbar, aber nie setzbar.", richtig: false }
+          - { text: "Die Eigenschaft wird beim Beenden gelöscht.", richtig: false }
+  - titel: Statische Mitglieder und Klassenkonstanten
+    inhalt: |
+      Manche Dinge gehören nicht zu einem einzelnen Objekt, sondern zur **Klasse selbst**.
+      Dafür gibt es `static` und Klassenkonstanten.
+
+      ```php
+      class Umrechner
+      {
+          public const METER_PRO_KM = 1000;
+
+          public static function kmZuMeter(float $km): float
+          {
+              return $km * self::METER_PRO_KM;
+          }
+      }
+
+      echo Umrechner::kmZuMeter(2.5);   // 2500
+      echo Umrechner::METER_PRO_KM;     // 1000
+      ```
+
+      - Den Zugriff schreibst du mit `::` (zwei Doppelpunkte), nicht mit `->`.
+      - Du brauchst **kein** Objekt (`new`), um sie zu nutzen.
+      - Innerhalb der Klasse sprichst du sie mit `self::` an.
+
+      **Wann nutzen?** Für Hilfsfunktionen ohne eigenen Zustand und für feste Werte, die zur
+      Klasse gehören. Wenn eine Methode Daten eines bestimmten Objekts braucht, bleibt sie normal.
+    quiz:
+      - frage: "Wie rufst du eine statische Methode `kmZuMeter` der Klasse `Umrechner` auf?"
+        erklaerung: "Statische Mitglieder erreichst du mit `Klasse::`."
+        antworten:
+          - { text: "Umrechner::kmZuMeter(2.5)", richtig: true }
+          - { text: "Umrechner->kmZuMeter(2.5)", richtig: false }
+          - { text: "new Umrechner.kmZuMeter(2.5)", richtig: false }
+      - frage: "Wie sprichst du innerhalb der Klasse eine Klassenkonstante an?"
+        erklaerung: "Mit `self::NAME`."
+        antworten:
+          - { text: "$this->NAME", richtig: false }
+          - { text: "self::NAME", richtig: true }
+          - { text: "NAME()", richtig: false }
+      - frage: "Brauchst du für eine statische Methode ein Objekt mit `new`?"
+        erklaerung: "Nein. Statische Methoden gehören zur Klasse und werden ohne Objekt aufgerufen."
+        antworten:
+          - { text: "Ja, immer.", richtig: false }
+          - { text: "Nein, sie gehört zur Klasse.", richtig: true }
+          - { text: "Nur bei private-Methoden.", richtig: false }
+  - titel: Vererbung
+    inhalt: |
+      Mit **Vererbung** übernimmt eine Klasse Eigenschaften und Methoden einer anderen.
+      Du schreibst `extends`.
+
+      ```php
+      class Aktivitaet
+      {
+          public function __construct(protected float $km)
+          {
+          }
+
+          public function beschreibung(): string
+          {
+              return "Aktivität über {$this->km} km";
+          }
+      }
+
+      class Lauf extends Aktivitaet
+      {
+          public function beschreibung(): string
+          {
+              return "Lauf über {$this->km} km";
+          }
+      }
+
+      echo (new Lauf(5.0))->beschreibung(); // Lauf über 5 km
+      ```
+
+      - `Lauf` ist ein **Kind** von `Aktivitaet` und erbt den Konstruktor.
+      - Die Methode `beschreibung()` wird **überschrieben**.
+      - Das Kind sieht `protected`-Eigenschaften des Elternteils.
+      - Mit `parent::beschreibung()` rufst du die Methode des Elternteils auf.
+
+      **Merke:** Vererbung sagt „ist ein“. Ein Lauf **ist eine** Aktivität. Nutze sie sparsam:
+      Meist reicht es, Objekte zusammenzusetzen (Komposition).
+
+      In PHP kann eine Klasse nur **eine** Elternklasse haben.
+    quiz:
+      - frage: "Mit welchem Schlüsselwort erbt eine Klasse von einer anderen?"
+        erklaerung: "Mit `extends`."
+        antworten:
+          - { text: "extends", richtig: true }
+          - { text: "inherits", richtig: false }
+          - { text: "implements", richtig: false }
+      - frage: "Wer darf auf eine `protected` Eigenschaft zugreifen?"
+        erklaerung: "Die Klasse selbst und ihre Kindklassen."
+        antworten:
+          - { text: "nur die Klasse selbst", richtig: false }
+          - { text: "die Klasse und ihre Kindklassen", richtig: true }
+          - { text: "jeder", richtig: false }
+      - frage: "Wie viele Elternklassen darf eine PHP-Klasse mit `extends` haben?"
+        erklaerung: "Genau eine. PHP kennt keine Mehrfachvererbung von Klassen."
+        antworten:
+          - { text: "beliebig viele", richtig: false }
+          - { text: "höchstens eine", richtig: true }
+          - { text: "mindestens zwei", richtig: false }
+  - titel: Interfaces
+    inhalt: |
+      Ein **Interface** ist ein Vertrag. Es legt fest, **welche Methoden** eine Klasse haben
+      muss, aber nicht, **wie** sie arbeiten.
+
+      ```php
+      interface Auswertbar
+      {
+          public function kilometer(): float;
+      }
+
+      class Lauf implements Auswertbar
+      {
+          public function __construct(private float $km)
+          {
+          }
+
+          public function kilometer(): float
+          {
+              return $this->km;
+          }
+      }
+      ```
+
+      - Die Klasse schreibt `implements` und muss **alle** Methoden des Interfaces umsetzen.
+      - Eine Klasse kann **mehrere** Interfaces umsetzen: `implements A, B`.
+      - Du kannst das Interface als Typ verwenden:
+
+      ```php
+      function gesamtKm(Auswertbar ...$aktivitaeten): float
+      {
+          $summe = 0.0;
+          foreach ($aktivitaeten as $a) {
+              $summe += $a->kilometer();
+          }
+          return $summe;
+      }
+      ```
+
+      Die Funktion funktioniert mit **jeder** Klasse, die den Vertrag erfüllt, egal ob Lauf,
+      Radtour oder Schwimmen.
+
+      **Bild:** Eine Steckdose ist ein Interface. Jedes Gerät mit passendem Stecker funktioniert.
+    quiz:
+      - frage: "Was legt ein Interface fest?"
+        erklaerung: "Welche Methoden eine Klasse haben muss, nicht wie sie umgesetzt werden."
+        antworten:
+          - { text: "Welche Methoden eine Klasse haben muss.", richtig: true }
+          - { text: "Den kompletten Code der Methoden.", richtig: false }
+          - { text: "Die Farben der Ausgabe.", richtig: false }
+      - frage: "Welches Schlüsselwort nutzt eine Klasse, um ein Interface umzusetzen?"
+        erklaerung: "Mit `implements`."
+        antworten:
+          - { text: "extends", richtig: false }
+          - { text: "implements", richtig: true }
+          - { text: "uses", richtig: false }
+      - frage: "Kann eine Klasse mehrere Interfaces umsetzen?"
+        erklaerung: "Ja, zum Beispiel `implements A, B`."
+        antworten:
+          - { text: "Ja", richtig: true }
+          - { text: "Nein, nur eines", richtig: false }
+          - { text: "Nur wenn sie keine Methoden hat", richtig: false }
+  - titel: Enums – feste Auswahlwerte
+    inhalt: |
+      Ein **Enum** (Aufzählung) ist ein Typ mit einer festen Liste erlaubter Werte. Seit PHP 8.1
+      gibt es sie fest in der Sprache.
+
+      ```php
+      enum Sportart: string
+      {
+          case Laufen = 'laufen';
+          case Radfahren = 'radfahren';
+          case Schwimmen = 'schwimmen';
+      }
+
+      $art = Sportart::Laufen;
+      echo $art->value;                     // laufen
+      $andere = Sportart::from('schwimmen'); // Sportart::Schwimmen
+      $keine = Sportart::tryFrom('yoga');    // null (statt Fehler)
+      ```
+
+      - `case` listet die erlaubten Werte auf.
+      - `: string` macht das Enum „backed“: Jeder Fall bekommt einen festen Textwert.
+      - `->value` liefert diesen Wert.
+      - `from()` erzeugt den Fall zum Wert, wirft aber einen Fehler bei unbekanntem Wert.
+        `tryFrom()` liefert dann `null`.
+
+      **Vorteil:** Statt irgendeinem Text wie `"laufen"` oder `"Laufen"` oder `"lauf"` im Code
+      zu verstreuen, gibt es genau drei erlaubte Werte. Tippfehler fallen sofort auf.
+
+      Als Typ nutzbar: `function neu(Sportart $art): void`.
+    quiz:
+      - frage: "Wofür ist ein Enum gut?"
+        erklaerung: "Für eine feste Liste erlaubter Werte, damit keine ungültigen Werte vorkommen."
+        antworten:
+          - { text: "für eine feste Liste erlaubter Werte", richtig: true }
+          - { text: "für sehr lange Texte", richtig: false }
+          - { text: "um Dateien zu lesen", richtig: false }
+      - frage: "Was liefert `Sportart::tryFrom('yoga')`, wenn es diesen Wert nicht gibt?"
+        erklaerung: "`tryFrom` gibt null zurück. `from` würde einen Fehler werfen."
+        antworten:
+          - { text: "null", richtig: true }
+          - { text: "einen Fehler", richtig: false }
+          - { text: "den ersten Fall", richtig: false }
+      - frage: "Wie liest du den Textwert eines Falls `$art` aus einem backed Enum?"
+        erklaerung: "Mit `$art->value`."
+        antworten:
+          - { text: "$art->value", richtig: true }
+          - { text: "$art.name()", richtig: false }
+          - { text: "value($art)", richtig: false }
+test:
+  zeitlimit_minuten: 25
+  fragen:
+    - frage: "Was ist `$this` innerhalb einer Methode?"
+      erklaerung: "`$this` verweist auf das Objekt, dessen Methode gerade läuft."
+      antworten:
+        - { text: "das aktuelle Objekt", richtig: true }
+        - { text: "die Elternklasse", richtig: false }
+        - { text: "die erste Variable der Klasse", richtig: false }
+    - frage: "Was passiert beim Ausführen von `new Lauf(5.0, 30)`?"
+      erklaerung: "Ein neues Objekt wird erzeugt und der Konstruktor `__construct` läuft automatisch mit den Argumenten."
+      antworten:
+        - { text: "Ein Objekt wird erzeugt und der Konstruktor läuft.", richtig: true }
+        - { text: "Die Klasse wird gelöscht.", richtig: false }
+        - { text: "Es wird nur ein Name reserviert.", richtig: false }
+    - frage: "Warum macht man Eigenschaften oft `private`?"
+      erklaerung: "So kann man sie nur über eigene Methoden ändern und ungültige Werte verhindern."
+      antworten:
+        - { text: "Damit ungültige Werte von außen verhindert werden können.", richtig: true }
+        - { text: "Damit der Code schneller läuft.", richtig: false }
+        - { text: "Weil public nicht erlaubt ist.", richtig: false }
+    - frage: "Wie greifst du auf eine Klassenkonstante `MAX` der Klasse `Regeln` von außen zu?"
+      erklaerung: "Mit `Klasse::KONSTANTE`."
+      antworten:
+        - { text: "Regeln::MAX", richtig: true }
+        - { text: "Regeln->MAX", richtig: false }
+        - { text: "$Regeln.MAX", richtig: false }
+    - frage: "Wie nennt man es, wenn eine Kindklasse eine Methode der Elternklasse neu schreibt?"
+      erklaerung: "Das heißt Überschreiben."
+      antworten:
+        - { text: "Überschreiben", richtig: true }
+        - { text: "Importieren", richtig: false }
+        - { text: "Kapseln", richtig: false }
+    - frage: "Was muss eine Klasse tun, die `implements Auswertbar` schreibt?"
+      erklaerung: "Sie muss alle Methoden des Interfaces umsetzen."
+      antworten:
+        - { text: "Alle Methoden des Interfaces umsetzen.", richtig: true }
+        - { text: "Nichts, es ist nur ein Kommentar.", richtig: false }
+        - { text: "Das Interface in eine Variable speichern.", richtig: false }
+    - frage: "Was ist der Unterschied zwischen `extends` und `implements`?"
+      erklaerung: "`extends` erbt von einer Klasse (höchstens eine), `implements` setzt ein Interface um (beliebig viele)."
+      antworten:
+        - { text: "extends erbt von einer Klasse, implements setzt ein Interface um.", richtig: true }
+        - { text: "Beides ist dasselbe.", richtig: false }
+        - { text: "extends gilt nur für Funktionen.", richtig: false }
+    - frage: "Welchen Vorteil hat ein Enum gegenüber losen Texten wie 'laufen'?"
+      erklaerung: "Nur die definierten Fälle sind erlaubt, Tippfehler fallen sofort auf."
+      antworten:
+        - { text: "Nur definierte Werte sind erlaubt.", richtig: true }
+        - { text: "Enums sind immer Zahlen.", richtig: false }
+        - { text: "Enums brauchen keine Typen.", richtig: false }

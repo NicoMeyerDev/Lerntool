@@ -1,0 +1,35 @@
+titel: PHP-Basics
+beschreibung: Die Grundlagen von PHP von Grund auf. Danach kannst du kleine PHP-Programme lesen und selbst schreiben.
+projekt:
+  titel: Trainingslog auf der Kommandozeile
+  beschreibung: |
+    Du baust ein kleines PHP-Programm, das Läufe auswertet. Es ist der erste Schritt zur
+    späteren Garmin-Auswertung.
+
+    **Aufgabe:** Lege in deinem Skript eine feste Liste von Läufen an. Jeder Lauf hat ein
+    Datum, eine Distanz in Kilometern und eine Dauer in Minuten. Das Programm gibt aus:
+
+    - die Gesamtdistanz,
+    - das Durchschnittstempo in Minuten pro Kilometer,
+    - den längsten Lauf.
+
+    **Regeln:**
+
+    - Jeder Lauf ist ein Objekt einer Klasse `Lauf` mit Namespace.
+    - Eine Klasse `Trainingslog` hält die Läufe und rechnet.
+    - Die Klassen werden per Composer-Autoloading (PSR-4) geladen.
+    - Ungültige Werte (Distanz kleiner oder gleich 0) lösen eine eigene Exception aus,
+      die im Hauptskript abgefangen und gemeldet wird.
+    - Alle Funktionen haben Typdeklarationen.
+
+    **Tipp:** Arbeite in kleinen Schritten. Zuerst nur ein Lauf, dann eine Liste, dann die Klassen.
+    Quelle: [PHP-Handbuch](https://www.php.net/manual/en/) und [Composer](https://getcomposer.org/doc/01-basic-usage.md).
+  punkte:
+    - Ein Ordner mit `composer.json` ist angelegt und `composer install` läuft ohne Fehler.
+    - Die Klasse `Lauf` hat Datum, Distanz und Dauer als typisierte Eigenschaften.
+    - Eine eigene Exception-Klasse verhindert ungültige Läufe (Distanz größer als 0).
+    - Die Klasse `Trainingslog` berechnet Gesamtdistanz, Durchschnittstempo und längsten Lauf.
+    - Die Klassen liegen in einem Namespace und werden per PSR-4 automatisch geladen.
+    - Das Hauptskript gibt die Auswertung lesbar aus und fängt die Exception mit try/catch ab.
+    - Alle Funktionen und Methoden haben Parameter- und Rückgabetypen.
+    - Das Programm läuft mit `php index.php` und liefert für eigene Beispieldaten richtige Zahlen.

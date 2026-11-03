@@ -1,0 +1,282 @@
+titel: Operatoren und Kontrollstrukturen
+zusammenfassung: Rechnen, Vergleichen, Entscheiden mit if und match, Wiederholen mit Schleifen.
+quellen:
+  - titel: PHP-Handbuch – Operators
+    url: https://www.php.net/manual/en/language.operators.php
+  - titel: PHP-Handbuch – Control structures
+    url: https://www.php.net/manual/en/language.control-structures.php
+  - titel: PHP-Handbuch – match
+    url: https://www.php.net/manual/en/control-structures.match.php
+abschnitte:
+  - titel: Operatoren – rechnen, vergleichen, verknüpfen
+    inhalt: |
+      **Operatoren** sind kleine Zeichen, die etwas mit Werten tun.
+
+      **Rechnen:**
+
+      ```php
+      $a = 7;
+      echo $a + 2;   // 9
+      echo $a - 2;   // 5
+      echo $a * 2;   // 14
+      echo $a / 2;   // 3.5
+      echo $a % 2;   // 1  (Rest der Division)
+      echo $a ** 2;  // 49 (hoch 2)
+      ```
+
+      **Kurzformen** sparen Tipparbeit:
+
+      ```php
+      $summe = 0;
+      $summe += 5;   // wie $summe = $summe + 5
+      $summe++;      // um 1 erhöhen
+      $text = "Hallo";
+      $text .= " Welt";  // Text anhängen
+      ```
+
+      **Vergleichen** liefert `true` oder `false`: `<`, `>`, `<=`, `>=`, `===`, `!==`.
+
+      **Verknüpfen** von Bedingungen:
+
+      - `&&` – und (beide müssen stimmen)
+      - `||` – oder (eines genügt)
+      - `!` – nicht (dreht um)
+
+      *Eselsbrücke Python:* Dort heißen sie `and`, `or`, `not`. In PHP nimmst du `&&`, `||`, `!`.
+    quiz:
+      - frage: "Was liefert `7 % 2`?"
+        erklaerung: "`%` ist der Rest einer Division. 7 geteilt durch 2 ist 3 Rest 1."
+        antworten:
+          - { text: "3", richtig: false }
+          - { text: "1", richtig: true }
+          - { text: "3.5", richtig: false }
+      - frage: "Was bewirkt `$summe += 5;`?"
+        erklaerung: "`+=` addiert den Wert zur Variablen dazu. Es ist die Kurzform von `$summe = $summe + 5;`."
+        antworten:
+          - { text: "Es addiert 5 zu $summe.", richtig: true }
+          - { text: "Es setzt $summe auf 5.", richtig: false }
+          - { text: "Es vergleicht $summe mit 5.", richtig: false }
+      - frage: "Welcher Ausdruck ist nur wahr, wenn BEIDE Bedingungen stimmen?"
+        erklaerung: "`&&` bedeutet „und“: beide Seiten müssen true sein."
+        antworten:
+          - { text: "$a > 1 || $b > 1", richtig: false }
+          - { text: "$a > 1 && $b > 1", richtig: true }
+          - { text: "!($a > 1)", richtig: false }
+  - titel: Verzweigen mit if, else und match
+    inhalt: |
+      Mit `if` entscheidet dein Programm, welchen Weg es nimmt.
+
+      ```php
+      $punkte = 85;
+
+      if ($punkte >= 90) {
+          echo "Sehr gut";
+      } elseif ($punkte >= 50) {
+          echo "Bestanden";
+      } else {
+          echo "Nochmal üben";
+      }
+      ```
+
+      PHP prüft von oben nach unten. Der **erste** Block, dessen Bedingung stimmt, läuft.
+      Danach springt PHP hinter das Ganze.
+
+      **match** (seit PHP 8.0) wählt anhand eines Werts und gibt gleich ein Ergebnis zurück:
+
+      ```php
+      $tag = 3;
+
+      $name = match ($tag) {
+          1 => "Montag",
+          2 => "Dienstag",
+          3 => "Mittwoch",
+          default => "unbekannt",
+      };
+      ```
+
+      `match` vergleicht mit `===`, also streng. Gibt es keinen Treffer und kein `default`,
+      wirft PHP einen Fehler (`UnhandledMatchError`).
+
+      **Kurzform für zwei Fälle:**
+
+      ```php
+      $text = $punkte >= 50 ? "bestanden" : "durchgefallen";
+      $name = $eingabe ?? "Gast";  // $eingabe, falls vorhanden und nicht null, sonst "Gast"
+      ```
+    quiz:
+      - frage: "Was gibt der Code aus, wenn `$punkte = 60` ist (siehe Beispiel mit if/elseif/else)?"
+        erklaerung: "60 ist nicht >= 90, aber >= 50. Der zweite Block läuft, also „Bestanden“."
+        antworten:
+          - { text: "Sehr gut", richtig: false }
+          - { text: "Bestanden", richtig: true }
+          - { text: "Nochmal üben", richtig: false }
+      - frage: "Was passiert bei `match`, wenn kein Fall passt und es kein `default` gibt?"
+        erklaerung: "PHP wirft einen `UnhandledMatchError`. Deshalb ist ein `default` meist sinnvoll."
+        antworten:
+          - { text: "match gibt null zurück.", richtig: false }
+          - { text: "PHP wirft einen Fehler.", richtig: true }
+          - { text: "Der erste Fall wird genommen.", richtig: false }
+      - frage: "Was liefert `$name = $eingabe ?? 'Gast';`, wenn `$eingabe` den Wert `null` hat?"
+        erklaerung: "Der Operator `??` nimmt den rechten Wert, wenn links null ist oder die Variable nicht existiert."
+        antworten:
+          - { text: "null", richtig: false }
+          - { text: "einen Fehler", richtig: false }
+          - { text: "Gast", richtig: true }
+  - titel: Schleifen – etwas wiederholen
+    inhalt: |
+      Eine **Schleife** wiederholt Code. Du schreibst ihn einmal, PHP führt ihn mehrfach aus.
+
+      **for** – wenn du die Anzahl kennst:
+
+      ```php
+      for ($i = 1; $i <= 3; $i++) {
+          echo "Runde $i\n";
+      }
+      ```
+
+      Die drei Teile in der Klammer: Start (`$i = 1`), Bedingung (`$i <= 3`), Schritt (`$i++`).
+
+      **while** – solange eine Bedingung stimmt:
+
+      ```php
+      $zaehler = 3;
+      while ($zaehler > 0) {
+          echo $zaehler . "\n";
+          $zaehler--;
+      }
+      ```
+
+      Achtung: Wird die Bedingung nie falsch, läuft die Schleife ewig (Endlosschleife).
+      Verändere deshalb in der Schleife immer etwas, das irgendwann die Bedingung beendet.
+
+      **foreach** läuft über die Elemente eines Arrays (mehr dazu im Themenfeld Arrays):
+
+      ```php
+      foreach ([10, 20, 30] as $zahl) {
+          echo $zahl . "\n";
+      }
+      ```
+    quiz:
+      - frage: "Wie oft läuft `for ($i = 1; $i <= 3; $i++)`?"
+        erklaerung: "$i ist nacheinander 1, 2 und 3. Bei 4 ist die Bedingung falsch. Das sind drei Durchläufe."
+        antworten:
+          - { text: "2-mal", richtig: false }
+          - { text: "3-mal", richtig: true }
+          - { text: "4-mal", richtig: false }
+      - frage: "Was ist die Gefahr bei einer while-Schleife?"
+        erklaerung: "Wenn sich die Bedingung nie ändert, läuft die Schleife endlos."
+        antworten:
+          - { text: "Sie funktioniert nur mit Zahlen.", richtig: false }
+          - { text: "Sie kann endlos laufen, wenn die Bedingung nie falsch wird.", richtig: true }
+          - { text: "Sie läuft immer genau einmal.", richtig: false }
+      - frage: "Wofür eignet sich `foreach` am besten?"
+        erklaerung: "`foreach` geht jedes Element eines Arrays der Reihe nach durch."
+        antworten:
+          - { text: "um die Elemente eines Arrays nacheinander durchzugehen", richtig: true }
+          - { text: "um eine Datei zu löschen", richtig: false }
+          - { text: "um zwei Texte zu vergleichen", richtig: false }
+  - titel: break und continue
+    inhalt: |
+      Manchmal soll eine Schleife früher enden oder einen Durchlauf überspringen.
+
+      - **break** beendet die Schleife sofort.
+      - **continue** springt zum nächsten Durchlauf.
+
+      ```php
+      for ($i = 1; $i <= 5; $i++) {
+          if ($i === 2) {
+              continue;   // 2 überspringen
+          }
+          if ($i === 4) {
+              break;      // bei 4 aufhören
+          }
+          echo $i . "\n"; // gibt 1 und 3 aus
+      }
+      ```
+
+      **Bild:** Eine Laufstrecke mit fünf Stationen. `continue` heißt: diese Station auslassen.
+      `break` heißt: Lauf abbrechen und nach Hause gehen.
+
+      **Typisches Muster:** Schleife plus Bedingung. Zum Beispiel alle Läufe durchgehen und nur
+      die zählen, die länger als 5 km sind:
+
+      ```php
+      $zaehler = 0;
+      foreach ([3, 8, 5, 12] as $km) {
+          if ($km <= 5) {
+              continue;
+          }
+          $zaehler++;
+      }
+      echo $zaehler; // 2
+      ```
+    quiz:
+      - frage: "Was macht `break` in einer Schleife?"
+        erklaerung: "`break` beendet die gesamte Schleife sofort."
+        antworten:
+          - { text: "Es überspringt nur den aktuellen Durchlauf.", richtig: false }
+          - { text: "Es beendet die Schleife sofort.", richtig: true }
+          - { text: "Es startet die Schleife neu.", richtig: false }
+      - frage: "Was macht `continue`?"
+        erklaerung: "`continue` springt direkt zum nächsten Durchlauf, der Rest des aktuellen Durchlaufs wird ausgelassen."
+        antworten:
+          - { text: "Es beendet das ganze Programm.", richtig: false }
+          - { text: "Es springt zum nächsten Durchlauf der Schleife.", richtig: true }
+          - { text: "Es wiederholt denselben Durchlauf.", richtig: false }
+      - frage: "Welche Zahlen gibt die Beispielschleife mit `continue` bei 2 und `break` bei 4 aus?"
+        erklaerung: "Die 2 wird übersprungen, bei 4 endet die Schleife. Ausgegeben werden 1 und 3."
+        antworten:
+          - { text: "1, 2, 3", richtig: false }
+          - { text: "1 und 3", richtig: true }
+          - { text: "1, 3, 5", richtig: false }
+test:
+  zeitlimit_minuten: 20
+  fragen:
+    - frage: "Was liefert `2 ** 3`?"
+      erklaerung: "`**` ist „hoch“. 2 hoch 3 ist 8."
+      antworten:
+        - { text: "6", richtig: false }
+        - { text: "8", richtig: true }
+        - { text: "5", richtig: false }
+    - frage: "Welcher Operator hängt einen Text an eine Variable an?"
+      erklaerung: "`.=` hängt den rechten Text an den bestehenden Text an."
+      antworten:
+        - { text: "+=", richtig: false }
+        - { text: ".=", richtig: true }
+        - { text: "&=", richtig: false }
+    - frage: "Welcher Ausdruck ist wahr, wenn mindestens eine der Bedingungen stimmt?"
+      erklaerung: "`||` bedeutet „oder“. Es genügt, wenn eine Seite true ist."
+      antworten:
+        - { text: "$a > 0 && $b > 0", richtig: false }
+        - { text: "$a > 0 || $b > 0", richtig: true }
+        - { text: "!$a", richtig: false }
+    - frage: "Was passiert bei einer if/elseif/else-Kette, wenn zwei Bedingungen gleichzeitig stimmen?"
+      erklaerung: "PHP führt nur den ersten passenden Block aus und überspringt den Rest der Kette."
+      antworten:
+        - { text: "Beide Blöcke laufen.", richtig: false }
+        - { text: "Nur der erste passende Block läuft.", richtig: true }
+        - { text: "PHP meldet einen Fehler.", richtig: false }
+    - frage: "Was gibt `match (2) { 1 => 'a', 2 => 'b', default => 'c' }` zurück?"
+      erklaerung: "Der Wert 2 passt zum zweiten Fall, also kommt „b“ zurück."
+      antworten:
+        - { text: "a", richtig: false }
+        - { text: "b", richtig: true }
+        - { text: "c", richtig: false }
+    - frage: "Welche Schleife wählst du, wenn du die Anzahl der Durchläufe vorher kennst?"
+      erklaerung: "Die `for`-Schleife hat Start, Bedingung und Schritt in einer Zeile, ideal für feste Anzahlen."
+      antworten:
+        - { text: "for", richtig: true }
+        - { text: "match", richtig: false }
+        - { text: "continue", richtig: false }
+    - frage: "Wie viele Zahlen gibt `for ($i = 0; $i < 3; $i++) { echo $i; }` aus?"
+      erklaerung: "$i ist 0, 1 und 2. Bei 3 ist `$i < 3` falsch. Das sind drei Ausgaben."
+      antworten:
+        - { text: "2", richtig: false }
+        - { text: "3", richtig: true }
+        - { text: "4", richtig: false }
+    - frage: "Du willst in einer Schleife einen Durchlauf auslassen, die Schleife aber fortsetzen. Was nutzt du?"
+      erklaerung: "`continue` überspringt den aktuellen Durchlauf. `break` würde die ganze Schleife beenden."
+      antworten:
+        - { text: "break", richtig: false }
+        - { text: "continue", richtig: true }
+        - { text: "else", richtig: false }
