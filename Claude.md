@@ -35,6 +35,7 @@ Diese Datei steuert Claude Code in diesem Projekt. Jede Sitzung hält sich strik
 *   Erklärstil: kurz, bildlich, einfache Sprache, mit Beispielen. Grundlagen verstehen und sicher anwenden.
 *   Ablauf: Quiz nach jedem Abschnitt, Test (max. 30 Min.) nach jedem Themenfeld, kleines Projekt nach einem Themenblock, kurze Auswertung.
 *   Quizfragen eindeutig, richtige Antwort belegbar.
+*   Lies vor jeder Arbeit an Lerninhalten `/docs/LERNPLAN.md`. Sie legt Themen, Reihenfolge, Lernstil und Ausgangsstand fest. Weiche nicht davon ab, ohne es in `/docs/ENTSCHEIDUNGEN.md` zu begründen.
 
 ## 6. Agenten-Team & Ablauf
 *   **Hauptsession = Orchestrator und Builder.** Sie schreibt den Code und ruft die Subagenten ausdrücklich beim Namen auf.
