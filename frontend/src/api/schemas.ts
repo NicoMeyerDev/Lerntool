@@ -118,3 +118,36 @@ export const fortschrittSchema = z.object({
 })
 export type Fortschritt = z.infer<typeof fortschrittSchema>
 export const fortschrittListeSchema = z.array(fortschrittSchema)
+
+/** Test zum Beantworten (ohne Lösung) mit Zeitlimit. */
+export const testSchema = z.object({
+  id: z.number(),
+  lektion: z.number(),
+  zeitlimit_minuten: z.number(),
+  fragen: quizSchema.shape.fragen,
+})
+export type TestAufgabe = z.infer<typeof testSchema>
+
+/** Antwort auf `POST /api/tests/<id>/start/`: Restzeit laut Server. */
+export const testStartSchema = z.object({
+  versuch_id: z.number(),
+  gestartet_am: z.string(),
+  endet_am: z.string(),
+  sekunden_rest: z.number(),
+})
+export type TestStart = z.infer<typeof testStartSchema>
+
+/** Projektaufgabe mit Checkliste und Stand des Nutzers. */
+export const projektSchema = z.object({
+  id: z.number(),
+  phase: z.number(),
+  titel: z.string(),
+  beschreibung: z.string(),
+  punkte: z.array(
+    z.object({ id: z.number(), text: z.string(), reihenfolge: z.number(), erledigt: z.boolean() }),
+  ),
+  erledigt: z.number(),
+  gesamt: z.number(),
+  abgeschlossen: z.boolean(),
+})
+export type Projekt = z.infer<typeof projektSchema>

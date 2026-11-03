@@ -59,9 +59,18 @@ export function ThemaSeite() {
             ))}
           </ol>
           {phase.projektaufgaben.length > 0 && (
-            <p className="mt-3 text-sm text-text-muted">
-              Projekt: {phase.projektaufgaben.map((projekt) => projekt.titel).join(', ')}
-            </p>
+            <ul aria-label="Projekte" className="mt-3 space-y-2">
+              {phase.projektaufgaben.map((projekt) => (
+                <li key={projekt.id}>
+                  <Link
+                    to={`/projekte/${String(projekt.id)}`}
+                    className="flex min-h-12 items-center rounded-lg border border-accent-violet/50 bg-surface px-4 py-3 hover:border-accent-violet"
+                  >
+                    <span className="font-semibold">Projekt: {projekt.titel}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
           )}
         </section>
       ))}

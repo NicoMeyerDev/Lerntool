@@ -59,7 +59,7 @@ export const ABGEMELDET_EREIGNIS = 'lerntool:abgemeldet'
 /** Optionen für {@link apiAnfrage}. */
 export interface AnfrageOptionen {
   /** HTTP-Methode, Standard `GET`. */
-  method?: 'GET' | 'POST'
+  method?: 'GET' | 'POST' | 'PUT'
   /** Inhalt, der als JSON gesendet wird. */
   body?: unknown
 }

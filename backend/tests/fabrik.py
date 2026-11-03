@@ -41,21 +41,22 @@ def baue_inhalte() -> Inhalte:
 
 
 def baue_frage(
-    quiz: m.Quiz, reihenfolge: int, richtig_an_position: int | None = 1
+    quiz: m.Quiz | m.Test, reihenfolge: int, richtig_an_position: int | None = 1
 ) -> tuple[m.Frage, list[m.Antwort]]:
     """Legt eine Frage mit drei Antworten an.
 
     Args:
-        quiz: Das Quiz, zu dem die Frage gehört.
-        reihenfolge: Position der Frage im Quiz.
+        quiz: Das Quiz oder der Test, zu dem die Frage gehört.
+        reihenfolge: Position der Frage.
         richtig_an_position: Position (1–3) der richtigen Antwort oder None für
             eine fehlerhafte Frage ohne richtige Antwort.
 
     Returns:
         Die Frage und ihre Antworten in Reihenfolge.
     """
+    zuordnung = {"test": quiz} if isinstance(quiz, m.Test) else {"quiz": quiz}
     frage = m.Frage.objects.create(
-        quiz=quiz,
+        **zuordnung,
         text=f"Frage {reihenfolge}",
         erklaerung="Weil es so ist.",
         reihenfolge=reihenfolge,

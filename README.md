@@ -227,6 +227,11 @@ Alle Endpunkte außer `health` und `login` brauchen den Header `Authorization: T
 | `GET /api/lektionen/<id>/` | Lektion mit Abschnitten, Quellen, Quiz- und Test-ID |
 | `GET /api/quizze/<id>/` | Fragen und Antworten **ohne** Lösung |
 | `POST /api/quizze/<id>/abgabe/` | `{"antworten": [{"frage": id, "antwort": id}]}` → Auswertung, speichert Bestwert |
+| `GET /api/tests/<id>/` | Testfragen **ohne** Lösung und Zeitlimit |
+| `POST /api/tests/<id>/start/` | startet die Uhr (serverseitig), liefert die Restzeit |
+| `POST /api/tests/<id>/abgabe/` | `{"antworten": [...]}` → Auswertung, Bestwert; `409` bei abgelaufener Zeit (30 s Kulanz) oder ohne gestarteten Versuch |
+| `GET /api/projekte/<id>/` | Projektaufgabe, Checkliste und eigener Stand |
+| `PUT /api/projekte/<id>/punkte/<punkt_id>/` | `{"erledigt": true}` hakt einen Checklistenpunkt ab oder zurück |
 | `POST /api/abschnitte/<id>/gelesen/` | Abschnitt als gelesen markieren |
 | `GET /api/fortschritt/` | eigener Fortschritt |
 
@@ -280,14 +285,15 @@ backend/
   .env.example     Vorlage für backend/.env
 frontend/
   src/main.tsx     Einstiegspunkt
-  src/App.tsx      Routen (Login, Start, Thema, Lektion)
+  src/App.tsx      Routen (Login, Start, Thema, Lektion, Test, Projekt)
   src/index.css    Design-Tokens und Grundstile
   src/api/         API-Aufrufe ans Backend: client.ts (fetch mit Token),
                    schemas.ts (zod-Prüfung der Antworten), lernen.ts (Query-Hooks)
   src/auth/        Token-Speicher und Anmelde-Kontext (AuthProvider)
-  src/pages/       Seiten: LoginSeite, StartSeite, ThemaSeite, LektionSeite
-  src/components/  React-Komponenten (Layout, Markdown, QuizAnsicht, Fortschrittsbalken)
-  src/lib/         kleine Hilfsfunktionen: Abschnittsnummer, Ladefehler-Text, URL-Prüfung
+  src/pages/       Seiten: LoginSeite, StartSeite, ThemaSeite, LektionSeite, TestSeite, ProjektSeite
+  src/components/  React-Komponenten (Layout, Markdown, QuizAnsicht, FragenListe, Fortschrittsbalken)
+  src/lib/         kleine Hilfsfunktionen: Abschnittsnummer, Ladefehler-Text, URL-Prüfung,
+                   zeit.ts (Zeitformat), useCountdown.ts (Test-Uhr)
   src/test/        Test-Setup (Vitest)
   public/          statische Dateien, PWA-Icon
   vite.config.ts   Vite, Proxy, PWA, Tests
