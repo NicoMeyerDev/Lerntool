@@ -35,3 +35,22 @@ Format: Datum – Entscheidung – Grund – Alternativen.
 - **PostgreSQL unter Windows: EDB-Installer mit pgAdmin als Hauptweg, Docker Desktop als Alternative** – kein WSL/Docker nötig, Benutzer und Datenbank per SQL im pgAdmin-Query-Tool. Benutzer bekommt `CREATEDB`, weil pytest eine Test-Datenbank anlegt.
 - **`.gitattributes` mit `* text=auto eol=lf`** – Git für Windows wandelt sonst beim Auschecken in CRLF um, und `npm run format:check` (Prettier erwartet LF) schlägt fehl. Bestehende Dateien sind bereits LF, nichts ändert sich. Alternative: Prettier `endOfLine: auto` (löst das Problem nur für Prettier).
 - **Geprüft:** Linux-Kurzfassung in einem frischen Klon nachgestellt (migrate, check, 18 Backend- und 15 Frontend-Tests grün). Die Windows-Schritte sind gegen die offizielle Doku (docs.python.org, postgresql.org) geprüft, aber nicht auf einem Windows-Rechner ausprobiert.
+
+## 2026-11-03 – B1 Datenmodell
+
+- **Neue App `lernen`** für alle Lerninhalte und den Fortschritt; `core` bleibt für technische Endpunkte. Alternative: eine App je Bereich (Inhalte, Quiz, Fortschritt) – für den Umfang zu kleinteilig.
+- **Hierarchie: Thema → Phase → Lektion → Abschnitt.** Eine Lektion entspricht einem *Themenfeld* aus CLAUDE.md Abschnitt 5 (z. B. „Arrays“ in Phase 1 PHP-Basics). Alternative: eigenes Modell „Themenfeld“ zwischen Phase und Lektion – zusätzliche Ebene ohne Bedarf.
+- **Quiz 1:1 Abschnitt, Test 1:1 Lektion, Projektaufgabe n:1 Phase** – bildet „Quiz nach jedem Abschnitt, Test nach jedem Themenfeld, Projekt je Phase“ (CLAUDE.md §5, Backlog C1) direkt ab.
+- **Zusätzliches Modell `Quelle` (Titel, URL) je Lektion** – CLAUDE.md §5 verlangt Quellenangaben mit Link in jeder Lektion; als eigene Tabelle prüfbar und mehrfach möglich. Alternative: Freitext-Feld (nicht prüfbar).
+- **`Frage` gehört über zwei optionale Fremdschlüssel zu genau einem Quiz *oder* Test** (CheckConstraint). Alternative: generische Relation (ContentType) – schwerer zu prüfen und abzufragen.
+- **Antworten: höchstens eine richtige je Frage per Datenbank-Regel** (bedingter UniqueConstraint), weil Quizfragen eindeutig sein müssen. „Mindestens eine richtige“ lässt sich nicht als einfache Datenbank-Regel ausdrücken; das prüft später der Import der Inhalte (C-Aufgaben). Nur Einfachauswahl; weitere Fragetypen bei Bedarf.
+- **Test-Zeitlimit 1–30 Minuten**, Standard 30, als Validator und CheckConstraint.
+- **`Fortschritt` als eine Tabelle mit vier optionalen Zielen (Abschnitt, Quiz, Test, Projektaufgabe)**, genau eines gesetzt, ein Eintrag je Nutzer und Ziel, Punkte nur mit Maximum. Verweist auf Djangos Standard-Nutzer (`AUTH_USER_MODEL`), damit B2 („einfacher Zugang für einen Nutzer“) und später mehrere Nutzer ohne Umbau möglich sind. Alternative: je Ziel eine eigene Fortschrittstabelle (vier fast gleiche Modelle). Einzelne Versuche (Historie) sind nicht Teil von B1.
+- **Datenbank-Regeln NULL-sicher formulieren:** SQL-CHECKs gelten bei NULL als erfüllt; deshalb prüft `fortschritt_punkte_gueltig` `max_punkte` ausdrücklich auf NOT NULL (durch einen Test aufgefallen).
+- **Eindeutigkeit mit optionalen Feldern:** Bei `Frage` (Quiz/Test) und `Fortschritt` (vier Ziele) greifen die UniqueConstraints nur, wenn das Feld gesetzt ist – PostgreSQL behandelt NULL-Werte als verschieden. Das ist gewollt (z. B. Position 1 im Quiz und im Test zugleich) und getestet.
+- **Nicht per Datenbank erzwingbar, sondern beim Import der Inhalte (C-Aufgaben) zu prüfen:** jede Lektion hat mindestens eine Quelle, jede Frage genau eine richtige Antwort.
+- **Mehrere Projektaufgaben je Phase erlaubt** (C1 nennt „ein Projekt“) – kein Mehraufwand und kein Umbau nötig, falls eine Phase zwei kleine Projekte braucht.
+- **URL-Prüfung der Quellen nur per Validierung (`full_clean`), nicht in der Datenbank** – Import (C) und API (B2) müssen vor dem Speichern validieren. Offen für B2: wann gilt ein Abschnitt als erledigt (gelesen oder Quiz bestanden)?
+- **Inhalt von Abschnitten und Projektaufgaben als Markdown-Text.** Darstellung folgt in B3.
+- **Migrationen sind von den Docstring-Regeln (ruff `D`, `E501`) ausgenommen** – von Django erzeugter Code.
+- **Kein Django-Admin** (siehe A1). Inhalte kommen in den C-Aufgaben per Import.

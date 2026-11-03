@@ -241,6 +241,7 @@ npm run dev                   # http://localhost:5173
 backend/
   config/          Django-Konfiguration: settings.py, env.py (Umgebungsvariablen), urls.py
   core/            Health-Endpunkt (Views, Services, URLs)
+  lernen/          Lerninhalte und Fortschritt: Modelle, Migrationen
   tests/           pytest-Tests
   manage.py        Django-Verwaltungsbefehle
   requirements.txt Python-Abhängigkeiten
