@@ -27,7 +27,7 @@ abschnitte:
       echo intdiv(10, 0); // wirft DivisionByZeroError
       ```
 
-      Fängt niemand die Exception, bricht das Programm mit einer Fehlermeldung ab.
+      Fängt niemand die Exception (oder den Error), bricht das Programm mit einer Fehlermeldung ab.
 
       **Warnungen** (zum Beispiel „Undefined array key“) sind etwas anderes: Das Programm läuft
       weiter, PHP gibt nur einen Hinweis aus.
