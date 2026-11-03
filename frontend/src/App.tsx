@@ -1,23 +1,45 @@
 /**
- * Startseite der Lern-App.
+ * Wurzelkomponente: Routen der App.
  */
-import { HealthStatus } from './components/HealthStatus'
+import { Link, Route, Routes } from 'react-router'
+
+import { GeschuetzterBereich } from './components/Layout'
+import { LektionSeite } from './pages/LektionSeite'
+import { LoginSeite } from './pages/LoginSeite'
+import { StartSeite } from './pages/StartSeite'
+import { ThemaSeite } from './pages/ThemaSeite'
 
 /**
- * Wurzelkomponente: Kopfbereich und Systemstatus.
+ * Seite für unbekannte Adressen.
  *
- * @returns Die Startseite.
+ * @returns Hinweis mit Link zur Startseite.
+ */
+function NichtGefunden() {
+  return (
+    <main className="mx-auto max-w-3xl px-4 py-10">
+      <h1 className="text-2xl font-bold">Seite nicht gefunden</h1>
+      <Link to="/" className="mt-4 inline-block text-accent-cyan underline">
+        Zur Startseite
+      </Link>
+    </main>
+  )
+}
+
+/**
+ * Legt fest, welche Seite zu welcher Adresse gehört. Alles außer `/login` braucht Anmeldung.
+ *
+ * @returns Die Routen.
  */
 export default function App() {
   return (
-    <main className="mx-auto flex max-w-2xl flex-col gap-6 px-4 py-10">
-      <header>
-        <h1 className="bg-linear-to-r from-accent-cyan to-accent-violet bg-clip-text text-4xl font-extrabold text-transparent">
-          Lerntool
-        </h1>
-        <p className="mt-2 text-text-muted">Deine persönliche Lern-App.</p>
-      </header>
-      <HealthStatus />
-    </main>
+    <Routes>
+      <Route path="/login" element={<LoginSeite />} />
+      <Route element={<GeschuetzterBereich />}>
+        <Route index element={<StartSeite />} />
+        <Route path="themen/:slug" element={<ThemaSeite />} />
+        <Route path="lektionen/:id" element={<LektionSeite />} />
+      </Route>
+      <Route path="*" element={<NichtGefunden />} />
+    </Routes>
   )
 }
