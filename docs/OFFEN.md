@@ -2,6 +2,13 @@
 
 Punkte, die eine Entscheidung oder Aktion des Nutzers brauchen.
 
+## 2026-11-03 – Git-Schutz-Hook blockiert zu viel („main“ irgendwo im Befehl)
+
+- **Problem:** `.claude/hooks/git_schutz.py` blockiert jeden Bash-Befehl, der `git push` enthält und irgendwo das Wort `main` – auch wenn gar nicht auf `main` gepusht wird. Beispiel: `git push -u origin feature/x && gh pr create --base main` wird komplett abgelehnt. Ursache: Die Prüfung `\b(main|master)\b` läuft über den ganzen Befehl statt nur über den Push-Teil.
+- **Folge:** Kein Sicherheitsrisiko (es wird eher zu viel blockiert), aber Agenten müssen Befehle aufteilen oder `--base main` weglassen.
+- **Warum nicht selbst behoben:** Betrifft eine Sicherheitseinstellung (CLAUDE.md Abschnitt 7).
+- **Vorschlag:** Den Befehl an `&&`, `||`, `;` und `|` in Teilbefehle zerlegen und `main`/`master` nur im Teilbefehl mit `git push` prüfen. Dazu Tests für den Hook ergänzen (z. B. „Push auf Feature-Branch + `--base main`“ erlaubt, `git push origin main` und `git push origin HEAD:main` blockiert).
+
 ## Erledigt
 
 ### 2026-11-03 – Git-Schutz-Hook lief auf diesem Rechner nicht
