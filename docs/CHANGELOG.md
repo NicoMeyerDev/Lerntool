@@ -2,6 +2,7 @@
 
 ## 2026-11-03
 
+- B2 API: Token-Login mit Bremse gegen Durchprobieren, Inhalte lesen (Quiz ohne Lösung), Quiz-Abgabe mit Auswertung und Bestwert, Abschnitt als gelesen markieren, eigener Fortschritt. Zugang über DRF-Token, Nutzer per `createsuperuser`. 101 Tests. Neue offene Punkte zu Token und Deployment in `docs/OFFEN.md`.
 - B1 Datenmodell: neue Django-App `lernen` mit Thema, Phase, Lektion, Abschnitt, Quelle, Quiz, Test, Frage, Antwort, Projektaufgabe und Fortschritt. Datenbank-Regeln (Constraints) sichern u. a. höchstens eine richtige Antwort je Frage und die Testdauer von höchstens 30 Minuten. 37 Modell-Tests in `backend/tests/test_lernen_modelle.py`.
 - A3 README: Schritt-für-Schritt-Anleitung für Windows (Python, Node.js, PostgreSQL, Backend, Frontend), Fehlerbehebung und Kurzfassung für Linux und macOS. `.gitattributes` erzwingt LF-Zeilenenden. Neue offene Punkte in `docs/OFFEN.md`: Windows-Anleitung ist nicht auf Windows ausprobiert, Dateinamen `Claude.md` und `LERPLAN.md`.
 - Steuerdatei `Claude.md` in `CLAUDE.md` und `docs/LERPLAN.md` in `docs/LERNPLAN.md` umbenannt (auf Wunsch des Nutzers).

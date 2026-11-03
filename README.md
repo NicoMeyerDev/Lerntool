@@ -127,6 +127,14 @@ pytest
 
 `check` meldet „no issues“, `pytest` meldet alle Tests als `passed`.
 
+**Deinen Zugang anlegen** (einmalig). Die App hat genau einen Nutzer, eine Registrierung gibt es nicht:
+
+```powershell
+python manage.py createsuperuser
+```
+
+Benutzername und Passwort eingeben (die E-Mail darf leer bleiben). Damit meldest du dich später in der App an. Passwort vergessen? `python manage.py changepassword <benutzername>`.
+
 ### 4. Frontend einrichten
 
 In einem **zweiten** PowerShell-Fenster:
@@ -198,7 +206,21 @@ Beenden mit `Strg + C` im jeweiligen Fenster.
 
 ## API
 
-`GET /api/health/` liefert `200 {"status":"ok","datenbank":"ok"}`, bei nicht erreichbarer Datenbank `503 {"status":"fehler","datenbank":"nicht erreichbar"}`.
+Alle Endpunkte außer `health` und `login` brauchen den Header `Authorization: Token <token>`; ohne gibt es `401`.
+
+| Endpunkt | Zweck |
+| --- | --- |
+| `GET /api/health/` | `200 {"status":"ok","datenbank":"ok"}`, bei nicht erreichbarer Datenbank `503` |
+| `POST /api/auth/login/` | `{"username", "password"}` → `{"token"}`; höchstens 10 Versuche pro Minute |
+| `POST /api/auth/logout/` | Token ungültig machen |
+| `GET /api/auth/ich/` | angemeldeter Nutzer |
+| `GET /api/themen/` | alle Themen |
+| `GET /api/themen/<slug>/` | Thema mit Phasen, Lektionen, Projektaufgaben |
+| `GET /api/lektionen/<id>/` | Lektion mit Abschnitten, Quellen, Quiz- und Test-ID |
+| `GET /api/quizze/<id>/` | Fragen und Antworten **ohne** Lösung |
+| `POST /api/quizze/<id>/abgabe/` | `{"antworten": [{"frage": id, "antwort": id}]}` → Auswertung, speichert Bestwert |
+| `POST /api/abschnitte/<id>/gelesen/` | Abschnitt als gelesen markieren |
+| `GET /api/fortschritt/` | eigener Fortschritt |
 
 ## Fehlerbehebung
 
@@ -227,6 +249,7 @@ source .venv/bin/activate
 pip install -r requirements.txt
 cp .env.example .env          # Werte wie in Schritt 3 eintragen
 python manage.py migrate
+python manage.py createsuperuser   # einmalig: eigenen Zugang anlegen
 python manage.py runserver
 
 # Frontend (zweites Terminal)
@@ -240,9 +263,9 @@ npm run dev                   # http://localhost:5173
 ```
 backend/
   config/          Django-Konfiguration: settings.py, env.py (Umgebungsvariablen), urls.py
-  core/            Health-Endpunkt (Views, Services, URLs)
-  lernen/          Lerninhalte und Fortschritt: Modelle, Migrationen
-  tests/           pytest-Tests
+  core/            Health-Endpunkt (Views, Services, URLs), Anmeldung (auth_views.py, anmeldung.py)
+  lernen/          Lerninhalte und Fortschritt: Modelle, Migrationen, API (serializers.py, services.py, views.py, urls.py)
+  tests/           pytest-Tests, gemeinsame Fixtures (conftest.py) und Testdaten-Fabrik (fabrik.py)
   manage.py        Django-Verwaltungsbefehle
   requirements.txt Python-Abhängigkeiten
   pyproject.toml   Einstellungen für ruff, mypy, pytest
