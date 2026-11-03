@@ -68,3 +68,17 @@ Format: Datum – Entscheidung – Grund – Alternativen.
 - **Tests** (`TEST`-Modell) bekommen Lesen/Abgabe erst mit B4 (Timer); die Auswertungslogik ist so gebaut, dass sie dort wiederverwendet werden kann. **Für B4 zu entscheiden:** Eine leere Abgabe zeigt alle Lösungen – beim Quiz gewollt (Lernen), beim Test mit Timer ggf. erst nach Ablauf oder nur einmal.
 - **Logik in `lernen/services.py`, Views nur Ein-/Ausgabe** (CLAUDE.md §1). Abfragen mit `prefetch_related`, damit eine Lektion mit vielen Abschnitten in wenigen Datenbankabfragen lädt (Test prüft ≤ 6).
 - **Tests nutzen einen schnellen Passwort-Hasher** (`MD5PasswordHasher`, nur in `tests/conftest.py`), wie die Django-Doku empfiehlt; im Betrieb bleibt der sichere Standard. Testlaufzeit 35 s → 2 s.
+
+## 2026-11-03 – B3 Lektions- und Quiz-Ansicht
+
+- **React Router (`react-router`, Paket ab v7 ohne `-dom`)** für Seiten und Links: `/login`, `/`, `/themen/:slug`, `/lektionen/:id`. Geschützte Seiten leiten ohne Anmeldung auf `/login` um. Alternative: eigener Mini-Router (unüblich, mehr Code).
+- **zod prüft jede API-Antwort zur Laufzeit** (`src/api/schemas.ts`); die TypeScript-Typen werden daraus abgeleitet. Grund: `strict` ohne `any` – ohne Prüfung wäre `response.json()` ein ungeprüfter Typ-Cast. Alternative: Typen von Hand plus Cast (keine echte Sicherheit).
+- **Markdown mit `react-markdown`, `skipHtml`** – rohes HTML aus Lerntexten wird nicht ausgeführt (Schutz vor eingeschleustem Code). Links öffnen sich mit `rel="noopener noreferrer"` in neuem Tab. Alternative: `marked` + `dangerouslySetInnerHTML` (braucht zusätzlich einen HTML-Säuberer).
+- **Token im `localStorage`** – bleibt nach Neuladen erhalten. Risiko bei XSS ist bekannt und in `docs/OFFEN.md` für das Deployment vermerkt. Antwortet die API mit 401, löscht das Frontend das Token und zeigt den Login.
+- **Ein Abschnitt pro Bildschirm, Position in der URL (`?abschnitt=n`)** – kurze Lerneinheiten, Zurück-Taste und Neuladen funktionieren. Der Knopf „Gelesen – weiter“ markiert den Abschnitt als gelesen (B2-Entscheidung) und blättert weiter; der Fortschrittsbalken zeigt gelesene Abschnitte.
+- **Quiz-Abgabe erst, wenn alle Fragen beantwortet sind** – vermeidet, dass ein versehentlicher Klick alle Lösungen zeigt. Danach: Punkte, Bestwert, richtige und eigene Antwort markiert, Erklärung bei falschen Antworten, „Nochmal versuchen“.
+- **Neue Abhängigkeiten:** `react-router`, `zod`, `react-markdown`; für Tests `@testing-library/user-event` (realistische Klicks und Eingaben).
+- **Geprüft im echten Browser** (Chrome headless, 420 px breit): Login, Themenübersicht, Lektion mit Codeblock, Quiz-Abgabe und Auswertung. Testdaten danach gelöscht.
+- **Nach dem Review ergänzt:** Quellen-Links nur mit `http:`/`https:` (sonst nur Text, Schutz falls ungeprüfte Daten in die Datenbank gelangen); „nicht gefunden“ nur bei Status 404, sonst „Laden fehlgeschlagen“; ungültige Lektions-IDs lösen keine Anfrage aus; Rücklinks, Logo und „Abmelden“ mit mindestens 48 px Höhe; Tests für Fehlerfälle (Abgabe, „gelesen“, Quiz laden, letzter Abschnitt).
+- **Kontraste nach WCAG gemessen:** alle Textfarben auf `bg`/`surface` mindestens 6:1 (AA verlangt 4,5:1), z. B. `text-muted` auf `surface` 6,9:1, Cyan auf `bg` 10,7:1.
+- **„Stark – alles richtig!“ entscheidet das Frontend aus `punkte === max_punkte`** – reine Darstellung. Kommt eine Bestehensgrenze, liefert das Backend die Bewertung.
