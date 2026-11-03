@@ -10,7 +10,7 @@ Regeln: Immer die oberste offene Aufgabe aus „Jetzt“ bearbeiten. Aufgaben au
 - [x] **A3 README:** Lokales Setup unter Windows (Backend, Frontend, Datenbank), Befehle, Ordnerstruktur. Fertig, wenn: ein Neuling die App nach der Anleitung starten kann.
 
 ### B. Lernfluss
-- [ ] **B1 Datenmodell:** Thema, Phase, Lektion, Abschnitt, Quiz, Frage, Antwort, Test, Projektaufgabe, Fortschritt. Migrationen und Tests.
+- [x] **B1 Datenmodell:** Thema, Phase, Lektion, Abschnitt, Quiz, Frage, Antwort, Test, Projektaufgabe, Fortschritt. Migrationen und Tests.
 - [ ] **B2 API:** Inhalte lesen, Quiz abgeben und auswerten, Fortschritt speichern. Einfacher Zugang für einen Nutzer (Entscheidung in `/docs/ENTSCHEIDUNGEN.md` festhalten).
 - [ ] **B3 Lektions- und Quiz-Ansicht:** Lektion lesen, Quiz nach jedem Abschnitt, Ergebnis mit kurzer Auswertung.
 - [ ] **B4 Test und Projekt:** Test mit 30-Minuten-Timer nach jedem Themenfeld, Projektaufgabe mit Checkliste und Auswertung.
