@@ -25,4 +25,5 @@ urlpatterns = [
         name="abschnitt-gelesen",
     ),
     path("fortschritt/", views.FortschrittListeView.as_view(), name="fortschritt"),
+    path("dashboard/", views.DashboardView.as_view(), name="dashboard"),
 ]

@@ -11,6 +11,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from core.anmeldung import angemeldeter_nutzer
+from lernen.dashboard import erstelle_dashboard
 from lernen.models import (
     Abschnitt,
     Fortschritt,
@@ -150,6 +151,21 @@ class FortschrittListeView(generics.ListAPIView[Fortschritt]):
     def get_queryset(self) -> QuerySet[Fortschritt]:
         """Liefert nur die Einträge des angemeldeten Nutzers."""
         return Fortschritt.objects.filter(nutzer=angemeldeter_nutzer(self.request))
+
+
+class DashboardView(APIView):
+    """`GET /api/dashboard/`: Statistiken, XP, Level, Abzeichen und Meilensteine."""
+
+    def get(self, request: Request) -> Response:
+        """Berechnet das Dashboard des angemeldeten Nutzers.
+
+        Args:
+            request: Die Anfrage.
+
+        Returns:
+            200 mit XP, Level, Statistik, Themenfortschritt, Abzeichen und Meilensteinen.
+        """
+        return Response(asdict(erstelle_dashboard(angemeldeter_nutzer(request))))
 
 
 class TestDetailView(generics.RetrieveAPIView[Test]):
