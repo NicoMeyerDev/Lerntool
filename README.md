@@ -121,9 +121,12 @@ Die Datei `.env` enthält Geheimnisse und wird **nie committet** (steht in `.git
 
 ```powershell
 python manage.py migrate
+python manage.py import_inhalte      # Lerninhalte aus backend/inhalte laden (gefahrlos wiederholbar)
 python manage.py check
 pytest
 ```
+
+Danach die Lerninhalte laden (`python manage.py import_inhalte`, liest `backend/inhalte`, gefahrlos wiederholbar).
 
 `check` meldet „no issues“, `pytest` meldet alle Tests als `passed`.
 
@@ -201,6 +204,7 @@ Beenden mit `Strg + C` im jeweiligen Fenster.
 | Typprüfung | `mypy .` |
 | Validieren | `python manage.py check` |
 | Datenbank migrieren | `python manage.py migrate` |
+| Lerninhalte laden (wiederholbar, löscht nichts) | `python manage.py import_inhalte` |
 
 **Frontend** (im Ordner `frontend`):
 
@@ -264,6 +268,7 @@ source .venv/bin/activate
 pip install -r requirements.txt
 cp .env.example .env          # Werte wie in Schritt 3 eintragen
 python manage.py migrate
+python manage.py import_inhalte      # Lerninhalte aus backend/inhalte laden (gefahrlos wiederholbar)
 python manage.py createsuperuser   # einmalig: eigenen Zugang anlegen
 python manage.py runserver
 
@@ -279,7 +284,8 @@ npm run dev                   # http://localhost:5173
 backend/
   config/          Django-Konfiguration: settings.py, env.py (Umgebungsvariablen), urls.py
   core/            Health-Endpunkt (Views, Services, URLs), Anmeldung (auth_views.py, anmeldung.py)
-  lernen/          Lerninhalte und Fortschritt: Modelle, Migrationen, API (serializers.py, services.py, dashboard.py, wochenplan.py, views.py, urls.py)
+  lernen/          Lerninhalte und Fortschritt: Modelle, Migrationen, API (serializers.py, services.py, dashboard.py, wochenplan.py, views.py, urls.py, inhalte_import.py, management/commands/import_inhalte.py)
+  inhalte/         Lerninhalte als YAML-Dateien (thema.yaml, phase.yaml, Lektionen); Import mit `python manage.py import_inhalte`
   tests/           pytest-Tests, gemeinsame Fixtures (conftest.py) und Testdaten-Fabrik (fabrik.py)
   manage.py        Django-Verwaltungsbefehle
   requirements.txt Python-Abhängigkeiten
