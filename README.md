@@ -171,7 +171,15 @@ cd $HOME\Lerntool\frontend
 npm run dev
 ```
 
-Dann im Browser **http://localhost:5173** öffnen. Die Startseite zeigt unter „Systemstatus“:
+Dann im Browser **http://localhost:5173** öffnen und mit dem Nutzer anmelden, den du mit `createsuperuser` angelegt hast (Backend und Frontend müssen beide laufen).
+
+Bedienung:
+- Die Startseite zeigt die Themen, ein Klick öffnet die Themenseite mit den Lektionen.
+- Die Lektion zeigt einen Abschnitt pro Bildschirm (die Position steht in der Adresse als `?abschnitt=n`). „Gelesen – weiter“ markiert den Abschnitt und blättert weiter, der Fortschrittsbalken zeigt die gelesenen Abschnitte.
+- Das Quiz wird abgegeben, sobald alle Fragen beantwortet sind. Die Auswertung zeigt Punkte, Bestwert, richtige und eigene Antwort sowie die Erklärung; „Nochmal versuchen“ startet neu.
+- Unter der Lektion stehen die Quellen. „Abmelden“ oben beendet die Sitzung.
+
+Unten auf der Startseite zeigt „Systemstatus“:
 - grüner Punkt „Backend und Datenbank erreichbar“: alles läuft,
 - roter Punkt „Backend nicht erreichbar“: Fenster 1 prüfen,
 - roter Punkt „Backend erreichbar, Datenbank nicht“: PostgreSQL prüfen (Schritt 2).
@@ -272,10 +280,14 @@ backend/
   .env.example     Vorlage für backend/.env
 frontend/
   src/main.tsx     Einstiegspunkt
-  src/App.tsx      Startseite
+  src/App.tsx      Routen (Login, Start, Thema, Lektion)
   src/index.css    Design-Tokens und Grundstile
-  src/api/         API-Aufrufe ans Backend
-  src/components/  React-Komponenten
+  src/api/         API-Aufrufe ans Backend: client.ts (fetch mit Token),
+                   schemas.ts (zod-Prüfung der Antworten), lernen.ts (Query-Hooks)
+  src/auth/        Token-Speicher und Anmelde-Kontext (AuthProvider)
+  src/pages/       Seiten: LoginSeite, StartSeite, ThemaSeite, LektionSeite
+  src/components/  React-Komponenten (Layout, Markdown, QuizAnsicht, Fortschrittsbalken)
+  src/lib/         kleine Hilfsfunktionen: Abschnittsnummer, Ladefehler-Text, URL-Prüfung
   src/test/        Test-Setup (Vitest)
   public/          statische Dateien, PWA-Icon
   vite.config.ts   Vite, Proxy, PWA, Tests

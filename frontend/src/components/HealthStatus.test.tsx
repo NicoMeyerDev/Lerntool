@@ -1,33 +1,32 @@
 /**
- * Tests für die Statusanzeige auf der Startseite.
+ * Tests für die Statusanzeige (Health-Check).
  */
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 
-import App from '../App'
+import { HealthStatus } from './HealthStatus'
 
 /**
- * Rendert die Startseite mit frischem Query-Client.
+ * Rendert die Statusanzeige mit frischem Query-Client.
  */
 function renderApp() {
   const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } })
   render(
     <QueryClientProvider client={queryClient}>
-      <App />
+      <HealthStatus />
     </QueryClientProvider>,
   )
 }
 
-describe('Startseite mit Systemstatus', () => {
-  it('zeigt den Titel und zunächst den Prüfzustand', () => {
+describe('Systemstatus', () => {
+  it('zeigt zunächst den Prüfzustand', () => {
     vi.stubGlobal(
       'fetch',
       vi.fn(() => new Promise<Response>(() => undefined)),
     )
     renderApp()
 
-    expect(screen.getByRole('heading', { level: 1, name: 'Lerntool' })).toBeInTheDocument()
     expect(screen.getByRole('status')).toHaveTextContent('Verbindung wird geprüft')
   })
 
