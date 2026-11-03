@@ -14,13 +14,12 @@ Punkte, die eine Entscheidung oder Aktion des Nutzers brauchen.
 - **Stand:** Laut [Python-Doku](https://docs.python.org/3/using/windows.html) bringt der Python install manager einen `python3`-Befehl mit, die Hooks sollten also auch unter Windows starten. Ausprobiert ist das nicht, ebenso wenig die übrigen Windows-Schritte im README (kein Windows-Rechner verfügbar).
 - **Bitte beim ersten Einrichten unter Windows:** `python3 --version` prüfen und melden, wo die Anleitung hakt. Fehlt `python3`, muss für die Hooks eine plattformübergreifende Lösung her (Sicherheitseinstellung, daher nicht ohne Rücksprache).
 
-## 2026-11-03 – Dateinamen weichen von der CLAUDE.md ab
-
-- `Claude.md` heißt nicht `CLAUDE.md`. Unter Linux unterscheidet das Dateisystem Groß- und Kleinschreibung; Claude Code lädt standardmäßig `CLAUDE.md`. In dieser Sitzung wurde die Datei nicht automatisch geladen, sondern von Hand gelesen.
-- `docs/LERPLAN.md` heißt nicht `docs/LERNPLAN.md`, wie die CLAUDE.md (Abschnitt 5) verlangt.
-- **Warum nicht selbst behoben:** `Claude.md` ist die Steuerdatei des Projekts; Umbenennen ändert, wie jede Sitzung arbeitet. Vorschlag: beide Dateien umbenennen (`git mv Claude.md CLAUDE.md`, `git mv docs/LERPLAN.md docs/LERNPLAN.md`), gern als eigene kleine `docs/`-Aufgabe.
-
 ## Erledigt
+
+### 2026-11-03 – Dateinamen wichen von der CLAUDE.md ab
+
+- **Problem:** Die Steuerdatei hieß `Claude.md` statt `CLAUDE.md` (Claude Code lädt unter Linux nur `CLAUDE.md` automatisch), der Lernplan `docs/LERPLAN.md` statt `docs/LERNPLAN.md`.
+- **Lösung (auf Wunsch des Nutzers):** Beide Dateien mit `git mv` umbenannt, Inhalt unverändert.
 
 ### 2026-11-03 – Git-Schutz-Hook lief auf diesem Rechner nicht
 
