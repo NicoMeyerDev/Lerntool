@@ -2,6 +2,7 @@
 
 ## 2026-11-03
 
+- B4 Test und Projekt: Testversuche mit serverseitigem Zeitlimit (Start über die API, 30 s Kulanz bei der Abgabe, `409` bei abgelaufener Zeit), Auswertung mit Bestwert; Projekt-Checkliste mit Auswertung. Neue Seiten `/tests/:id` und `/projekte/:id`, gemeinsame Komponente `FragenListe` für Quiz und Test. 130 Backend- und 87 Frontend-Tests.
 - B3 Lektions- und Quiz-Ansicht: Login und Logout, Themenübersicht, Themenseite, Lektionsseite mit einem Abschnitt pro Bildschirm (`?abschnitt=n`), „Gelesen – weiter“, Fortschrittsbalken, Quiz mit Auswertung (Punkte, Bestwert, richtige und eigene Antwort, Erklärung, „Nochmal versuchen“) und Quellenliste. API-Antworten werden mit zod geprüft, Markdown wird ohne HTML dargestellt. Neue Abhängigkeiten: `react-router`, `zod`, `react-markdown`, `@testing-library/user-event`. 63 Frontend-Tests.
 - B2 API: Token-Login mit Bremse gegen Durchprobieren, Inhalte lesen (Quiz ohne Lösung), Quiz-Abgabe mit Auswertung und Bestwert, Abschnitt als gelesen markieren, eigener Fortschritt. Zugang über DRF-Token, Nutzer per `createsuperuser`. 101 Tests. Neue offene Punkte zu Token und Deployment in `docs/OFFEN.md`.
 - B1 Datenmodell: neue Django-App `lernen` mit Thema, Phase, Lektion, Abschnitt, Quelle, Quiz, Test, Frage, Antwort, Projektaufgabe und Fortschritt. Datenbank-Regeln (Constraints) sichern u. a. höchstens eine richtige Antwort je Frage und die Testdauer von höchstens 30 Minuten. 37 Modell-Tests in `backend/tests/test_lernen_modelle.py`.
