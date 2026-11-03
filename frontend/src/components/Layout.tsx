@@ -25,6 +25,12 @@ export function GeschuetzterBereich() {
           >
             Lerntool
           </Link>
+          <Link
+            to="/plan"
+            className="inline-flex min-h-12 items-center rounded-lg px-4 text-text-muted hover:bg-surface-raised hover:text-text"
+          >
+            Plan
+          </Link>
           <button
             type="button"
             onClick={() => void abmelden()}
