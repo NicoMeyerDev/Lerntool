@@ -2,7 +2,8 @@
 
 ## 2026-11-04
 
-- C4 Curriculum Englisch (Gliederung): neues Dokument `docs/CURRICULUM_ENGLISCH.md` mit Einstieg ab SAP 2122, Pfad Alltag und Ausland, Fachenglisch IT und optionalem Sprachtest (nur Lesen, Hören und Schreiben). Entscheidungen in `docs/ENTSCHEIDUNGEN.md`, zwei neue offene Punkte (SAP 2122, Audio) in `docs/OFFEN.md`.
+- Curriculum Englisch: Startniveau angepasst. „Einstieg ab SAP 2122“ meint das heutige Englisch (A2). Die Gliederung startet bei 1.3, die Abschnitte 1.1 und 1.2 sind optionale Wiederholung. Anpassungen in `docs/CURRICULUM_ENGLISCH.md`, `docs/ENTSCHEIDUNGEN.md` und `docs/OFFEN.md`.
+- C4 Curriculum Englisch (Gliederung): neues Dokument `docs/CURRICULUM_ENGLISCH.md` mit Einstieg ab SAP 2122 (inzwischen geklärt: A2), Pfad Alltag und Ausland, Fachenglisch IT und optionalem Sprachtest (nur Lesen, Hören und Schreiben). Entscheidungen in `docs/ENTSCHEIDUNGEN.md`, zwei neue offene Punkte (SAP 2122, Audio) in `docs/OFFEN.md`.
 - C3 Phase 2 Laravel-Kern: 7 Lektionen als YAML-Dateien in `backend/inhalte/php-laravel/02-laravel-kern/` mit Projekt „Trainingstagebuch“. Mit Phase 1 enthält der Import jetzt 2 Phasen, 14 Lektionen, 54 Abschnitte und 233 Fragen. Entscheidungen in `docs/ENTSCHEIDUNGEN.md`.
 
 ## 2026-11-03

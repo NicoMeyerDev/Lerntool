@@ -23,12 +23,6 @@ Punkte, die eine Entscheidung oder Aktion des Nutzers brauchen.
   - Die Login-Bremse zählt pro IP-Adresse. Hinter dem Proxy von Render sähe sie nur die Proxy-IP; dann `NUM_PROXIES` in den DRF-Einstellungen setzen und einen gemeinsamen Cache verwenden.
 - **Vorschlag:** Für die Entwicklung `localStorage` verwenden. Vor dem Deployment entscheiden, ob das so bleibt oder auf Session-Cookies (HttpOnly, CSRF) umgestellt wird – das ist einfacher, wenn Frontend und Backend unter derselben Domain laufen.
 
-## 2026-11-04 – Englisch (C4): Was bedeutet „Einstieg ab SAP 2122“?
-
-- **Problem:** Der Backlog-Eintrag C4 nennt „Einstieg ab SAP 2122“. Im Projekt (Lernplan, Curriculum, Code) steht nirgends, was das ist (Kurs, Lehrbuch, Prüfungsnummer, Niveau?).
-- **Annahme bis zur Klärung:** Die Gliederung beginnt bei Niveau A1 und führt in Phase 1 bis A2, so wie der Lernplan „Basisniveau“ nennt (siehe `docs/CURRICULUM_ENGLISCH.md`). Das ist eine Planungsannahme, kein Fakt.
-- **Bitte klären:** Was „SAP 2122“ ist und ab welcher Stelle (Niveau, Thema) du einsteigen willst. Danach werden Phase 1 angepasst oder Themenfelder übersprungen.
-
 ## 2026-11-04 – Englisch (C4): Audio für Hörübungen
 
 - **Problem:** Die App soll Hören üben (ohne Mikrofon). Eigene Aufnahmen gibt es nicht, fremde Audios dürfen nicht kopiert werden.
@@ -36,6 +30,11 @@ Punkte, die eine Entscheidung oder Aktion des Nutzers brauchen.
 - **Warum nicht allein entschieden:** Betrifft Kosten und Rechte (CLAUDE.md §7). Die Entscheidung wird vor der Ausarbeitung der Hörlektionen gebraucht, nicht für die Gliederung.
 
 ## Erledigt
+
+### 2026-11-04 – Englisch (C4): Was bedeutet „Einstieg ab SAP 2122“?
+
+- **Problem:** Der Backlog nannte „Einstieg ab SAP 2122“, im Projekt stand nirgends, was das ist.
+- **Lösung (Antwort des Lernenden):** Gemeint ist das heutige Englisch des Lernenden, eingeordnet als A2. Die Gliederung beginnt bei 1.3; 1.1 und 1.2 sind optionale Wiederholung (siehe `docs/CURRICULUM_ENGLISCH.md` und `docs/ENTSCHEIDUNGEN.md`).
 
 ### 2026-11-03 – Dateinamen wichen von der CLAUDE.md ab
 

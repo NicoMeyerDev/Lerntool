@@ -142,8 +142,8 @@ Format: Datum – Entscheidung – Grund – Alternativen.
 
 ## 2026-11-04 – C4 Englisch, Gliederung
 
-- **Start bei Niveau A1.** Der Backlog nennt „Einstieg ab SAP 2122“, was im Projekt nirgends erklärt ist (siehe `docs/OFFEN.md`). Der Lernplan nennt „Basisniveau“, daher beginnt die Gliederung bei A1 und führt in Phase 1 bis A2. Grund: Ein zu leichter Start kostet wenig Zeit, ein zu schwerer Start würde entmutigen. Alternative: erst bei A2 einsteigen, wenn „SAP 2122“ das nahelegt.
-- **Drei Phasen:** Alltag und Ausland (A1–A2), Fachenglisch IT (A2–B1), Sprachtest (optional). Entspricht dem Lernplan. B1 ist ein Wunschziel für den IT-Bereich, Zeitangaben sind eigene Schätzungen und stammen aus keiner Quelle.
+- **Start bei Niveau A2 (aktualisiert am 2026-11-04).** Zuerst war A1 angenommen, weil „Einstieg ab SAP 2122“ unklar war. Der Lernende hat klargestellt: Gemeint ist sein heutiges Englisch, A2 (Selbsteinschätzung). Deshalb beginnt die Gliederung bei 1.3; 1.1 und 1.2 (A1) bleiben als optionale Wiederholung. Phase 1 schrumpft auf 6 Wochen (eigene Schätzung). Alternative: Einstufungstest vor dem Start (nicht im Backlog, daher nicht gebaut).
+- **Drei Phasen:** Alltag und Ausland (A2, optional A1-Wiederholung), Fachenglisch IT (A2–B1), Sprachtest (optional). Entspricht dem Lernplan. B1 ist ein Wunschziel für den IT-Bereich, Zeitangaben sind eigene Schätzungen und stammen aus keiner Quelle.
 - **Projekt Phase 2 knüpft an das Laravel-Projekt „Trainingstagebuch“ an**, damit Fachenglisch an echtem Material geübt wird (englische README, Pull-Request-Text). Alternative: eigenes, unabhängiges Beispiel.
 - **Niveau-Zuordnung der Themenfelder ist eine eigene didaktische Einordnung**, keine offizielle Einstufung; sie wird bei der Ausarbeitung gegen die konkrete LearnEnglish-Seite geprüft.
 - **Freigaben:** `quellenpruefer` NACHBESSERN (kleine Punkte, eingearbeitet), `reviewer` FREIGABE.
