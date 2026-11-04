@@ -2,6 +2,18 @@
 
 Punkte, die eine Entscheidung oder Aktion des Nutzers brauchen.
 
+## 2026-11-04 – Englisch (C5): Lücken in Phase 1
+
+Reine Notiz für die spätere Ausarbeitung (Backlog C6), keine Entscheidung des Lernenden nötig. Jeweils: Quelle suchen.
+
+- **Hören (1.3.5 und Hörteil im Projekt Reiseplan):** Quelle suchen; setzt die Audio-Umsetzung voraus.
+- **Reisen (1.4.1):** Bahn, Bus, Flug, Durchsagen. Belegte Erwachsenenquelle suchen.
+- **Restaurant und Arzt (1.4.4):** Belegte Quelle suchen.
+- **Texte überfliegen (1.5.5):** Belegte Quelle suchen.
+- **„Would you mind“ (1.5.3):** Quelle suchen, die es für A2 zeigt (die Seite „Requests, offers and invitations“ nennt es nicht).
+- **Wegbeschreibung (1.4.2):** Bisher nur ein LearnEnglish-Kids-PDF (Kinderniveau). Erwachsenenquelle suchen.
+- **Rechtschreibung der -ing-Form:** Zweite unabhängige Quelle suchen; bisher als eigene Erklärung gekennzeichnet.
+
 ## 2026-11-03 – Git-Schutz-Hook blockiert zu viel („main“ irgendwo im Befehl)
 
 - **Problem:** `.claude/hooks/git_schutz.py` blockiert jeden Bash-Befehl, der `git push` enthält und irgendwo das Wort `main` – auch wenn gar nicht auf `main` gepusht wird. Beispiel: `git push -u origin feature/x && gh pr create --base main` wird komplett abgelehnt. Ursache: Die Prüfung `\b(main|master)\b` läuft über den ganzen Befehl statt nur über den Push-Teil.

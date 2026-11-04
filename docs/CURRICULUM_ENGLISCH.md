@@ -1,6 +1,6 @@
 # Curriculum Englisch (Gliederung)
 
-Grundlage: [LERNPLAN.md](LERNPLAN.md), Themenblock 2. Diese Datei legt nur die **Gliederung** fest (Phasen, Themenfelder, Abschnitte, Projekte). Die ausgearbeiteten Lektionen kommen in einer späteren Aufgabe; sie stehen noch nicht im Backlog.
+Grundlage: [LERNPLAN.md](LERNPLAN.md), Themenblock 2. Diese Datei legt nur die **Gliederung** fest (Phasen, Themenfelder, Abschnitte, Projekte). Die ausgearbeiteten Lektionen entstehen schrittweise. **Status:** Phase 1 ist ab 1.3 teilweise ausgearbeitet (Aufgabe C5, siehe `ENTSCHEIDUNGEN.md`, Abschnitt „C5 Englisch Phase 1“); die ausgelassenen Punkte sind mit „(noch offen, siehe OFFEN.md)“ gekennzeichnet und stehen als C6 im Backlog. Phase 2 und die weiteren Teile sind noch nicht ausgearbeitet.
 
 ## Regeln dieser Gliederung
 
@@ -54,23 +54,23 @@ Quelle für die ganze Phase: [British Council LearnEnglish](https://learnenglish
 2. Vergangenheit (*past simple*): regelmäßige und häufige unregelmäßige Verben
 3. Zeitangaben (*yesterday, last week, ago*)
 4. Kurze Berichte schreiben: Wochenende, Urlaub
-5. Hören: kurze Erzählungen verstehen
+5. Hören: kurze Erzählungen verstehen (noch offen, siehe OFFEN.md)
 
 ### 1.4 Unterwegs im Ausland (A2)
-1. Reisen: Bahn, Bus, Flug, Tickets, Durchsagen verstehen
+1. Reisen: Bahn, Bus, Flug, Tickets, Durchsagen verstehen (noch offen, siehe OFFEN.md)
 2. Wegbeschreibung geben und verstehen
 3. Unterkunft: Buchen, Anmelden, Probleme melden
-4. Restaurant und Arzt: wichtige Sätze und Wortschatz
+4. Restaurant und Arzt: wichtige Sätze und Wortschatz (noch offen, siehe OFFEN.md)
 5. Zukunft (*going to, will*): Pläne und Vorhersagen
 
 ### 1.5 Schriftlicher Alltag (A2)
 1. Kurznachrichten und Chat
 2. Persönliche E-Mails und Einladungen
-3. Höfliche Bitten und Nachfragen (*Could you…?*; *Would you mind…?* nur, wenn die Quelle es für dieses Niveau zeigt)
+3. Höfliche Bitten und Nachfragen (*Could you…?*; *Would you mind…?* nur, wenn die Quelle es für dieses Niveau zeigt; **nicht umgesetzt**, die LearnEnglish-Seite „Requests, offers and invitations“ nennt es nicht, siehe OFFEN.md)
 4. Vergleiche und Meinungen (*bigger than, I think that…*)
-5. Texte überfliegen: Wesentliches finden, unbekannte Wörter erschließen
+5. Texte überfliegen: Wesentliches finden, unbekannte Wörter erschließen (noch offen, siehe OFFEN.md)
 
-**Projekt Phase 1 – Reiseplan:** Du planst eine fiktive Reise (Ziel, Anreise, Unterkunft, drei Programmpunkte) und schreibst dazu auf Englisch: eine Buchungsanfrage an eine Unterkunft, eine Kurznachricht an einen Freund und einen kurzen Tagesplan. Dazu ein Hörteil: Fragen zu zwei vorgegebenen Hörtexten beantworten (**bleibt offen, bis die Audio-Frage in `docs/OFFEN.md` geklärt ist**). Checkliste mit 6 bis 8 Punkten.
+**Projekt Phase 1 – Reiseplan:** Du planst eine fiktive Reise (Ziel, Anreise, Unterkunft, drei Programmpunkte) und schreibst dazu auf Englisch: eine Buchungsanfrage an eine Unterkunft, eine Kurznachricht an einen Freund und einen kurzen Tagesplan. Dazu ein Hörteil: Fragen zu zwei vorgegebenen Hörtexten beantworten (**noch offen, siehe OFFEN.md**; bleibt offen, bis die Audio-Frage geklärt ist). **Stand in der App:** Das Projekt läuft ohne Hörteil und mit 8 Punkten. Checkliste mit 6 bis 8 Punkten.
 
 ---
 
