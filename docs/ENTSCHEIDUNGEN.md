@@ -156,3 +156,9 @@ Format: Datum – Entscheidung – Grund – Alternativen.
 - **Phasen 2 bis 6 sind nur grob gegliedert**, die Ausarbeitung folgt in späteren Aufgaben. Grund: Die Doku ändert sich schnell, Details sollen erst kurz vor dem Lernen geprüft werden. Alternative: alle Phasen sofort ausarbeiten (höheres Risiko veralteter Inhalte).
 - **`thema.yaml` hat `reihenfolge: 3`** (PHP/Laravel 1, Englisch 2 reserviert). Alternative: 2 vergeben und Englisch später verschieben (würde die Reihenfolge nachträglich ändern).
 - **Freigaben:** `quellenpruefer` FREIGABE, `reviewer` FREIGABE.
+
+## 2026-11-04 – Antworten des Lernenden zu C4/E1
+
+- **Audio für Hörübungen (C4):** Eigene, gut verständliche Aufnahmen sind erlaubt. Ob echte Aufnahme oder Sprachausgabe, wird erst bei der Ausarbeitung der Hörlektionen entschieden, ohne Kosten und mit sauberer Lizenz. Grund: Fremde Audios dürfen nicht kopiert werden, Kosten sollen vermieden werden. Alternativen: Hörtexte nur verlinken (z. B. British Council LearnEnglish), Sprachausgabe im Browser, kostenpflichtige Sprachdienste (nicht gewollt).
+- **API-Schlüssel (E1):** Der Lernende legt vorerst keinen API-Schlüssel an. Phase 1 kommt ohne Aufruf aus; Phasen mit echten Aufrufen sind bis zu einer neuen Entscheidung zurückgestellt. Grund: Kosten und Sicherheit des Schlüssels. Alternative: Schlüssel mit niedrigem Ausgabenlimit anlegen (aktuell nicht gewünscht).
+
