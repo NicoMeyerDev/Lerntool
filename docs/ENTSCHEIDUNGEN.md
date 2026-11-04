@@ -162,3 +162,22 @@ Format: Datum – Entscheidung – Grund – Alternativen.
 - **Audio für Hörübungen (C4):** Eigene, gut verständliche Aufnahmen sind erlaubt. Ob echte Aufnahme oder Sprachausgabe, wird erst bei der Ausarbeitung der Hörlektionen entschieden, ohne Kosten und mit sauberer Lizenz. Grund: Fremde Audios dürfen nicht kopiert werden, Kosten sollen vermieden werden. Alternativen: Hörtexte nur verlinken (z. B. British Council LearnEnglish), Sprachausgabe im Browser, kostenpflichtige Sprachdienste (nicht gewollt).
 - **API-Schlüssel (E1):** Der Lernende legt vorerst keinen API-Schlüssel an. Phase 1 kommt ohne Aufruf aus; Phasen mit echten Aufrufen sind bis zu einer neuen Entscheidung zurückgestellt. Grund: Kosten und Sicherheit des Schlüssels. Alternative: Schlüssel mit niedrigem Ausgabenlimit anlegen (aktuell nicht gewünscht).
 
+## 2026-11-04 – C5 Englisch Phase 1
+
+- **Entscheidung:** Phase 1 „Alltag und Ausland“ ab 1.3 (A2) ist in `backend/inhalte/englisch/` ausgearbeitet: 3 Lektionen mit Tests und das Projekt „Reiseplan“. Es gilt nur, was eine geprüfte Quelle (fast ausschließlich British Council LearnEnglish) hergibt; alles andere bleibt offen (siehe `OFFEN.md`, Abschnitt „Englisch (C5): Lücken in Phase 1“, und Backlog C6).
+- **Grund:** CLAUDE.md Abschnitt 5: nichts erfinden, nur belegbare Aussagen. Lieber eine Lücke als ein unbelegter Inhalt.
+- **Alternativen:** Lücken aus eigenem Wissen füllen (verworfen, kein Beleg); die ganze Aufgabe zurückstellen (verworfen, der belegte Teil ist sofort nutzbar).
+
+Abweichungen von `docs/CURRICULUM_ENGLISCH.md`:
+
+- **(a) 1.3.5 Hören ausgelassen.** Die Audio-Umsetzung steht aus (Backlog „Audio-Umsetzung“).
+- **(b) 1.4.1 Reisen** (Bahn, Bus, Flug, Durchsagen) ausgelassen: keine belegte Quelle gefunden.
+- **(c) 1.4.4 Restaurant und Arzt** ausgelassen: keine belegte Quelle.
+- **(d) 1.5.5 Texte überfliegen** ausgelassen: keine belegte Quelle.
+- **(e) 1.5.3 „Would you mind“ ausgelassen.** Die Gliederung erlaubt es nur bei Beleg; die LearnEnglish-Seite „Requests, offers and invitations“ nennt es nicht.
+- **(f) 1.4.2 Wegbeschreibung** stützt sich auf ein LearnEnglish-Kids-PDF (British Council, Kinderniveau). Eine Erwachsenenseite wurde nicht gefunden.
+- **(g) Zusätzlich aufgenommen, weil die Quelle es hergibt:** Abschnitt „Zwei Vergangenheiten zusammen“ (past continuous und past simple, A2-Seite) und „Ein Formular für die Unterkunft ausfüllen“ (A2-Aufgabe „An accommodation form“; in der Gliederung eigentlich 1.1.3, A1).
+- **(h) Wortschatz** kommt nur als Teil der Lektionen vor, es gibt keinen eigenen Wortschatzabschnitt.
+- **(i) „Persönliche E-Mails beginnen“** stützt sich auf eine B1-Seite; im Text als unsicher gekennzeichnet.
+- **(j) Quellenlage:** Die Quelle ist fast nur British Council LearnEnglish. Für die Rechtschreibung der -ing-Form gibt es keine zweite unabhängige Quelle; sie ist als eigene Erklärung gekennzeichnet.
+- **(k) Lektionsnamen:** `01-gerade-jetzt-und-vergangenes`, `02-unterwegs-im-ausland`, `03-schriftlicher-alltag`; `thema.yaml` hat `reihenfolge: 2`. Das Projekt „Reiseplan“ läuft in der App ohne Hörteil und mit 8 Punkten.

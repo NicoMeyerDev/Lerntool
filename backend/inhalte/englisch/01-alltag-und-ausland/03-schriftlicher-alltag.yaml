@@ -1,0 +1,207 @@
+titel: Schriftlicher Alltag
+zusammenfassung: Du schreibst Kurznachrichten, formulierst höfliche Bitten, vergleichst Dinge und beginnst persönliche E-Mails passend.
+quellen:
+  - titel: LearnEnglish – Messaging to make plans
+    url: https://learnenglish.britishcouncil.org/free-resources/writing/a2/messaging-make-plans
+  - titel: LearnEnglish – Requests, offers and invitations
+    url: https://learnenglish.britishcouncil.org/grammar/english-grammar-reference/requests-offers-invitations
+  - titel: LearnEnglish – Comparative adjectives
+    url: https://learnenglish.britishcouncil.org/free-resources/grammar/a1-a2/comparative-adjectives
+  - titel: LearnEnglish – An email giving holiday advice
+    url: https://learnenglish.britishcouncil.org/skills/writing/b1-writing/email-giving-holiday-advice
+abschnitte:
+  - titel: Kurznachrichten und Chat
+    inhalt: |
+      In der LearnEnglish-Aufgabe „Messaging to make plans“ planen zwei Freunde ein Wochenende.
+      Die Nachrichten beginnen mit *Hey, are you free on Saturday?* und sind kurz und locker.
+
+      **Vorschläge machen:**
+
+      ```text
+      How about a drive out to the beach?
+      Do you want to do something?
+      ```
+
+      Auf der Seite stehen auch die Bausteine *Do you fancy* + Wort mit *-ing* oder Nomen
+      und *Shall we* + Grundform. Dein Beispiel dazu (eigenes Beispiel):
+
+      ```text
+      Do you fancy a picnic?
+      Shall we go to the beach?
+      ```
+
+      **Zustimmen und Zeit abstimmen** (aus dem Beispielchat):
+
+      ```text
+      Sounds good! What time?
+      Sure! Sunday works for me.
+      Shall we meet a bit later, say 10?
+      See you tomorrow!
+      ```
+
+      **Tipps aus der Aufgabe:**
+
+      - Sagst du zu etwas Nein, mache **einen anderen Vorschlag**.
+      - In Chats musst du nicht hinter jeden Satz einen Punkt setzen.
+    quiz:
+      - frage: "Welcher Satz macht einen Vorschlag?"
+        erklaerung: "How about ...? und Shall we ...? sind Wendungen für Vorschläge."
+        antworten:
+          - { text: "How about a drive out to the beach?", richtig: true }
+          - { text: "I drove out to the beach.", richtig: false }
+          - { text: "Beach is where.", richtig: false }
+      - frage: "Was rät die Aufgabe, wenn du zu einem Vorschlag Nein sagst?"
+        erklaerung: "Man macht stattdessen einen anderen Vorschlag."
+        antworten:
+          - { text: "Einen anderen Vorschlag machen.", richtig: true }
+          - { text: "Gar nicht antworten.", richtig: false }
+          - { text: "Den Chat löschen.", richtig: false }
+  - titel: Höfliche Bitten und Angebote
+    inhalt: |
+      Laut LearnEnglish sind **could you** und **would you** höfliche Wege, jemanden um etwas zu
+      bitten. **can** und **will** sind weniger höflich.
+
+      ```text
+      Could you take a message, please?      (höflicher)
+      Can you take a message, please?        (weniger höflich)
+      ```
+
+      **Angebote machen:**
+
+      ```text
+      Can I help you?
+      Shall I call you on your mobile?
+      I'll give you a lift to the station.
+      ```
+
+      **Einladungen:**
+
+      ```text
+      Would you like to come round tomorrow?
+      ```
+
+      Das Wort *please* macht eine Bitte zusätzlich freundlicher.
+    quiz:
+      - frage: "Welche Bitte ist laut LearnEnglish höflicher?"
+        erklaerung: "Could you ist höflicher als can you."
+        antworten:
+          - { text: "Could you take a message, please?", richtig: true }
+          - { text: "Can you take a message, please?", richtig: false }
+          - { text: "Take a message.", richtig: false }
+      - frage: "Welcher Satz ist eine Einladung?"
+        erklaerung: "Would you like to ...? lädt jemanden ein."
+        antworten:
+          - { text: "Would you like to come round tomorrow?", richtig: true }
+          - { text: "Could you take a message, please?", richtig: false }
+          - { text: "Shall I call you on your mobile?", richtig: false }
+  - titel: Vergleiche
+    inhalt: |
+      Mit einem **Vergleich** (comparative) sagst du, dass etwas „mehr“ ist als etwas anderes.
+      Du brauchst **than** („als“) für das, womit du vergleichst.
+
+      **Kurze Adjektive (eine Silbe):** *-er*.
+
+      ```text
+      old – older       This house is older than my house.
+      clean – cleaner   Their house is cleaner than ours.
+      ```
+
+      - Endet das Wort auf *-e*, kommt nur *-r*: *safe – safer*, *nice – nicer*.
+      - Endet es auf **einen** Vokal plus **einen** Konsonanten, wird der Konsonant doppelt: *big – bigger*, *hot – hotter*.
+
+      **Lange Adjektive:** *more* davor.
+
+      ```text
+      The city is more interesting than the countryside.
+      ```
+
+      - Zweisilbig auf Konsonant plus *-y*: *-y* wird *-i*, dann *-er* (*happy – happier*, *easy – easier*).
+
+      **Unregelmäßig:** *good – better*, *bad – worse*.
+
+      **Meinung äußern:** Mit *I think* sagst du, was du denkst. Der Satz steht so auf der
+      LearnEnglish-Seite: *I think life in the countryside is simpler than in the city.*
+    quiz:
+      - frage: "Wie lautet der Vergleich von „big“?"
+        erklaerung: "Bei Vokal plus Konsonant wird der Konsonant verdoppelt: bigger."
+        antworten:
+          - { text: "bigger", richtig: true }
+          - { text: "biger", richtig: false }
+          - { text: "more big", richtig: false }
+      - frage: "Welcher Satz ist richtig?"
+        erklaerung: "Lange Adjektive wie interesting bekommen more, und than nennt das Verglichene."
+        antworten:
+          - { text: "The city is more interesting than the countryside.", richtig: true }
+          - { text: "The city is interestinger than the countryside.", richtig: false }
+          - { text: "The city is more interesting as the countryside.", richtig: false }
+  - titel: Persönliche E-Mails beginnen
+    inhalt: |
+      Eine E-Mail an einen Freund klingt anders als eine an ein Hotel. Aus der
+      LearnEnglish-Aufgabe „An email giving holiday advice“:
+
+      - Beginne mit *Hi* und dem Namen statt mit *Dear*.
+      - Eine persönliche E-Mail darf wie ein Gespräch sein. Du kannst mit *How are you?* anfangen.
+
+      **Eigenes Beispiel (nicht aus der Quelle):**
+
+      ```text
+      Hi Anna,
+      How are you? I'm writing about our trip. How about meeting at ten?
+      ```
+
+      **Zum Vergleich:** An ein Hotel oder eine Lehrkraft schreibst du *Dear* und den Namen.
+
+      **Unsicher:** Diese Aufgabe gehört laut Seite zu einem höheren Niveau (B1). Die beiden Tipps
+      sind aber einfach und gelten schon für A2.
+    quiz:
+      - frage: "Wie beginnst du eine E-Mail an einen Freund?"
+        erklaerung: "Persönliche E-Mails beginnen mit Hi und dem Namen."
+        antworten:
+          - { text: "Hi Anna,", richtig: true }
+          - { text: "To whom it may concern,", richtig: false }
+          - { text: "Dear Sir or Madam,", richtig: false }
+      - frage: "Womit kannst du eine persönliche E-Mail anfangen?"
+        erklaerung: "Eine Frage wie How are you? passt, weil die E-Mail wie ein Gespräch sein darf."
+        antworten:
+          - { text: "Mit der Frage How are you?", richtig: true }
+          - { text: "Mit einem Passwort.", richtig: false }
+          - { text: "Nur mit dem Betreff.", richtig: false }
+test:
+  zeitlimit_minuten: 15
+  fragen:
+    - frage: "Welche Wendung macht einen Vorschlag?"
+      erklaerung: "Shall we ...? ist eine Wendung für Vorschläge."
+      antworten:
+        - { text: "Shall we meet a bit later, say 10?", richtig: true }
+        - { text: "We met a bit later, say 10.", richtig: false }
+        - { text: "Meeting later say 10 shall.", richtig: false }
+    - frage: "Welcher Satz stimmt einem Vorschlag zu?"
+      erklaerung: "Sure! Sunday works for me stimmt im Beispielchat zu."
+      antworten:
+        - { text: "Sure! Sunday works for me.", richtig: true }
+        - { text: "Sunday is never.", richtig: false }
+        - { text: "Where is Sunday?", richtig: false }
+    - frage: "Welche Bitte ist laut LearnEnglish die höflichere?"
+      erklaerung: "Would you ... ist höflicher als will you ..."
+      antworten:
+        - { text: "Would you carry this for me, please?", richtig: true }
+        - { text: "Will you carry this for me, please?", richtig: false }
+        - { text: "Carry this for me.", richtig: false }
+    - frage: "Wie lautet der Vergleich von „happy“?"
+      erklaerung: "Bei Konsonant plus -y wird das y zu i: happier."
+      antworten:
+        - { text: "happier", richtig: true }
+        - { text: "happyer", richtig: false }
+        - { text: "happyier", richtig: false }
+    - frage: "Welche Form ist die Steigerung von „good“?"
+      erklaerung: "Good ist unregelmäßig: better."
+      antworten:
+        - { text: "better", richtig: true }
+        - { text: "gooder", richtig: false }
+        - { text: "worse", richtig: false }
+    - frage: "Welches Wort brauchst du, um zu sagen, womit du vergleichst?"
+      erklaerung: "Than entspricht dem deutschen „als“."
+      antworten:
+        - { text: "than", richtig: true }
+        - { text: "then", richtig: false }
+        - { text: "ago", richtig: false }
