@@ -1,0 +1,207 @@
+titel: Prompting
+zusammenfassung: Klare Anweisungen schreiben, Kontext und Beispiele geben, Prompts mit XML-Tags und einer Rolle strukturieren, das Ausgabeformat steuern und Prompts an Kriterien testen.
+quellen:
+  - titel: Claude Docs – Prompt engineering overview
+    url: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview
+  - titel: Claude Docs – Prompting best practices
+    url: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices
+abschnitte:
+  - titel: Klar und direkt formulieren
+    inhalt: |
+      Ein **Prompt** ist die Anweisung, die du dem Modell gibst. Je genauer du sagst, was du
+      willst, desto besser wird das Ergebnis.
+
+      Die Doku empfiehlt, dir das Modell als **brillanten neuen Kollegen** vorzustellen, der
+      deine Gewohnheiten und Abläufe nicht kennt. Er kann viel, aber er weiß nicht, was du
+      meinst, wenn du es nicht sagst.
+
+      **Testfrage:** Zeig deinen Prompt einem Kollegen, der die Aufgabe nicht kennt. Würde er
+      stutzen, stutzt das Modell auch.
+
+      So wird ein Prompt besser:
+
+      - Sag genau, welche **Ausgabe** du willst (Format, Länge, Sprache).
+      - Nenne **Einschränkungen**.
+      - Wenn die Reihenfolge wichtig ist, schreibe **nummerierte Schritte**.
+      - Erkläre den **Grund** hinter einer Anweisung. Das Modell kann daraus verallgemeinern.
+
+      ```text
+      Schlecht:  Erkläre HTTP.
+      Besser:    Erkläre HTTP in drei kurzen Sätzen für jemanden, der nur Python kennt.
+                 Nenne ein Alltagsbeispiel. Schreibe auf Deutsch.
+      ```
+
+      Statt „NIEMALS Fachbegriffe“ ist besser: „Die Leser sind Anfänger und kennen keine
+      Fachwörter. Erkläre jeden Begriff in einem Halbsatz.“ Mit Grund trifft das Modell
+      bessere Entscheidungen.
+    quiz:
+      - frage: "Was hilft laut Doku, wenn du den Prompt prüfen willst?"
+        erklaerung: "Man zeigt ihn einem Kollegen ohne Vorwissen. Wäre er verwirrt, wäre es das Modell auch."
+        antworten:
+          - { text: "Ihn einem Kollegen ohne Vorwissen zu zeigen.", richtig: true }
+          - { text: "Ihn in Großbuchstaben zu schreiben.", richtig: false }
+          - { text: "Ihn möglichst kurz zu halten.", richtig: false }
+      - frage: "Warum hilft es, den Grund einer Anweisung zu nennen?"
+        erklaerung: "Das Modell erhält mehr Information über dein Ziel und kann daraus verallgemeinern."
+        antworten:
+          - { text: "Das Modell versteht das Ziel besser und kann verallgemeinern.", richtig: true }
+          - { text: "Die Antwort wird dadurch immer kürzer.", richtig: false }
+          - { text: "Die Anfrage wird billiger.", richtig: false }
+  - titel: Beispiele geben
+    inhalt: |
+      Beispiele gehören laut Doku zu den zuverlässigsten Mitteln, Format, Ton und Aufbau der
+      Antwort zu steuern. Man nennt das **Few-Shot** oder **Multishot**-Prompting: Du zeigst dem
+      Modell ein paar fertige Muster.
+
+      Gute Beispiele sind:
+
+      - **relevant:** Sie ähneln deinem echten Einsatz.
+      - **vielfältig:** Sie decken auch Sonderfälle ab, damit das Modell kein falsches Muster
+        lernt.
+      - **abgegrenzt:** Du packst sie in `<example>`-Tags (mehrere in `<examples>`), damit das
+        Modell sie von den Anweisungen unterscheidet.
+
+      Die Doku empfiehlt für beste Ergebnisse **drei bis fünf** Beispiele.
+
+      ```text
+      Beantworte jede Frage in einem Satz.
+
+      <examples>
+        <example>
+          <frage>Was ist ein Token?</frage>
+          <antwort>Ein Token ist die kleinste Texteinheit, die ein Sprachmodell verarbeitet.</antwort>
+        </example>
+        <example>
+          <frage>Was ist ein Prompt?</frage>
+          <antwort>Ein Prompt ist die Anweisung, die du dem Modell gibst.</antwort>
+        </example>
+        <example>
+          <frage>Was ist ein System-Prompt?</frage>
+          <antwort>Ein System-Prompt legt Rolle und Regeln fest, getrennt von den Nutzernachrichten.</antwort>
+        </example>
+      </examples>
+
+      Frage: Was ist das Kontextfenster?
+      ```
+    quiz:
+      - frage: "Wie viele Beispiele empfiehlt die Doku für beste Ergebnisse?"
+        erklaerung: "Die Doku empfiehlt 3 bis 5 Beispiele."
+        antworten:
+          - { text: "3 bis 5", richtig: true }
+          - { text: "Genau 1", richtig: false }
+          - { text: "Mindestens 50", richtig: false }
+      - frage: "Warum sollten Beispiele vielfältig sein?"
+        erklaerung: "Damit das Modell keine unbeabsichtigten Muster übernimmt und Sonderfälle abgedeckt sind."
+        antworten:
+          - { text: "Damit das Modell keine unbeabsichtigten Muster lernt.", richtig: true }
+          - { text: "Damit der Prompt länger wird.", richtig: false }
+          - { text: "Damit die Temperatur sinkt.", richtig: false }
+  - titel: Struktur mit XML-Tags und Rolle
+    inhalt: |
+      Enthält ein Prompt Anweisungen, Hintergrund, Beispiele und Eingaben, kann das Modell sie
+      leicht durcheinanderbringen. **XML-Tags** trennen die Teile sauber:
+
+      ```text
+      <anweisung>Fasse den Text in zwei Sätzen zusammen.</anweisung>
+      <text>
+      {{HIER_DER_TEXT}}
+      </text>
+      ```
+
+      Regeln aus der Doku:
+
+      - Nimm **gleichbleibende, sprechende** Tag-Namen.
+      - Verschachtele Tags, wenn der Inhalt eine natürliche Hierarchie hat.
+
+      Mit einer **Rolle** im **System-Prompt** richtest du Verhalten und Ton des Modells aus.
+      Schon ein Satz hilft:
+
+      ```text
+      Du bist ein geduldiger Lehrer für Programmieranfänger. Erkläre kurz und mit Beispielen.
+      ```
+
+      Der System-Prompt ist ein eigener Teil der Anfrage (Parameter `system`), getrennt von
+      den Nachrichten des Nutzers.
+    quiz:
+      - frage: "Wozu dienen XML-Tags in einem Prompt?"
+        erklaerung: "Sie trennen Anweisungen, Kontext, Beispiele und Eingaben, damit nichts verwechselt wird."
+        antworten:
+          - { text: "Sie trennen die Teile des Prompts eindeutig.", richtig: true }
+          - { text: "Sie verschlüsseln den Prompt.", richtig: false }
+          - { text: "Sie senken die Kosten.", richtig: false }
+      - frage: "Wo legst du laut Doku die Rolle für das Modell fest?"
+        erklaerung: "Im System-Prompt."
+        antworten:
+          - { text: "Im System-Prompt.", richtig: true }
+          - { text: "In der URL der API.", richtig: false }
+          - { text: "In der Antwort des Modells.", richtig: false }
+  - titel: Ausgabeformat steuern und Prompts testen
+    inhalt: |
+      **Das Format steuern.** Die Doku nennt wirksame Wege:
+
+      1. **Sag, was das Modell tun soll, statt was es lassen soll.** Besser als „Keine
+         Markdown-Formatierung“ ist „Schreibe in zusammenhängenden Absätzen“.
+      2. **Nutze XML-Hinweise:** „Schreibe den Fließtext in `<absaetze>`-Tags.“
+      3. **Passe deinen Prompt-Stil an die gewünschte Ausgabe an.** Enthält dein Prompt viel
+         Markdown, enthält die Antwort eher viel Markdown.
+      4. **Gib bei Sonderwünschen genaue Hinweise.**
+
+      **Prompts testen.** Bevor du Prompts verbesserst, brauchst du laut Doku:
+
+      1. klare **Erfolgskriterien** (woran erkenne ich eine gute Antwort?),
+      2. einen Weg, **gegen diese Kriterien zu testen**,
+      3. einen ersten **Entwurf** des Prompts.
+
+      Ohne Kriterien weißt du nicht, ob eine Änderung besser ist.
+
+      **Bild:** Wie beim Kochen: Erst festlegen, wie das Gericht schmecken soll, dann am
+      Rezept drehen und probieren.
+
+      Auch gut zu wissen: Nicht jedes Problem löst man mit einem besseren Prompt. Manchmal
+      hilft ein anderes Modell mehr, etwa bei Geschwindigkeit oder Kosten.
+    quiz:
+      - frage: "Welche Formulierung folgt dem Tipp der Doku „sag, was das Modell tun soll“?"
+        erklaerung: "Positiv formulierte Anweisungen steuern das Format besser als Verbote."
+        antworten:
+          - { text: "Schreibe in zusammenhängenden Absätzen.", richtig: true }
+          - { text: "Benutze kein Markdown.", richtig: false }
+          - { text: "Vermeide Aufzählungen.", richtig: false }
+      - frage: "Was brauchst du laut Doku, bevor du einen Prompt verbesserst?"
+        erklaerung: "Erfolgskriterien, eine Möglichkeit, dagegen zu testen, und einen ersten Entwurf."
+        antworten:
+          - { text: "Erfolgskriterien und eine Möglichkeit, dagegen zu testen.", richtig: true }
+          - { text: "Einen API-Schlüssel mit höheren Limits.", richtig: false }
+          - { text: "Ein Modell mit größerem Kontextfenster.", richtig: false }
+test:
+  zeitlimit_minuten: 15
+  fragen:
+    - frage: "Welcher Prompt ist nach den Regeln „klar und direkt“ am besten?"
+      erklaerung: "Er nennt Format, Länge, Zielgruppe und Sprache."
+      antworten:
+        - { text: "Erkläre HTTP in drei kurzen Sätzen auf Deutsch für Python-Kenner.", richtig: true }
+        - { text: "Erkläre HTTP.", richtig: false }
+        - { text: "HTTP???", richtig: false }
+    - frage: "Wozu nutzt man Few-Shot-Beispiele?"
+      erklaerung: "Sie steuern Format, Ton und Aufbau der Antwort."
+      antworten:
+        - { text: "Um Format, Ton und Struktur der Antwort zu steuern.", richtig: true }
+        - { text: "Um das Kontextfenster zu vergrößern.", richtig: false }
+        - { text: "Um den API-Schlüssel zu ersetzen.", richtig: false }
+    - frage: "Wie kennzeichnest du Beispiele im Prompt, damit sie nicht mit Anweisungen verwechselt werden?"
+      erklaerung: "In `<example>`-Tags, mehrere in `<examples>`."
+      antworten:
+        - { text: "In <example>-Tags, mehrere in <examples>.", richtig: true }
+        - { text: "Mit drei Ausrufezeichen davor.", richtig: false }
+        - { text: "In einer eigenen API-Anfrage.", richtig: false }
+    - frage: "Wo steht die Rolle des Modells in einer API-Anfrage?"
+      erklaerung: "Im System-Prompt (Parameter `system`)."
+      antworten:
+        - { text: "Im System-Prompt.", richtig: true }
+        - { text: "Im Header anthropic-version.", richtig: false }
+        - { text: "Im Parameter max_tokens.", richtig: false }
+    - frage: "Warum sind Erfolgskriterien vor dem Prompt-Feinschliff wichtig?"
+      erklaerung: "Ohne Kriterien lässt sich nicht beurteilen, ob eine Änderung besser ist."
+      antworten:
+        - { text: "Ohne sie kannst du nicht beurteilen, ob eine Änderung besser ist.", richtig: true }
+        - { text: "Sie senken die Tokenkosten.", richtig: false }
+        - { text: "Sie ersetzen den System-Prompt.", richtig: false }

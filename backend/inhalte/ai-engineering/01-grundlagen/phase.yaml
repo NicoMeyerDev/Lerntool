@@ -1,0 +1,32 @@
+titel: Grundlagen, Prompting und API
+beschreibung: Du verstehst, wie Sprachmodelle arbeiten und wo ihre Grenzen liegen, schreibst klare Prompts und kannst eine Anfrage an die Claude-API aufbauen, ihre Antwort lesen und Fehler, Kosten und Limits einschätzen.
+projekt:
+  titel: Prompt- und API-Werkstatt
+  beschreibung: |
+    Du entwickelst und prüfst einen Prompt für eine kleine Aufgabe und bereitest die passende
+    API-Anfrage vor. Es ist der erste Schritt zur späteren KI-Auswertung der Lern-App.
+    Ein echter API-Aufruf ist **freiwillig**, weil er einen API-Schlüssel und Kosten braucht.
+    Alles andere kannst du auf Papier oder in einer Textdatei erledigen.
+
+    **Aufgabe:** Wähle eine kleine Aufgabe, zum Beispiel „Erkläre einen Fachbegriff aus der
+    Lern-App in drei einfachen Sätzen“. Du schreibst zwei Prompts dafür, vergleichst sie
+    an fünf Testeingaben und baust die API-Anfrage zusammen.
+
+    **Regeln:**
+
+    - Lege zuerst fest, woran du eine gute Antwort erkennst (Erfolgskriterien), bevor du Prompts schreibst.
+    - Bewerte jede Antwort nach deinen Kriterien, nicht nach dem Bauchgefühl.
+    - Der API-Schlüssel steht nie im Text, im Code oder im Git. Nutze einen Platzhalter oder die Umgebungsvariable.
+    - Aussagen aus Antworten, die du weiterverwenden willst, prüfst du an einer Quelle.
+
+    **Tipp:** Fange mit dem einfachsten Prompt an und verbessere ihn Schritt für Schritt.
+    Quelle: [Prompt engineering overview](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview) und [Messages API](https://platform.claude.com/docs/en/api/messages).
+  punkte:
+    - Drei Erfolgskriterien und fünf Testeingaben sind aufgeschrieben.
+    - Ein erster Prompt mit Aufgabe, Rolle und gewünschtem Format liegt vor.
+    - Ein zweiter Prompt enthält drei Beispiele in `<examples>`-Tags.
+    - Beide Prompts sind an den fünf Testeingaben nach den Kriterien bewertet, in einer Liste mit Kriterium und Ergebnis je Testeingabe.
+    - Eine vollständige Anfrage an `/v1/messages` ist aufgebaut (Header, Modell, `max_tokens`, `system`, `messages`), ohne echten Schlüssel.
+    - Für die Fehler 401, 429 und 529 steht, wie dein Programm jeweils reagiert.
+    - Die Kosten für 100 Anfragen sind überschlagen (Tokenzahl, Preis laut Preisseite, Annahmen offen genannt).
+    - Eine Antwort ist auf erfundene Angaben geprüft, mit Quelle.

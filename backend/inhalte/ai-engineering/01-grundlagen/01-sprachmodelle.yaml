@@ -1,0 +1,201 @@
+titel: Wie Sprachmodelle arbeiten
+zusammenfassung: Was ein Sprachmodell ist, was Tokens und das Kontextfenster bedeuten, wie die Temperatur wirkt und warum Modelle Dinge erfinden können.
+quellen:
+  - titel: Claude Docs – Glossary
+    url: https://platform.claude.com/docs/en/about-claude/glossary
+  - titel: Claude Docs – Context windows
+    url: https://platform.claude.com/docs/en/build-with-claude/context-windows
+  - titel: Claude Docs – Reduce hallucinations
+    url: https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations
+abschnitte:
+  - titel: Was ist ein Sprachmodell?
+    inhalt: |
+      Ein **Sprachmodell** (englisch *LLM*, Large Language Model) ist ein Programm mit sehr
+      vielen Parametern. Es wurde mit riesigen Textmengen trainiert und kann Texte schreiben,
+      Fragen beantworten und zusammenfassen.
+
+      Zuerst kommt das **Pretraining**: Das Modell lernt auf einem großen Textbestand, das
+      nächste Wort zu einem bisherigen Text vorherzusagen. Danach wird es nachtrainiert
+      (zum Beispiel mit **RLHF**, Lernen aus menschlichem Feedback), damit es Anweisungen
+      befolgt und sich wie ein hilfreicher Assistent verhält.
+
+      **Bild:** Stell dir jemanden vor, der unglaublich viel gelesen hat und gelernt hat,
+      Sätze sinnvoll weiterzuschreiben. Danach hat er Übungsstunden bekommen, wie man höflich
+      und nützlich antwortet.
+
+      Wichtig für dich als Entwickler: Du sprichst das Modell über eine **API** an. Du
+      schickst einen Text (den **Prompt**) und bekommst Text zurück.
+
+      *Eselsbrücke Python:* Ein Modell ist wie eine Funktion `antwort = modell(prompt)`.
+      Sie hat aber keinen festen Ablauf, sondern gibt wahrscheinliche Fortsetzungen zurück.
+    quiz:
+      - frage: "Worauf wird ein Sprachmodell im Pretraining trainiert?"
+        erklaerung: "Laut Glossar lernt das Modell, das nächste Wort zu einem bisherigen Text vorherzusagen."
+        antworten:
+          - { text: "Das nächste Wort zu einem bisherigen Text vorherzusagen.", richtig: true }
+          - { text: "Fragen mit festen Antworten aus einer Datenbank nachzuschlagen.", richtig: false }
+          - { text: "Programmcode auszuführen.", richtig: false }
+      - frage: "Wofür steht die Abkürzung LLM?"
+        erklaerung: "LLM steht für Large Language Model, also großes Sprachmodell."
+        antworten:
+          - { text: "Large Language Model", richtig: true }
+          - { text: "Long Learning Machine", richtig: false }
+          - { text: "Linear Logic Module", richtig: false }
+  - titel: Tokens und Kontextfenster
+    inhalt: |
+      Ein Modell liest keine Buchstaben und keine ganzen Wörter, sondern **Tokens**. Ein Token
+      ist die kleinste Einheit, mit der das Modell arbeitet. Es kann ein Wort, ein Wortteil,
+      ein Zeichen oder ein Byte sein. Wie viele Zeichen ein Token ausmacht, hängt vom Modell und
+      von der Sprache ab. Kosten und Grenzen werden in Tokens gerechnet.
+
+      Das **Kontextfenster** ist alles, was das Modell beim Antworten ansehen kann, **inklusive
+      der Antwort selbst**. Es ist das Arbeitsgedächtnis des Modells. Es ist etwas anderes als
+      die Trainingsdaten.
+
+      In das Fenster zählen:
+
+      - der System-Prompt,
+      - alle Nachrichten im Gespräch (auch Werkzeug-Ergebnisse, Bilder und Dokumente),
+      - die Beschreibungen von Werkzeugen,
+      - die erzeugte Antwort.
+
+      Die Größe hängt vom Modell ab und ändert sich mit neuen Modellen. Die genauen Werte
+      stehen in der Modellübersicht der Doku. Schau dort nach, statt dir Zahlen zu merken.
+
+      **Bild:** Das Kontextfenster ist ein Schreibtisch. Alles, was darauf liegt, kann das Modell
+      sehen. Ist der Tisch voll, passt nichts mehr drauf.
+
+      **Mehr ist nicht automatisch besser:** Wächst die Tokenzahl, können Genauigkeit und
+      Erinnerung nachlassen (die Doku nennt das *context rot*). Deshalb zählt auch, **was** im
+      Kontext steht.
+
+      Ist schon die Eingabe allein größer als das Fenster, lehnt die API die Anfrage mit einem
+      Fehler 400 ab.
+    quiz:
+      - frage: "Was gehört laut Doku zum Kontextfenster?"
+        erklaerung: "Alles, was das Modell ansehen kann, inklusive der Antwort selbst."
+        antworten:
+          - { text: "Die Eingabe und die erzeugte Antwort.", richtig: true }
+          - { text: "Nur die erste Nachricht.", richtig: false }
+          - { text: "Nur die Trainingsdaten.", richtig: false }
+      - frage: "Was bedeutet *context rot*?"
+        erklaerung: "Mit wachsender Tokenzahl können Genauigkeit und Erinnerung nachlassen."
+        antworten:
+          - { text: "Bei sehr langem Kontext kann die Qualität nachlassen.", richtig: true }
+          - { text: "Das Modell löscht alte Nachrichten selbst.", richtig: false }
+          - { text: "Das Modell kann den Kontext nicht mehr lesen.", richtig: false }
+      - frage: "Was ist ein Token?"
+        erklaerung: "Ein Token ist die kleinste Einheit des Modells, zum Beispiel ein Wort, Wortteil oder Zeichen."
+        antworten:
+          - { text: "Die kleinste Einheit, mit der das Modell arbeitet.", richtig: true }
+          - { text: "Ein Zugangsschlüssel zur API.", richtig: false }
+          - { text: "Immer genau ein Wort.", richtig: false }
+  - titel: Temperatur und Zufall
+    inhalt: |
+      Beim Erzeugen eines Textes wählt das Modell Schritt für Schritt das nächste Token. Die
+      **Temperatur** steuert, wie zufällig diese Wahl ist.
+
+      - **Hohe Temperatur:** kreativere, vielfältigere Antworten.
+      - **Niedrige Temperatur:** vorsichtigere Antworten, die beim wahrscheinlichsten
+        Ausdruck bleiben.
+
+      **Bild:** Niedrig ist wie „nimm immer den bekannten Weg“, hoch wie „probiere auch mal
+      einen Seitenweg“.
+
+      **Aber:** Auch bei Temperatur 0 sind die Ergebnisse laut Doku **nicht vollständig
+      deterministisch**. Gleiche Eingaben können bei verschiedenen Aufrufen verschiedene
+      Ausgaben liefern. Verlass dich also nie darauf, dass zweimal exakt dasselbe herauskommt.
+      Prüfe wichtige Ergebnisse mit Tests.
+
+      Hinweis: Welche Einstellungen ein bestimmtes Modell erlaubt, steht in der Doku zu diesem
+      Modell. Sie kann sich ändern, schau vor dem Einsatz nach.
+    quiz:
+      - frage: "Was bewirkt eine niedrige Temperatur?"
+        erklaerung: "Niedrige Temperaturen führen zu konservativeren Ausgaben nahe am Wahrscheinlichsten."
+        antworten:
+          - { text: "Konservativere, vorhersehbarere Antworten.", richtig: true }
+          - { text: "Immer kreativere Antworten.", richtig: false }
+          - { text: "Ein größeres Kontextfenster.", richtig: false }
+      - frage: "Ist das Ergebnis bei Temperatur 0 immer exakt gleich?"
+        erklaerung: "Nein. Laut Glossar sind Ergebnisse auch bei Temperatur 0 nicht vollständig deterministisch."
+        antworten:
+          - { text: "Nein, es kann trotzdem Unterschiede geben.", richtig: true }
+          - { text: "Ja, bei 0 ist es immer identisch.", richtig: false }
+          - { text: "Nur wenn der Prompt kürzer als 100 Zeichen ist.", richtig: false }
+  - titel: Grenzen und Halluzinationen
+    inhalt: |
+      Sprachmodelle sind stark, aber nicht unfehlbar. Sie können Text erzeugen, der
+      sachlich falsch ist oder nicht zum Kontext passt. Das nennt man **Halluzination**. Der
+      Text klingt dann trotzdem überzeugend.
+
+      **Bild:** Ein Schüler, der bei einer Prüfung nie „weiß ich nicht“ sagt, sondern immer
+      etwas Plausibles hinschreibt.
+
+      Die Doku nennt einfache Gegenmittel:
+
+      1. **Unsicherheit erlauben:** Sag dem Modell ausdrücklich, dass es „Ich weiß es nicht“
+         sagen darf.
+      2. **Mit Zitaten arbeiten:** Bei langen Dokumenten zuerst wörtliche Zitate herausziehen
+         lassen und die Antwort nur darauf stützen.
+      3. **Belege verlangen:** Jede Aussage mit Quelle oder Zitat absichern; findet das Modell
+         keinen Beleg, nimmt es die Aussage zurück.
+      4. **Nur die gegebenen Dokumente nutzen:** Dem Modell sagen, dass es sein
+         Allgemeinwissen nicht verwenden soll.
+
+      **Wichtig:** Diese Techniken senken das Risiko, schalten es aber **nicht ganz aus**.
+      Wichtige Angaben prüfst du immer selbst, besonders bei folgenreichen Entscheidungen.
+
+      Das ist auch die Regel in dieser Lern-App: Lerninhalte stammen aus offiziellen Quellen,
+      nicht aus einer ungeprüften Modellantwort.
+    quiz:
+      - frage: "Was ist eine Halluzination bei einem Sprachmodell?"
+        erklaerung: "Das Modell erzeugt Text, der sachlich falsch oder inkonsistent mit dem Kontext ist."
+        antworten:
+          - { text: "Ein plausibel klingender, aber falscher oder unpassender Text.", richtig: true }
+          - { text: "Ein Absturz der API.", richtig: false }
+          - { text: "Eine zu lange Antwort.", richtig: false }
+      - frage: "Welche Maßnahme senkt laut Doku das Risiko von Halluzinationen?"
+        erklaerung: "Dem Modell erlauben zu sagen, dass es etwas nicht weiß, gehört zu den genannten Basisstrategien."
+        antworten:
+          - { text: "Dem Modell erlauben, „Ich weiß es nicht“ zu sagen.", richtig: true }
+          - { text: "Die Temperatur auf den höchsten Wert stellen.", richtig: false }
+          - { text: "Dem Modell verbieten, Quellen zu nennen.", richtig: false }
+      - frage: "Kann man Halluzinationen mit diesen Techniken ganz ausschließen?"
+        erklaerung: "Nein. Die Techniken senken das Risiko, eliminieren es aber nicht."
+        antworten:
+          - { text: "Nein, wichtige Angaben muss man weiterhin prüfen.", richtig: true }
+          - { text: "Ja, mit Zitaten ist es ausgeschlossen.", richtig: false }
+          - { text: "Ja, wenn die Temperatur 0 ist.", richtig: false }
+test:
+  zeitlimit_minuten: 15
+  fragen:
+    - frage: "Welche Aussage zum Kontextfenster stimmt?"
+      erklaerung: "Das Kontextfenster umfasst Eingabe und Antwort und wirkt wie das Arbeitsgedächtnis."
+      antworten:
+        - { text: "Es ist das Arbeitsgedächtnis des Modells und enthält auch die Antwort.", richtig: true }
+        - { text: "Es ist die Menge aller Trainingsdaten.", richtig: false }
+        - { text: "Es hat bei allen Modellen dieselbe Größe.", richtig: false }
+    - frage: "Warum sollte man nicht einfach so viel Text wie möglich in den Kontext legen?"
+      erklaerung: "Mit wachsender Tokenzahl können Genauigkeit und Erinnerung nachlassen (context rot)."
+      antworten:
+        - { text: "Weil die Qualität bei sehr langem Kontext nachlassen kann.", richtig: true }
+        - { text: "Weil Tokens nicht mehr gezählt werden.", richtig: false }
+        - { text: "Weil das Modell dann immer abbricht.", richtig: false }
+    - frage: "Welche Wirkung hat eine hohe Temperatur?"
+      erklaerung: "Höhere Temperaturen führen zu kreativeren und vielfältigeren Ausgaben."
+      antworten:
+        - { text: "Kreativere und vielfältigere Ausgaben.", richtig: true }
+        - { text: "Garantiert korrekte Fakten.", richtig: false }
+        - { text: "Weniger Kosten.", richtig: false }
+    - frage: "Was solltest du bei wichtigen Aussagen aus einer Modellantwort tun?"
+      erklaerung: "Halluzinationen lassen sich senken, aber nicht ausschließen. Wichtige Angaben prüfst du an einer Quelle."
+      antworten:
+        - { text: "Sie an einer verlässlichen Quelle prüfen.", richtig: true }
+        - { text: "Sie ungeprüft übernehmen, wenn sie überzeugend klingen.", richtig: false }
+        - { text: "Den Prompt in Großbuchstaben wiederholen.", richtig: false }
+    - frage: "Was passiert, wenn die Eingabe allein schon größer als das Kontextfenster ist?"
+      erklaerung: "Die API lehnt die Anfrage mit einem 400-Fehler (invalid_request_error) ab."
+      antworten:
+        - { text: "Die API antwortet mit einem Fehler 400.", richtig: true }
+        - { text: "Das Modell kürzt die Eingabe still und antwortet normal.", richtig: false }
+        - { text: "Die Anfrage wird automatisch in zwei Teile geteilt.", richtig: false }
