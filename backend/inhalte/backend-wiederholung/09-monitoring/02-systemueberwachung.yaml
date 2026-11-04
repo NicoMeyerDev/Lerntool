@@ -1,0 +1,122 @@
+titel: Systemüberwachung mit Prometheus
+zusammenfassung: Du erinnerst dich, was Prometheus ist, wie sein Datenmodell mit Metriknamen und Labels aufgebaut ist und wie Abfragen, Exporter und Alarme zusammenspielen.
+quellen:
+  - titel: Prometheus Docs – Overview
+    url: https://prometheus.io/docs/introduction/overview/
+abschnitte:
+  - titel: Was Prometheus ist
+    inhalt: |
+      **Prometheus** ist laut Doku ein quelloffenes Werkzeug zur **Systemüberwachung und Alarmierung**.
+      Es entstand bei SoundCloud, gehört seit 2016 zur Cloud Native Computing Foundation und wird
+      unabhängig von einer Firma gepflegt.
+
+      **Bild (eigene Idee):** Prometheus ist wie ein Fahrtenschreiber: Er notiert in kurzen
+      Abständen Messwerte deines Systems, damit du später nachsehen kannst, was wann los war.
+
+      Du überwachst damit zum Beispiel, wie viele Anfragen eine Anwendung bekommt, wie lange sie
+      brauchen oder wie viele Fehler auftreten. (Welche Zahlen sinnvoll sind, hängt von deiner
+      Anwendung ab. Das ist eine eigene Überlegung.)
+    quiz:
+      - frage: "Wofür ist Prometheus laut Doku gedacht?"
+        erklaerung: "Für Systemüberwachung und Alarmierung."
+        antworten:
+          - { text: "Zum Verwalten von Git-Branches.", richtig: false }
+          - { text: "Für Systemüberwachung und Alarmierung.", richtig: true }
+          - { text: "Zum Hosten von Websites.", richtig: false }
+      - frage: "Wo entstand Prometheus ursprünglich?"
+        erklaerung: "Bei SoundCloud."
+        antworten:
+          - { text: "Bei Render", richtig: false }
+          - { text: "Bei Sentry", richtig: false }
+          - { text: "Bei SoundCloud", richtig: true }
+  - titel: Das Datenmodell und PromQL
+    inhalt: |
+      Prometheus speichert **Zeitreihen**: Messwerte mit dem Zeitpunkt, zu dem sie erfasst wurden, und
+      optional mit Schlüssel-Wert-Paaren, den **Labels**.
+
+      - Jede Zeitreihe hat einen **Metriknamen** und Labels. So entsteht ein mehrdimensionales
+        Datenmodell.
+      - **PromQL** ist die Abfragesprache, die diese Dimensionen nutzt.
+
+      Die **Sammlung** der Daten läuft nach dem **Pull-Prinzip über HTTP**: Prometheus holt die Werte
+      von den **Zielen** (Targets) ab. Das Hineinschieben ist über ein Zwischenstück (Push-Gateway)
+      möglich. Die Ziele findet Prometheus über Service Discovery oder eine feste Konfiguration.
+
+      Die Doku beschreibt die **Metriktypen** (zum Beispiel Counter und Gauge) nicht auf dieser Seite,
+      sondern verweist auf eine eigene Seite. Hier gilt deshalb nur: Merke dir Metrikname plus Labels.
+    quiz:
+      - frage: "Wie holt Prometheus die Daten laut Doku?"
+        erklaerung: "Per Pull-Prinzip über HTTP."
+        antworten:
+          - { text: "Die Daten werden von Hand eingetippt.", richtig: false }
+          - { text: "Per Pull über HTTP von den Zielen.", richtig: true }
+          - { text: "Die Ziele schicken die Daten immer per E-Mail.", richtig: false }
+      - frage: "Wodurch ist eine Zeitreihe in Prometheus eindeutig bestimmt?"
+        erklaerung: "Durch Metriknamen und Schlüssel-Wert-Paare (Labels)."
+        antworten:
+          - { text: "Durch die Farbe der Grafik.", richtig: false }
+          - { text: "Durch den Benutzernamen.", richtig: false }
+          - { text: "Durch Metriknamen und Labels.", richtig: true }
+  - titel: Architektur und Alarme
+    inhalt: |
+      Die Teile des Systems:
+
+      - **Prometheus-Server:** holt Zeitreihen ab und speichert sie. Jeder Server arbeitet eigenständig.
+      - **Exporter:** Spezialwerkzeuge für Dienste wie HAProxy, StatsD und Graphite, die deren Werte bereitstellen.
+      - **Client-Bibliotheken:** zum Einbauen von Messpunkten in den eigenen Code.
+      - **Push-Gateway:** für kurzlebige Jobs.
+      - **Alertmanager:** kümmert sich um **Alarme**.
+
+      **Alarme:** Auf den gespeicherten Daten laufen Regeln. Sie erzeugen Alarme, die der
+      Alertmanager weiterverarbeitet.
+
+      Andere Werkzeuge wie **Grafana** können die Daten zusätzlich anzeigen.
+
+      **Eigene Regel:** Einen Prometheus-Server zu betreiben kostet Zeit und eventuell Geld. Hier
+      geht es nur ums Verstehen. Eine Einrichtung wird mit dem Lernenden abgestimmt.
+    quiz:
+      - frage: "Welcher Baustein kümmert sich um Alarme?"
+        erklaerung: "Der Alertmanager."
+        antworten:
+          - { text: "Der Exporter", richtig: false }
+          - { text: "Das Push-Gateway", richtig: false }
+          - { text: "Der Alertmanager", richtig: true }
+      - frage: "Wofür sind Exporter gedacht?"
+        erklaerung: "Sie stellen Werte von Diensten wie HAProxy oder StatsD für Prometheus bereit."
+        antworten:
+          - { text: "Sie ersetzen den Prometheus-Server.", richtig: false }
+          - { text: "Sie stellen Werte von Diensten für Prometheus bereit.", richtig: true }
+          - { text: "Sie speichern die Zeitreihen dauerhaft.", richtig: false }
+test:
+  zeitlimit_minuten: 10
+  fragen:
+    - frage: "Was sind Labels in Prometheus?"
+      erklaerung: "Schlüssel-Wert-Paare, die eine Zeitreihe näher beschreiben."
+      antworten:
+        - { text: "Schlüssel-Wert-Paare, die eine Zeitreihe näher beschreiben.", richtig: true }
+        - { text: "Passwörter für den Server.", richtig: false }
+        - { text: "Fehlermeldungen von Sentry.", richtig: false }
+    - frage: "Wie heißt die Abfragesprache von Prometheus?"
+      erklaerung: "PromQL."
+      antworten:
+        - { text: "SQL", richtig: false }
+        - { text: "YAML", richtig: false }
+        - { text: "PromQL", richtig: true }
+    - frage: "Wofür ist das Push-Gateway laut Doku gedacht?"
+      erklaerung: "Für kurzlebige Jobs."
+      antworten:
+        - { text: "Für die Verwaltung von Git-Branches.", richtig: false }
+        - { text: "Zum Verschlüsseln von Passwörtern.", richtig: false }
+        - { text: "Für kurzlebige Jobs.", richtig: true }
+    - frage: "Wer verarbeitet die von Regeln erzeugten Alarme weiter?"
+      erklaerung: "Der Alertmanager."
+      antworten:
+        - { text: "Der Browser", richtig: false }
+        - { text: "Die Datenbank-Migration", richtig: false }
+        - { text: "Der Alertmanager", richtig: true }
+    - frage: "Welches Modell nutzt Prometheus für die Datensammlung?"
+      erklaerung: "Ein Pull-Modell über HTTP."
+      antworten:
+        - { text: "Ein Pull-Modell über HTTP.", richtig: true }
+        - { text: "Ein Push-Modell über Fax.", richtig: false }
+        - { text: "Ein manuelles Modell über Tabellenkalkulation.", richtig: false }
