@@ -89,6 +89,10 @@ abschnitte:
 
       Der Präfix steht **ohne** Schrägstrich am Ende (`r'users'`), weil DRF ihn selbst anhängt.
 
+      Der `basename` ist die Grundlage für die Routennamen (`user-list`, `user-detail`). Lässt du
+      ihn weg, leitet DRF ihn vom `queryset` des ViewSets ab. Hat das ViewSet **kein**
+      `queryset`-Attribut, musst du den `basename` selbst angeben.
+
       **SimpleRouter oder DefaultRouter?** Der `DefaultRouter` arbeitet wie der `SimpleRouter`,
       ergänzt aber eine Startansicht `api-root`, die auf die Listen-Endpunkte verweist.
 
