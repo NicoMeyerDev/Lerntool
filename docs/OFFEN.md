@@ -23,19 +23,6 @@ Punkte, die eine Entscheidung oder Aktion des Nutzers brauchen.
   - Die Login-Bremse zählt pro IP-Adresse. Hinter dem Proxy von Render sähe sie nur die Proxy-IP; dann `NUM_PROXIES` in den DRF-Einstellungen setzen und einen gemeinsamen Cache verwenden.
 - **Vorschlag:** Für die Entwicklung `localStorage` verwenden. Vor dem Deployment entscheiden, ob das so bleibt oder auf Session-Cookies (HttpOnly, CSRF) umgestellt wird – das ist einfacher, wenn Frontend und Backend unter derselben Domain laufen.
 
-## 2026-11-04 – Englisch (C4): Audio für Hörübungen
-
-- **Problem:** Die App soll Hören üben (ohne Mikrofon). Eigene Aufnahmen gibt es nicht, fremde Audios dürfen nicht kopiert werden.
-- **Optionen:** (a) Hörtexte verlinken (z. B. British Council LearnEnglish), (b) Sprachausgabe im Browser, (c) eigene Aufnahmen. Jede Option hat Folgen für Lizenz, Kosten oder Qualität.
-- **Warum nicht allein entschieden:** Betrifft Kosten und Rechte (CLAUDE.md §7). Die Entscheidung wird vor der Ausarbeitung der Hörlektionen gebraucht, nicht für die Gliederung.
-
-## 2026-11-04 – AI Engineering (E1): Echte API-Aufrufe und Kosten
-
-- **Stand:** Phase 1 (Grundlagen, Prompting, API) erklärt die Claude-API anhand der Doku. Das Projekt „Prompt- und API-Werkstatt“ ist so gebaut, dass es **ohne** echten Aufruf lösbar ist.
-- **Offen:** Ob du einen API-Schlüssel anlegen und echte Aufrufe machen willst. Das kostet Geld (Abrechnung pro Tokens) und betrifft Sicherheit (der Schlüssel darf nie in Git oder ins Frontend).
-- **Vorschlag:** Lege bei Bedarf in der Konsole ein **eigenes, niedriges Ausgabenlimit** fest (die Doku beschreibt das) und halte den Schlüssel nur in einer Umgebungsvariable. Für die späteren Phasen (Werkzeuge, RAG, Agenten) brauchst du dann einen Schlüssel.
-- **Warum nicht allein entschieden:** Kosten und Sicherheit (CLAUDE.md §7).
-
 ## Erledigt
 
 ### 2026-11-04 – Englisch (C4): Was bedeutet „Einstieg ab SAP 2122“?
@@ -53,3 +40,13 @@ Punkte, die eine Entscheidung oder Aktion des Nutzers brauchen.
 - **Problem:** `.claude/settings.json` startete die Hooks mit `python ...`. Auf dem Linux-Rechner gibt es nur `python3`. Der Hook-Aufruf schlug fehl und blockierte nichts.
 - **Lösung (auf Wunsch des Nutzers):** Die Hooks rufen jetzt `python3` auf. Getestet: Ein Befehl mit Push auf `main` wird blockiert.
 - **Hinweis für Windows:** Dort gibt es `python3` oft nicht (oder nur den Microsoft-Store-Platzhalter). Dann laufen die Hooks unter Windows nicht. Bei A3 geprüft: siehe offener Punkt „Hooks und Windows-Anleitung auf Windows ungeprüft“.
+
+### 2026-11-04 – Englisch (C4): Audio für Hörübungen
+
+- **Problem:** Die App soll Hören üben (ohne Mikrofon). Eigene Aufnahmen gibt es nicht, fremde Audios dürfen nicht kopiert werden.
+- **Lösung (Antwort des Lernenden):** Eigene Aufnahmen sind erlaubt, wenn sie gut verständlich sind. Wie sie erzeugt werden (echte Aufnahme oder Sprachausgabe), bleibt offen und wird erst bei der Ausarbeitung der Hörlektionen entschieden, ohne Kosten und mit sauberer Lizenz.
+
+### 2026-11-04 – AI Engineering (E1): Echte API-Aufrufe und Kosten
+
+- **Problem:** Offen war, ob ein API-Schlüssel angelegt und echte Aufrufe gemacht werden (Kosten, Sicherheit).
+- **Lösung (Antwort des Lernenden):** Der Lernende möchte vorerst keinen API-Schlüssel anlegen. Phase 1 geht ohne Aufruf; Phasen mit echten Aufrufen bleiben bis zu einer neuen Entscheidung zurückgestellt.

@@ -22,9 +22,11 @@ Regeln: Immer die oberste offene Aufgabe aus „Jetzt“ bearbeiten. Aufgaben au
 - [x] **C2 Phase 1 PHP-Basics von Grund auf:** Variablen und Typen, Operatoren, Kontrollstrukturen, Funktionen, Arrays, Klassen und Objekte, Namespaces und Composer, Fehlerbehandlung. Kein Vorwissen voraussetzen. Python-Vergleich nur als Eselsbrücke. Quelle: php.net.
 - [x] **C3 Phase 2 Laravel-Kern:** Routing, Controller, Eloquent, Migrationen, Validierung, Tests. Quelle: laravel.com/docs, Version prüfen.
 - [x] **C4 Englisch, Gliederung:** Einstieg ab SAP 2122. Pfad Alltag und Ausland, dann Fachenglisch IT, am Ende optional Sprachtest. Nur Lesen, Hören und Schreiben, kein Mikrofon.
+- [ ] **C5 Englisch:** Lektionen Phase 1 (ab 1.3, A2) ausarbeiten – Lesen, Wortschatz, Grammatik, Schreiben; Hörabschnitte erst nach Audio-Umsetzung.
 
 ## Später (nicht anfangen)
 - [x] **E1 AI Engineering, Gliederung und Phase 1:** Themen 1-3 aus `/docs/LERNPLAN.md`, Block 5, in Abschnitte und Quizze zerlegen. Mit `quellenpruefer`, aktuelle Doku zwingend.
+- [ ] Audio-Umsetzung für Hörübungen (eigene, gut verständliche Aufnahmen oder Sprachausgabe; Frontend-Player)
 - [ ] **D1 Wiederholung Backend:** Themen 1-10 der Backend-Roadmap in Abschnitte und Quizze zerlegen. Priorität: Auth, Datenbanken, API, Testing, CI/CD, Monitoring.
 - [ ] **D2 Wiederholung DevSecOps:** Themen 1-10 der DevSecOps-Roadmap. Praktische Labs (Kali, Metasploitable, Juice Shop) nur als Theorie und Quiz, Labs nur in der eigenen Umgebung.
 - [ ] **D3 Konzept-Vergleiche Django und Laravel:** Auth, Datenbanken, API, Testing, Docker, CI/CD als gemeinsame Lektionen mit zwei Umsetzungen.
