@@ -139,3 +139,11 @@ Format: Datum – Entscheidung – Grund – Alternativen.
 - **Felder des Beispielprojekts „Trainingstagebuch“:** `datum`, `sportart`, `distanz_km`, `dauer_min`. Die Validierung nutzt die Obergrenzen `max:9999.99` und `max:1440`, passend zur Migration (Spaltengrößen). Grund: Eingaben, die die Datenbank nicht speichern kann, sollen schon bei der Validierung abgelehnt werden.
 - **`response()->noContent()` ist nur in der API-Referenz belegt**, nicht im Handbuch. Deshalb steht zusätzlich api.laravel.com als Quelle in der Lektion.
 - **Umfang Phase 2:** 7 Lektionen, Projekt „Trainingstagebuch“. Freigaben: `reviewer` FREIGABE, `quellenpruefer` FREIGABE.
+
+## 2026-11-04 – C4 Englisch, Gliederung
+
+- **Start bei Niveau A1.** Der Backlog nennt „Einstieg ab SAP 2122“, was im Projekt nirgends erklärt ist (siehe `docs/OFFEN.md`). Der Lernplan nennt „Basisniveau“, daher beginnt die Gliederung bei A1 und führt in Phase 1 bis A2. Grund: Ein zu leichter Start kostet wenig Zeit, ein zu schwerer Start würde entmutigen. Alternative: erst bei A2 einsteigen, wenn „SAP 2122“ das nahelegt.
+- **Drei Phasen:** Alltag und Ausland (A1–A2), Fachenglisch IT (A2–B1), Sprachtest (optional). Entspricht dem Lernplan. B1 ist ein Wunschziel für den IT-Bereich, Zeitangaben sind eigene Schätzungen und stammen aus keiner Quelle.
+- **Projekt Phase 2 knüpft an das Laravel-Projekt „Trainingstagebuch“ an**, damit Fachenglisch an echtem Material geübt wird (englische README, Pull-Request-Text). Alternative: eigenes, unabhängiges Beispiel.
+- **Niveau-Zuordnung der Themenfelder ist eine eigene didaktische Einordnung**, keine offizielle Einstufung; sie wird bei der Ausarbeitung gegen die konkrete LearnEnglish-Seite geprüft.
+- **Freigaben:** `quellenpruefer` NACHBESSERN (kleine Punkte, eingearbeitet), `reviewer` FREIGABE.
