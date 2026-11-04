@@ -192,7 +192,7 @@ test:
       antworten:
         - { text: "happier", richtig: true }
         - { text: "happyer", richtig: false }
-        - { text: "more happy", richtig: false }
+        - { text: "happyier", richtig: false }
     - frage: "Welche Form ist die Steigerung von „good“?"
       erklaerung: "Good ist unregelmäßig: better."
       antworten:
