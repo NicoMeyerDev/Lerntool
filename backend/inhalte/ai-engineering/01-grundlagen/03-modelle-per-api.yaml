@@ -1,0 +1,254 @@
+titel: Modelle über die API ansprechen
+zusammenfassung: Eine Anfrage an die Claude-API aufbauen, die Antwort lesen, Fehler richtig behandeln und Kosten, Limits und den API-Schlüssel im Griff behalten.
+quellen:
+  - titel: Claude Docs – Messages API
+    url: https://platform.claude.com/docs/en/api/messages
+  - titel: Claude Docs – API errors
+    url: https://platform.claude.com/docs/en/api/errors
+  - titel: Claude Docs – Rate limits
+    url: https://platform.claude.com/docs/en/api/rate-limits
+  - titel: Claude Docs – Pricing
+    url: https://platform.claude.com/docs/en/about-claude/pricing
+  - titel: Claude Docs – Authentication
+    url: https://platform.claude.com/docs/en/manage-claude/authentication
+  - titel: Claude Docs – Context windows
+    url: https://platform.claude.com/docs/en/build-with-claude/context-windows
+  - titel: Claude Docs – Token counting
+    url: https://platform.claude.com/docs/en/build-with-claude/token-counting
+  - titel: Claude Docs – Client SDKs
+    url: https://platform.claude.com/docs/en/cli-sdks-libraries/overview
+abschnitte:
+  - titel: Eine Anfrage aufbauen
+    inhalt: |
+      Du sprichst ein Modell über eine **HTTP-API** an. Für Gespräche mit Claude ist das die
+      **Messages API**. Du schickst eine `POST`-Anfrage an `/v1/messages`.
+
+      Die wichtigsten Teile:
+
+      - **Header:** `content-type: application/json`, `anthropic-version` (die gewünschte
+        API-Version, den aktuellen Wert nimmst du aus der Doku) und dein API-Schlüssel.
+        Die Doku nennt `Authorization: Bearer <Schlüssel>` als Standard. Der ältere Header
+        `x-api-key` wird weiter unterstützt und steht im Beispiel unten.
+      - **`model`:** welches Modell antworten soll. Die aktuellen Namen stehen in der
+        Modellübersicht der Doku, sie ändern sich mit der Zeit.
+      - **`max_tokens`:** die höchste Zahl an Tokens, die das Modell erzeugen darf.
+      - **`messages`:** die Nachrichten als Liste. Jede hat eine `role` (`user` oder
+        `assistant`) und einen `content`.
+      - **`system`:** optional, der System-Prompt mit Rolle und Regeln.
+
+      ```bash
+      curl https://api.anthropic.com/v1/messages \
+        -H "x-api-key: $ANTHROPIC_API_KEY" \
+        -H "anthropic-version: $ANTHROPIC_VERSION" \
+        -H "content-type: application/json" \
+        -d '{
+          "model": "MODELLNAME_AUS_DER_DOKU",
+          "max_tokens": 1024,
+          "system": "Du bist ein geduldiger Lehrer. Antworte kurz.",
+          "messages": [
+            {"role": "user", "content": "Was ist ein Token?"}
+          ]
+        }'
+      ```
+
+      **Wichtig:** Die API merkt sich nichts zwischen zwei Anfragen (sie ist
+      **zustandslos**). Für ein Gespräch schickst du bei jeder Anfrage den bisherigen Verlauf
+      mit, abwechselnd `user` und `assistant`. Alles im Verlauf zählt ins Kontextfenster.
+
+      Statt `curl` nutzt du im Alltag ein **SDK** (fertige Bibliothek). Die Doku bietet SDKs
+      unter anderem für Python, TypeScript und PHP an. Die Einstellungen sind dieselben.
+
+      *Eselsbrücke:* Das ist wie jede REST-API, die du kennst: URL, Header, JSON-Body, JSON-Antwort.
+    quiz:
+      - frage: "An welchen Pfad schickst du eine Anfrage an die Messages API?"
+        erklaerung: "Die Anfrage geht per POST an /v1/messages."
+        antworten:
+          - { text: "POST /v1/messages", richtig: true }
+          - { text: "GET /v1/chat", richtig: false }
+          - { text: "DELETE /v1/models", richtig: false }
+      - frage: "Warum musst du bei einem Gespräch den Verlauf bei jeder Anfrage mitschicken?"
+        erklaerung: "Die API ist zustandslos und merkt sich nichts zwischen den Anfragen."
+        antworten:
+          - { text: "Weil die API zustandslos ist.", richtig: true }
+          - { text: "Weil sonst der API-Schlüssel abläuft.", richtig: false }
+          - { text: "Weil das Modell sonst die Sprache wechselt.", richtig: false }
+      - frage: "Was legt `max_tokens` fest?"
+        erklaerung: "Die maximale Zahl an Tokens, die das Modell vor dem Stopp erzeugt."
+        antworten:
+          - { text: "Die höchste Zahl an Tokens, die das Modell erzeugen darf.", richtig: true }
+          - { text: "Die Größe des Kontextfensters.", richtig: false }
+          - { text: "Die Anzahl der erlaubten Anfragen pro Minute.", richtig: false }
+  - titel: Die Antwort lesen
+    inhalt: |
+      Die Antwort kommt als JSON. Für den Einstieg sind drei Dinge wichtig:
+
+      - **`content`:** eine Liste von Blöcken. Der Antworttext steht in einem Block vom Typ
+        `text`. Du suchst also den Textblock heraus, statt blind das erste Element zu nehmen.
+      - **`stop_reason`:** warum das Modell aufgehört hat. Zum Beispiel, weil es fertig war
+        oder weil das Kontextfenster erreicht wurde.
+      - **`usage`:** wie viele Tokens die Anfrage verbraucht hat (Eingabe und Ausgabe). Damit
+        rechnest du Kosten und Grenzen.
+
+      Mit der **Token-Zähl-API** kannst du den Verbrauch schon **vor** dem Senden schätzen.
+
+      **Grundregel für Programme:** Die Antwort ist **Text von einem Modell**, keine
+      garantierte Wahrheit. Prüfe sie, bevor du sie weiterverarbeitest (siehe Lektion
+      „Wie Sprachmodelle arbeiten“). Das gilt besonders, wenn du Teile der Antwort als
+      Daten oder Befehle benutzt.
+
+      Dauert eine Antwort lang, nutzt du laut Doku das **Streaming** oder die **Batches**, damit die Verbindung nicht
+      abbricht. Das vertiefst du später.
+    quiz:
+      - frage: "Wo findest du, wie viele Tokens eine Anfrage verbraucht hat?"
+        erklaerung: "Im Feld `usage` der Antwort."
+        antworten:
+          - { text: "Im Feld usage der Antwort.", richtig: true }
+          - { text: "Im Header content-type.", richtig: false }
+          - { text: "Im Feld model der Anfrage.", richtig: false }
+      - frage: "Wie holst du den Antworttext sicher aus `content`?"
+        erklaerung: "`content` ist eine Liste von Blöcken. Du suchst den Block vom Typ text."
+        antworten:
+          - { text: "Den Block vom Typ text in der Liste suchen.", richtig: true }
+          - { text: "Immer die ganze Antwort als einen String lesen.", richtig: false }
+          - { text: "Den Wert von stop_reason nehmen.", richtig: false }
+  - titel: Fehler behandeln
+    inhalt: |
+      Eine API-Anfrage kann scheitern. Die Fehler erkennst du am **HTTP-Statuscode**. Der Body
+      ist JSON mit einem `error`-Objekt (`type` und `message`) und einer `request_id`.
+
+      Wichtige Codes laut Doku:
+
+      - **400** (`invalid_request_error`): Problem mit Format oder Inhalt der Anfrage.
+      - **401** (`authentication_error`): Problem mit dem API-Schlüssel.
+      - **403** (`permission_error`): Der Schlüssel darf die Ressource nicht nutzen.
+      - **404** (`not_found_error`): Ressource nicht gefunden.
+      - **413** (`request_too_large`): Die Anfrage ist zu groß.
+      - **429** (`rate_limit_error`): Ein Limit ist erreicht.
+      - **500** (`api_error`): Unerwarteter Fehler auf Seite von Anthropic.
+      - **529** (`overloaded_error`): Die API ist vorübergehend überlastet.
+
+      **So reagierst du:**
+
+      - **400, 401, 403, 404, 413:** Das ist dein Fehler oder ein Konfigurationsfehler.
+        Nochmal senden bringt nichts. Anfrage oder Schlüssel korrigieren.
+      - **429:** Zu viele Anfragen. Hat die Antwort den Header `retry-after`, warte so viele
+        Sekunden. Früher zu wiederholen schlägt fehl.
+      - **500 und 529:** Wiederhole mit wachsendem Abstand (**exponentielles Backoff**). Hilft
+        es nicht, melde dich mit der **request-id** beim Support.
+
+      Das offizielle SDK wiederholt vorübergehende Fehler standardmäßig zweimal von selbst und
+      beachtet dabei `retry-after`.
+
+      Jede Antwort hat einen Header `request-id`. Logge ihn, er erleichtert die Fehlersuche.
+
+      **Nie** Fehler still verschlucken. Logge sie und zeige dem Nutzer eine verständliche
+      Meldung.
+    quiz:
+      - frage: "Wofür steht der Statuscode 401 bei der Claude-API?"
+        erklaerung: "401 `authentication_error`: Es gibt ein Problem mit dem API-Schlüssel."
+        antworten:
+          - { text: "Problem mit dem API-Schlüssel.", richtig: true }
+          - { text: "Die API ist überlastet.", richtig: false }
+          - { text: "Die Anfrage war zu groß.", richtig: false }
+      - frage: "Was tust du bei einem 429-Fehler mit Header `retry-after`?"
+        erklaerung: "Du wartest die angegebene Zahl an Sekunden, bevor du es erneut versuchst."
+        antworten:
+          - { text: "So viele Sekunden warten, wie der Header angibt.", richtig: true }
+          - { text: "Sofort mehrfach wiederholen.", richtig: false }
+          - { text: "Den API-Schlüssel neu erzeugen.", richtig: false }
+      - frage: "Wozu nutzt du die `request-id`?"
+        erklaerung: "Mit ihr identifiziert der Support eine bestimmte Anfrage."
+        antworten:
+          - { text: "Um eine bestimmte Anfrage beim Support zu benennen.", richtig: true }
+          - { text: "Um das Modell auszuwählen.", richtig: false }
+          - { text: "Um das Kontextfenster zu vergrößern.", richtig: false }
+  - titel: Kosten, Limits und Schlüssel
+    inhalt: |
+      **Kosten.** Du zahlst nach **Tokens**. Die Preisseite nennt den Preis pro **Million
+      Tokens (MTok)**, getrennt für Eingabe- und Ausgabe-Tokens. Je Modell sind die Preise
+      verschieden und können sich ändern. Die Preisseite ist die einzige verlässliche
+      Quelle dafür.
+
+      **Kosten schätzen:** Tokens pro Anfrage × Preis × Zahl der Anfragen. Die Tokens liest du
+      aus `usage` ab oder schätzt sie vorab.
+
+      **Limits.** Es gibt zwei Arten:
+
+      - **Rate Limits:** begrenzen, wie viel in kurzer Zeit erlaubt ist, gemessen in
+        Anfragen pro Minute (RPM) sowie Eingabe- und Ausgabe-Tokens pro Minute (ITPM, OTPM).
+        Wird eins überschritten, kommt ein 429.
+      - **Ausgabenlimits (Spend Limits):** begrenzen die Kosten pro Monat. Du kannst
+        **zusätzlich ein eigenes, niedrigeres Limit** setzen, um die Kosten zu deckeln. Ist
+        dein eigenes Limit erreicht, antwortet die API mit 400. Ist dagegen die Obergrenze
+        deines Tarifs erreicht, kommt ein 429 **ohne** `retry-after`. Wiederholen hilft dann
+        nicht, bis der Zugang wieder freigegeben ist.
+
+      **Der API-Schlüssel** ist ein Geheimnis wie ein Passwort:
+
+      - Lege ihn in der **Umgebungsvariable** `ANTHROPIC_API_KEY` ab. Das SDK liest sie
+        automatisch. Das passt zu unserer Regel: **Keine Secrets im Code**.
+      - Speichere ihn in einem Secrets-Manager und tausche ihn regelmäßig aus.
+      - Ruf die API **nicht aus dem Browser** auf. Jeder, der die Seite öffnet, kann den
+        Schlüssel im Code lesen. Dein Frontend spricht mit **deinem Backend**, das den Schlüssel hält.
+      - Verdacht auf Leck? Schlüssel sofort in der Konsole deaktivieren oder löschen.
+
+      Das ist die Architektur dieser App: Das Frontend hat keine Geschäftslogik und kennt keine
+      Schlüssel. Alles läuft über das Backend.
+    quiz:
+      - frage: "Wo gehört der API-Schlüssel hin?"
+        erklaerung: "In eine Umgebungsvariable (oder einen Secrets-Manager), nie in den Code."
+        antworten:
+          - { text: "In eine Umgebungsvariable wie ANTHROPIC_API_KEY.", richtig: true }
+          - { text: "In den Quelltext des Frontends.", richtig: false }
+          - { text: "In die README im Git.", richtig: false }
+      - frage: "Warum sollte die Claude-API nicht direkt aus dem Browser aufgerufen werden?"
+        erklaerung: "Jeder Besucher kann einen Schlüssel im Seitencode lesen. Der Aufruf gehört ins Backend."
+        antworten:
+          - { text: "Weil der Schlüssel im Browser für alle lesbar wäre.", richtig: true }
+          - { text: "Weil Browser kein JSON verstehen.", richtig: false }
+          - { text: "Weil die API nur nachts erreichbar ist.", richtig: false }
+      - frage: "In welcher Einheit nennt die Preisseite die Preise?"
+        erklaerung: "Pro Million Tokens (MTok), getrennt für Eingabe und Ausgabe."
+        antworten:
+          - { text: "Pro Million Tokens (MTok).", richtig: true }
+          - { text: "Pro Anfrage, unabhängig von der Länge.", richtig: false }
+          - { text: "Pro Minute Rechenzeit.", richtig: false }
+test:
+  zeitlimit_minuten: 20
+  fragen:
+    - frage: "Welche Angaben braucht eine Anfrage an `/v1/messages` mindestens im Body?"
+      erklaerung: "model, max_tokens und messages sind die Pflichtangaben im Body."
+      antworten:
+        - { text: "model, max_tokens und messages", richtig: true }
+        - { text: "Nur den Prompt-Text", richtig: false }
+        - { text: "temperature und system", richtig: false }
+    - frage: "Du schickst ein Gespräch mit drei Runden. Was musst du bei der vierten Frage mitsenden?"
+      erklaerung: "Die API ist zustandslos. Der bisherige Verlauf muss mit."
+      antworten:
+        - { text: "Den bisherigen Verlauf mit abwechselnden user- und assistant-Nachrichten.", richtig: true }
+        - { text: "Nur die neue Frage.", richtig: false }
+        - { text: "Nur die letzte Antwort des Modells.", richtig: false }
+    - frage: "Du bekommst 529 `overloaded_error`. Was ist sinnvoll?"
+      erklaerung: "Die API ist vorübergehend überlastet. Mit wachsendem Abstand erneut versuchen."
+      antworten:
+        - { text: "Mit wachsendem Abstand erneut versuchen.", richtig: true }
+        - { text: "Den API-Schlüssel ändern.", richtig: false }
+        - { text: "Die Anfrage dauerhaft aufgeben, ohne zu loggen.", richtig: false }
+    - frage: "Welcher Fehlercode zeigt ein Problem mit dem Schlüssel an?"
+      erklaerung: "401 `authentication_error`."
+      antworten:
+        - { text: "401", richtig: true }
+        - { text: "413", richtig: false }
+        - { text: "529", richtig: false }
+    - frage: "Wie begrenzt du die monatlichen Kosten selbst?"
+      erklaerung: "Du kannst in der Konsole ein eigenes Ausgabenlimit unterhalb des Tarif-Limits setzen."
+      antworten:
+        - { text: "Mit einem eigenen Ausgabenlimit in der Konsole.", richtig: true }
+        - { text: "Mit einer höheren Temperatur.", richtig: false }
+        - { text: "Gar nicht, das geht nicht.", richtig: false }
+    - frage: "Welche Aussage zu Antworten eines Modells stimmt für ein Backend?"
+      erklaerung: "Die Antwort ist Modelltext. Sie kann falsch sein und wird vor der Weiterverarbeitung geprüft."
+      antworten:
+        - { text: "Sie ist Modelltext und sollte vor der Weiterverarbeitung geprüft werden.", richtig: true }
+        - { text: "Sie ist immer korrekt, wenn der Statuscode 200 ist.", richtig: false }
+        - { text: "Sie muss nie geprüft werden, wenn die Temperatur 0 ist.", richtig: false }

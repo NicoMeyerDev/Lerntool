@@ -285,7 +285,7 @@ backend/
   config/          Django-Konfiguration: settings.py, env.py (Umgebungsvariablen), urls.py
   core/            Health-Endpunkt (Views, Services, URLs), Anmeldung (auth_views.py, anmeldung.py)
   lernen/          Lerninhalte und Fortschritt: Modelle, Migrationen, API (serializers.py, services.py, dashboard.py, wochenplan.py, views.py, urls.py, inhalte_import.py, management/commands/import_inhalte.py)
-  inhalte/         Lerninhalte als YAML-Dateien (thema.yaml, phase.yaml, Lektionen; PHP/Laravel: Phase 1 PHP-Basics, Phase 2 Laravel-Kern); Import mit `python manage.py import_inhalte`
+  inhalte/         Lerninhalte als YAML-Dateien (thema.yaml, phase.yaml, Lektionen; PHP/Laravel: Phase 1 PHP-Basics, Phase 2 Laravel-Kern; AI Engineering: Phase 1 Grundlagen); Import mit `python manage.py import_inhalte`
   tests/           pytest-Tests, gemeinsame Fixtures (conftest.py) und Testdaten-Fabrik (fabrik.py)
   manage.py        Django-Verwaltungsbefehle
   requirements.txt Python-Abhängigkeiten
@@ -308,7 +308,7 @@ frontend/
   eslint.config.js ESLint
   package.json     Node-Abhängigkeiten und npm-Skripte
   .env.example     Vorlage für frontend/.env
-docs/          Backlog, Lernplan, Curriculum Laravel (CURRICULUM_LARAVEL.md), Curriculum Englisch (CURRICULUM_ENGLISCH.md), Entscheidungen, offene Punkte, Changelog
+docs/          Backlog, Lernplan, Curriculum Laravel (CURRICULUM_LARAVEL.md), Curriculum Englisch (CURRICULUM_ENGLISCH.md), Curriculum AI Engineering (CURRICULUM_AI_ENGINEERING.md), Entscheidungen, offene Punkte, Changelog
 .claude/       Claude-Code-Agenten und Hooks
 .github/workflows/ci.yml   CI (Backend: Linter, Typen, Tests; Frontend: Lint, Prettier, Tests, Build)
 ```
