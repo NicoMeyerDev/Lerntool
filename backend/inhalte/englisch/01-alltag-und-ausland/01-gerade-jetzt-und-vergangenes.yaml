@@ -1,0 +1,255 @@
+titel: Gerade jetzt und Vergangenes
+zusammenfassung: Du sagst, was gerade passiert (present continuous), erzählst Vergangenes (past simple), nutzt Zeitangaben und schreibst einen kurzen Bericht über deinen Urlaub.
+quellen:
+  - titel: LearnEnglish – Present continuous
+    url: https://learnenglish.britishcouncil.org/free-resources/grammar/english-grammar-reference/present-continuous
+  - titel: LearnEnglish – Past continuous and past simple
+    url: https://learnenglish.britishcouncil.org/free-resources/grammar/a1-a2/past-continuous-past-simple
+  - titel: LearnEnglish – Past simple
+    url: https://learnenglish.britishcouncil.org/free-resources/grammar/english-grammar-reference/past-simple
+  - titel: LearnEnglish – Talking about the past
+    url: https://learnenglish.britishcouncil.org/grammar/english-grammar-reference/talking-about-past
+  - titel: LearnEnglish – My last holiday (A2 writing)
+    url: https://learnenglish.britishcouncil.org/free-resources/writing/a2/my-last-holiday
+abschnitte:
+  - titel: Was passiert gerade? (present continuous)
+    inhalt: |
+      Mit dem **present continuous** sagst du, was **gerade jetzt** passiert.
+
+      **So baust du es:** *am / is / are* + Verb mit *-ing*.
+
+      ```text
+      I'm just leaving work.           (Ich gehe gerade von der Arbeit.)
+      Please be quiet. The children are sleeping.
+      ```
+
+      **Verneinung:** *not* (oder *n't*) kommt hinter *am / is / are*.
+
+      ```text
+      I'm not doing that.
+      You aren't listening.
+      ```
+
+      **Frage:** *am / is / are* kommt vor die Person.
+
+      ```text
+      Are you listening?
+      What am I doing here?
+      ```
+
+      **Rechtschreibung (eigene Erklärung, Beispiele aus einem Kommentar der LearnEnglish-Seite):**
+      Ein stummes *e* am Ende fällt weg (*live – living*, *write – writing*).
+      *be* behält sein *e* (*being*).
+
+      **Auch für Pläne:** Mit einer Zeitangabe meint das present continuous oft eine feste
+      Verabredung: *What are you doing next week?*
+
+      **Vorsicht bei Verben des Denkens und Fühlens:** *know, like, love, want, understand, need*
+      benutzt man normalerweise **nicht** mit *-ing*. Es heißt *I understand you*, nicht
+      *I am understanding you*.
+    quiz:
+      - frage: "Welcher Satz sagt richtig, dass Kinder gerade schlafen?"
+        erklaerung: "Das present continuous besteht aus am/is/are plus Verb mit -ing: The children are sleeping."
+        antworten:
+          - { text: "The children are sleeping.", richtig: true }
+          - { text: "The children sleeping are.", richtig: false }
+          - { text: "The children is sleeping.", richtig: false }
+      - frage: "Wie fragst du, was jemand nächste Woche vorhat?"
+        erklaerung: "Die Frage steht im present continuous: What are you doing next week?"
+        antworten:
+          - { text: "What are you doing next week?", richtig: true }
+          - { text: "What you are doing next week?", richtig: false }
+          - { text: "What do you doing next week?", richtig: false }
+      - frage: "Welcher Satz ist laut LearnEnglish normalerweise richtig?"
+        erklaerung: "Verben des Denkens und Fühlens wie understand stehen normalerweise nicht im present continuous."
+        antworten:
+          - { text: "I understand you.", richtig: true }
+          - { text: "I am understanding you.", richtig: false }
+          - { text: "I understanding you.", richtig: false }
+  - titel: Was war? (past simple)
+    inhalt: |
+      Mit dem **past simple** sagst du, dass etwas in der **Vergangenheit** passiert ist.
+
+      **Regelmäßige Verben** bekommen meistens *-ed*: *called, liked, wanted, worked*.
+
+      ```text
+      I lived abroad for ten years.
+      He enjoyed being a student.
+      ```
+
+      **Unregelmäßige Verben** haben eine eigene Form. LearnEnglish listet etwa 50 häufige:
+
+      ```text
+      be – was/were      begin – began      go – went      write – wrote
+      We went to Spain for our holidays.
+      ```
+
+      Eigener Rat: Lerne die unregelmäßigen Verben nach und nach, ein paar pro Woche.
+
+      **Verneinung:** *didn't* + Grundform des Verbs.
+
+      ```text
+      They didn't go to Spain this year.
+      I didn't see you yesterday.
+      ```
+
+      **Frage:** *Did* + Person + Grundform.
+
+      ```text
+      Did you live abroad?
+      Where did you go for your holidays?
+      ```
+
+      Merke: Bei *didn't* und *did* steht das Verb in der **Grundform**, nicht mit *-ed*.
+    quiz:
+      - frage: "Wie verneinst du „They went to Spain this year“?"
+        erklaerung: "Die Verneinung ist didn't plus Grundform: They didn't go to Spain this year."
+        antworten:
+          - { text: "They didn't go to Spain this year.", richtig: true }
+          - { text: "They didn't went to Spain this year.", richtig: false }
+          - { text: "They not went to Spain this year.", richtig: false }
+      - frage: "Wie fragst du, ob jemand im Ausland gelebt hat?"
+        erklaerung: "Die Frage lautet Did + Person + Grundform: Did you live abroad?"
+        antworten:
+          - { text: "Did you live abroad?", richtig: true }
+          - { text: "Did you lived abroad?", richtig: false }
+          - { text: "Do you lived abroad?", richtig: false }
+  - titel: Zeitangaben für die Vergangenheit
+    inhalt: |
+      Zeitangaben zeigen, dass etwas **abgeschlossen** ist. Mit ihnen nutzt du das past simple.
+
+      Diese Zeitangaben stehen auf den LearnEnglish-Seiten (Past simple und Talking about the past):
+
+      - *yesterday* (gestern)
+      - *last week / last month / last year* (letzte Woche, letzten Monat, letztes Jahr)
+      - *last night* (gestern Abend)
+      - *in 2010* (im Jahr 2010)
+      - *when I was younger* (als ich jünger war)
+      - *ago* (vor ...)
+
+      ```text
+      They got home very late last night.
+      I met my wife a long time ago.
+      ```
+
+      **Bild (eigene Idee):** Eine Zeitangabe ist wie ein Datumsstempel: Sie legt fest, wann es war.
+      *ago* steht **hinter** der Zeitspanne: *a long time ago* (eigene Erklärung).
+    quiz:
+      - frage: "Welche Zeitangabe passt zu einem Satz im past simple?"
+        erklaerung: "Yesterday nennt einen abgeschlossenen Zeitpunkt in der Vergangenheit."
+        antworten:
+          - { text: "yesterday", richtig: true }
+          - { text: "next week", richtig: false }
+          - { text: "tomorrow", richtig: false }
+      - frage: "Wo steht ago?"
+        erklaerung: "Ago steht hinter der Zeitspanne, zum Beispiel a long time ago."
+        antworten:
+          - { text: "Hinter der Zeitspanne: a long time ago.", richtig: true }
+          - { text: "Vor der Zeitspanne: ago a long time.", richtig: false }
+          - { text: "Immer am Satzanfang.", richtig: false }
+  - titel: Zwei Vergangenheiten zusammen
+    inhalt: |
+      Manchmal passiert in der Vergangenheit etwas **mitten in** etwas anderem.
+
+      - Das **past continuous** (*was / were* + *-ing*) zeigt, was gerade lief.
+      - Das **past simple** zeigt, was dazwischen geschah.
+
+      ```text
+      We were watching television when the power went off.
+      While I was studying, I suddenly felt sleepy.
+      ```
+
+      Verbinde die Teile mit *when*, *while* oder *as*.
+
+      **Achte auf den Unterschied:**
+
+      ```text
+      When the guests arrived, Jane was cooking dinner.
+        (Jane kochte schon, bevor die Gäste kamen.)
+      When the guests arrived, Jane cooked dinner.
+        (Erst kamen die Gäste, dann kochte Jane.)
+      ```
+    quiz:
+      - frage: "Was bedeutet „When the guests arrived, Jane was cooking dinner“?"
+        erklaerung: "Das past continuous zeigt: Jane war schon beim Kochen, als die Gäste kamen."
+        antworten:
+          - { text: "Jane kochte schon, als die Gäste kamen.", richtig: true }
+          - { text: "Jane fing erst nach der Ankunft der Gäste an zu kochen.", richtig: false }
+          - { text: "Jane wird später kochen.", richtig: false }
+      - frage: "Welcher Satz ist richtig gebaut?"
+        erklaerung: "Das past continuous (was watching) beschreibt, was lief, das past simple (went off) das, was dazwischen geschah."
+        antworten:
+          - { text: "We were watching television when the power went off.", richtig: true }
+          - { text: "We watching television when the power was going off.", richtig: false }
+          - { text: "We was watching television when the power went off.", richtig: false }
+  - titel: Einen kurzen Bericht schreiben
+    inhalt: |
+      So schreibst du einen kurzen Bericht, etwa über dein Wochenende oder deinen Urlaub.
+      Die Tipps stammen aus der LearnEnglish-Aufgabe „My last holiday“.
+
+      1. Mache den Text lebendig mit **eigenen Erinnerungen** und Erlebnissen.
+      2. Nutze **Adjektive** für Details.
+      3. Schreibe **klare, einfache Sätze** und teile den Text in **kurze Absätze**. Jeder Absatz hat ein Thema.
+      4. Verbinde Sätze mit **so, but, and, because**.
+
+      Der Mustertext beginnt so: *My last holiday was a five-day trip to Prague.*
+
+      **Dein Gerüst (eigene Idee):**
+
+      ```text
+      My last holiday was ...            (Wann und wohin?)
+      I stayed ... / We visited ...      (Was habt ihr gemacht? past simple)
+      It was ... because ...             (Wie war es?)
+      ```
+    quiz:
+      - frage: "Welche Wörter nennt LearnEnglish zum Verbinden von Sätzen?"
+        erklaerung: "Die Aufgabe nennt so, but, and und because."
+        antworten:
+          - { text: "so, but, and, because", richtig: true }
+          - { text: "yesterday, ago, last week", richtig: false }
+          - { text: "am, is, are", richtig: false }
+      - frage: "Wie sollten die Absätze aufgebaut sein?"
+        erklaerung: "Jeder Absatz hat ein eigenes Thema, die Sätze sind klar und einfach."
+        antworten:
+          - { text: "Kurz, mit je einem Thema.", richtig: true }
+          - { text: "Ein langer Absatz mit allem.", richtig: false }
+          - { text: "Ohne Verbindungswörter.", richtig: false }
+test:
+  zeitlimit_minuten: 15
+  fragen:
+    - frage: "Welcher Satz beschreibt, was gerade passiert?"
+      erklaerung: "Das present continuous mit am/is/are plus -ing beschreibt, was jetzt passiert."
+      antworten:
+        - { text: "I'm just leaving work.", richtig: true }
+        - { text: "I left just work.", richtig: false }
+        - { text: "I did just leave work.", richtig: false }
+    - frage: "Wie schreibst du „live“ mit -ing?"
+      erklaerung: "Ein stummes e fällt weg: living (eigene Erklärung zur Rechtschreibung)."
+      antworten:
+        - { text: "living", richtig: true }
+        - { text: "liveing", richtig: false }
+        - { text: "livving", richtig: false }
+    - frage: "Welches Wort passt zu einem Satz im past simple?"
+      erklaerung: "Last week nennt eine abgeschlossene Zeit in der Vergangenheit."
+      antworten:
+        - { text: "last week", richtig: true }
+        - { text: "next week", richtig: false }
+        - { text: "at the moment", richtig: false }
+    - frage: "Welche Form ist die unregelmäßige Vergangenheit von „go“?"
+      erklaerung: "Laut LearnEnglish heißt go im past simple went."
+      antworten:
+        - { text: "went", richtig: true }
+        - { text: "goed", richtig: false }
+        - { text: "going", richtig: false }
+    - frage: "Wie lautet die Frage zu „She played tennis when she was younger“?"
+      erklaerung: "Did + Person + Grundform: Did she play tennis when she was younger?"
+      antworten:
+        - { text: "Did she play tennis when she was younger?", richtig: true }
+        - { text: "Did she played tennis when she was younger?", richtig: false }
+        - { text: "She did played tennis when she was younger?", richtig: false }
+    - frage: "Was zeigt „I was studying“ laut LearnEnglish?"
+      erklaerung: "Das past continuous zeigt, dass eine Handlung zu einer bestimmten Zeit in der Vergangenheit schon lief."
+      antworten:
+        - { text: "Die Handlung lief zu einer bestimmten Zeit in der Vergangenheit.", richtig: true }
+        - { text: "Die Handlung findet in der Zukunft statt.", richtig: false }
+        - { text: "Die Handlung ist nie passiert.", richtig: false }

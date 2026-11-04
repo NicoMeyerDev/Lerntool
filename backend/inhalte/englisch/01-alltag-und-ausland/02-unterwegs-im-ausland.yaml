@@ -1,0 +1,231 @@
+titel: Unterwegs im Ausland
+zusammenfassung: Du verstehst und gibst Wegbeschreibungen, buchst eine Unterkunft schriftlich, füllst ein Formular aus, meldest ein Problem per E-Mail und schreibst über Pläne mit going to, will und dem present continuous.
+quellen:
+  - titel: LearnEnglish Kids – Directions (Flashcards, Kinderniveau)
+    url: https://learnenglishkids.britishcouncil.org/sites/kids/files/attachment/flashcards-directions-2018.pdf
+  - titel: LearnEnglish – An email to book a hotel
+    url: https://learnenglish.britishcouncil.org/skills/writing/a1-writing/email-book-hotel
+  - titel: LearnEnglish – An accommodation form
+    url: https://learnenglish.britishcouncil.org/free-resources/writing/a2/accommodation-form
+  - titel: LearnEnglish – An email explaining a problem
+    url: https://learnenglish.britishcouncil.org/free-resources/writing/a2/email-explaining-problem
+  - titel: LearnEnglish – Talking about the future
+    url: https://learnenglish.britishcouncil.org/free-resources/grammar/english-grammar-reference/talking-about-future
+abschnitte:
+  - titel: Wegbeschreibungen verstehen
+    inhalt: |
+      Diese Wendungen helfen dir, einen Weg zu verstehen oder zu beschreiben. Sie stammen
+      aus Karten des British Council für Kinder. Das Niveau ist bewusst einfach.
+
+      ```text
+      turn left / turn right        (links / rechts abbiegen)
+      go straight on                (geradeaus gehen)
+      go along the road             (der Straße folgen)
+      go past ...                   (an ... vorbeigehen)
+      go over the bridge            (über die Brücke gehen)
+      go through the tunnel         (durch den Tunnel gehen)
+      go round the roundabout       (um den Kreisverkehr herum)
+      cross the road                (die Straße überqueren)
+      follow the signs              (den Schildern folgen)
+      ```
+
+      **Eigenes Beispiel (nicht aus der Quelle):** *Turn left at the roundabout. Go past the
+      bridge. Stop at the station.*
+
+      **Tipp (eigene Idee):** Zeichne eine kleine Karte und beschreibe dir selbst den Weg in einfachen Sätzen.
+    quiz:
+      - frage: "Was bedeutet „go straight on“?"
+        erklaerung: "Go straight on heißt geradeaus gehen."
+        antworten:
+          - { text: "Geradeaus gehen.", richtig: true }
+          - { text: "Links abbiegen.", richtig: false }
+          - { text: "Anhalten.", richtig: false }
+      - frage: "Welche Wendung bedeutet „an etwas vorbeigehen“?"
+        erklaerung: "Go past heißt an etwas vorbeigehen."
+        antworten:
+          - { text: "go past", richtig: true }
+          - { text: "go through", richtig: false }
+          - { text: "go over", richtig: false }
+  - titel: Unterkunft per E-Mail buchen
+    inhalt: |
+      Eine Buchungsanfrage ist kurz und klar. Die Tipps stammen aus der LearnEnglish-Aufgabe
+      „An email to book a hotel“:
+
+      1. Beginne mit einer **Anrede** wie *Hello* oder *Dear* und dem Namen des Hotels.
+      2. Nenne die **Daten**, die **Zimmerart** und ob du **Frühstück** möchtest.
+      3. Nenne **zusätzliche Wünsche**.
+      4. Bitte das Hotel, die Buchung zu **bestätigen**.
+
+      Im Mustertext heißt es zum Beispiel: *Dear Ascot Hotel,* und am Schluss *Many thanks,*
+      sowie *With kind regards,* mit dem Namen.
+
+      **Eigenes Gerüst (nach diesen Tipps):**
+
+      ```text
+      Dear <Hotelname>,
+
+      I would like to book a single room for two nights, 22 and 23 April, with breakfast.
+      Could you please confirm the booking?
+
+      Many thanks,
+      <Name>
+      ```
+    quiz:
+      - frage: "Welche Angaben gehören laut Tipps in eine Buchungsanfrage?"
+        erklaerung: "Daten, Zimmerart und der Frühstückswunsch gehören hinein, dazu die Bitte um Bestätigung."
+        antworten:
+          - { text: "Daten, Zimmerart und ob du Frühstück möchtest.", richtig: true }
+          - { text: "Nur dein Name.", richtig: false }
+          - { text: "Dein Passwort.", richtig: false }
+      - frage: "Worum bittest du am Ende der Anfrage?"
+        erklaerung: "Man bittet das Hotel, die Buchung zu bestätigen."
+        antworten:
+          - { text: "Um die Bestätigung der Buchung.", richtig: true }
+          - { text: "Um einen Rabatt auf alle Zimmer.", richtig: false }
+          - { text: "Um die Adresse des Besitzers.", richtig: false }
+  - titel: Ein Formular für die Unterkunft ausfüllen
+    inhalt: |
+      In der LearnEnglish-Aufgabe füllst du ein Formular für eine Unterkunft aus. Typische
+      Felder und Wörter:
+
+      ```text
+      first name / surname              (Vorname / Nachname)
+      date of birth                     (Geburtsdatum)
+      nationality                       (Staatsangehörigkeit)
+      single room with bathroom         (Einzelzimmer mit Bad)
+      shared room                       (Zimmer, das man teilt)
+      on-campus / off-campus            (auf dem Gelände / außerhalb)
+      health needs                      (gesundheitliche Bedürfnisse)
+      ```
+
+      **Tipps aus der Aufgabe:**
+
+      - Auf Papier schreibst du **deutlich** (bei unleserlicher Schrift in Großbuchstaben).
+      - Ist wenig Platz, schreibst du eine **Liste** statt ganzer Sätze.
+      - **Prüfe** am Ende alles noch einmal. Kleine Fehler passieren leicht.
+    quiz:
+      - frage: "Was bedeutet „surname“?"
+        erklaerung: "Surname ist der Nachname."
+        antworten:
+          - { text: "Nachname", richtig: true }
+          - { text: "Vorname", richtig: false }
+          - { text: "Geburtsort", richtig: false }
+      - frage: "Was rät die Aufgabe, wenn auf dem Formular wenig Platz ist?"
+        erklaerung: "Man schreibt eine Liste statt ganzer Sätze."
+        antworten:
+          - { text: "Eine Liste statt ganzer Sätze zu schreiben.", richtig: true }
+          - { text: "Die Antwort wegzulassen.", richtig: false }
+          - { text: "Sehr klein zu schreiben.", richtig: false }
+  - titel: Ein Problem per E-Mail melden
+    inhalt: |
+      Wenn etwas nicht klappt, schreibst du eine kurze, klare E-Mail. Der Mustertext aus
+      „An email explaining a problem“ nutzt diese Wendungen:
+
+      ```text
+      I'm writing to let you know that I can't attend class for two weeks.
+      I'm afraid I also need to ask for an extension.
+      Is it possible to have an extension?
+      Thank you for your understanding.
+      ```
+
+      **Tipps aus der Aufgabe:**
+
+      1. Beginne mit *Dear* und Titel plus Name.
+      2. Nenne **zuerst das Problem**, dann die Einzelheiten und dann, was du dir als Lösung wünschst.
+      3. Schreibe **kurz und klar** und nur die wichtigsten Angaben.
+      4. Schließe mit *Thank you for your understanding.*
+
+      *I'm afraid* leitet hier eine unangenehme Nachricht höflich ein.
+    quiz:
+      - frage: "In welcher Reihenfolge baust du die E-Mail auf?"
+        erklaerung: "Zuerst das Problem, dann Einzelheiten, dann die gewünschte Lösung."
+        antworten:
+          - { text: "Problem, Einzelheiten, gewünschte Lösung.", richtig: true }
+          - { text: "Lösung, Gruß, Problem.", richtig: false }
+          - { text: "Nur eine lange Entschuldigung.", richtig: false }
+      - frage: "Welcher Schluss passt zu einer E-Mail, die ein Problem meldet?"
+        erklaerung: "Thank you for your understanding zeigt, dass man auf Verständnis hofft. Die anderen Sätze sind unhöflich oder passen nicht."
+        antworten:
+          - { text: "Thank you for your understanding.", richtig: true }
+          - { text: "I don't care what you think.", richtig: false }
+          - { text: "See you in the water!", richtig: false }
+  - titel: Pläne und Zukunft
+    inhalt: |
+      Für die Zukunft nutzt du drei Formen. Alle Beispiele stammen von der LearnEnglish-Seite
+      „Talking about the future“.
+
+      **going to** für Pläne und für Vorhersagen, die du **sehen** kannst:
+
+      ```text
+      I'm going to drive to work today.
+      Look at those black clouds. I think it's going to rain.
+      ```
+
+      **will** für Glaube an die Zukunft, Angebote und Versprechen:
+
+      ```text
+      It will be a nice day tomorrow.
+      We'll send you an email.
+      ```
+
+      **present continuous** für Pläne und Verabredungen:
+
+      ```text
+      I'm playing football tomorrow.
+      We're having a party at Christmas.
+      ```
+
+      **Merkhilfe (eigene Idee):** *going to* = ich habe es vor oder sehe es kommen,
+      *will* = ich glaube oder verspreche es.
+    quiz:
+      - frage: "Welcher Satz sagt einen Regen voraus, den man an den Wolken sieht?"
+        erklaerung: "Going to steht bei Vorhersagen, die man sehen kann."
+        antworten:
+          - { text: "Look at those black clouds. I think it's going to rain.", richtig: true }
+          - { text: "I played rain yesterday.", richtig: false }
+          - { text: "It rained to going.", richtig: false }
+      - frage: "Wofür nutzt LearnEnglish „We'll send you an email“?"
+        erklaerung: "Will steht für Angebote und Versprechen."
+        antworten:
+          - { text: "Für ein Versprechen oder Angebot.", richtig: true }
+          - { text: "Für etwas, das gestern passierte.", richtig: false }
+          - { text: "Für eine Verneinung.", richtig: false }
+test:
+  zeitlimit_minuten: 15
+  fragen:
+    - frage: "Was bedeutet „turn right“?"
+      erklaerung: "Turn right heißt rechts abbiegen."
+      antworten:
+        - { text: "Rechts abbiegen.", richtig: true }
+        - { text: "Links abbiegen.", richtig: false }
+        - { text: "Geradeaus gehen.", richtig: false }
+    - frage: "Welche Begrüßung passt zu einer E-Mail an ein Hotel?"
+      erklaerung: "Laut LearnEnglish beginnt man mit Hello oder Dear plus Hotelname."
+      antworten:
+        - { text: "Dear Ascot Hotel,", richtig: true }
+        - { text: "Yo Hotel!!!", richtig: false }
+        - { text: "Bye Hotel,", richtig: false }
+    - frage: "Was bedeutet „shared room“?"
+      erklaerung: "Ein shared room ist ein Zimmer, das man sich teilt."
+      antworten:
+        - { text: "Ein Zimmer, das man sich teilt.", richtig: true }
+        - { text: "Ein Zimmer mit Bad.", richtig: false }
+        - { text: "Ein Zimmer außerhalb der Stadt.", richtig: false }
+    - frage: "Womit leitest du laut Mustertext eine unangenehme Nachricht höflich ein?"
+      erklaerung: "Im Mustertext steht: I'm afraid I also need to ask for an extension."
+      antworten:
+        - { text: "I'm afraid ...", richtig: true }
+        - { text: "Listen!", richtig: false }
+        - { text: "It is your fault.", richtig: false }
+    - frage: "Welcher Satz nennt einen Plan mit going to?"
+      erklaerung: "I'm going to drive to work today ist ein Plan mit going to."
+      antworten:
+        - { text: "I'm going to drive to work today.", richtig: true }
+        - { text: "I drove going to work today.", richtig: false }
+        - { text: "I going drive work today.", richtig: false }
+    - frage: "Welcher Satz ist ein Versprechen mit will?"
+      erklaerung: "We'll send you an email ist laut LearnEnglish ein Versprechen mit will."
+      antworten:
+        - { text: "We'll send you an email.", richtig: true }
+        - { text: "We sent you going an email.", richtig: false }
+        - { text: "We are sending you will an email.", richtig: false }
