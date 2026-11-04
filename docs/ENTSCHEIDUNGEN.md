@@ -147,3 +147,12 @@ Format: Datum – Entscheidung – Grund – Alternativen.
 - **Projekt Phase 2 knüpft an das Laravel-Projekt „Trainingstagebuch“ an**, damit Fachenglisch an echtem Material geübt wird (englische README, Pull-Request-Text). Alternative: eigenes, unabhängiges Beispiel.
 - **Niveau-Zuordnung der Themenfelder ist eine eigene didaktische Einordnung**, keine offizielle Einstufung; sie wird bei der Ausarbeitung gegen die konkrete LearnEnglish-Seite geprüft.
 - **Freigaben:** `quellenpruefer` NACHBESSERN (kleine Punkte, eingearbeitet), `reviewer` FREIGABE.
+
+## 2026-11-04 – E1 AI Engineering
+
+- **Quelle sind die Claude Docs unter platform.claude.com/docs/en** (Stand geprüft am 2026-11-04). Die alte Adresse docs.claude.com leitet dorthin um. Alternative: Quellen anderer Anbieter oder Blogs (laut Projektregeln nicht zulässig).
+- **Keine Modellnamen, Preise und Limit-Zahlen in den Lektionen**, weil sie schnell veralten. Die Lektionen verweisen stattdessen auf die passenden Doku-Seiten. Alternative: konkrete Werte nennen (wären nach kurzer Zeit falsch und müssten ständig nachgepflegt werden).
+- **Projekt Phase 1 ist ohne echten API-Aufruf lösbar**, weil Aufrufe Kosten und einen API-Schlüssel brauchen (siehe `docs/OFFEN.md`). Alternative: Projekt mit echten Aufrufen (erst nach Entscheidung des Lernenden zu Kosten und Schlüssel).
+- **Phasen 2 bis 6 sind nur grob gegliedert**, die Ausarbeitung folgt in späteren Aufgaben. Grund: Die Doku ändert sich schnell, Details sollen erst kurz vor dem Lernen geprüft werden. Alternative: alle Phasen sofort ausarbeiten (höheres Risiko veralteter Inhalte).
+- **`thema.yaml` hat `reihenfolge: 3`** (PHP/Laravel 1, Englisch 2 reserviert). Alternative: 2 vergeben und Englisch später verschieben (würde die Reihenfolge nachträglich ändern).
+- **Freigaben:** `quellenpruefer` FREIGABE, `reviewer` FREIGABE.

@@ -29,6 +29,13 @@ Punkte, die eine Entscheidung oder Aktion des Nutzers brauchen.
 - **Optionen:** (a) Hörtexte verlinken (z. B. British Council LearnEnglish), (b) Sprachausgabe im Browser, (c) eigene Aufnahmen. Jede Option hat Folgen für Lizenz, Kosten oder Qualität.
 - **Warum nicht allein entschieden:** Betrifft Kosten und Rechte (CLAUDE.md §7). Die Entscheidung wird vor der Ausarbeitung der Hörlektionen gebraucht, nicht für die Gliederung.
 
+## 2026-11-04 – AI Engineering (E1): Echte API-Aufrufe und Kosten
+
+- **Stand:** Phase 1 (Grundlagen, Prompting, API) erklärt die Claude-API anhand der Doku. Das Projekt „Prompt- und API-Werkstatt“ ist so gebaut, dass es **ohne** echten Aufruf lösbar ist.
+- **Offen:** Ob du einen API-Schlüssel anlegen und echte Aufrufe machen willst. Das kostet Geld (Abrechnung pro Tokens) und betrifft Sicherheit (der Schlüssel darf nie in Git oder ins Frontend).
+- **Vorschlag:** Lege bei Bedarf in der Konsole ein **eigenes, niedriges Ausgabenlimit** fest (die Doku beschreibt das) und halte den Schlüssel nur in einer Umgebungsvariable. Für die späteren Phasen (Werkzeuge, RAG, Agenten) brauchst du dann einen Schlüssel.
+- **Warum nicht allein entschieden:** Kosten und Sicherheit (CLAUDE.md §7).
+
 ## Erledigt
 
 ### 2026-11-04 – Englisch (C4): Was bedeutet „Einstieg ab SAP 2122“?
