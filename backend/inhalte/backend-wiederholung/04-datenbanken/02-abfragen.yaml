@@ -1,0 +1,166 @@
+titel: Abfragen mit dem ORM
+zusammenfassung: Du erinnerst dich an Objekte anlegen und ändern, an filter, exclude und get, an Lookups mit doppeltem Unterstrich, an träge QuerySets und an Abfragen über Beziehungen.
+quellen:
+  - titel: Django 5.2 – Making queries
+    url: https://docs.djangoproject.com/en/5.2/topics/db/queries/
+abschnitte:
+  - titel: Objekte anlegen und ändern
+    inhalt: |
+      Ein Objekt legst du an, indem du das Modell mit Werten erzeugst und `save()` aufrufst.
+      Django schickt erst dann ein `INSERT` an die Datenbank:
+
+      ```python
+      b = Blog(name="Beatles Blog", tagline="All the latest Beatles news.")
+      b.save()
+      ```
+
+      Mit `create()` erledigst du beides in einem Schritt. Ein vorhandenes Objekt änderst du, indem
+      du ein Attribut setzt und `save()` aufrufst (das ist ein `UPDATE`).
+
+      - **ForeignKey:** Objekt zuweisen, dann speichern: `entry.blog = cheese_blog`, `entry.save()`.
+      - **ManyToManyField:** mit `add()`: `entry.authors.add(joe)`.
+    quiz:
+      - frage: "Wann schickt Django laut Doku das INSERT an die Datenbank?"
+        erklaerung: "Erst wenn du save() aufrufst."
+        antworten:
+          - { text: "Erst beim Aufruf von save().", richtig: true }
+          - { text: "Sofort beim Erzeugen des Objekts.", richtig: false }
+          - { text: "Nur beim Neustart des Servers.", richtig: false }
+      - frage: "Wie fügst du einem Eintrag einen weiteren Autor bei einer ManyToMany-Beziehung hinzu?"
+        erklaerung: "Mit der Methode add(), zum Beispiel entry.authors.add(joe)."
+        antworten:
+          - { text: "Mit entry.authors.delete(joe)", richtig: false }
+          - { text: "Mit entry.authors.add(joe)", richtig: true }
+          - { text: "Mit entry.authors = joe", richtig: false }
+  - titel: Filtern, ausschließen, einzeln holen
+    inhalt: |
+      Abfragen starten am **Manager** des Modells, standardmäßig `objects`.
+
+      - `all()`: alle Objekte.
+      - `filter(...)`: neues QuerySet mit den Objekten, die passen.
+      - `exclude(...)`: neues QuerySet mit den Objekten, die **nicht** passen.
+      - `get(...)`: genau ein Objekt. Findet es keins, gibt es `DoesNotExist`, findet es mehrere,
+        gibt es `MultipleObjectsReturned`.
+
+      Das Ergebnis von `filter()` ist selbst ein QuerySet, du kannst also **verketten**:
+
+      ```python
+      Entry.objects.filter(headline__startswith="What").exclude(pub_date__gte=datetime.date.today())
+      ```
+
+      Jedes Verfeinern liefert ein neues, eigenes QuerySet. Ein früheres QuerySet bleibt
+      unverändert.
+
+      **Lookups** schreibst du als `feld__lookup=wert`. Ohne Lookup gilt `exact`.
+
+      - `iexact`: gleich, ohne Beachtung der Groß-/Kleinschreibung.
+      - `contains`: enthält, mit Groß-/Kleinschreibung (`icontains` ohne).
+      - `startswith`, `endswith`, `gt`, `gte`, `lt`, `lte`, `in`, `isnull`.
+    quiz:
+      - frage: "Was passiert bei get(), wenn kein Objekt passt?"
+        erklaerung: "get() löst DoesNotExist aus."
+        antworten:
+          - { text: "Es wird None zurückgegeben.", richtig: false }
+          - { text: "Es wird ein leeres QuerySet zurückgegeben.", richtig: false }
+          - { text: "Es wird DoesNotExist ausgelöst.", richtig: true }
+      - frage: "Was bedeutet pub_date__gte=wert?"
+        erklaerung: "gte steht für größer oder gleich."
+        antworten:
+          - { text: "pub_date ist größer oder gleich wert.", richtig: true }
+          - { text: "pub_date ist kleiner als wert.", richtig: false }
+          - { text: "pub_date enthält wert.", richtig: false }
+  - titel: Träge QuerySets
+    inhalt: |
+      QuerySets sind **träge** (lazy): Wenn du sie erzeugst oder verfeinerst, geht noch nichts an
+      die Datenbank. Die Doku zeigt, dass drei verkettete Verfeinerungen die Datenbank **nur einmal**
+      treffen, nämlich bei der Auswertung (zum Beispiel beim Ausgeben).
+
+      Ausgewertet wird zum Beispiel beim Durchlaufen mit einer Schleife, mit `list()`, `bool()`
+      oder `in`. Danach liegt das Ergebnis im Zwischenspeicher des QuerySets.
+
+      **Teilen mit Slicing:** `Entry.objects.all()[:5]` liefert die ersten fünf Objekte
+      (`LIMIT 5`), `[5:10]` die Objekte 6 bis 10. Negative Indizes wie `[-1]` gehen nicht. Ein
+      zerschnittenes QuerySet darfst du nicht mehr filtern oder sortieren.
+
+      **Merke (eigene Erklärung):** Wegen der Trägheit kostet das Aufbauen einer Abfrage nichts,
+      erst das Auswerten kostet Zeit. Deshalb lohnt es sich, Abfragen zuerst fertig zu bauen.
+    quiz:
+      - frage: "Wann trifft ein QuerySet die Datenbank?"
+        erklaerung: "Erst bei der Auswertung, nicht beim Erzeugen oder Verfeinern."
+        antworten:
+          - { text: "Bei jedem filter()-Aufruf.", richtig: false }
+          - { text: "Nur beim Speichern der Datei.", richtig: false }
+          - { text: "Erst bei der Auswertung, zum Beispiel beim Durchlaufen.", richtig: true }
+      - frage: "Was ist bei Entry.objects.all()[-1] zu beachten?"
+        erklaerung: "Negative Indizes werden nicht unterstützt."
+        antworten:
+          - { text: "Es löscht das letzte Objekt.", richtig: false }
+          - { text: "Negative Indizes werden nicht unterstützt.", richtig: true }
+          - { text: "Es liefert immer das letzte Objekt.", richtig: false }
+  - titel: Abfragen über Beziehungen
+    inhalt: |
+      Mit dem **doppelten Unterstrich** folgst du Beziehungen. Django erzeugt dafür die Verbindung
+      der Tabellen:
+
+      ```python
+      Entry.objects.filter(blog__name="Beatles Blog")
+      Blog.objects.filter(entry__headline__contains="Lennon")
+      ```
+
+      Rückwärts (vom Blog zu den Einträgen) nimmst du den kleingeschriebenen Modellnamen.
+
+      **Objektzugriff:**
+
+      - Vorwärts: `e.blog` liefert den zugehörigen Blog.
+      - Rückwärts: `b.entry_set.all()` liefert die Einträge eines Blogs. Mit `related_name="entries"`
+        im Feld heißt es `b.entries.all()`.
+
+      **Achtung bei mehrwertigen Beziehungen:** Sollen mehrere Bedingungen auf **dasselbe**
+      verbundene Objekt zutreffen, gehören sie in **einen** `filter()`-Aufruf. Getrennte
+      `filter()`-Aufrufe können verschiedene verbundene Objekte treffen.
+    quiz:
+      - frage: "Wie filterst du Einträge nach dem Namen ihres Blogs?"
+        erklaerung: "Mit doppeltem Unterstrich: Entry.objects.filter(blog__name=...)."
+        antworten:
+          - { text: "Entry.objects.get(blog_name)", richtig: false }
+          - { text: "Entry.objects.filter(blog__name=\"Beatles Blog\")", richtig: true }
+          - { text: "Entry.objects.filter(blog.name=\"Beatles Blog\")", richtig: false }
+      - frage: "Wie kommst du standardmäßig von einem Blog b zu seinen Einträgen?"
+        erklaerung: "Rückwärts über b.entry_set.all()."
+        antworten:
+          - { text: "b.entry", richtig: false }
+          - { text: "b.blog.all()", richtig: false }
+          - { text: "b.entry_set.all()", richtig: true }
+test:
+  zeitlimit_minuten: 10
+  fragen:
+    - frage: "Wie nennt man den Zugang zu den Abfragen eines Modells, standardmäßig objects?"
+      erklaerung: "Das ist der Manager des Modells."
+      antworten:
+        - { text: "Migration", richtig: false }
+        - { text: "Manager", richtig: true }
+        - { text: "Serializer", richtig: false }
+    - frage: "Was liefert exclude()?"
+      erklaerung: "Ein neues QuerySet mit den Objekten, die nicht passen."
+      antworten:
+        - { text: "Die Objekte, die nicht zu den Bedingungen passen.", richtig: true }
+        - { text: "Die Objekte, die passen.", richtig: false }
+        - { text: "Genau ein Objekt.", richtig: false }
+    - frage: "Was bedeutet es, dass QuerySets träge sind?"
+      erklaerung: "Das Erzeugen führt noch keine Datenbankabfrage aus."
+      antworten:
+        - { text: "Sie können nicht gefiltert werden.", richtig: false }
+        - { text: "Das Erzeugen löst noch keine Datenbankabfrage aus.", richtig: true }
+        - { text: "Sie laufen immer im Hintergrund.", richtig: false }
+    - frage: "Welcher Aufruf liefert die ersten fünf Objekte?"
+      erklaerung: "Slicing [:5] entspricht LIMIT 5."
+      antworten:
+        - { text: "Entry.objects.get(5)", richtig: false }
+        - { text: "Entry.objects.all()[:5]", richtig: true }
+        - { text: "Entry.objects.all()[-5]", richtig: false }
+    - frage: "Was ist ein Unterschied zwischen get() und filter()?"
+      erklaerung: "get() liefert ein einzelnes Objekt oder einen Fehler, filter() liefert ein QuerySet."
+      antworten:
+        - { text: "Es gibt keinen Unterschied.", richtig: false }
+        - { text: "get() liefert ein Objekt oder einen Fehler, filter() liefert ein QuerySet.", richtig: true }
+        - { text: "get() liefert immer ein QuerySet.", richtig: false }

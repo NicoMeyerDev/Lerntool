@@ -1,0 +1,141 @@
+titel: Projekt, App und Routing
+zusammenfassung: Du erinnerst dich an den Unterschied zwischen Projekt und App, an die Dateien von startproject und daran, wie path() und include() eine URL zu einer View führen.
+quellen:
+  - titel: Django 5.2 – Writing your first Django app, part 1
+    url: https://docs.djangoproject.com/en/5.2/intro/tutorial01/
+abschnitte:
+  - titel: Projekt und App
+    inhalt: |
+      Ein **Projekt** ist die Sammlung aus Einstellungen und Apps für eine Website. Eine **App**
+      ist ein Baustein, der etwas Bestimmtes tut, zum Beispiel ein Blog oder eine Umfrage.
+
+      **Bild:** Das Projekt ist das Haus, die Apps sind die Zimmer. Ein Projekt kann mehrere Apps
+      enthalten, und eine App kann in mehreren Projekten wiederverwendet werden.
+
+      `django-admin startproject mysite djangotutorial` legt diese Dateien an:
+
+      - `manage.py`: Kommandozeilenwerkzeug, um mit dem Projekt zu arbeiten.
+      - `mysite/settings.py`: Einstellungen des Projekts.
+      - `mysite/urls.py`: die URL-Deklarationen, eine Art Inhaltsverzeichnis der Seite.
+      - `mysite/wsgi.py` und `mysite/asgi.py`: Einstiegspunkte für WSGI- und ASGI-Server.
+
+      `python manage.py startapp polls` legt den Ordner `polls/` an, mit `admin.py`, `apps.py`,
+      `migrations/`, `models.py`, `tests.py` und `views.py`. Die Datei `urls.py` legst du selbst an.
+    quiz:
+      - frage: "Was ist der Unterschied zwischen Projekt und App?"
+        erklaerung: "Ein Projekt sammelt Einstellungen und Apps für eine Website, eine App erledigt eine bestimmte Aufgabe."
+        antworten:
+          - { text: "Das Projekt enthält Einstellungen und mehrere Apps, eine App erledigt eine bestimmte Aufgabe.", richtig: true }
+          - { text: "Eine App enthält mehrere Projekte.", richtig: false }
+          - { text: "Projekt und App sind dasselbe.", richtig: false }
+      - frage: "Welche Datei ist laut Tutorial ein Inhaltsverzeichnis der URLs des Projekts?"
+        erklaerung: "Die Datei mysite/urls.py enthält die URL-Deklarationen des Projekts."
+        antworten:
+          - { text: "mysite/urls.py", richtig: true }
+          - { text: "manage.py", richtig: false }
+          - { text: "mysite/wsgi.py", richtig: false }
+  - titel: Routing mit path() und include()
+    inhalt: |
+      Die Datei `urls.py` verbindet eine URL mit einer View.
+
+      In der App (`polls/urls.py`):
+
+      ```python
+      from django.urls import path
+      from . import views
+
+      urlpatterns = [
+          path("", views.index, name="index"),
+      ]
+      ```
+
+      Im Projekt (`mysite/urls.py`) bindest du die App-URLs ein:
+
+      ```python
+      from django.urls import include, path
+
+      urlpatterns = [
+          path("polls/", include("polls.urls")),
+          path("admin/", admin.site.urls),
+      ]
+      ```
+
+      `path()` braucht mindestens zwei Angaben: die **Route** und die **View**. Trifft Django
+      auf `include()`, schneidet es den bisher passenden Teil der URL ab und gibt den Rest an die
+      eingebundene URLconf weiter. Die View aus dem Beispiel ist dann unter `/polls/` erreichbar.
+    quiz:
+      - frage: "Was macht Django, wenn es auf include() trifft?"
+        erklaerung: "Es schneidet den bisher passenden Teil der URL ab und gibt den Rest an die eingebundene URLconf weiter."
+        antworten:
+          - { text: "Es schneidet den passenden Teil ab und übergibt den Rest an die eingebundene URLconf.", richtig: true }
+          - { text: "Es lädt die Datenbank neu.", richtig: false }
+          - { text: "Es startet den Server neu.", richtig: false }
+      - frage: "Welche zwei Angaben braucht path() mindestens?"
+        erklaerung: "path() erwartet mindestens route und view."
+        antworten:
+          - { text: "Template und Modell", richtig: false }
+          - { text: "Benutzername und Passwort", richtig: false }
+          - { text: "Route und View", richtig: true }
+  - titel: Die einfachste View
+    inhalt: |
+      Eine **View** ist bei Django eine Funktion, die eine Anfrage bekommt und eine Antwort
+      zurückgibt. Die einfachste View aus dem Tutorial:
+
+      ```python
+      from django.http import HttpResponse
+
+      def index(request):
+          return HttpResponse("Hello, world. You're at the polls index.")
+      ```
+
+      Der Ablauf (zusammengefasst): Der Browser fragt eine URL an, Django sucht in den `urls.py`
+      die passende Route, ruft die View auf und schickt deren `HttpResponse` zurück.
+
+      Mit `python manage.py runserver` startest du den Entwicklungsserver und prüfst die Seite
+      im Browser.
+    quiz:
+      - frage: "Was gibt die einfachste View aus dem Tutorial zurück?"
+        erklaerung: "Sie gibt ein HttpResponse-Objekt mit einem Text zurück."
+        antworten:
+          - { text: "Eine Migration.", richtig: false }
+          - { text: "Ein HttpResponse-Objekt.", richtig: true }
+          - { text: "Eine Datenbanktabelle.", richtig: false }
+      - frage: "Was bekommt eine View als erstes Argument?"
+        erklaerung: "Eine View bekommt das request-Objekt der Anfrage."
+        antworten:
+          - { text: "Die settings.py.", richtig: false }
+          - { text: "Das request-Objekt.", richtig: true }
+          - { text: "Den Namen der Datenbank.", richtig: false }
+test:
+  zeitlimit_minuten: 10
+  fragen:
+    - frage: "Wie nennt man eine Sammlung aus Einstellungen und Apps für eine Website?"
+      erklaerung: "Das ist ein Projekt."
+      antworten:
+        - { text: "View", richtig: false }
+        - { text: "Template", richtig: false }
+        - { text: "Projekt", richtig: true }
+    - frage: "Welcher Befehl legt eine neue App an?"
+      erklaerung: "python manage.py startapp erzeugt den App-Ordner."
+      antworten:
+        - { text: "python manage.py runserver polls", richtig: false }
+        - { text: "python manage.py migrate polls", richtig: false }
+        - { text: "python manage.py startapp polls", richtig: true }
+    - frage: "Welche Datei legst du in einer neuen App selbst an, um Routen zu definieren?"
+      erklaerung: "Die Datei urls.py wird laut Tutorial von Hand angelegt."
+      antworten:
+        - { text: "urls.py", richtig: true }
+        - { text: "manage.py", richtig: false }
+        - { text: "asgi.py", richtig: false }
+    - frage: "Was bedeutet path('polls/', include('polls.urls'))?"
+      erklaerung: "Alles unter polls/ wird an die URLconf der App polls weitergegeben."
+      antworten:
+        - { text: "Die App polls wird gelöscht.", richtig: false }
+        - { text: "Die Seite polls wird als Template geladen.", richtig: false }
+        - { text: "URLs unter polls/ werden an die URLs der App polls weitergegeben.", richtig: true }
+    - frage: "Was liefert eine View zurück?"
+      erklaerung: "Eine View liefert eine Antwort, zum Beispiel ein HttpResponse."
+      antworten:
+        - { text: "Nur eine Zahl.", richtig: false }
+        - { text: "Eine Antwort, zum Beispiel ein HttpResponse.", richtig: true }
+        - { text: "Eine Migration.", richtig: false }

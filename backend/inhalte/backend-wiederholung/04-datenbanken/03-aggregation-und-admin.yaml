@@ -1,0 +1,148 @@
+titel: Aggregation und Admin
+zusammenfassung: Du erinnerst dich an den Unterschied zwischen aggregate() und annotate(), an Gruppierung mit values() und an die Registrierung und Einstellungen des Django-Admins.
+quellen:
+  - titel: Django 5.2 – Aggregation
+    url: https://docs.djangoproject.com/en/5.2/topics/db/aggregation/
+  - titel: Django 5.2 – The Django admin site
+    url: https://docs.djangoproject.com/en/5.2/ref/contrib/admin/
+abschnitte:
+  - titel: aggregate() für das Gesamtergebnis
+    inhalt: |
+      `aggregate()` fasst ein ganzes QuerySet zu **einem Ergebnis** zusammen. Es ist der letzte
+      Schritt der Kette und liefert ein **Wörterbuch**.
+
+      ```python
+      from django.db.models import Avg, Max, Min
+      Book.objects.aggregate(Avg("price"))
+      # {'price__avg': 34.35}
+      Book.objects.aggregate(average_price=Avg("price"))
+      # {'average_price': 34.35}
+      ```
+
+      Mit einem eigenen Namen vor dem Gleichheitszeichen bestimmst du den Schlüssel. Mehrere
+      Funktionen gehen in einem Aufruf: `aggregate(Avg("price"), Max("price"), Min("price"))`.
+
+      **Achtung:** Summiert `Sum` über eine leere Menge, kommt `None` zurück. Mit
+      `Sum("price", default=0)` bekommst du stattdessen `0`.
+    quiz:
+      - frage: "Was liefert aggregate()?"
+        erklaerung: "aggregate() liefert ein Wörterbuch mit Namen und Werten."
+        antworten:
+          - { text: "Ein Wörterbuch mit den berechneten Werten.", richtig: true }
+          - { text: "Ein neues QuerySet.", richtig: false }
+          - { text: "Ein einzelnes Modell-Objekt.", richtig: false }
+      - frage: "Was liefert Sum() über eine leere Menge ohne default?"
+        erklaerung: "Das Ergebnis ist None."
+        antworten:
+          - { text: "Einen Fehler", richtig: false }
+          - { text: "None", richtig: true }
+          - { text: "0", richtig: false }
+  - titel: annotate() für jedes Objekt
+    inhalt: |
+      `annotate()` rechnet einen Wert **für jedes Objekt** aus und hängt ihn an. Das Ergebnis ist
+      weiter ein **QuerySet**, du kannst also danach filtern oder sortieren.
+
+      ```python
+      from django.db.models import Count
+      q = Book.objects.annotate(num_authors=Count("authors"))
+      q[0].num_authors      # zum Beispiel 2
+
+      Book.objects.annotate(num_authors=Count("authors")).filter(num_authors__gt=1)
+      Book.objects.annotate(num_authors=Count("authors")).order_by("num_authors")
+      ```
+
+      **Kurz gesagt:** `aggregate()` = eine Zahl für alles, `annotate()` = eine Zahl je Objekt.
+
+      **Gruppieren mit values():** Steht `values()` **vor** `annotate()`, werden die Ergebnisse
+      nach den Werten in `values()` gruppiert:
+
+      ```python
+      Author.objects.values("name").annotate(average_rating=Avg("book__rating"))
+      ```
+
+      Haben zwei Autoren denselben Namen, werden ihre Ergebnisse zusammengefasst. Die Reihenfolge
+      zählt: Steht `annotate()` vor `values()`, wird über das ganze QuerySet berechnet.
+    quiz:
+      - frage: "Was ist der Unterschied zwischen aggregate() und annotate()?"
+        erklaerung: "aggregate() liefert ein Wörterbuch für das ganze QuerySet, annotate() ergänzt jedes Objekt um einen Wert und bleibt ein QuerySet."
+        antworten:
+          - { text: "Beide liefern dasselbe.", richtig: false }
+          - { text: "annotate() löscht Objekte.", richtig: false }
+          - { text: "aggregate() fasst alles zusammen, annotate() ergänzt jedes Objekt um einen Wert.", richtig: true }
+      - frage: "Was bewirkt values('name') vor annotate()?"
+        erklaerung: "Die Ergebnisse werden nach den eindeutigen Werten von name gruppiert."
+        antworten:
+          - { text: "Es entsteht eine neue Migration.", richtig: false }
+          - { text: "Die Ergebnisse werden nach name gruppiert.", richtig: true }
+          - { text: "Die Tabelle wird sortiert und gelöscht.", richtig: false }
+  - titel: Der Django-Admin
+    inhalt: |
+      Der **Admin** liest die Metadaten deiner Modelle und baut daraus eine fertige
+      Verwaltungsoberfläche. Die Doku empfiehlt ihn als **internes Werkzeug** einer Organisation,
+      nicht als Grundlage für das ganze Frontend.
+
+      **Modell registrieren** (in `admin.py` der App):
+
+      ```python
+      from django.contrib import admin
+      from .models import Author
+
+      @admin.register(Author)
+      class AuthorAdmin(admin.ModelAdmin):
+          list_display = ["first_name", "last_name"]
+          list_filter = ["last_name"]
+          search_fields = ["first_name", "last_name"]
+      ```
+
+      - `list_display`: Spalten der Listenseite.
+      - `list_filter`: Filter in der rechten Seitenleiste.
+      - `search_fields`: aktiviert ein Suchfeld über die genannten Felder.
+
+      **Zugang:** `python manage.py createsuperuser` legt einen Benutzer an. Zum Anmelden braucht
+      er `is_staff=True`. Der Admin liegt standardmäßig unter `/admin/`.
+    quiz:
+      - frage: "Wozu dient list_display im Admin?"
+        erklaerung: "Es legt fest, welche Felder auf der Listenseite angezeigt werden."
+        antworten:
+          - { text: "Es bestimmt die Spalten der Listenseite.", richtig: true }
+          - { text: "Es aktiviert die Suche.", richtig: false }
+          - { text: "Es legt Benutzer an.", richtig: false }
+      - frage: "Welcher Befehl legt einen Benutzer für den Admin an?"
+        erklaerung: "python manage.py createsuperuser."
+        antworten:
+          - { text: "python manage.py startadmin", richtig: false }
+          - { text: "python manage.py migrate admin", richtig: false }
+          - { text: "python manage.py createsuperuser", richtig: true }
+test:
+  zeitlimit_minuten: 10
+  fragen:
+    - frage: "Wie berechnest du den Durchschnittspreis aller Bücher mit einem Befehl?"
+      erklaerung: "Mit aggregate(Avg('price')), das Ergebnis ist ein Wörterbuch."
+      antworten:
+        - { text: "Book.objects.aggregate(Avg('price'))", richtig: true }
+        - { text: "Book.objects.get(Avg('price'))", richtig: false }
+        - { text: "Book.objects.delete(Avg('price'))", richtig: false }
+    - frage: "Wie bekommst du für jedes Buch die Zahl seiner Autoren?"
+      erklaerung: "Mit annotate(num_authors=Count('authors'))."
+      antworten:
+        - { text: "Book.objects.annotate(num_authors=Count('authors'))", richtig: true }
+        - { text: "Book.objects.aggregate(num_authors=Count('authors'))", richtig: false }
+        - { text: "Book.objects.exclude(num_authors)", richtig: false }
+    - frage: "Wie bekommst du 0 statt None, wenn Sum über eine leere Menge rechnet?"
+      erklaerung: "Mit dem Argument default=0 bei Sum."
+      antworten:
+        - { text: "Sum('price', None=0)", richtig: false }
+        - { text: "Sum('price').delete()", richtig: false }
+        - { text: "Sum('price', default=0)", richtig: true }
+    - frage: "Welche Zeile registriert ein Modell mit einer eigenen Admin-Klasse?"
+      erklaerung: "Der Dekorator @admin.register(Modell) über der ModelAdmin-Klasse."
+      antworten:
+        - { text: "@views.register(Author)", richtig: false }
+        - { text: "admin.delete(Author)", richtig: false }
+        - { text: "@admin.register(Author) über der ModelAdmin-Klasse", richtig: true }
+    - frage: "Wofür empfiehlt die Doku den Admin?"
+      erklaerung: "Als internes Verwaltungswerkzeug, nicht als gesamtes Frontend."
+      antworten:
+        - { text: "Als internes Verwaltungswerkzeug einer Organisation.", richtig: true }
+        - { text: "Als Frontend für alle Besucher.", richtig: false }
+        - { text: "Als Ersatz für die Datenbank.", richtig: false }

@@ -1,0 +1,29 @@
+titel: Datenbanken mit dem Django-ORM
+beschreibung: Modelle, Beziehungen, Abfragen, Aggregationen und der Admin in Django 5.2. Du kannst Daten modellieren, abfragen und auswerten.
+projekt:
+  titel: Mini-Bibliothek
+  beschreibung: |
+    Du modellierst eine kleine Bibliothek und wertest sie aus. Alles läuft lokal in der Django-Shell
+    und im Admin.
+
+    **Aufgabe:** Es gibt Autoren und Bücher. Ein Buch hat einen Autor (viele Bücher je Autor),
+    einen Titel, einen Preis und ein Erscheinungsjahr.
+
+    **Regeln:**
+
+    - Die Tabellen entstehen über Migrationen (`makemigrations`, `migrate`).
+    - Die Beziehung ist ein `ForeignKey` mit `on_delete`.
+    - Abfragen schreibst du mit dem ORM, nicht mit eigenem SQL.
+    - Die Modelle sind im Admin sichtbar (Liste, Filter, Suche).
+
+    **Tipp:** Lege erst zwei Autoren und fünf Bücher im Admin an, dann probierst du die Abfragen
+    in der Shell (`python manage.py shell`).
+    Quelle: [Django 5.2 – Models](https://docs.djangoproject.com/en/5.2/topics/db/models/) und [Making queries](https://docs.djangoproject.com/en/5.2/topics/db/queries/).
+  punkte:
+    - Die Modelle `Author` und `Book` sind angelegt, die Migrationen sind ausgeführt.
+    - Ein `ForeignKey` verbindet Buch und Autor.
+    - Eine Abfrage mit `filter()` liefert alle Bücher ab einem Preis.
+    - Eine Abfrage über die Beziehung mit `__` liefert alle Bücher eines Autors.
+    - Eine Auswertung mit `annotate(Count(...))` liefert die Anzahl Bücher je Autor.
+    - Eine Auswertung mit `aggregate(Avg(...))` liefert den Durchschnittspreis.
+    - Der Admin zeigt die Bücher mit `list_display`, `list_filter` und `search_fields`.

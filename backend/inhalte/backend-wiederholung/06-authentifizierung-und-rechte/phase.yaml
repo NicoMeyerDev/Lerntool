@@ -1,0 +1,26 @@
+titel: Authentifizierung und Rechte
+beschreibung: Wie Django Benutzer anlegt, Passwörter speichert, Anmeldungen und Rechte prüft, und wie DRF Token, Sitzungen und Berechtigungen für APIs nutzt.
+projekt:
+  titel: Geschützte Bücher-API
+  beschreibung: |
+    Du schützt die Bücher-API aus der vorigen Phase. Alles läuft lokal.
+
+    **Aufgabe:** Lesen darf jeder, Anlegen, Ändern und Löschen nur angemeldete Nutzer. Die
+    Anmeldung läuft über Tokens.
+
+    **Regeln:**
+
+    - Die Einstellungen setzen `TokenAuthentication` und `IsAuthenticatedOrReadOnly` als Standard.
+    - Ein Nutzer bekommt sein Token über `obtain_auth_token`.
+    - Das Token wird nie im Code oder im Git gespeichert, in Tests wird ein Test-Token erzeugt.
+    - Anfragen ohne Token auf Schreib-Routen liefern 401 oder 403, nicht 200.
+
+    **Tipp:** Schreibe zuerst den Test „ohne Token geht Anlegen nicht“, dann die Einstellungen.
+    Quelle: [DRF Authentication](https://www.django-rest-framework.org/api-guide/authentication/) und [Permissions](https://www.django-rest-framework.org/api-guide/permissions/).
+  punkte:
+    - '`rest_framework.authtoken` steht in `INSTALLED_APPS`, `migrate` ist ausgeführt.'
+    - Die Standard-Authentifizierung ist `TokenAuthentication`, die Standard-Berechtigung `IsAuthenticatedOrReadOnly`.
+    - '`obtain_auth_token` ist als Route eingebunden und liefert ein Token.'
+    - Ein Test zeigt, dass Lesen ohne Token funktioniert.
+    - Ein Test zeigt, dass Anlegen ohne Token abgelehnt wird.
+    - Ein Test zeigt, dass Anlegen mit Token mit Status 201 klappt.
