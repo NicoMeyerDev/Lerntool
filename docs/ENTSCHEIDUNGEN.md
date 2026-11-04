@@ -132,3 +132,10 @@ Format: Datum – Entscheidung – Grund – Alternativen.
 - **Keine Tabellen in Lerntexten**, weil die Markdown-Darstellung im Frontend keine Tabellen kann (kein `remark-gfm`). Alternative: `remark-gfm` als neue Abhängigkeit.
 - **Umfang Phase 1:** 7 Themenfelder, 32 Abschnitte mit je 3 Quizfragen, 7 Tests mit je 8 Fragen (Zeitlimit 20–25 Minuten), Projekt „Trainingslog“ mit 8 Checklistenpunkten.
 - **Ergebnis der Quellenprüfung:** Klassen werden nie auf den globalen Namespace zurückgeführt, nur Funktionen und Konstanten (php.net, language.namespaces.fallback.php). Der Text wurde korrigiert.
+
+## 2026-11-04 – C3 Phase 2 Laravel-Kern (Inhalte)
+
+- **Lektionen lehren das Attribut `#[Fillable([...])]`**, weil die Laravel-13.x-Dokumentation nur dieses zeigt. Die ältere `$fillable`-Property wird nur als Hinweis erwähnt. Alternative: `$fillable` als Hauptweg (in der aktuellen Doku nicht mehr gezeigt).
+- **Felder des Beispielprojekts „Trainingstagebuch“:** `datum`, `sportart`, `distanz_km`, `dauer_min`. Die Validierung nutzt die Obergrenzen `max:9999.99` und `max:1440`, passend zur Migration (Spaltengrößen). Grund: Eingaben, die die Datenbank nicht speichern kann, sollen schon bei der Validierung abgelehnt werden.
+- **`response()->noContent()` ist nur in der API-Referenz belegt**, nicht im Handbuch. Deshalb steht zusätzlich api.laravel.com als Quelle in der Lektion.
+- **Umfang Phase 2:** 7 Lektionen, Projekt „Trainingstagebuch“. Freigaben: `reviewer` FREIGABE, `quellenpruefer` FREIGABE.
