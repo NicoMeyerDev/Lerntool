@@ -308,7 +308,7 @@ frontend/
   eslint.config.js ESLint
   package.json     Node-Abhängigkeiten und npm-Skripte
   .env.example     Vorlage für frontend/.env
-docs/          Backlog, Lernplan, Curriculum Laravel (CURRICULUM_LARAVEL.md), Entscheidungen, offene Punkte, Changelog
+docs/          Backlog, Lernplan, Curriculum Laravel (CURRICULUM_LARAVEL.md), Curriculum Englisch (CURRICULUM_ENGLISCH.md), Entscheidungen, offene Punkte, Changelog
 .claude/       Claude-Code-Agenten und Hooks
 .github/workflows/ci.yml   CI (Backend: Linter, Typen, Tests; Frontend: Lint, Prettier, Tests, Build)
 ```
