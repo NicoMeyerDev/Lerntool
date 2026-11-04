@@ -20,7 +20,7 @@ Regeln: Immer die oberste offene Aufgabe aus „Jetzt“ bearbeiten. Aufgaben au
 ### C. Inhalte (jede Aufgabe mit `quellenpruefer`)
 - [x] **C1 Curriculum Laravel, Gliederung:** 6 Phasen (PHP-Basics, Laravel-Kern, API und Auth, Docker, Kubernetes, AWS/Cloudflare), jede in Abschnitte, Themenfelder und ein Projekt zerlegt. Abschlussprojekt ist die Garmin-Auswertung. Frontend ausgeklammert.
 - [x] **C2 Phase 1 PHP-Basics von Grund auf:** Variablen und Typen, Operatoren, Kontrollstrukturen, Funktionen, Arrays, Klassen und Objekte, Namespaces und Composer, Fehlerbehandlung. Kein Vorwissen voraussetzen. Python-Vergleich nur als Eselsbrücke. Quelle: php.net.
-- [ ] **C3 Phase 2 Laravel-Kern:** Routing, Controller, Eloquent, Migrationen, Validierung, Tests. Quelle: laravel.com/docs, Version prüfen.
+- [x] **C3 Phase 2 Laravel-Kern:** Routing, Controller, Eloquent, Migrationen, Validierung, Tests. Quelle: laravel.com/docs, Version prüfen.
 - [ ] **C4 Englisch, Gliederung:** Einstieg ab SAP 2122. Pfad Alltag und Ausland, dann Fachenglisch IT, am Ende optional Sprachtest. Nur Lesen, Hören und Schreiben, kein Mikrofon.
 
 ## Später (nicht anfangen)
