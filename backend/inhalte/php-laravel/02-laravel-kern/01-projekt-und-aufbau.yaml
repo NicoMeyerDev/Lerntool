@@ -47,9 +47,9 @@ abschnitte:
       - frage: "Welche Datenbank nutzt ein neues Laravel-Projekt standardmäßig?"
         erklaerung: "Laut Installationsanleitung ist SQLite voreingestellt."
         antworten:
-          - { text: "SQLite", richtig: true }
           - { text: "Oracle", richtig: false }
           - { text: "MongoDB", richtig: false }
+          - { text: "SQLite", richtig: true }
   - titel: Ordnerstruktur und Konfiguration
     inhalt: |
       Wichtige Ordner im Projekt:
@@ -79,9 +79,9 @@ abschnitte:
       - frage: "Warum gehört die `.env` nicht in die Versionsverwaltung?"
         erklaerung: "Sie enthält Zugangsdaten und ist je Rechner oder Server verschieden."
         antworten:
+          - { text: "Sie wird von Laravel automatisch gelöscht.", richtig: false }
           - { text: "Sie enthält Zugangsdaten und unterscheidet sich je Umgebung.", richtig: true }
           - { text: "Git kann keine Dateien ohne Endung speichern.", richtig: false }
-          - { text: "Sie wird von Laravel automatisch gelöscht.", richtig: false }
   - titel: Weg einer Anfrage und artisan
     inhalt: |
       Wenn ein Browser eine Adresse aufruft, läuft das grob so ab:
@@ -110,24 +110,24 @@ abschnitte:
       - frage: "Was zeigt `php artisan route:list`?"
         erklaerung: "Der Befehl listet alle registrierten Routen auf."
         antworten:
+          - { text: "Alle installierten Pakete.", richtig: false }
           - { text: "Alle Routen der Anwendung.", richtig: true }
           - { text: "Alle Datenbanktabellen.", richtig: false }
-          - { text: "Alle installierten Pakete.", richtig: false }
       - frage: "Welche Datei ist der Einstiegspunkt jeder Anfrage?"
         erklaerung: "Alle Anfragen laufen über `public/index.php`."
         antworten:
+          - { text: ".env", richtig: false }
           - { text: "public/index.php", richtig: true }
           - { text: "routes/web.php", richtig: false }
-          - { text: ".env", richtig: false }
 test:
   zeitlimit_minuten: 15
   fragen:
     - frage: "Welcher Befehl legt ein neues Laravel-Projekt an?"
       erklaerung: "`laravel new name` erzeugt ein neues Projekt."
       antworten:
+        - { text: "composer start trainingstagebuch", richtig: false }
         - { text: "laravel new trainingstagebuch", richtig: true }
         - { text: "php artisan new trainingstagebuch", richtig: false }
-        - { text: "composer start trainingstagebuch", richtig: false }
     - frage: "Wo stehen Datenbank-Zugangsdaten?"
       erklaerung: "In der `.env`, die nicht in Git landet."
       antworten:
@@ -137,9 +137,9 @@ test:
     - frage: "Wozu dient Middleware?"
       erklaerung: "Sie sind Prüfstationen, durch die die Anfrage vor der Route läuft."
       antworten:
+        - { text: "Sie erzeugt HTML-Seiten.", richtig: false }
         - { text: "Sie prüft oder verändert eine Anfrage, bevor die Route läuft.", richtig: true }
         - { text: "Sie speichert Daten in der Datenbank.", richtig: false }
-        - { text: "Sie erzeugt HTML-Seiten.", richtig: false }
     - frage: "Was erzeugt `php artisan make:controller`?"
       erklaerung: "Der Befehl erzeugt eine neue Controller-Datei mit Grundgerüst."
       antworten:

@@ -37,9 +37,9 @@ abschnitte:
       - frage: "Was bedeutet „go straight on“?"
         erklaerung: "Go straight on heißt geradeaus gehen."
         antworten:
+          - { text: "Anhalten.", richtig: false }
           - { text: "Geradeaus gehen.", richtig: true }
           - { text: "Links abbiegen.", richtig: false }
-          - { text: "Anhalten.", richtig: false }
       - frage: "Welche Wendung bedeutet „an etwas vorbeigehen“?"
         erklaerung: "Go past heißt an etwas vorbeigehen."
         antworten:
@@ -74,15 +74,15 @@ abschnitte:
       - frage: "Welche Angaben gehören laut Tipps in eine Buchungsanfrage?"
         erklaerung: "Daten, Zimmerart und der Frühstückswunsch gehören hinein, dazu die Bitte um Bestätigung."
         antworten:
-          - { text: "Daten, Zimmerart und ob du Frühstück möchtest.", richtig: true }
           - { text: "Nur dein Name.", richtig: false }
           - { text: "Dein Passwort.", richtig: false }
+          - { text: "Daten, Zimmerart und ob du Frühstück möchtest.", richtig: true }
       - frage: "Worum bittest du am Ende der Anfrage?"
         erklaerung: "Man bittet das Hotel, die Buchung zu bestätigen."
         antworten:
+          - { text: "Um die Adresse des Besitzers.", richtig: false }
           - { text: "Um die Bestätigung der Buchung.", richtig: true }
           - { text: "Um einen Rabatt auf alle Zimmer.", richtig: false }
-          - { text: "Um die Adresse des Besitzers.", richtig: false }
   - titel: Ein Formular für die Unterkunft ausfüllen
     inhalt: |
       In der LearnEnglish-Aufgabe füllst du ein Formular für eine Unterkunft aus. Typische
@@ -107,9 +107,9 @@ abschnitte:
       - frage: "Was bedeutet „surname“?"
         erklaerung: "Surname ist der Nachname."
         antworten:
-          - { text: "Nachname", richtig: true }
           - { text: "Vorname", richtig: false }
           - { text: "Geburtsort", richtig: false }
+          - { text: "Nachname", richtig: true }
       - frage: "Was rät die Aufgabe, wenn auf dem Formular wenig Platz ist?"
         erklaerung: "Man schreibt eine Liste statt ganzer Sätze."
         antworten:
@@ -146,9 +146,9 @@ abschnitte:
       - frage: "Welcher Schluss passt zu einer E-Mail, die ein Problem meldet?"
         erklaerung: "Thank you for your understanding zeigt, dass man auf Verständnis hofft. Die anderen Sätze sind unhöflich oder passen nicht."
         antworten:
-          - { text: "Thank you for your understanding.", richtig: true }
           - { text: "I don't care what you think.", richtig: false }
           - { text: "See you in the water!", richtig: false }
+          - { text: "Thank you for your understanding.", richtig: true }
   - titel: Pläne und Zukunft
     inhalt: |
       Für die Zukunft nutzt du drei Formen. Alle Beispiele stammen von der LearnEnglish-Seite
@@ -181,9 +181,9 @@ abschnitte:
       - frage: "Welcher Satz sagt einen Regen voraus, den man an den Wolken sieht?"
         erklaerung: "Going to steht bei Vorhersagen, die man sehen kann."
         antworten:
+          - { text: "It rained to going.", richtig: false }
           - { text: "Look at those black clouds. I think it's going to rain.", richtig: true }
           - { text: "I played rain yesterday.", richtig: false }
-          - { text: "It rained to going.", richtig: false }
       - frage: "Wofür nutzt LearnEnglish „We'll send you an email“?"
         erklaerung: "Will steht für Angebote und Versprechen."
         antworten:
@@ -202,21 +202,21 @@ test:
     - frage: "Welche Begrüßung passt zu einer E-Mail an ein Hotel?"
       erklaerung: "Laut LearnEnglish beginnt man mit Hello oder Dear plus Hotelname."
       antworten:
+        - { text: "Bye Hotel,", richtig: false }
         - { text: "Dear Ascot Hotel,", richtig: true }
         - { text: "Yo Hotel!!!", richtig: false }
-        - { text: "Bye Hotel,", richtig: false }
     - frage: "Was bedeutet „shared room“?"
       erklaerung: "Ein shared room ist ein Zimmer, das man sich teilt."
       antworten:
+        - { text: "Ein Zimmer außerhalb der Stadt.", richtig: false }
         - { text: "Ein Zimmer, das man sich teilt.", richtig: true }
         - { text: "Ein Zimmer mit Bad.", richtig: false }
-        - { text: "Ein Zimmer außerhalb der Stadt.", richtig: false }
     - frage: "Womit leitest du laut Mustertext eine unangenehme Nachricht höflich ein?"
       erklaerung: "Im Mustertext steht: I'm afraid I also need to ask for an extension."
       antworten:
+        - { text: "It is your fault.", richtig: false }
         - { text: "I'm afraid ...", richtig: true }
         - { text: "Listen!", richtig: false }
-        - { text: "It is your fault.", richtig: false }
     - frage: "Welcher Satz nennt einen Plan mit going to?"
       erklaerung: "I'm going to drive to work today ist ein Plan mit going to."
       antworten:

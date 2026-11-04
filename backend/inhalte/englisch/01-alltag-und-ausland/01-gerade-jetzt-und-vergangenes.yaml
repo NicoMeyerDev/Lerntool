@@ -51,15 +51,15 @@ abschnitte:
       - frage: "Welcher Satz sagt richtig, dass Kinder gerade schlafen?"
         erklaerung: "Das present continuous besteht aus am/is/are plus Verb mit -ing: The children are sleeping."
         antworten:
+          - { text: "The children is sleeping.", richtig: false }
           - { text: "The children are sleeping.", richtig: true }
           - { text: "The children sleeping are.", richtig: false }
-          - { text: "The children is sleeping.", richtig: false }
       - frage: "Wie fragst du, was jemand nächste Woche vorhat?"
         erklaerung: "Die Frage steht im present continuous: What are you doing next week?"
         antworten:
+          - { text: "What do you doing next week?", richtig: false }
           - { text: "What are you doing next week?", richtig: true }
           - { text: "What you are doing next week?", richtig: false }
-          - { text: "What do you doing next week?", richtig: false }
       - frage: "Welcher Satz ist laut LearnEnglish normalerweise richtig?"
         erklaerung: "Verben des Denkens und Fühlens wie understand stehen normalerweise nicht im present continuous."
         antworten:
@@ -173,15 +173,15 @@ abschnitte:
       - frage: "Was bedeutet „When the guests arrived, Jane was cooking dinner“?"
         erklaerung: "Das past continuous zeigt: Jane war schon beim Kochen, als die Gäste kamen."
         antworten:
-          - { text: "Jane kochte schon, als die Gäste kamen.", richtig: true }
           - { text: "Jane fing erst nach der Ankunft der Gäste an zu kochen.", richtig: false }
           - { text: "Jane wird später kochen.", richtig: false }
+          - { text: "Jane kochte schon, als die Gäste kamen.", richtig: true }
       - frage: "Welcher Satz ist richtig gebaut?"
         erklaerung: "Das past continuous (was watching) beschreibt, was lief, das past simple (went off) das, was dazwischen geschah."
         antworten:
-          - { text: "We were watching television when the power went off.", richtig: true }
           - { text: "We watching television when the power was going off.", richtig: false }
           - { text: "We was watching television when the power went off.", richtig: false }
+          - { text: "We were watching television when the power went off.", richtig: true }
   - titel: Einen kurzen Bericht schreiben
     inhalt: |
       So schreibst du einen kurzen Bericht, etwa über dein Wochenende oder deinen Urlaub.
@@ -205,15 +205,15 @@ abschnitte:
       - frage: "Welche Wörter nennt LearnEnglish zum Verbinden von Sätzen?"
         erklaerung: "Die Aufgabe nennt so, but, and und because."
         antworten:
-          - { text: "so, but, and, because", richtig: true }
           - { text: "yesterday, ago, last week", richtig: false }
           - { text: "am, is, are", richtig: false }
+          - { text: "so, but, and, because", richtig: true }
       - frage: "Wie sollten die Absätze aufgebaut sein?"
         erklaerung: "Jeder Absatz hat ein eigenes Thema, die Sätze sind klar und einfach."
         antworten:
-          - { text: "Kurz, mit je einem Thema.", richtig: true }
           - { text: "Ein langer Absatz mit allem.", richtig: false }
           - { text: "Ohne Verbindungswörter.", richtig: false }
+          - { text: "Kurz, mit je einem Thema.", richtig: true }
 test:
   zeitlimit_minuten: 15
   fragen:
@@ -226,15 +226,15 @@ test:
     - frage: "Wie schreibst du „live“ mit -ing?"
       erklaerung: "Ein stummes e fällt weg: living (eigene Erklärung zur Rechtschreibung)."
       antworten:
+        - { text: "livving", richtig: false }
         - { text: "living", richtig: true }
         - { text: "liveing", richtig: false }
-        - { text: "livving", richtig: false }
     - frage: "Welches Wort passt zu einem Satz im past simple?"
       erklaerung: "Last week nennt eine abgeschlossene Zeit in der Vergangenheit."
       antworten:
+        - { text: "at the moment", richtig: false }
         - { text: "last week", richtig: true }
         - { text: "next week", richtig: false }
-        - { text: "at the moment", richtig: false }
     - frage: "Welche Form ist die unregelmäßige Vergangenheit von „go“?"
       erklaerung: "Laut LearnEnglish heißt go im past simple went."
       antworten:
@@ -244,9 +244,9 @@ test:
     - frage: "Wie lautet die Frage zu „She played tennis when she was younger“?"
       erklaerung: "Did + Person + Grundform: Did she play tennis when she was younger?"
       antworten:
-        - { text: "Did she play tennis when she was younger?", richtig: true }
         - { text: "Did she played tennis when she was younger?", richtig: false }
         - { text: "She did played tennis when she was younger?", richtig: false }
+        - { text: "Did she play tennis when she was younger?", richtig: true }
     - frage: "Was zeigt „I was studying“ laut LearnEnglish?"
       erklaerung: "Das past continuous zeigt, dass eine Handlung zu einer bestimmten Zeit in der Vergangenheit schon lief."
       antworten:

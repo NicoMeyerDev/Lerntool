@@ -91,9 +91,9 @@ abschnitte:
       - frage: "Welcher Satz ist eine Einladung?"
         erklaerung: "Would you like to ...? lädt jemanden ein."
         antworten:
+          - { text: "Shall I call you on your mobile?", richtig: false }
           - { text: "Would you like to come round tomorrow?", richtig: true }
           - { text: "Could you take a message, please?", richtig: false }
-          - { text: "Shall I call you on your mobile?", richtig: false }
   - titel: Vergleiche
     inhalt: |
       Mit einem **Vergleich** (comparative) sagst du, dass etwas „mehr“ ist als etwas anderes.
@@ -125,9 +125,9 @@ abschnitte:
       - frage: "Wie lautet der Vergleich von „big“?"
         erklaerung: "Bei Vokal plus Konsonant wird der Konsonant verdoppelt: bigger."
         antworten:
-          - { text: "bigger", richtig: true }
           - { text: "biger", richtig: false }
           - { text: "more big", richtig: false }
+          - { text: "bigger", richtig: true }
       - frage: "Welcher Satz ist richtig?"
         erklaerung: "Lange Adjektive wie interesting bekommen more, und than nennt das Verglichene."
         antworten:
@@ -163,24 +163,24 @@ abschnitte:
       - frage: "Womit kannst du eine persönliche E-Mail anfangen?"
         erklaerung: "Eine Frage wie How are you? passt, weil die E-Mail wie ein Gespräch sein darf."
         antworten:
+          - { text: "Nur mit dem Betreff.", richtig: false }
           - { text: "Mit der Frage How are you?", richtig: true }
           - { text: "Mit einem Passwort.", richtig: false }
-          - { text: "Nur mit dem Betreff.", richtig: false }
 test:
   zeitlimit_minuten: 15
   fragen:
     - frage: "Welche Wendung macht einen Vorschlag?"
       erklaerung: "Shall we ...? ist eine Wendung für Vorschläge."
       antworten:
-        - { text: "Shall we meet a bit later, say 10?", richtig: true }
         - { text: "We met a bit later, say 10.", richtig: false }
         - { text: "Meeting later say 10 shall.", richtig: false }
+        - { text: "Shall we meet a bit later, say 10?", richtig: true }
     - frage: "Welcher Satz stimmt einem Vorschlag zu?"
       erklaerung: "Sure! Sunday works for me stimmt im Beispielchat zu."
       antworten:
-        - { text: "Sure! Sunday works for me.", richtig: true }
         - { text: "Sunday is never.", richtig: false }
         - { text: "Where is Sunday?", richtig: false }
+        - { text: "Sure! Sunday works for me.", richtig: true }
     - frage: "Welche Bitte ist laut LearnEnglish die höflichere?"
       erklaerung: "Would you ... ist höflicher als will you ..."
       antworten:
@@ -190,15 +190,15 @@ test:
     - frage: "Wie lautet der Vergleich von „happy“?"
       erklaerung: "Bei Konsonant plus -y wird das y zu i: happier."
       antworten:
+        - { text: "happyier", richtig: false }
         - { text: "happier", richtig: true }
         - { text: "happyer", richtig: false }
-        - { text: "happyier", richtig: false }
     - frage: "Welche Form ist die Steigerung von „good“?"
       erklaerung: "Good ist unregelmäßig: better."
       antworten:
+        - { text: "worse", richtig: false }
         - { text: "better", richtig: true }
         - { text: "gooder", richtig: false }
-        - { text: "worse", richtig: false }
     - frage: "Welches Wort brauchst du, um zu sagen, womit du vergleichst?"
       erklaerung: "Than entspricht dem deutschen „als“."
       antworten:

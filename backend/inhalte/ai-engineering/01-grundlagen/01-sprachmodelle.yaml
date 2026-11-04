@@ -32,15 +32,15 @@ abschnitte:
       - frage: "Worauf wird ein Sprachmodell im Pretraining trainiert?"
         erklaerung: "Laut Glossar lernt das Modell, das nächste Wort zu einem bisherigen Text vorherzusagen."
         antworten:
-          - { text: "Das nächste Wort zu einem bisherigen Text vorherzusagen.", richtig: true }
           - { text: "Fragen mit festen Antworten aus einer Datenbank nachzuschlagen.", richtig: false }
           - { text: "Programmcode auszuführen.", richtig: false }
+          - { text: "Das nächste Wort zu einem bisherigen Text vorherzusagen.", richtig: true }
       - frage: "Wofür steht die Abkürzung LLM?"
         erklaerung: "LLM steht für Large Language Model, also großes Sprachmodell."
         antworten:
-          - { text: "Large Language Model", richtig: true }
           - { text: "Long Learning Machine", richtig: false }
           - { text: "Linear Logic Module", richtig: false }
+          - { text: "Large Language Model", richtig: true }
   - titel: Tokens und Kontextfenster
     inhalt: |
       Ein Modell liest keine Buchstaben und keine ganzen Wörter, sondern **Tokens**. Ein Token
@@ -75,15 +75,15 @@ abschnitte:
       - frage: "Was gehört laut Doku zum Kontextfenster?"
         erklaerung: "Alles, was das Modell ansehen kann, inklusive der Antwort selbst."
         antworten:
-          - { text: "Die Eingabe und die erzeugte Antwort.", richtig: true }
           - { text: "Nur die erste Nachricht.", richtig: false }
           - { text: "Nur die Trainingsdaten.", richtig: false }
+          - { text: "Die Eingabe und die erzeugte Antwort.", richtig: true }
       - frage: "Was bedeutet *context rot*?"
         erklaerung: "Mit wachsender Tokenzahl können Genauigkeit und Erinnerung nachlassen."
         antworten:
+          - { text: "Das Modell kann den Kontext nicht mehr lesen.", richtig: false }
           - { text: "Bei sehr langem Kontext kann die Qualität nachlassen.", richtig: true }
           - { text: "Das Modell löscht alte Nachrichten selbst.", richtig: false }
-          - { text: "Das Modell kann den Kontext nicht mehr lesen.", richtig: false }
       - frage: "Was ist ein Token?"
         erklaerung: "Ein Token ist die kleinste Einheit des Modells, zum Beispiel ein Wort, Wortteil oder Zeichen."
         antworten:
@@ -113,15 +113,15 @@ abschnitte:
       - frage: "Was bewirkt eine niedrige Temperatur?"
         erklaerung: "Niedrige Temperaturen führen zu konservativeren Ausgaben nahe am Wahrscheinlichsten."
         antworten:
+          - { text: "Ein größeres Kontextfenster.", richtig: false }
           - { text: "Konservativere, vorhersehbarere Antworten.", richtig: true }
           - { text: "Immer kreativere Antworten.", richtig: false }
-          - { text: "Ein größeres Kontextfenster.", richtig: false }
       - frage: "Ist das Ergebnis bei Temperatur 0 immer exakt gleich?"
         erklaerung: "Nein. Laut Glossar sind Ergebnisse auch bei Temperatur 0 nicht vollständig deterministisch."
         antworten:
+          - { text: "Nur wenn der Prompt kürzer als 100 Zeichen ist.", richtig: false }
           - { text: "Nein, es kann trotzdem Unterschiede geben.", richtig: true }
           - { text: "Ja, bei 0 ist es immer identisch.", richtig: false }
-          - { text: "Nur wenn der Prompt kürzer als 100 Zeichen ist.", richtig: false }
   - titel: Grenzen und Halluzinationen
     inhalt: |
       Sprachmodelle sind stark, aber nicht unfehlbar. Sie können Text erzeugen, der
@@ -151,15 +151,15 @@ abschnitte:
       - frage: "Was ist eine Halluzination bei einem Sprachmodell?"
         erklaerung: "Das Modell erzeugt Text, der sachlich falsch oder inkonsistent mit dem Kontext ist."
         antworten:
-          - { text: "Ein plausibel klingender, aber falscher oder unpassender Text.", richtig: true }
           - { text: "Ein Absturz der API.", richtig: false }
           - { text: "Eine zu lange Antwort.", richtig: false }
+          - { text: "Ein plausibel klingender, aber falscher oder unpassender Text.", richtig: true }
       - frage: "Welche Maßnahme senkt laut Doku das Risiko von Halluzinationen?"
         erklaerung: "Dem Modell erlauben zu sagen, dass es etwas nicht weiß, gehört zu den genannten Basisstrategien."
         antworten:
+          - { text: "Dem Modell verbieten, Quellen zu nennen.", richtig: false }
           - { text: "Dem Modell erlauben, „Ich weiß es nicht“ zu sagen.", richtig: true }
           - { text: "Die Temperatur auf den höchsten Wert stellen.", richtig: false }
-          - { text: "Dem Modell verbieten, Quellen zu nennen.", richtig: false }
       - frage: "Kann man Halluzinationen mit diesen Techniken ganz ausschließen?"
         erklaerung: "Nein. Die Techniken senken das Risiko, eliminieren es aber nicht."
         antworten:
@@ -184,15 +184,15 @@ test:
     - frage: "Welche Wirkung hat eine hohe Temperatur?"
       erklaerung: "Höhere Temperaturen führen zu kreativeren und vielfältigeren Ausgaben."
       antworten:
-        - { text: "Kreativere und vielfältigere Ausgaben.", richtig: true }
         - { text: "Garantiert korrekte Fakten.", richtig: false }
         - { text: "Weniger Kosten.", richtig: false }
+        - { text: "Kreativere und vielfältigere Ausgaben.", richtig: true }
     - frage: "Was solltest du bei wichtigen Aussagen aus einer Modellantwort tun?"
       erklaerung: "Halluzinationen lassen sich senken, aber nicht ausschließen. Wichtige Angaben prüfst du an einer Quelle."
       antworten:
+        - { text: "Den Prompt in Großbuchstaben wiederholen.", richtig: false }
         - { text: "Sie an einer verlässlichen Quelle prüfen.", richtig: true }
         - { text: "Sie ungeprüft übernehmen, wenn sie überzeugend klingen.", richtig: false }
-        - { text: "Den Prompt in Großbuchstaben wiederholen.", richtig: false }
     - frage: "Was passiert, wenn die Eingabe allein schon größer als das Kontextfenster ist?"
       erklaerung: "Die API lehnt die Anfrage mit einem 400-Fehler (invalid_request_error) ab."
       antworten:
