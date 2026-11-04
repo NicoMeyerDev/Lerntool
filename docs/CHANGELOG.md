@@ -2,6 +2,7 @@
 
 ## 2026-11-04
 
+- fix: Antwortreihenfolge: In `php-laravel`, `ai-engineering` und `englisch` steht die richtige Antwort nicht mehr fast immer an erster Stelle (reine Umsortierung der Antwortzeilen, Inhalt unverändert). Eintrag in `docs/OFFEN.md` erledigt, Mischen im Frontend als Idee im Backlog.
 - D1 Backend-Wiederholung, Teil 1: neues Thema in `backend/inhalte/backend-wiederholung/` mit den Phasen 03 Django-Grundlagen, 04 Datenbanken, 05 Django REST Framework und 06 Authentifizierung und Rechte (je mit Projekt). Der Import enthält jetzt 8 Phasen, 31 Lektionen, 114 Abschnitte und 448 Fragen. Entscheidungen in `docs/ENTSCHEIDUNGEN.md`, neue offene Punkte (Antwortreihenfolge, DRF 3.18 und Django 5.2) in `docs/OFFEN.md`. D1 ist im Backlog in drei Teile gegliedert.
 - C5 Englisch Phase 1 ab 1.3 (A2): 3 Lektionen und Projekt „Reiseplan“ (ohne Hörteil, 8 Punkte) in `backend/inhalte/englisch/`. Lücken (Hören, Reisen, Restaurant und Arzt, Texte überfliegen, „Would you mind“, Wegbeschreibung aus Erwachsenenquelle) sind in `docs/OFFEN.md` notiert und als C6 im Backlog. Abweichungen von der Gliederung in `docs/ENTSCHEIDUNGEN.md`.
 - E1 AI Engineering (Gliederung und Phase 1): neues Dokument `docs/CURRICULUM_AI_ENGINEERING.md` (6 Phasen) und Inhalte der Phase 1 „Grundlagen“ in `backend/inhalte/ai-engineering/` (3 Lektionen). Mit PHP/Laravel enthält der Import jetzt 3 Phasen, 17 Lektionen, 66 Abschnitte und 278 Fragen. Entscheidungen in `docs/ENTSCHEIDUNGEN.md`, neuer offener Punkt zu API-Aufrufen und Kosten in `docs/OFFEN.md`.

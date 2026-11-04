@@ -66,7 +66,7 @@ Reine Notiz für die spätere Ausarbeitung (Backlog C6), keine Entscheidung des 
 ### 2026-11-04 – Antwortreihenfolge in älteren Inhalten
 
 - **Problem:** In den Inhalten `php-laravel` (rund 78 Prozent), `ai-engineering` und `englisch` (je 100 Prozent) steht die richtige Antwort überwiegend an erster Stelle. Die App mischt die Antworten nicht, die Lösung ist so erratbar.
-- **Plan:** Kleiner Fix-PR, der die Reihenfolge in diesen Dateien verteilt (das Skript liegt nur lokal). Später eventuell Mischen im Frontend (Funktion, gehört ins Backlog). Kein Entscheidungsbedarf des Lernenden.
+- **Lösung:** Die Reihenfolge der Antworten ist in `php-laravel`, `ai-engineering` und `englisch` verteilt (PR dieser Aufgabe, reine Umsortierung). Offen bleibt nur die Idee, im Frontend zu mischen; sie steht unter „Später“ im Backlog.
 
 ### 2026-11-04 – DRF 3.18 und Django 5.2
 
