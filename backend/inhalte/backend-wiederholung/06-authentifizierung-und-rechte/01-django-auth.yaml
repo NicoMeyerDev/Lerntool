@@ -1,0 +1,134 @@
+titel: Anmeldung und Rechte in Django
+zusammenfassung: Du erinnerst dich an User-Objekte, gehashte Passwörter, authenticate, login und logout, login_required und an die vier Standardrechte je Modell.
+quellen:
+  - titel: Django 5.2 – Using the Django authentication system
+    url: https://docs.djangoproject.com/en/5.2/topics/auth/default/
+abschnitte:
+  - titel: Benutzer und Passwörter
+    inhalt: |
+      Im Zentrum steht das **User-Objekt**. Es gibt nur **eine** Art von Benutzer: Superuser und
+      Mitarbeiter (Staff) sind normale User mit besonderen Attributen.
+
+      Wichtige Felder: `username`, `password`, `email`, `first_name`, `last_name`.
+
+      **Anlegen:**
+
+      ```python
+      user = User.objects.create_user("john", "lennon@thebeatles.com", "johnpassword")
+      ```
+
+      Einen Superuser legst du mit `python manage.py createsuperuser` an.
+
+      **Passwörter:** Django speichert **keine Klartext-Passwörter**, sondern nur einen **Hash**.
+      Ändere das Feld `password` nie direkt, sondern nutze `set_password()` und danach `save()`.
+      Ein Passwortwechsel meldet alle Sitzungen des Benutzers ab.
+    quiz:
+      - frage: "Wie speichert Django Passwörter?"
+        erklaerung: "Nur als Hash, nie als Klartext."
+        antworten:
+          - { text: "Im Klartext.", richtig: false }
+          - { text: "In einer Textdatei neben der Datenbank.", richtig: false }
+          - { text: "Nur als Hash.", richtig: true }
+      - frage: "Wie änderst du das Passwort eines Benutzers im Code richtig?"
+        erklaerung: "Mit set_password() und anschließendem save()."
+        antworten:
+          - { text: "Mit set_password() und save()", richtig: true }
+          - { text: "Indem du das Feld password direkt überschreibst", richtig: false }
+          - { text: "Mit delete_password()", richtig: false }
+  - titel: authenticate, login und logout
+    inhalt: |
+      - **`authenticate()`** prüft Zugangsdaten gegen die Authentifizierungs-Backends. Es gibt
+        einen `User` zurück, wenn sie stimmen, sonst `None`.
+      - **`login(request, user)`** speichert die ID des Benutzers in der Sitzung.
+      - **`logout(request)`** meldet ab und räumt die Sitzungsdaten der aktuellen Anfrage
+        vollständig auf. Es gibt auch keinen Fehler, wenn niemand angemeldet war.
+
+      ```python
+      user = authenticate(request, username=username, password=password)
+      if user is not None:
+          login(request, user)
+      ```
+
+      Willst du einen Benutzer anmelden, empfiehlt die Doku die fertige `LoginView`. `authenticate()`
+      ist ein Werkzeug auf niedriger Ebene.
+
+      **`request.user`** ist ein `User`, wenn jemand angemeldet ist, sonst ein `AnonymousUser`.
+      Prüfe mit `request.user.is_authenticated`.
+    quiz:
+      - frage: "Was liefert authenticate() bei falschen Zugangsdaten?"
+        erklaerung: "None."
+        antworten:
+          - { text: "None", richtig: true }
+          - { text: "Einen leeren User", richtig: false }
+          - { text: "Eine Ausnahme mit Status 500", richtig: false }
+      - frage: "Was ist request.user, wenn niemand angemeldet ist?"
+        erklaerung: "Ein AnonymousUser."
+        antworten:
+          - { text: "Ein AnonymousUser", richtig: true }
+          - { text: "None", richtig: false }
+          - { text: "Ein Superuser", richtig: false }
+  - titel: Zugriff schützen und Rechte
+    inhalt: |
+      **`@login_required`** leitet nicht angemeldete Nutzer auf `settings.LOGIN_URL` um. Der
+      aktuelle Pfad steht im Parameter `next`, zum Beispiel `/accounts/login/?next=/polls/3/`.
+      Für Klassen gibt es `LoginRequiredMixin`.
+
+      **Rechte:** Für jedes Modell legt Django beim `migrate` vier Standardrechte an: **add,
+      change, delete, view**. Für die App `foo` und das Modell `Bar` heißen sie `foo.add_bar`,
+      `foo.change_bar`, `foo.delete_bar` und `foo.view_bar`.
+
+      ```python
+      user.has_perm('foo.add_bar')
+      ```
+
+      Nutzer bekommen Rechte direkt oder über **Gruppen**: Wer in einer Gruppe ist, hat deren
+      Rechte automatisch.
+
+      **`@permission_required("polls.add_choice")`** schützt eine View per Recht. Mit
+      `raise_exception` bekommst du eine 403-Antwort statt einer Weiterleitung.
+    quiz:
+      - frage: "Welche vier Standardrechte legt Django je Modell an?"
+        erklaerung: "add, change, delete und view."
+        antworten:
+          - { text: "create, update, drop, show", richtig: false }
+          - { text: "add, change, delete, view", richtig: true }
+          - { text: "read, write, execute, admin", richtig: false }
+      - frage: "Wie bekommt ein Benutzer die Rechte einer Gruppe?"
+        erklaerung: "Wer Mitglied einer Gruppe ist, hat deren Rechte automatisch."
+        antworten:
+          - { text: "Gar nicht, Gruppen haben keine Rechte.", richtig: false }
+          - { text: "Durch die Mitgliedschaft in der Gruppe.", richtig: true }
+          - { text: "Er muss sich jedes Recht einzeln kopieren.", richtig: false }
+test:
+  zeitlimit_minuten: 10
+  fragen:
+    - frage: "Wie lautet das Recht zum Ändern des Modells Bar in der App foo?"
+      erklaerung: "foo.change_bar."
+      antworten:
+        - { text: "foo.update", richtig: false }
+        - { text: "foo.change_bar", richtig: true }
+        - { text: "bar.edit_foo", richtig: false }
+    - frage: "Wohin leitet @login_required nicht angemeldete Nutzer um?"
+      erklaerung: "Auf settings.LOGIN_URL, mit dem aktuellen Pfad im Parameter next."
+      antworten:
+        - { text: "Auf LOGIN_URL, mit dem Pfad im Parameter next", richtig: true }
+        - { text: "Auf die Admin-Startseite ohne Parameter", richtig: false }
+        - { text: "Nirgendwohin, es gibt eine Fehlermeldung 500", richtig: false }
+    - frage: "Was speichert login() in der Sitzung?"
+      erklaerung: "Die ID des Benutzers."
+      antworten:
+        - { text: "Die komplette Datenbank", richtig: false }
+        - { text: "Die ID des Benutzers", richtig: true }
+        - { text: "Das Klartext-Passwort", richtig: false }
+    - frage: "Welche Methode legt einen User mit gespeichertem Passwort-Hash an?"
+      erklaerung: "create_user() speichert den Benutzer und hasht das Passwort."
+      antworten:
+        - { text: "User(...).print()", richtig: false }
+        - { text: "User.objects.plain(...)", richtig: false }
+        - { text: "User.objects.create_user(...)", richtig: true }
+    - frage: "Was passiert nach set_password() und save() mit den Sitzungen des Benutzers?"
+      erklaerung: "Ein Passwortwechsel meldet alle Sitzungen des Benutzers ab."
+      antworten:
+        - { text: "Alle Benutzer werden abgemeldet.", richtig: false }
+        - { text: "Alle Sitzungen des Benutzers werden abgemeldet.", richtig: true }
+        - { text: "Nichts, alle bleiben angemeldet.", richtig: false }

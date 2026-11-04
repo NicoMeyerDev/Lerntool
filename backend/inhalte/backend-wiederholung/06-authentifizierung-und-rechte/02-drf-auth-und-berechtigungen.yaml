@@ -1,0 +1,134 @@
+titel: Authentifizierung und Berechtigungen in DRF
+zusammenfassung: Du erinnerst dich an den Unterschied zwischen Authentifizierung und Berechtigung in DRF, an Token- und Sitzungs-Authentifizierung, an die eingebauten Permission-Klassen und an 401 gegen 403.
+quellen:
+  - titel: Django REST Framework – Authentication
+    url: https://www.django-rest-framework.org/api-guide/authentication/
+  - titel: Django REST Framework – Permissions
+    url: https://www.django-rest-framework.org/api-guide/permissions/
+abschnitte:
+  - titel: Authentifizierung und Berechtigung sind zwei Schritte
+    inhalt: |
+      **Authentifizierung** klärt: *Wer bist du?* **Berechtigung** klärt: *Darfst du das?*
+
+      DRF probiert die eingestellten Authentifizierungs-Klassen der Reihe nach durch. Die erste,
+      die klappt, setzt `request.user` und `request.auth`. Klappt keine, ist `request.user` ein
+      `AnonymousUser` und `request.auth` ist `None`.
+
+      Die Doku betont: Authentifizierung allein erlaubt oder verbietet keine Anfrage. Das
+      entscheiden die **Berechtigungen**. Sie laufen ganz am Anfang der View, bevor anderer Code
+      ausgeführt wird, und nutzen `request.user` und `request.auth`.
+
+      **Einstellen:** global mit `DEFAULT_AUTHENTICATION_CLASSES` und `DEFAULT_PERMISSION_CLASSES`
+      im Block `REST_FRAMEWORK`, pro View mit `authentication_classes` und `permission_classes`.
+    quiz:
+      - frage: "Was klärt die Authentifizierung?"
+        erklaerung: "Wer die anfragende Person ist."
+        antworten:
+          - { text: "Wer die Person ist.", richtig: true }
+          - { text: "Ob die Person ein Recht hat.", richtig: false }
+          - { text: "Welche Daten gespeichert werden.", richtig: false }
+      - frage: "Was ist request.user, wenn keine Authentifizierungs-Klasse erfolgreich war?"
+        erklaerung: "Ein AnonymousUser, request.auth ist None."
+        antworten:
+          - { text: "Die Anfrage wird abgebrochen", richtig: false }
+          - { text: "Ein AnonymousUser", richtig: true }
+          - { text: "Ein Superuser", richtig: false }
+  - titel: Token und Sitzung
+    inhalt: |
+      **TokenAuthentication:**
+
+      - Du brauchst `'rest_framework.authtoken'` in `INSTALLED_APPS` und danach `manage.py migrate`.
+      - Tokens gehören zu Benutzern, zum Beispiel `Token.objects.create(user=...)`.
+      - Der Client schickt den Header `Authorization: Token <key>`. „Token“ ist das Präfix, danach
+        folgt ein Leerzeichen und der Schlüssel.
+      - Die fertige View `obtain_auth_token` gibt ein Token zurück, wenn man Benutzername und
+        Passwort per POST schickt.
+
+      **SessionAuthentication:** nutzt Djangos Sitzungen und passt zu Anfragen aus derselben Sitzung
+      wie die Website (zum Beispiel AJAX). Für unsichere Methoden (PUT, PATCH, POST, DELETE) braucht
+      eine angemeldete Anfrage ein gültiges **CSRF-Token**.
+
+      **BasicAuthentication** ist nach der Doku „im Allgemeinen nur zum Testen“ geeignet.
+
+      **Sicherheit:** Bei Basic- und Token-Authentifizierung in Produktion darf die API nur über
+      **HTTPS** erreichbar sein.
+    quiz:
+      - frage: "Wie sieht der Header bei der Token-Authentifizierung aus?"
+        erklaerung: "Authorization: Token mit Leerzeichen und Schlüssel."
+        antworten:
+          - { text: "X-Login: <key>", richtig: false }
+          - { text: "Authorization: Token <key>", richtig: true }
+          - { text: "Token: <key>", richtig: false }
+      - frage: "Wofür braucht die SessionAuthentication ein CSRF-Token?"
+        erklaerung: "Für angemeldete Anfragen mit unsicheren Methoden wie POST, PUT, PATCH und DELETE."
+        antworten:
+          - { text: "Für angemeldete Anfragen mit POST, PUT, PATCH oder DELETE.", richtig: true }
+          - { text: "Für jede GET-Anfrage.", richtig: false }
+          - { text: "Nie.", richtig: false }
+  - titel: Berechtigungs-Klassen und 401 gegen 403
+    inhalt: |
+      Eingebaute Klassen:
+
+      - **AllowAny:** jeder darf, ob angemeldet oder nicht.
+      - **IsAuthenticated:** nur angemeldete Nutzer.
+      - **IsAdminUser:** nur Nutzer mit `is_staff=True`.
+      - **IsAuthenticatedOrReadOnly:** angemeldete Nutzer dürfen alles, alle anderen nur `GET`,
+        `HEAD` und `OPTIONS`.
+
+      Ist nichts eingestellt, gilt **AllowAny** (uneingeschränkter Zugriff).
+
+      **View-Ebene und Objekt-Ebene:** `has_permission()` prüft die View. `has_object_permission()`
+      prüft ein einzelnes Objekt und läuft nur, wenn die View-Prüfung bestanden ist. Bei Listen und
+      beim Anlegen gilt die Objekt-Prüfung nicht.
+
+      **401 oder 403?**
+
+      - Angemeldet, aber ohne Recht: immer **403 Forbidden**.
+      - Nicht angemeldet: **401 Unauthorized**, wenn die zuerst eingestellte Authentifizierungs-Klasse
+        den Header `WWW-Authenticate` nutzt, sonst **403**.
+    quiz:
+      - frage: "Was gilt, wenn DEFAULT_PERMISSION_CLASSES nicht gesetzt ist?"
+        erklaerung: "Standard ist AllowAny, also uneingeschränkter Zugriff."
+        antworten:
+          - { text: "IsAuthenticated", richtig: false }
+          - { text: "IsAdminUser", richtig: false }
+          - { text: "AllowAny, also uneingeschränkter Zugriff.", richtig: true }
+      - frage: "Welchen Status gibt DRF, wenn jemand angemeldet ist, aber kein Recht hat?"
+        erklaerung: "Immer 403 Forbidden."
+        antworten:
+          - { text: "403 Forbidden", richtig: true }
+          - { text: "401 Unauthorized", richtig: false }
+          - { text: "200 OK", richtig: false }
+test:
+  zeitlimit_minuten: 10
+  fragen:
+    - frage: "Welche Permission-Klasse erlaubt Lesen für alle und Schreiben nur für Angemeldete?"
+      erklaerung: "IsAuthenticatedOrReadOnly."
+      antworten:
+        - { text: "IsAdminUser", richtig: false }
+        - { text: "AllowAny", richtig: false }
+        - { text: "IsAuthenticatedOrReadOnly", richtig: true }
+    - frage: "Was brauchst du, damit TokenAuthentication funktioniert?"
+      erklaerung: "'rest_framework.authtoken' in INSTALLED_APPS und migrate."
+      antworten:
+        - { text: "rest_framework.authtoken in INSTALLED_APPS und migrate", richtig: true }
+        - { text: "Nur eine Zeile im Template", richtig: false }
+        - { text: "Einen zweiten Server", richtig: false }
+    - frage: "Welche Methode prüft Berechtigungen für ein einzelnes Objekt?"
+      erklaerung: "has_object_permission()."
+      antworten:
+        - { text: "has_object_permission()", richtig: true }
+        - { text: "has_permission()", richtig: false }
+        - { text: "authenticate()", richtig: false }
+    - frage: "Wann sollte eine API mit Token- oder Basic-Authentifizierung nur über HTTPS erreichbar sein?"
+      erklaerung: "In Produktion."
+      antworten:
+        - { text: "Nur in Tests", richtig: false }
+        - { text: "Nie", richtig: false }
+        - { text: "In Produktion", richtig: true }
+    - frage: "Wer darf mit der Klasse IsAdminUser zugreifen?"
+      erklaerung: "Nur Nutzer, bei denen is_staff True ist."
+      antworten:
+        - { text: "Nur Nutzer mit is_staff=True", richtig: true }
+        - { text: "Alle angemeldeten Nutzer", richtig: false }
+        - { text: "Alle Besucher", richtig: false }

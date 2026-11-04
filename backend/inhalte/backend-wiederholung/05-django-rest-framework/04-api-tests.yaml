@@ -1,0 +1,99 @@
+titel: API-Tests
+zusammenfassung: Du erinnerst dich, wie du eine DRF-API mit APIClient, APITestCase und force_authenticate testest und Statuscodes prüfst.
+quellen:
+  - titel: Django REST Framework – Testing
+    url: https://www.django-rest-framework.org/api-guide/testing/
+abschnitte:
+  - titel: APIClient und APITestCase
+    inhalt: |
+      DRF erweitert die Testwerkzeuge von Django.
+
+      - **APIClient** erweitert den Django-Client. Mit `client.post('/notes/', {'title': 'new idea'}, format='json')`
+        schickst du Anfragen mit JSON.
+      - **APITestCase** gleicht den Test-Klassen von Django, setzt aber `self.client` auf einen
+        `APIClient`.
+
+      Beispiel aus der Doku:
+
+      ```python
+      response = self.client.post(url, data, format='json')
+      self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+      self.assertEqual(Account.objects.count(), 1)
+      ```
+
+      Du prüfst also den **Statuscode** und das **Ergebnis in der Datenbank**.
+
+      Das Standardformat für Anfragen ist `multipart`. Mit der Einstellung
+      `TEST_REQUEST_DEFAULT_FORMAT` kannst du es auf `json` ändern.
+    quiz:
+      - frage: "Was prüft das Beispiel der Doku nach dem POST?"
+        erklaerung: "Den Statuscode 201 und die Zahl der Objekte in der Datenbank."
+        antworten:
+          - { text: "Den Namen des Servers.", richtig: false }
+          - { text: "Statuscode 201 und die Anzahl der Objekte in der Datenbank.", richtig: true }
+          - { text: "Nur die Farbe der Seite.", richtig: false }
+      - frage: "Was ist das Standardformat des APIRequestFactory und APIClient laut Doku?"
+        erklaerung: "multipart."
+        antworten:
+          - { text: "xml", richtig: false }
+          - { text: "multipart", richtig: true }
+          - { text: "json", richtig: false }
+  - titel: Angemeldet testen
+    inhalt: |
+      Du musst bei Tests nicht jedes Mal einloggen.
+
+      - **`client.force_authenticate(user=user)`:** Jede weitere Anfrage des Clients gilt als
+        angemeldet. Zum Rückgängigmachen rufst du die Methode mit `None` auf.
+      - **`client.credentials(HTTP_AUTHORIZATION='Token ' + token.key)`:** setzt Header für alle
+        weiteren Anfragen. Es überschreibt bestehende Zugangsdaten, ohne Argumente löscht es sie.
+      - **`force_authenticate(request, user=...)`** gibt es auch als Funktion für Anfragen der
+        `APIRequestFactory`.
+
+      **Hinweis:** Die `APIRequestFactory` liefert gewöhnliche Django-`HttpRequest`-Objekte.
+      CSRF-Prüfungen sind dort standardmäßig aus.
+    quiz:
+      - frage: "Wie machst du alle folgenden Anfragen eines APIClient als Benutzer user angemeldet?"
+        erklaerung: "Mit client.force_authenticate(user=user)."
+        antworten:
+          - { text: "client.force_authenticate(user=user)", richtig: true }
+          - { text: "client.login_as(user)", richtig: false }
+          - { text: "client.format = user", richtig: false }
+      - frage: "Was macht client.credentials() ohne Argumente?"
+        erklaerung: "Es löscht gesetzte Zugangsdaten."
+        antworten:
+          - { text: "Es startet den Server.", richtig: false }
+          - { text: "Es löscht gesetzte Zugangsdaten.", richtig: true }
+          - { text: "Es legt einen neuen Benutzer an.", richtig: false }
+test:
+  zeitlimit_minuten: 10
+  fragen:
+    - frage: "Von welcher Klasse erweitert der APIClient die Funktionen?"
+      erklaerung: "Er erweitert den Client von Django."
+      antworten:
+        - { text: "Vom QuerySet", richtig: false }
+        - { text: "Vom Django-Client", richtig: true }
+        - { text: "Vom Serializer", richtig: false }
+    - frage: "Was bekommt die Anfrage mit format='json' im Test?"
+      erklaerung: "Der Körper der Anfrage wird als JSON gesendet."
+      antworten:
+        - { text: "Eine Datei.", richtig: false }
+        - { text: "Nur Query-Parameter.", richtig: false }
+        - { text: "Einen JSON-Körper.", richtig: true }
+    - frage: "Womit lässt du eine Testanfrage ohne Passwort als angemeldet gelten?"
+      erklaerung: "force_authenticate umgeht die normale Prüfung der Zugangsdaten."
+      antworten:
+        - { text: "Ein leeres Passwort", richtig: false }
+        - { text: "Eine neue Migration", richtig: false }
+        - { text: "force_authenticate(user=...)", richtig: true }
+    - frage: "Wie sieht der Autorisierungs-Header bei Token-Authentifizierung im Test aus?"
+      erklaerung: "HTTP_AUTHORIZATION mit dem Präfix Token und dem Schlüssel."
+      antworten:
+        - { text: "HTTP_USER='token'", richtig: false }
+        - { text: "HTTP_COOKIE='Token'", richtig: false }
+        - { text: "HTTP_AUTHORIZATION='Token ' + token.key", richtig: true }
+    - frage: "Welchen Statuscode erwartest du laut Doku-Beispiel nach dem erfolgreichen Anlegen?"
+      erklaerung: "HTTP_201_CREATED."
+      antworten:
+        - { text: "404", richtig: false }
+        - { text: "500", richtig: false }
+        - { text: "201", richtig: true }

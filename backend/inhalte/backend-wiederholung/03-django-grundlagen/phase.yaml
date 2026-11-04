@@ -1,0 +1,24 @@
+titel: Django-Grundlagen
+beschreibung: Projekt und App, Routing, Views und Templates in Django 5.2. Du erinnerst dich, wie Django eine Anfrage bis zur Antwort verarbeitet.
+projekt:
+  titel: Mini-Seite mit zwei Routen
+  beschreibung: |
+    Du baust eine winzige Django-Seite, nur zur Wiederholung. Alles läuft lokal.
+
+    **Aufgabe:** Lege ein Projekt und eine App an. Die App hat zwei Seiten: eine Startseite
+    und eine Seite, die eine Liste von Wörtern aus einem Template anzeigt.
+
+    **Regeln:**
+
+    - Die URLs der App stehen in einer eigenen `urls.py` und werden mit `include()` eingebunden.
+    - Das Template erbt von einem Basis-Template.
+    - Daten aus dem Kontext werden mit `{{ }}` ausgegeben, nicht mit `|safe`.
+
+    **Tipp:** Beginne mit der Startseite und prüfe sie im Browser, bevor du die zweite Seite baust.
+    Quelle: [Django 5.2 Tutorial, Teil 1](https://docs.djangoproject.com/en/5.2/intro/tutorial01/).
+  punkte:
+    - Ein Projekt und eine App sind angelegt, die App steht in `INSTALLED_APPS`.
+    - Die App hat eine eigene `urls.py`, die im Projekt mit `include()` eingebunden ist.
+    - Die Startseite liefert mit `HttpResponse` einen Text.
+    - Ein Basis-Template mit einem `block` ist vorhanden, ein Kind-Template nutzt `extends`.
+    - Die View rendert das Template mit `render()` oder `render_to_string()`, die Wortliste wird mit `{% for %}` ausgegeben.

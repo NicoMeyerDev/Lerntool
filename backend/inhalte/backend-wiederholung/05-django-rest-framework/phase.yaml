@@ -1,0 +1,30 @@
+titel: Django REST Framework
+beschreibung: Serializer, Pagination, Filter und Tests für eine REST-API mit Django REST Framework (DRF). Du erinnerst dich, wie Daten in JSON und zurück kommen und wie du die API prüfst.
+projekt:
+  titel: Bücher-API mit Seiten, Suche und Tests
+  beschreibung: |
+    Du baust zur Mini-Bibliothek eine kleine API. Alles läuft lokal.
+
+    **Aufgabe:** Die API listet Bücher und legt neue an. Die Liste ist in Seiten aufgeteilt, lässt
+    sich durchsuchen und sortieren. Ein Buch hat Titel, Preis und Erscheinungsjahr.
+
+    **Regeln:**
+
+    - Ein `ModelViewSet` mit einem `DefaultRouter` stellt die Routen bereit.
+    - Ein `ModelSerializer` mit ausdrücklich genannten Feldern wandelt Bücher um.
+    - Ein Preis unter 0 wird mit einer Feldprüfung abgelehnt (Status 400).
+    - Die Seitengröße steht in den `REST_FRAMEWORK`-Einstellungen.
+    - Suche und Sortierung nutzen `SearchFilter` und `OrderingFilter`.
+    - Jede Route hat einen Test mit `APIClient`.
+
+    **Tipp:** Schreibe zuerst den Test für das Anlegen, dann den Serializer.
+    Quellen: [Serializers](https://www.django-rest-framework.org/api-guide/serializers/), [ViewSets](https://www.django-rest-framework.org/api-guide/viewsets/), [Routers](https://www.django-rest-framework.org/api-guide/routers/), [Pagination](https://www.django-rest-framework.org/api-guide/pagination/), [Filtering](https://www.django-rest-framework.org/api-guide/filtering/) und [Testing](https://www.django-rest-framework.org/api-guide/testing/).
+  punkte:
+    - Ein `ModelViewSet` ist mit einem `DefaultRouter` registriert (`GET` und `POST` auf der Liste).
+    - Ein `ModelSerializer` mit `Meta.fields` ist angelegt.
+    - Eine Methode `validate_price` lehnt negative Preise ab.
+    - Die Antwort der Liste hat `count`, `next`, `previous` und `results`.
+    - 'Die Einstellungen `PAGE_SIZE` und `DEFAULT_PAGINATION_CLASS` sind gesetzt.'
+    - '`?search=` und `?ordering=` funktionieren.'
+    - Ein Test prüft das Anlegen mit Status 201.
+    - Ein Test prüft die Ablehnung eines ungültigen Preises mit Status 400.

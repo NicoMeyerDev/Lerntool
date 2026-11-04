@@ -1,0 +1,142 @@
+titel: Views, ViewSets und Router
+zusammenfassung: Du erinnerst dich, wie DRF mit generischen Views und ViewSets Listen- und Detail-Endpunkte baut und wie ein Router die URLs dazu erzeugt.
+quellen:
+  - titel: Django REST Framework – Generic views
+    url: https://www.django-rest-framework.org/api-guide/generic-views/
+  - titel: Django REST Framework – ViewSets
+    url: https://www.django-rest-framework.org/api-guide/viewsets/
+  - titel: Django REST Framework – Routers
+    url: https://www.django-rest-framework.org/api-guide/routers/
+abschnitte:
+  - titel: Generische Views
+    inhalt: |
+      Eine **generische View** erledigt das Übliche (lesen, anlegen, ändern, löschen) für dich. Du
+      sagst ihr nur, **welche Daten** (`queryset`) und **welcher Serializer** (`serializer_class`)
+      gelten.
+
+      ```python
+      class UserList(generics.ListCreateAPIView):
+          queryset = User.objects.all()
+          serializer_class = UserSerializer
+          permission_classes = [IsAdminUser]
+      ```
+
+      Die wichtigsten Klassen:
+
+      - **ListAPIView:** nur lesen, eine Sammlung (GET).
+      - **ListCreateAPIView:** lesen und anlegen auf einer Sammlung. GET listet auf (200), POST legt an (201).
+      - **RetrieveUpdateDestroyAPIView:** lesen, ändern und löschen für **ein** Objekt (GET, PUT, PATCH, DELETE).
+
+      Die Pagination kannst du pro View mit `pagination_class` einstellen. Mit `None` schaltest du
+      sie für diese View ab.
+    quiz:
+      - frage: "Was gibt ListCreateAPIView bei POST zurück, wenn ein Objekt angelegt wurde?"
+        erklaerung: "Status 201 Created."
+        antworten:
+          - { text: "404 Not Found", richtig: false }
+          - { text: "201 Created", richtig: true }
+          - { text: "204 No Content", richtig: false }
+      - frage: "Welche beiden Angaben braucht eine GenericAPIView typischerweise?"
+        erklaerung: "queryset und serializer_class."
+        antworten:
+          - { text: "queryset und serializer_class", richtig: true }
+          - { text: "template_name und context", richtig: false }
+          - { text: "model und migrate", richtig: false }
+  - titel: ViewSets
+    inhalt: |
+      Ein **ViewSet** fasst die Logik für zusammengehörige Endpunkte in **einer** Klasse zusammen.
+      Es hat keine Methoden wie `.get()` oder `.post()`, sondern **Aktionen**: `list`, `create`,
+      `retrieve`, `update`, `partial_update` und `destroy`.
+
+      Der **ModelViewSet** bringt alle sechs Aktionen mit. Du gibst wieder nur Daten und Serializer an:
+
+      ```python
+      class UserViewSet(viewsets.ModelViewSet):
+          serializer_class = UserSerializer
+          queryset = User.objects.all()
+      ```
+
+      Die Doku verbindet Aktionen und HTTP-Methoden erst beim Fertigstellen der View, zum Beispiel
+      mit einem Router oder von Hand mit `UserViewSet.as_view({'get': 'list'})`.
+    quiz:
+      - frage: "Was bietet ein ViewSet statt Methoden wie get() und post()?"
+        erklaerung: "Aktionen wie list, create, retrieve, update, partial_update und destroy."
+        antworten:
+          - { text: "Aktionen wie list und create.", richtig: true }
+          - { text: "Nur Template-Tags.", richtig: false }
+          - { text: "Migrationen.", richtig: false }
+      - frage: "Welche Aktionen bringt ein ModelViewSet mit?"
+        erklaerung: "list, retrieve, create, update, partial_update und destroy."
+        antworten:
+          - { text: "list, retrieve, create, update, partial_update, destroy", richtig: true }
+          - { text: "Nur list", richtig: false }
+          - { text: "login und logout", richtig: false }
+  - titel: Router erzeugen die URLs
+    inhalt: |
+      Ein **Router** leitet aus einem ViewSet automatisch die URLs ab.
+
+      ```python
+      router = DefaultRouter()
+      router.register(r'users', UserViewSet, basename='user')
+      urlpatterns = router.urls
+      ```
+
+      Für ein ModelViewSet entstehen diese Routen:
+
+      - `users/` mit **GET** (Aktion `list`) und **POST** (Aktion `create`), Name `user-list`.
+      - `users/{pk}/` mit **GET** (`retrieve`), **PUT** (`update`), **PATCH** (`partial_update`) und
+        **DELETE** (`destroy`), Name `user-detail`.
+
+      Der Präfix steht **ohne** Schrägstrich am Ende (`r'users'`), weil DRF ihn selbst anhängt.
+
+      **SimpleRouter oder DefaultRouter?** Der `DefaultRouter` arbeitet wie der `SimpleRouter`,
+      ergänzt aber eine Startansicht `api-root`, die auf die Listen-Endpunkte verweist.
+
+      `router.urls` ist eine normale Liste von URL-Mustern. Du kannst sie auch mit
+      `path('', include(router.urls))` einbinden.
+    quiz:
+      - frage: "Welche HTTP-Methode ruft bei users/{pk}/ die Aktion destroy auf?"
+        erklaerung: "DELETE."
+        antworten:
+          - { text: "DELETE", richtig: true }
+          - { text: "GET", richtig: false }
+          - { text: "POST", richtig: false }
+      - frage: "Wie schreibst du den Präfix bei router.register richtig?"
+        erklaerung: "Ohne Schrägstrich am Ende: r'users'."
+        antworten:
+          - { text: "r'users/'", richtig: false }
+          - { text: "r'/users/'", richtig: false }
+          - { text: "r'users'", richtig: true }
+test:
+  zeitlimit_minuten: 10
+  fragen:
+    - frage: "Welche Klasse eignet sich für eine Liste, die nur gelesen werden darf?"
+      erklaerung: "ListAPIView ist für lesende Endpunkte einer Sammlung gedacht."
+      antworten:
+        - { text: "RetrieveUpdateDestroyAPIView", richtig: false }
+        - { text: "DefaultRouter", richtig: false }
+        - { text: "ListAPIView", richtig: true }
+    - frage: "Welche Methoden stellt RetrieveUpdateDestroyAPIView bereit?"
+      erklaerung: "get, put, patch und delete."
+      antworten:
+        - { text: "Nur GET", richtig: false }
+        - { text: "Nur POST", richtig: false }
+        - { text: "GET, PUT, PATCH, DELETE", richtig: true }
+    - frage: "Was erzeugt router.register(r'users', UserViewSet, basename='user') für die Sammlung?"
+      erklaerung: "Die Route users/ mit list (GET) und create (POST), Name user-list."
+      antworten:
+        - { text: "Nur die Route users/{pk}/.", richtig: false }
+        - { text: "Die Route users/ mit GET und POST, Name user-list.", richtig: true }
+        - { text: "Eine Datenbank-Tabelle.", richtig: false }
+    - frage: "Was ergänzt der DefaultRouter gegenüber dem SimpleRouter?"
+      erklaerung: "Eine Startansicht api-root, die auf die Listen-Endpunkte verweist."
+      antworten:
+        - { text: "Eine Benutzerverwaltung.", richtig: false }
+        - { text: "Einen Cache.", richtig: false }
+        - { text: "Eine Startansicht api-root.", richtig: true }
+    - frage: "Wann muss bei router.register ein basename angegeben werden?"
+      erklaerung: "Wenn das ViewSet kein queryset-Attribut hat."
+      antworten:
+        - { text: "Nur bei GET-Anfragen.", richtig: false }
+        - { text: "Wenn das ViewSet kein queryset-Attribut hat.", richtig: true }
+        - { text: "Nie.", richtig: false }

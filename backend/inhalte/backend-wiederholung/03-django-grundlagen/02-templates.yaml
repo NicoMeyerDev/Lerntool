@@ -1,0 +1,180 @@
+titel: Templates
+zusammenfassung: Du erinnerst dich an die Django-Template-Sprache mit Variablen, Tags und Filtern, an Vererbung mit extends und block und an das automatische Escaping gegen XSS.
+quellen:
+  - titel: Django 5.2 – Templates
+    url: https://docs.djangoproject.com/en/5.2/topics/templates/
+  - titel: Django 5.2 – The Django template language
+    url: https://docs.djangoproject.com/en/5.2/ref/templates/language/
+abschnitte:
+  - titel: Variablen, Tags und Filter
+    inhalt: |
+      Ein **Template** enthält die festen Teile der HTML-Ausgabe und eine Spezialsyntax für die
+      veränderlichen Teile. Beim Rendern bekommt es einen **Kontext**, das ist ein Wörterbuch aus
+      Namen und Werten.
+
+      - **Variablen** stehen in doppelten geschweiften Klammern: `{{ first_name }}`.
+      - **Tags** stehen in `{% %}` und enthalten Logik: `{% if user.is_authenticated %}`.
+      - **Filter** verändern Werte mit einem senkrechten Strich: `{{ django|title }}`.
+
+      Mit Punkten greifst du in Werte hinein: `{{ my_dict.key }}`, `{{ my_object.attribute }}`,
+      `{{ my_list.0 }}`. Ist ein Wert aufrufbar, ruft Django ihn ohne Argumente auf.
+
+      Einige Filter nehmen ein Argument: `{{ my_date|date:"Y-m-d" }}`. Kommentare schreibst du
+      mit `{# Kommentar #}`.
+    quiz:
+      - frage: "Womit gibst du in einem Django-Template den Wert einer Variablen aus?"
+        erklaerung: "Variablen stehen in doppelten geschweiften Klammern."
+        antworten:
+          - { text: "{% name %}", richtig: false }
+          - { text: "{# name #}", richtig: false }
+          - { text: "{{ name }}", richtig: true }
+      - frage: "Wofür stehen Tags wie {% if %}?"
+        erklaerung: "Tags enthalten Logik im Rendervorgang."
+        antworten:
+          - { text: "Für Datenbank-Migrationen.", richtig: false }
+          - { text: "Für Logik beim Rendern des Templates.", richtig: true }
+          - { text: "Für Kommentare.", richtig: false }
+  - titel: Vererbung mit extends und block
+    inhalt: |
+      Mit **Vererbung** schreibst du das gemeinsame Gerüst (Kopf, Menü, Fuß) nur einmal.
+
+      Das **Basis-Template** legt mit `{% block %}` Stellen fest, die Kinder überschreiben dürfen:
+
+      ```django
+      <title>{% block title %}My amazing site{% endblock %}</title>
+      <div id="content">{% block content %}{% endblock %}</div>
+      ```
+
+      Das **Kind-Template** erbt mit `{% extends %}` und füllt die Blöcke:
+
+      ```django
+      {% extends "base.html" %}
+
+      {% block title %}My amazing blog{% endblock %}
+
+      {% block content %}
+      {% for entry in blog_entries %}
+          <h2>{{ entry.title }}</h2>
+      {% endfor %}
+      {% endblock %}
+      ```
+
+      Regeln aus der Doku:
+
+      - `{% extends %}` muss das **erste** Tag im Template sein.
+      - Überschreibt das Kind einen Block nicht, gilt der Inhalt des Eltern-Blocks.
+      - Mit `{{ block.super }}` holst du den Inhalt des Eltern-Blocks dazu.
+      - Ein Blockname darf in einem Template nur einmal vorkommen.
+    quiz:
+      - frage: "Was passiert, wenn ein Kind-Template einen Block des Basis-Templates nicht überschreibt?"
+        erklaerung: "Dann wird der Inhalt des Blocks aus dem Eltern-Template verwendet."
+        antworten:
+          - { text: "Django meldet einen Fehler.", richtig: false }
+          - { text: "Der Inhalt aus dem Eltern-Template wird verwendet.", richtig: true }
+          - { text: "Der Block bleibt leer.", richtig: false }
+      - frage: "Wo muss {% extends %} im Template stehen?"
+        erklaerung: "Es muss das erste Template-Tag sein."
+        antworten:
+          - { text: "Es darf nur in der settings.py stehen.", richtig: false }
+          - { text: "Es muss das erste Tag im Template sein.", richtig: true }
+          - { text: "Es muss am Ende stehen.", richtig: false }
+  - titel: Ein Template in einer View ausgeben
+    inhalt: |
+      Eine View macht aus einem Template und einem Kontext eine Antwort. Die Doku nennt dafür
+      zwei Wege:
+
+      - `render_to_string("my_template.html", {"foo": "bar"})` liefert den fertigen Text.
+      - Die Abkürzung `render()` ruft `render_to_string()` auf und gibt das Ergebnis in einer
+        `HttpResponse` zurück, die du direkt aus der View zurückgeben kannst.
+
+      ```python
+      from django.template.loader import render_to_string
+
+      rendered = render_to_string("my_template.html", {"foo": "bar"})
+      ```
+
+      Wo Django nach Template-Dateien sucht, legt die Einstellung `TEMPLATES` in `settings.py`
+      fest. Schlage sie in der Doku nach, bevor du dein erstes Template anlegst.
+    quiz:
+      - frage: "Was macht die Abkürzung render() laut Doku?"
+        erklaerung: "Sie ruft render_to_string() auf und gibt das Ergebnis in einer HttpResponse zurück."
+        antworten:
+          - { text: "Sie startet den Server.", richtig: false }
+          - { text: "Sie rendert das Template und liefert eine HttpResponse.", richtig: true }
+          - { text: "Sie legt eine Migration an.", richtig: false }
+      - frage: "Welche Einstellung bestimmt, wo Django nach Templates sucht?"
+        erklaerung: "Die Einstellung TEMPLATES in settings.py."
+        antworten:
+          - { text: "DATABASES", richtig: false }
+          - { text: "TEMPLATES", richtig: true }
+          - { text: "ALLOWED_HOSTS", richtig: false }
+  - titel: Automatisches Escaping
+    inhalt: |
+      Django **escaped** standardmäßig die Ausgabe jeder Variablen. Dabei werden fünf Zeichen
+      ersetzt:
+
+      - `<` wird zu `&lt;`
+      - `>` wird zu `&gt;`
+      - `'` wird zu `&#x27;`
+      - `"` wird zu `&quot;`
+      - `&` wird zu `&amp;`
+
+      **Warum?** Ohne Escaping könnte ein Name wie `<script>alert('hello')</script>` im Browser
+      Code ausführen. Das ist **Cross-Site-Scripting (XSS)**.
+
+      Mit dem Filter `safe` schaltest du das Escaping für eine einzelne Variable ab:
+
+      ```django
+      This will be escaped: {{ data }}
+      This will not be escaped: {{ data|safe }}
+      ```
+
+      **Merke (eigener Rat):** Nutze `|safe` nur für Inhalte, denen du vertraust, nie für Eingaben
+      von Nutzern. Die Doku warnt außerdem, dass die Template-Sprache nicht gegen
+      Template-Autoren schützt, denen du nicht vertraust.
+    quiz:
+      - frage: "Was bewirkt das automatische Escaping in Django-Templates?"
+        erklaerung: "Es ersetzt Zeichen wie < und > durch HTML-Entities und schützt so vor XSS."
+        antworten:
+          - { text: "Es verschlüsselt die Seite.", richtig: false }
+          - { text: "Es beschleunigt die Datenbank.", richtig: false }
+          - { text: "Es ersetzt gefährliche Zeichen und schützt vor XSS.", richtig: true }
+      - frage: "Was macht der Filter safe?"
+        erklaerung: "Er schaltet das Escaping für diese Variable ab."
+        antworten:
+          - { text: "Er macht die Variable sicher gegen XSS.", richtig: false }
+          - { text: "Er löscht die Variable.", richtig: false }
+          - { text: "Er schaltet das Escaping für diese Variable ab.", richtig: true }
+test:
+  zeitlimit_minuten: 10
+  fragen:
+    - frage: "Welches Tag lässt ein Kind-Template von einem Basis-Template erben?"
+      erklaerung: "Das Tag extends sorgt für die Vererbung."
+      antworten:
+        - { text: "{% include %}", richtig: false }
+        - { text: "{% safe %}", richtig: false }
+        - { text: "{% extends %}", richtig: true }
+    - frage: "Was ist der Kontext beim Rendern eines Templates?"
+      erklaerung: "Der Kontext ist ein dict-ähnliches Objekt, das Namen auf Werte abbildet."
+      antworten:
+        - { text: "Ein Wörterbuch aus Namen und Werten.", richtig: true }
+        - { text: "Eine Datei mit CSS.", richtig: false }
+        - { text: "Ein Datenbank-Index.", richtig: false }
+    - frage: "Wie wird das Zeichen < bei aktiviertem Escaping ausgegeben?"
+      erklaerung: "Als &lt;."
+      antworten:
+        - { text: "&quot;", richtig: false }
+        - { text: "&lt;", richtig: true }
+        - { text: "&amp;", richtig: false }
+    - frage: "Welcher Angriff wird durch das automatische Escaping erschwert?"
+      erklaerung: "Das Escaping schützt vor Cross-Site-Scripting (XSS)."
+      antworten:
+        - { text: "Cross-Site-Scripting (XSS)", richtig: true }
+        - { text: "Ein Ausfall des Servers durch zu viele Anfragen", richtig: false }
+        - { text: "Das Erraten von Passwörtern", richtig: false }
+    - frage: "Wie wendest du den Filter title auf die Variable django an?"
+      erklaerung: "Filter folgen mit senkrechtem Strich: {{ django|title }}."
+      antworten:
+        - { text: "{{ django|title }}", richtig: true }
+        - { text: "{% django title %}", richtig: false }
+        - { text: "{{ title(django) }}", richtig: false }
