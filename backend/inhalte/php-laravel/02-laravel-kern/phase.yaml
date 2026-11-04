@@ -1,0 +1,33 @@
+titel: Laravel-Kern
+beschreibung: Das Herz von Laravel (Version 13.x) von Grund auf. Danach kannst du ein kleines JSON-Backend mit Datenbank, Prüfung der Eingaben und Tests bauen.
+projekt:
+  titel: Trainingstagebuch als JSON-Backend
+  beschreibung: |
+    Du baust ein kleines Backend für Trainingseinheiten. Es ist der zweite Schritt zur
+    späteren Garmin-Auswertung. Es gibt kein Frontend und keine Anmeldung (die kommt in Phase 3).
+
+    **Aufgabe:** Eine Trainingseinheit hat ein Datum, eine Sportart, eine Distanz in Kilometern
+    und eine Dauer in Minuten. Die API kann Einheiten anlegen, auflisten, einzeln anzeigen,
+    ändern und löschen. Alle Antworten sind JSON.
+
+    **Regeln:**
+
+    - Die Tabelle entsteht über eine Migration, nicht von Hand.
+    - Die Daten werden über ein Eloquent-Modell gelesen und geschrieben.
+    - Eingaben werden in einem Form Request geprüft (Datum gültig, Distanz größer als 0 und höchstens 9999,99, Dauer ganzzahlig, mindestens 1 und höchstens 1440 Minuten). Die Obergrenzen passen zu den Spalten der Migration, sonst gäbe es bei zu großen Werten einen Datenbankfehler statt 422.
+    - Fehlerhafte Eingaben liefern Status 422, ein neuer Eintrag Status 201.
+    - Jede Route hat mindestens einen Feature-Test. Die Tests laufen mit `php artisan test`.
+
+    **Tipp:** Baue zuerst nur „anlegen und auflisten“, dann den Rest. Schreibe den Test vor der Validierung, so siehst du ihn erst rot und dann grün.
+    Quelle: [Laravel 13.x Dokumentation](https://laravel.com/docs/13.x).
+  punkte:
+    - Ein neues Laravel-Projekt läuft lokal, die `.env` ist nicht im Git.
+    - Die Migration legt die Tabelle `trainings` mit Datum, Sportart, Distanz und Dauer an.
+    - Das Modell `Training` hat `#[Fillable]` und eine Factory.
+    - '`php artisan install:api` ist ausgeführt, die Routen sind mit `Route::apiResource` in `routes/api.php` angelegt (Präfix `/api`, sichtbar in `php artisan route:list`).'
+    - Der Controller liefert JSON mit passenden Statuscodes (200, 201, 204, 404).
+    - Ein Form Request prüft die Eingaben und liefert bei Fehlern 422.
+    - Ein Test prüft das Anlegen (201) und die Datenbank.
+    - Ein Test prüft eine ungültige Eingabe (422).
+    - Tests prüfen Auflisten, Einzelanzeige (200 und 404), Ändern und Löschen.
+    - '`php artisan test` läuft komplett grün.'

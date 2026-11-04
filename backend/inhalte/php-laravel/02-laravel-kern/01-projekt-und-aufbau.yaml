@@ -1,0 +1,154 @@
+titel: Projekt und Aufbau
+zusammenfassung: Ein Laravel-Projekt anlegen und starten, die Ordner kennen, Konfiguration über .env, der Weg einer Anfrage und artisan.
+quellen:
+  - titel: Laravel 13.x – Installation
+    url: https://laravel.com/docs/13.x/installation
+  - titel: Laravel 13.x – Directory structure
+    url: https://laravel.com/docs/13.x/structure
+  - titel: Laravel 13.x – Configuration
+    url: https://laravel.com/docs/13.x/configuration
+  - titel: Laravel 13.x – Request lifecycle
+    url: https://laravel.com/docs/13.x/lifecycle
+  - titel: Laravel 13.x – Artisan console
+    url: https://laravel.com/docs/13.x/artisan
+abschnitte:
+  - titel: Projekt anlegen und starten
+    inhalt: |
+      **Laravel** ist ein Framework: ein fertiges Grundgerüst für Webanwendungen. Du baust
+      nicht bei null, sondern füllst ein Gerüst mit deinen Inhalten.
+
+      Du brauchst auf dem Rechner **PHP** (Laravel 13 verlangt mindestens PHP 8.3),
+      **Composer**, den **Laravel-Installer** und **Node** (oder Bun) für die Frontend-Dateien.
+      Danach legst du ein Projekt an:
+
+      ```bash
+      laravel new trainingstagebuch
+      cd trainingstagebuch
+      npm install && npm run build
+      composer run dev
+      ```
+
+      - `laravel new` erzeugt das Projekt in einem neuen Ordner.
+      - `composer run dev` startet den Entwicklungsserver, einen Queue-Worker und den
+        Vite-Server. Die Anwendung läuft danach unter `http://localhost:8000`.
+        (Für dieses JSON-Backend brauchst du davon vor allem den Entwicklungsserver.)
+      - Neue Projekte nutzen standardmäßig eine **SQLite**-Datenbank. Das ist eine einzelne
+        Datei, du musst nichts installieren.
+
+      **Bild:** Das Projekt ist ein bezugsfertiges Haus. Die Wände stehen, du richtest nur
+      noch die Zimmer ein.
+    quiz:
+      - frage: "Was ist Laravel?"
+        erklaerung: "Laravel ist ein PHP-Framework: ein Grundgerüst für Webanwendungen."
+        antworten:
+          - { text: "Ein PHP-Framework für Webanwendungen.", richtig: true }
+          - { text: "Eine Datenbank.", richtig: false }
+          - { text: "Ein Webserver-Programm.", richtig: false }
+      - frage: "Welche Datenbank nutzt ein neues Laravel-Projekt standardmäßig?"
+        erklaerung: "Laut Installationsanleitung ist SQLite voreingestellt."
+        antworten:
+          - { text: "SQLite", richtig: true }
+          - { text: "Oracle", richtig: false }
+          - { text: "MongoDB", richtig: false }
+  - titel: Ordnerstruktur und Konfiguration
+    inhalt: |
+      Wichtige Ordner im Projekt:
+
+      - `app/` – dein eigener Code (Modelle, Controller).
+      - `routes/` – die Routen, also welche Adresse welchen Code startet.
+      - `database/` – Migrationen, Seeder, Factories.
+      - `config/` – Einstellungen des Frameworks.
+      - `tests/` – deine Tests.
+      - `.env` – Einstellungen, die vom Rechner abhängen (Datenbank, Passwörter).
+
+      **Wichtig:** Die Datei `.env` gehört **nicht** in Git. Dort stehen Zugangsdaten. Auf
+      jedem Rechner und Server hat sie eigene Werte.
+
+      Im Code liest du Einstellungen über die Konfiguration, zum Beispiel
+      `config('app.name')`. Die Dateien in `config/` holen sich ihre Werte aus der `.env`.
+
+      *Eselsbrücke Python:* Die `.env` ist wie bei Django die Datei für Umgebungsvariablen,
+      die `config/`-Dateien entsprechen etwa der `settings.py`.
+    quiz:
+      - frage: "In welchem Ordner liegen die Routen?"
+        erklaerung: "Die Routendateien liegen in `routes/`."
+        antworten:
+          - { text: "routes/", richtig: true }
+          - { text: "database/", richtig: false }
+          - { text: "tests/", richtig: false }
+      - frage: "Warum gehört die `.env` nicht in die Versionsverwaltung?"
+        erklaerung: "Sie enthält Zugangsdaten und ist je Rechner oder Server verschieden."
+        antworten:
+          - { text: "Sie enthält Zugangsdaten und unterscheidet sich je Umgebung.", richtig: true }
+          - { text: "Git kann keine Dateien ohne Endung speichern.", richtig: false }
+          - { text: "Sie wird von Laravel automatisch gelöscht.", richtig: false }
+  - titel: Weg einer Anfrage und artisan
+    inhalt: |
+      Wenn ein Browser eine Adresse aufruft, läuft das grob so ab:
+
+      1. Die Anfrage landet in `public/index.php`, dem einzigen Einstiegspunkt.
+      2. Laravel startet und lädt die Anwendung.
+      3. Die Anfrage geht durch **Middleware** (Prüfstationen).
+      4. Die passende **Route** wird gefunden und ihr Code (oft ein Controller) läuft.
+      5. Die **Antwort** geht zurück an den Browser.
+
+      **Bild:** Ein Empfang. Alle Besucher kommen durch dieselbe Tür, werden geprüft und zum
+      richtigen Büro geschickt.
+
+      **artisan** ist das Kommandozeilen-Werkzeug von Laravel:
+
+      ```bash
+      php artisan list
+      php artisan route:list
+      php artisan make:controller TrainingController
+      ```
+
+      - `list` zeigt alle Befehle.
+      - `route:list` zeigt alle Routen.
+      - `make:...` erzeugt Dateien mit fertigem Grundgerüst.
+    quiz:
+      - frage: "Was zeigt `php artisan route:list`?"
+        erklaerung: "Der Befehl listet alle registrierten Routen auf."
+        antworten:
+          - { text: "Alle Routen der Anwendung.", richtig: true }
+          - { text: "Alle Datenbanktabellen.", richtig: false }
+          - { text: "Alle installierten Pakete.", richtig: false }
+      - frage: "Welche Datei ist der Einstiegspunkt jeder Anfrage?"
+        erklaerung: "Alle Anfragen laufen über `public/index.php`."
+        antworten:
+          - { text: "public/index.php", richtig: true }
+          - { text: "routes/web.php", richtig: false }
+          - { text: ".env", richtig: false }
+test:
+  zeitlimit_minuten: 15
+  fragen:
+    - frage: "Welcher Befehl legt ein neues Laravel-Projekt an?"
+      erklaerung: "`laravel new name` erzeugt ein neues Projekt."
+      antworten:
+        - { text: "laravel new trainingstagebuch", richtig: true }
+        - { text: "php artisan new trainingstagebuch", richtig: false }
+        - { text: "composer start trainingstagebuch", richtig: false }
+    - frage: "Wo stehen Datenbank-Zugangsdaten?"
+      erklaerung: "In der `.env`, die nicht in Git landet."
+      antworten:
+        - { text: "In der .env-Datei.", richtig: true }
+        - { text: "Direkt im Controller.", richtig: false }
+        - { text: "In routes/web.php.", richtig: false }
+    - frage: "Wozu dient Middleware?"
+      erklaerung: "Sie sind Prüfstationen, durch die die Anfrage vor der Route läuft."
+      antworten:
+        - { text: "Sie prüft oder verändert eine Anfrage, bevor die Route läuft.", richtig: true }
+        - { text: "Sie speichert Daten in der Datenbank.", richtig: false }
+        - { text: "Sie erzeugt HTML-Seiten.", richtig: false }
+    - frage: "Was erzeugt `php artisan make:controller`?"
+      erklaerung: "Der Befehl erzeugt eine neue Controller-Datei mit Grundgerüst."
+      antworten:
+        - { text: "Eine Controller-Datei mit Grundgerüst.", richtig: true }
+        - { text: "Eine neue Datenbank.", richtig: false }
+        - { text: "Einen neuen Server.", richtig: false }
+    - frage: "Was passiert mit der Datenbank-Datei bei einem neuen Laravel-Projekt standardmäßig?"
+      erklaerung: "Laut Installationsanleitung legt der Installer `database/database.sqlite` an und führt die Migrationen aus."
+      antworten:
+        - { text: "Es wird eine SQLite-Datei angelegt und migriert.", richtig: true }
+        - { text: "Es wird ein MySQL-Server installiert.", richtig: false }
+        - { text: "Es wird keine Datenbank vorbereitet.", richtig: false }

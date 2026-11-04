@@ -1,0 +1,146 @@
+titel: Routing
+zusammenfassung: Routen definieren, Parameter, benannte Routen, Gruppen und Middleware im Überblick.
+quellen:
+  - titel: Laravel 13.x – Routing
+    url: https://laravel.com/docs/13.x/routing
+  - titel: Laravel 13.x – Middleware
+    url: https://laravel.com/docs/13.x/middleware
+abschnitte:
+  - titel: Routen definieren
+    inhalt: |
+      Eine **Route** verbindet eine Adresse (URL) und eine HTTP-Methode mit Code. Sie sagt:
+      „Wenn jemand diese Adresse aufruft, dann führe das aus.“
+
+      ```php
+      use Illuminate\Support\Facades\Route;
+
+      Route::get('/hallo', function () {
+          return 'Hallo Welt';
+      });
+      ```
+
+      - `Route::get` reagiert auf GET-Anfragen. Es gibt auch `post`, `put`, `patch`, `delete`.
+      - Der zweite Teil ist eine **Closure** (anonyme Funktion) oder später ein Controller.
+      - Gibst du ein Array zurück, macht Laravel daraus automatisch JSON.
+
+      Die Routen stehen in `routes/web.php`. Für eine reine API gibt es `routes/api.php`. Diese
+      Datei legt `php artisan install:api` an, und ihre Routen bekommen automatisch das Präfix `/api`.
+
+      Mit `php artisan route:list` siehst du alle Routen.
+
+      **Bild:** Die Routen sind das Verzeichnis am Eingang: „Adresse X, Büro Y“.
+    quiz:
+      - frage: "Was bewirkt eine Route?"
+        erklaerung: "Sie verbindet eine URL und HTTP-Methode mit auszuführendem Code."
+        antworten:
+          - { text: "Sie verbindet eine Adresse und Methode mit Code.", richtig: true }
+          - { text: "Sie legt eine Tabelle an.", richtig: false }
+          - { text: "Sie prüft Passwörter.", richtig: false }
+      - frage: "Was macht Laravel, wenn eine Route ein Array zurückgibt?"
+        erklaerung: "Arrays werden automatisch in eine JSON-Antwort umgewandelt."
+        antworten:
+          - { text: "Es wandelt das Array in JSON um.", richtig: true }
+          - { text: "Es meldet einen Fehler.", richtig: false }
+          - { text: "Es gibt eine leere Seite zurück.", richtig: false }
+  - titel: Parameter und benannte Routen
+    inhalt: |
+      Teile der Adresse können **Parameter** sein. Sie stehen in geschweiften Klammern:
+
+      ```php
+      Route::get('/trainings/{id}', function (string $id) {
+          return "Training Nummer " . $id;
+      });
+      ```
+
+      Der Wert aus der Adresse landet in der Variablen der Closure. Optionale Parameter
+      bekommen ein `?` (`{id?}`) und einen Standardwert.
+
+      Eine Route kann einen **Namen** bekommen. Dann musst du die Adresse nicht überall
+      abschreiben:
+
+      ```php
+      Route::get('/trainings', function () {
+          return [];
+      })->name('trainings.index');
+
+      $adresse = route('trainings.index'); // erzeugt die URL
+      ```
+
+      Ändert sich die Adresse später, passt du sie nur an einer Stelle an.
+    quiz:
+      - frage: "Wie schreibt man einen Parameter in einer Route?"
+        erklaerung: "Parameter stehen in geschweiften Klammern, z. B. `{id}`."
+        antworten:
+          - { text: "/trainings/{id}", richtig: true }
+          - { text: "/trainings/[id]", richtig: false }
+          - { text: "/trainings/$id", richtig: false }
+      - frage: "Wozu gibt man einer Route einen Namen?"
+        erklaerung: "Mit dem Namen erzeugst du die URL über `route()`, ohne sie abzuschreiben."
+        antworten:
+          - { text: "Damit man die URL über route() erzeugen kann.", richtig: true }
+          - { text: "Damit die Route schneller läuft.", richtig: false }
+          - { text: "Damit die Route nur einmal aufgerufen werden darf.", richtig: false }
+  - titel: Gruppen und Middleware
+    inhalt: |
+      Mit einer **Gruppe** fasst du Routen mit gemeinsamen Eigenschaften zusammen:
+
+      ```php
+      Route::prefix('admin')->group(function () {
+          Route::get('/start', fn () => 'Start');   // /admin/start
+          Route::get('/hilfe', fn () => 'Hilfe');   // /admin/hilfe
+      });
+      ```
+
+      **Middleware** ist eine Prüfstation, die eine Anfrage vor der Route durchläuft. Sie
+      kann die Anfrage durchlassen, verändern oder stoppen. Typisch: „Ist der Nutzer
+      angemeldet?“ Du hängst sie mit `->middleware('name')` an eine Route oder Gruppe.
+
+      Eigene Middleware erzeugst du mit `php artisan make:middleware`. In dieser Phase
+      reicht es zu wissen, **dass** es sie gibt und **wo** sie sitzt. Die Anmeldung kommt in
+      Phase 3.
+    quiz:
+      - frage: "Wofür nutzt man `Route::prefix('admin')->group(...)`?"
+        erklaerung: "Alle Routen in der Gruppe bekommen das gemeinsame Präfix `/admin`."
+        antworten:
+          - { text: "Für ein gemeinsames Adress-Präfix mehrerer Routen.", richtig: true }
+          - { text: "Um Routen zu löschen.", richtig: false }
+          - { text: "Um eine Datenbank anzulegen.", richtig: false }
+      - frage: "Was ist Middleware?"
+        erklaerung: "Eine Prüfstation, die eine Anfrage vor der Route durchläuft."
+        antworten:
+          - { text: "Eine Prüfstation vor der Route.", richtig: true }
+          - { text: "Eine Datenbanktabelle.", richtig: false }
+          - { text: "Ein Testwerkzeug.", richtig: false }
+test:
+  zeitlimit_minuten: 15
+  fragen:
+    - frage: "Welche Methode definiert eine Route für POST-Anfragen?"
+      erklaerung: "`Route::post(...)` reagiert auf POST."
+      antworten:
+        - { text: "Route::post(...)", richtig: true }
+        - { text: "Route::send(...)", richtig: false }
+        - { text: "Route::write(...)", richtig: false }
+    - frage: "Wie erreichst du in `/trainings/{id}` den Wert der Adresse?"
+      erklaerung: "Der Parameter wird der Closure oder Controller-Methode als Argument übergeben."
+      antworten:
+        - { text: "Als Argument der Closure, z. B. function (string $id).", richtig: true }
+        - { text: "Über die globale Variable $URL.", richtig: false }
+        - { text: "Gar nicht, Parameter sind nur Deko.", richtig: false }
+    - frage: "Wie erzeugst du die URL einer benannten Route?"
+      erklaerung: "Mit `route('name')`."
+      antworten:
+        - { text: "route('trainings.index')", richtig: true }
+        - { text: "url_of('trainings.index')", richtig: false }
+        - { text: "Route::name('trainings.index')", richtig: false }
+    - frage: "Welcher Befehl zeigt alle Routen?"
+      erklaerung: "`php artisan route:list` listet sie auf."
+      antworten:
+        - { text: "php artisan route:list", richtig: true }
+        - { text: "php artisan routes:show-all", richtig: false }
+        - { text: "composer routes", richtig: false }
+    - frage: "Welche Datei legt `php artisan install:api` für API-Routen an?"
+      erklaerung: "Der Befehl erzeugt `routes/api.php`. Deren Routen bekommen automatisch das Präfix `/api`."
+      antworten:
+        - { text: "routes/api.php", richtig: true }
+        - { text: "routes/json.php", richtig: false }
+        - { text: "public/api.php", richtig: false }

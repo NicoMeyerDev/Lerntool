@@ -1,0 +1,170 @@
+titel: Tests
+zusammenfassung: Warum Tests, Feature-Tests für Routen und JSON, die Datenbank in Tests zurücksetzen.
+quellen:
+  - titel: "Laravel 13.x – Testing: Getting started"
+    url: https://laravel.com/docs/13.x/testing
+  - titel: Laravel 13.x – HTTP tests
+    url: https://laravel.com/docs/13.x/http-tests
+  - titel: Laravel 13.x – Database testing
+    url: https://laravel.com/docs/13.x/database-testing
+abschnitte:
+  - titel: Warum Tests
+    inhalt: |
+      Ein **Test** ist Code, der prüft, ob anderer Code das Richtige tut. Du startest alle
+      Tests mit einem Befehl und siehst sofort, ob etwas kaputtgegangen ist.
+
+      ```bash
+      php artisan test
+      ```
+
+      **Bild:** Tests sind ein Sicherheitsnetz. Du kannst mutig umbauen, weil das Netz dich
+      auffängt.
+
+      Laravel unterstützt zwei Test-Werkzeuge: **Pest** und **PHPUnit**. Beide funktionieren
+      mit `php artisan test`. Im Ordner `tests/` gibt es:
+
+      - `Unit/` – kleine Tests einzelner Klassen oder Funktionen.
+      - `Feature/` – größere Tests, die zum Beispiel eine Route aufrufen und die Antwort prüfen.
+
+      Für ein Backend sind **Feature-Tests** am wichtigsten.
+
+      *Eselsbrücke Python:* Das entspricht `pytest` oder den Django-Tests.
+    quiz:
+      - frage: "Mit welchem Befehl startest du alle Tests?"
+        erklaerung: "`php artisan test`."
+        antworten:
+          - { text: "php artisan test", richtig: true }
+          - { text: "php artisan check", richtig: false }
+          - { text: "composer run server", richtig: false }
+      - frage: "Welche Art von Test ruft zum Beispiel eine Route auf und prüft die Antwort?"
+        erklaerung: "Das ist ein Feature-Test."
+        antworten:
+          - { text: "Ein Feature-Test", richtig: true }
+          - { text: "Ein Seeder", richtig: false }
+          - { text: "Eine Migration", richtig: false }
+  - titel: HTTP-Tests für JSON
+    inhalt: |
+      In einem Feature-Test rufst du deine API auf, ohne einen Server zu starten:
+
+      ```php
+      public function test_training_wird_angelegt(): void
+      {
+          $antwort = $this->postJson('/api/trainings', [
+              'sportart' => 'Lauf',
+              'distanz_km' => 5,
+              'dauer_min' => 30,
+              'datum' => '2026-11-04',
+          ]);
+
+          $antwort->assertStatus(201);
+          $this->assertDatabaseHas('trainings', ['sportart' => 'Lauf']);
+      }
+
+      public function test_ungueltige_eingabe(): void
+      {
+          $this->postJson('/api/trainings', [])
+               ->assertStatus(422)
+               ->assertJsonValidationErrors(['sportart']);
+      }
+      ```
+
+      - `getJson`, `postJson`, `putJson`, `deleteJson` rufen die Route mit JSON auf.
+      - `assertStatus(201)` prüft den Statuscode.
+      - `assertJsonValidationErrors([...])` prüft, dass bestimmte Felder Fehler haben.
+      - `assertDatabaseHas(...)` prüft, ob es in der Tabelle eine passende Zeile gibt.
+
+      **Gutes Muster:** Vorbereiten, ausführen, prüfen. Teste auch den Fehlerfall.
+    quiz:
+      - frage: "Welche Methode ruft eine Route mit POST und JSON auf?"
+        erklaerung: "`postJson(...)`."
+        antworten:
+          - { text: "$this->postJson(...)", richtig: true }
+          - { text: "$this->sendPost(...)", richtig: false }
+          - { text: "Route::testPost(...)", richtig: false }
+      - frage: "Wozu dient `assertDatabaseHas`?"
+        erklaerung: "Es prüft, ob eine passende Zeile in der Tabelle steht."
+        antworten:
+          - { text: "Es prüft, ob eine passende Zeile in der Tabelle steht.", richtig: true }
+          - { text: "Es legt die Tabelle an.", richtig: false }
+          - { text: "Es löscht die Datenbank.", richtig: false }
+  - titel: Datenbank in Tests zurücksetzen
+    inhalt: |
+      Tests dürfen sich nicht gegenseitig stören. Ein Test legt Daten an, der nächste soll
+      mit einer **sauberen** Datenbank starten. Dafür gibt es den Trait `RefreshDatabase`:
+
+      ```php
+      use Illuminate\Foundation\Testing\RefreshDatabase;
+
+      class TrainingTest extends TestCase
+      {
+          use RefreshDatabase;
+
+          public function test_liste(): void
+          {
+              Training::factory()->count(3)->create();
+
+              $this->getJson('/api/trainings')
+                   ->assertOk()
+                   ->assertJsonCount(3);
+          }
+      }
+      ```
+
+      - `RefreshDatabase` setzt die Datenbank zwischen den Tests zurück.
+      - Testdaten erzeugst du mit **Factories**, nicht von Hand.
+      - Tests sollen gegen eine eigene **Test-Datenbank** laufen, nicht gegen deine echten
+        Daten. Welche Datenbank das ist, steht in der `phpunit.xml` im Projekt. Schau dort nach,
+        bevor du den ersten Test startest.
+      - `RefreshDatabase` setzt nicht stur alles zurück: Es migriert, wenn das Schema veraltet
+        ist, und führt jeden Test in einer Transaktion aus, die danach zurückgerollt wird.
+
+      Die Beispiele oben nutzen die **PHPUnit**-Schreibweise (Klasse mit Methoden). Pest
+      schreibt dieselben Prüfungen kürzer, die Aufrufe wie `postJson` sind gleich.
+
+      **Wichtig:** Teste nie gegen eine Datenbank mit echten Daten.
+    quiz:
+      - frage: "Wozu dient `RefreshDatabase`?"
+        erklaerung: "Es setzt die Datenbank zwischen den Tests zurück."
+        antworten:
+          - { text: "Es setzt die Datenbank zwischen den Tests zurück.", richtig: true }
+          - { text: "Es lädt die Seite neu.", richtig: false }
+          - { text: "Es installiert Pakete.", richtig: false }
+      - frage: "Wie erzeugst du in einem Test drei Trainings?"
+        erklaerung: "`Training::factory()->count(3)->create()`."
+        antworten:
+          - { text: "Training::factory()->count(3)->create();", richtig: true }
+          - { text: "Training::make(3);", richtig: false }
+          - { text: "$this->seed(3);", richtig: false }
+test:
+  zeitlimit_minuten: 15
+  fragen:
+    - frage: "In welchem Ordner liegen Tests, die Routen aufrufen?"
+      erklaerung: "In `tests/Feature/`."
+      antworten:
+        - { text: "tests/Feature/", richtig: true }
+        - { text: "app/Tests/", richtig: false }
+        - { text: "routes/tests/", richtig: false }
+    - frage: "Welche Prüfung passt zu einer ungültigen Eingabe in einer JSON-API?"
+      erklaerung: "Status 422."
+      antworten:
+        - { text: "assertStatus(422)", richtig: true }
+        - { text: "assertStatus(201)", richtig: false }
+        - { text: "assertStatus(301)", richtig: false }
+    - frage: "Warum nutzt man in Tests `RefreshDatabase`?"
+      erklaerung: "Damit jeder Test mit einer sauberen Datenbank startet."
+      antworten:
+        - { text: "Damit jeder Test mit einer sauberen Datenbank startet.", richtig: true }
+        - { text: "Damit Tests schneller geschrieben werden können.", richtig: false }
+        - { text: "Damit die Migrationen gelöscht werden.", richtig: false }
+    - frage: "Welches Werkzeug erzeugt Testdaten?"
+      erklaerung: "Factories."
+      antworten:
+        - { text: "Factories", richtig: true }
+        - { text: "Middleware", richtig: false }
+        - { text: "Routen", richtig: false }
+    - frage: "Welche Prüfung stellt fest, dass eine Zeile in der Tabelle `trainings` steht?"
+      erklaerung: "`assertDatabaseHas` prüft, ob eine passende Zeile in der Tabelle vorhanden ist."
+      antworten:
+        - { text: "assertDatabaseHas('trainings', [...])", richtig: true }
+        - { text: "assertTableFull('trainings')", richtig: false }
+        - { text: "assertRoute('trainings')", richtig: false }

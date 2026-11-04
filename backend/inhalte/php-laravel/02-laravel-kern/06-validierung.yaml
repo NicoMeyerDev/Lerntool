@@ -1,0 +1,182 @@
+titel: Validierung
+zusammenfassung: Eingaben mit Regeln prüfen, Form Requests, Fehlermeldungen und die Antwort 422.
+quellen:
+  - titel: Laravel 13.x – Validation
+    url: https://laravel.com/docs/13.x/validation
+abschnitte:
+  - titel: Eingaben prüfen
+    inhalt: |
+      Eingaben von außen sind nie vertrauenswürdig. Mit `validate()` prüfst du sie gegen
+      **Regeln**, bevor du etwas speicherst:
+
+      ```php
+      public function store(Request $request)
+      {
+          $daten = $request->validate([
+              'sportart'   => 'required|string|max:50',
+              'distanz_km' => 'required|numeric|gt:0|max:9999.99',
+              'dauer_min'  => 'required|integer|min:1|max:1440',
+              'datum'      => 'required|date',
+          ]);
+
+          return response()->json(Training::create($daten), 201);
+      }
+      ```
+
+      - `required` – muss vorhanden sein.
+      - `string`, `numeric`, `integer`, `date` – Typ prüfen.
+      - `max:50`, `min:1`, `gt:0` – Grenzen.
+      - `validate()` gibt nur die **geprüften** Felder zurück. Das ist die sichere Eingabe.
+
+      **Bei Fehlern** bricht Laravel ab und antwortet selbst. Erwartet der Client JSON, kommt
+      eine **422**-Antwort mit den Fehlermeldungen als JSON. Bei einem normalen Formular
+      leitet Laravel zurück zur Seite.
+
+      **Tipp für eigene Tests (curl, Postman):** Sende den Header `Accept: application/json`.
+      Sonst hält Laravel dich für einen Browser und leitet bei Fehlern um, statt 422 zu senden.
+
+      **Bild:** Die Validierung ist die Pforte: Wer die Regeln nicht erfüllt, kommt nicht hinein.
+    quiz:
+      - frage: "Was liefert `$request->validate([...])` zurück?"
+        erklaerung: "Die geprüften Daten, nämlich nur die Felder mit Regeln."
+        antworten:
+          - { text: "Nur die geprüften Daten.", richtig: true }
+          - { text: "Immer true.", richtig: false }
+          - { text: "Die gesamte Datenbank.", richtig: false }
+      - frage: "Welche Antwort bekommt ein JSON-Client bei ungültigen Eingaben?"
+        erklaerung: "Status 422 mit den Fehlermeldungen."
+        antworten:
+          - { text: "422 mit Fehlermeldungen als JSON.", richtig: true }
+          - { text: "200 mit leerem Text.", richtig: false }
+          - { text: "301 mit Weiterleitung.", richtig: false }
+  - titel: Form Requests
+    inhalt: |
+      Wird die Prüfung länger, lagerst du sie in einen **Form Request** aus. Das ist eine
+      eigene Klasse nur für die Regeln:
+
+      ```bash
+      php artisan make:request StoreTrainingRequest
+      ```
+
+      ```php
+      class StoreTrainingRequest extends FormRequest
+      {
+          public function authorize(): bool
+          {
+              return true;
+          }
+
+          public function rules(): array
+          {
+              return [
+                  'datum'      => ['required', 'date'],
+                  'sportart'   => ['required', 'string', 'max:50'],
+                  'distanz_km' => ['required', 'numeric', 'gt:0', 'max:9999.99'],
+                  'dauer_min'  => ['required', 'integer', 'min:1', 'max:1440'],
+              ];
+          }
+      }
+      ```
+
+      Im Controller gibst du sie als Typ an. Laravel prüft **vor** deinem Code:
+
+      ```php
+      public function store(StoreTrainingRequest $request)
+      {
+          return response()->json(Training::create($request->validated()), 201);
+      }
+      ```
+
+      (Imports gekürzt. `FormRequest` kommt aus `Illuminate\Foundation\Http`.)
+
+      **Für `update`** nimmst du denselben Form Request oder legst mit
+      `php artisan make:request UpdateTrainingRequest` einen eigenen an. Soll bei einer
+      Änderung nur ein Teil der Felder mitgeschickt werden dürfen, setzt du vor die Regeln
+      `sometimes`: `'dauer_min' => ['sometimes', 'integer', 'min:1']` prüft das Feld nur,
+      wenn es in der Anfrage vorkommt.
+
+      - `authorize()` entscheidet, ob der Nutzer das darf. Ohne Anmeldung gibst du hier
+        `true` zurück. Mit `false` wird jede Anfrage abgelehnt.
+      - `rules()` enthält die Regeln. Mehrere Regeln schreibst du als Array.
+      - `validated()` liefert die geprüften Daten.
+
+      **Vorteil:** Der Controller bleibt kurz und lesbar.
+    quiz:
+      - frage: "Was passiert, wenn `authorize()` in einem Form Request `false` liefert?"
+        erklaerung: "Die Anfrage wird abgelehnt, bevor der Controller läuft."
+        antworten:
+          - { text: "Die Anfrage wird abgelehnt.", richtig: true }
+          - { text: "Die Regeln werden übersprungen, die Anfrage läuft.", richtig: false }
+          - { text: "Die Datenbank wird geleert.", richtig: false }
+      - frage: "Welche Methode liefert im Controller die geprüften Daten eines Form Requests?"
+        erklaerung: "`$request->validated()`."
+        antworten:
+          - { text: "$request->validated()", richtig: true }
+          - { text: "$request->checked()", richtig: false }
+          - { text: "$request->rules()", richtig: false }
+  - titel: Eigene Meldungen
+    inhalt: |
+      Laravel liefert Standard-Fehlermeldungen. Du kannst sie überschreiben, indem du im Form
+      Request eine Methode `messages()` anlegst:
+
+      ```php
+      public function messages(): array
+      {
+          return [
+              'distanz_km.gt' => 'Die Distanz muss größer als 0 sein.',
+              'sportart.required' => 'Bitte eine Sportart angeben.',
+          ];
+      }
+      ```
+
+      Der Schlüssel besteht aus **Feldname und Regel**, getrennt durch einen Punkt.
+
+      **Zusammenspiel mit `#[Fillable]`:** Die Validierung prüft, ob die Werte **sinnvoll** sind.
+      `#[Fillable]` begrenzt, welche Felder überhaupt **geschrieben** werden dürfen. Du brauchst
+      beides.
+    quiz:
+      - frage: "Aus welchen Teilen besteht der Schlüssel in `messages()`?"
+        erklaerung: "Aus Feldname und Regelname, mit Punkt getrennt, z. B. `distanz_km.gt`."
+        antworten:
+          - { text: "Feldname und Regel, mit Punkt getrennt.", richtig: true }
+          - { text: "Nur dem Controller-Namen.", richtig: false }
+          - { text: "Der Statuscode und die Methode.", richtig: false }
+      - frage: "Warum braucht man Validierung und `#[Fillable]`?"
+        erklaerung: "Validierung prüft Werte, `#[Fillable]` begrenzt die schreibbaren Felder."
+        antworten:
+          - { text: "Das eine prüft die Werte, das andere begrenzt die schreibbaren Felder.", richtig: true }
+          - { text: "Sie tun genau dasselbe.", richtig: false }
+          - { text: "Nur eines von beiden funktioniert.", richtig: false }
+test:
+  zeitlimit_minuten: 15
+  fragen:
+    - frage: "Welche Regel verlangt, dass ein Feld vorhanden ist?"
+      erklaerung: "`required`."
+      antworten:
+        - { text: "required", richtig: true }
+        - { text: "present_only", richtig: false }
+        - { text: "needed", richtig: false }
+    - frage: "Welche Regel prüft, dass eine Zahl größer als 0 ist?"
+      erklaerung: "`gt:0` (greater than)."
+      antworten:
+        - { text: "gt:0", richtig: true }
+        - { text: "bigger:0", richtig: false }
+        - { text: "positive", richtig: false }
+    - frage: "Mit welchem Befehl legst du einen Form Request an?"
+      erklaerung: "`php artisan make:request Name`."
+      antworten:
+        - { text: "php artisan make:request StoreTrainingRequest", richtig: true }
+        - { text: "php artisan make:form StoreTrainingRequest", richtig: false }
+        - { text: "composer require request", richtig: false }
+    - frage: "Wann läuft die Prüfung eines Form Requests?"
+      erklaerung: "Vor dem Code der Controller-Methode."
+      antworten:
+        - { text: "Vor dem Code der Controller-Methode.", richtig: true }
+        - { text: "Nach dem Speichern.", richtig: false }
+        - { text: "Nur beim Start des Servers.", richtig: false }
+    - frage: "Was bewirkt die Regel `sometimes`?"
+      erklaerung: "Die übrigen Regeln des Feldes werden nur geprüft, wenn das Feld in den Daten vorkommt."
+      antworten:
+        - { text: "Das Feld wird nur geprüft, wenn es vorhanden ist.", richtig: true }
+        - { text: "Das Feld wird zufällig geprüft.", richtig: false }
+        - { text: "Das Feld wird immer übersprungen.", richtig: false }
