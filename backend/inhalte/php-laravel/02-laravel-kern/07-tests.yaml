@@ -78,9 +78,9 @@ abschnitte:
       - frage: "Welche Methode ruft eine Route mit POST und JSON auf?"
         erklaerung: "`postJson(...)`."
         antworten:
-          - { text: "$this->postJson(...)", richtig: true }
           - { text: "$this->sendPost(...)", richtig: false }
           - { text: "Route::testPost(...)", richtig: false }
+          - { text: "$this->postJson(...)", richtig: true }
       - frage: "Wozu dient `assertDatabaseHas`?"
         erklaerung: "Es prüft, ob eine passende Zeile in der Tabelle steht."
         antworten:
@@ -126,9 +126,9 @@ abschnitte:
       - frage: "Wozu dient `RefreshDatabase`?"
         erklaerung: "Es setzt die Datenbank zwischen den Tests zurück."
         antworten:
+          - { text: "Es installiert Pakete.", richtig: false }
           - { text: "Es setzt die Datenbank zwischen den Tests zurück.", richtig: true }
           - { text: "Es lädt die Seite neu.", richtig: false }
-          - { text: "Es installiert Pakete.", richtig: false }
       - frage: "Wie erzeugst du in einem Test drei Trainings?"
         erklaerung: "`Training::factory()->count(3)->create()`."
         antworten:
@@ -147,9 +147,9 @@ test:
     - frage: "Welche Prüfung passt zu einer ungültigen Eingabe in einer JSON-API?"
       erklaerung: "Status 422."
       antworten:
+        - { text: "assertStatus(301)", richtig: false }
         - { text: "assertStatus(422)", richtig: true }
         - { text: "assertStatus(201)", richtig: false }
-        - { text: "assertStatus(301)", richtig: false }
     - frage: "Warum nutzt man in Tests `RefreshDatabase`?"
       erklaerung: "Damit jeder Test mit einer sauberen Datenbank startet."
       antworten:
@@ -159,9 +159,9 @@ test:
     - frage: "Welches Werkzeug erzeugt Testdaten?"
       erklaerung: "Factories."
       antworten:
+        - { text: "Routen", richtig: false }
         - { text: "Factories", richtig: true }
         - { text: "Middleware", richtig: false }
-        - { text: "Routen", richtig: false }
     - frage: "Welche Prüfung stellt fest, dass eine Zeile in der Tabelle `trainings` steht?"
       erklaerung: "`assertDatabaseHas` prüft, ob eine passende Zeile in der Tabelle vorhanden ist."
       antworten:

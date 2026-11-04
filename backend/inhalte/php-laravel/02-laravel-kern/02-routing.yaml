@@ -108,36 +108,36 @@ abschnitte:
       - frage: "Was ist Middleware?"
         erklaerung: "Eine Prüfstation, die eine Anfrage vor der Route durchläuft."
         antworten:
+          - { text: "Ein Testwerkzeug.", richtig: false }
           - { text: "Eine Prüfstation vor der Route.", richtig: true }
           - { text: "Eine Datenbanktabelle.", richtig: false }
-          - { text: "Ein Testwerkzeug.", richtig: false }
 test:
   zeitlimit_minuten: 15
   fragen:
     - frage: "Welche Methode definiert eine Route für POST-Anfragen?"
       erklaerung: "`Route::post(...)` reagiert auf POST."
       antworten:
-        - { text: "Route::post(...)", richtig: true }
         - { text: "Route::send(...)", richtig: false }
         - { text: "Route::write(...)", richtig: false }
+        - { text: "Route::post(...)", richtig: true }
     - frage: "Wie erreichst du in `/trainings/{id}` den Wert der Adresse?"
       erklaerung: "Der Parameter wird der Closure oder Controller-Methode als Argument übergeben."
       antworten:
+        - { text: "Gar nicht, Parameter sind nur Deko.", richtig: false }
         - { text: "Als Argument der Closure, z. B. function (string $id).", richtig: true }
         - { text: "Über die globale Variable $URL.", richtig: false }
-        - { text: "Gar nicht, Parameter sind nur Deko.", richtig: false }
     - frage: "Wie erzeugst du die URL einer benannten Route?"
       erklaerung: "Mit `route('name')`."
       antworten:
-        - { text: "route('trainings.index')", richtig: true }
         - { text: "url_of('trainings.index')", richtig: false }
         - { text: "Route::name('trainings.index')", richtig: false }
+        - { text: "route('trainings.index')", richtig: true }
     - frage: "Welcher Befehl zeigt alle Routen?"
       erklaerung: "`php artisan route:list` listet sie auf."
       antworten:
+        - { text: "composer routes", richtig: false }
         - { text: "php artisan route:list", richtig: true }
         - { text: "php artisan routes:show-all", richtig: false }
-        - { text: "composer routes", richtig: false }
     - frage: "Welche Datei legt `php artisan install:api` für API-Routen an?"
       erklaerung: "Der Befehl erzeugt `routes/api.php`. Deren Routen bekommen automatisch das Präfix `/api`."
       antworten:

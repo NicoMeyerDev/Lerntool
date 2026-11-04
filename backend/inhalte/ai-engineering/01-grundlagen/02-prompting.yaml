@@ -38,9 +38,9 @@ abschnitte:
       - frage: "Was hilft laut Doku, wenn du den Prompt prüfen willst?"
         erklaerung: "Man zeigt ihn einem Kollegen ohne Vorwissen. Wäre er verwirrt, wäre es das Modell auch."
         antworten:
+          - { text: "Ihn möglichst kurz zu halten.", richtig: false }
           - { text: "Ihn einem Kollegen ohne Vorwissen zu zeigen.", richtig: true }
           - { text: "Ihn in Großbuchstaben zu schreiben.", richtig: false }
-          - { text: "Ihn möglichst kurz zu halten.", richtig: false }
       - frage: "Warum hilft es, den Grund einer Anweisung zu nennen?"
         erklaerung: "Das Modell erhält mehr Information über dein Ziel und kann daraus verallgemeinern."
         antworten:
@@ -87,15 +87,15 @@ abschnitte:
       - frage: "Wie viele Beispiele empfiehlt die Doku für beste Ergebnisse?"
         erklaerung: "Die Doku empfiehlt 3 bis 5 Beispiele."
         antworten:
-          - { text: "3 bis 5", richtig: true }
           - { text: "Genau 1", richtig: false }
           - { text: "Mindestens 50", richtig: false }
+          - { text: "3 bis 5", richtig: true }
       - frage: "Warum sollten Beispiele vielfältig sein?"
         erklaerung: "Damit das Modell keine unbeabsichtigten Muster übernimmt und Sonderfälle abgedeckt sind."
         antworten:
+          - { text: "Damit die Temperatur sinkt.", richtig: false }
           - { text: "Damit das Modell keine unbeabsichtigten Muster lernt.", richtig: true }
           - { text: "Damit der Prompt länger wird.", richtig: false }
-          - { text: "Damit die Temperatur sinkt.", richtig: false }
   - titel: Struktur mit XML-Tags und Rolle
     inhalt: |
       Enthält ein Prompt Anweisungen, Hintergrund, Beispiele und Eingaben, kann das Modell sie
@@ -126,9 +126,9 @@ abschnitte:
       - frage: "Wozu dienen XML-Tags in einem Prompt?"
         erklaerung: "Sie trennen Anweisungen, Kontext, Beispiele und Eingaben, damit nichts verwechselt wird."
         antworten:
+          - { text: "Sie senken die Kosten.", richtig: false }
           - { text: "Sie trennen die Teile des Prompts eindeutig.", richtig: true }
           - { text: "Sie verschlüsseln den Prompt.", richtig: false }
-          - { text: "Sie senken die Kosten.", richtig: false }
       - frage: "Wo legst du laut Doku die Rolle für das Modell fest?"
         erklaerung: "Im System-Prompt."
         antworten:
@@ -169,9 +169,9 @@ abschnitte:
       - frage: "Was brauchst du laut Doku, bevor du einen Prompt verbesserst?"
         erklaerung: "Erfolgskriterien, eine Möglichkeit, dagegen zu testen, und einen ersten Entwurf."
         antworten:
+          - { text: "Ein Modell mit größerem Kontextfenster.", richtig: false }
           - { text: "Erfolgskriterien und eine Möglichkeit, dagegen zu testen.", richtig: true }
           - { text: "Einen API-Schlüssel mit höheren Limits.", richtig: false }
-          - { text: "Ein Modell mit größerem Kontextfenster.", richtig: false }
 test:
   zeitlimit_minuten: 15
   fragen:
@@ -184,15 +184,15 @@ test:
     - frage: "Wozu nutzt man Few-Shot-Beispiele?"
       erklaerung: "Sie steuern Format, Ton und Aufbau der Antwort."
       antworten:
-        - { text: "Um Format, Ton und Struktur der Antwort zu steuern.", richtig: true }
         - { text: "Um das Kontextfenster zu vergrößern.", richtig: false }
         - { text: "Um den API-Schlüssel zu ersetzen.", richtig: false }
+        - { text: "Um Format, Ton und Struktur der Antwort zu steuern.", richtig: true }
     - frage: "Wie kennzeichnest du Beispiele im Prompt, damit sie nicht mit Anweisungen verwechselt werden?"
       erklaerung: "In `<example>`-Tags, mehrere in `<examples>`."
       antworten:
-        - { text: "In <example>-Tags, mehrere in <examples>.", richtig: true }
         - { text: "Mit drei Ausrufezeichen davor.", richtig: false }
         - { text: "In einer eigenen API-Anfrage.", richtig: false }
+        - { text: "In <example>-Tags, mehrere in <examples>.", richtig: true }
     - frage: "Wo steht die Rolle des Modells in einer API-Anfrage?"
       erklaerung: "Im System-Prompt (Parameter `system`)."
       antworten:
@@ -202,6 +202,6 @@ test:
     - frage: "Warum sind Erfolgskriterien vor dem Prompt-Feinschliff wichtig?"
       erklaerung: "Ohne Kriterien lässt sich nicht beurteilen, ob eine Änderung besser ist."
       antworten:
-        - { text: "Ohne sie kannst du nicht beurteilen, ob eine Änderung besser ist.", richtig: true }
         - { text: "Sie senken die Tokenkosten.", richtig: false }
         - { text: "Sie ersetzen den System-Prompt.", richtig: false }
+        - { text: "Ohne sie kannst du nicht beurteilen, ob eine Änderung besser ist.", richtig: true }

@@ -40,9 +40,9 @@ abschnitte:
       - frage: "Was liefert `$request->validate([...])` zurück?"
         erklaerung: "Die geprüften Daten, nämlich nur die Felder mit Regeln."
         antworten:
-          - { text: "Nur die geprüften Daten.", richtig: true }
           - { text: "Immer true.", richtig: false }
           - { text: "Die gesamte Datenbank.", richtig: false }
+          - { text: "Nur die geprüften Daten.", richtig: true }
       - frage: "Welche Antwort bekommt ein JSON-Client bei ungültigen Eingaben?"
         erklaerung: "Status 422 mit den Fehlermeldungen."
         antworten:
@@ -111,9 +111,9 @@ abschnitte:
       - frage: "Welche Methode liefert im Controller die geprüften Daten eines Form Requests?"
         erklaerung: "`$request->validated()`."
         antworten:
+          - { text: "$request->rules()", richtig: false }
           - { text: "$request->validated()", richtig: true }
           - { text: "$request->checked()", richtig: false }
-          - { text: "$request->rules()", richtig: false }
   - titel: Eigene Meldungen
     inhalt: |
       Laravel liefert Standard-Fehlermeldungen. Du kannst sie überschreiben, indem du im Form
@@ -138,9 +138,9 @@ abschnitte:
       - frage: "Aus welchen Teilen besteht der Schlüssel in `messages()`?"
         erklaerung: "Aus Feldname und Regelname, mit Punkt getrennt, z. B. `distanz_km.gt`."
         antworten:
+          - { text: "Der Statuscode und die Methode.", richtig: false }
           - { text: "Feldname und Regel, mit Punkt getrennt.", richtig: true }
           - { text: "Nur dem Controller-Namen.", richtig: false }
-          - { text: "Der Statuscode und die Methode.", richtig: false }
       - frage: "Warum braucht man Validierung und `#[Fillable]`?"
         erklaerung: "Validierung prüft Werte, `#[Fillable]` begrenzt die schreibbaren Felder."
         antworten:

@@ -103,15 +103,15 @@ abschnitte:
       - frage: "Was passiert bei `show(Training $training)`, wenn es die Zeile mit dieser ID nicht gibt?"
         erklaerung: "Route-Model-Binding antwortet automatisch mit 404."
         antworten:
+          - { text: "Laravel übergibt null an die Methode.", richtig: false }
           - { text: "Laravel antwortet automatisch mit 404.", richtig: true }
           - { text: "Laravel legt die Zeile neu an.", richtig: false }
-          - { text: "Laravel übergibt null an die Methode.", richtig: false }
       - frage: "Welche fünf Controller-Methoden gehören zu `Route::apiResource`?"
         erklaerung: "index, store, show, update und destroy."
         antworten:
-          - { text: "index, store, show, update, destroy", richtig: true }
           - { text: "create, edit, show, list, remove", richtig: false }
           - { text: "get, post, put, patch, head", richtig: false }
+          - { text: "index, store, show, update, destroy", richtig: true }
   - titel: Eingaben der Anfrage lesen
     inhalt: |
       Daten, die der Client mitschickt, liest du über das **Request**-Objekt. Laravel
@@ -138,15 +138,15 @@ abschnitte:
       - frage: "Wie liest du den Wert `sportart` aus der Anfrage?"
         erklaerung: "`$request->input('sportart')` liest den Wert."
         antworten:
-          - { text: "$request->input('sportart')", richtig: true }
           - { text: "Request::sportart", richtig: false }
           - { text: "$_GLOBAL['sportart']", richtig: false }
+          - { text: "$request->input('sportart')", richtig: true }
       - frage: "Warum darf man Eingaben nicht blind vertrauen?"
         erklaerung: "Sie kommen von außen und können falsch oder bösartig sein."
         antworten:
+          - { text: "Weil sie immer zu groß sind.", richtig: false }
           - { text: "Sie kommen von außen und können falsch oder bösartig sein.", richtig: true }
           - { text: "Weil PHP sie sofort löscht.", richtig: false }
-          - { text: "Weil sie immer zu groß sind.", richtig: false }
   - titel: Antworten und Statuscodes
     inhalt: |
       Ein Controller gibt eine Antwort zurück. Für eine JSON-API nutzt du:
@@ -178,30 +178,30 @@ abschnitte:
       - frage: "Welcher Statuscode passt zu „neu angelegt“?"
         erklaerung: "201 bedeutet „Created“."
         antworten:
-          - { text: "201", richtig: true }
           - { text: "404", richtig: false }
           - { text: "500", richtig: false }
+          - { text: "201", richtig: true }
       - frage: "Wie sendest du eine JSON-Antwort mit Status 201?"
         erklaerung: "`response()->json($daten, 201)`."
         antworten:
+          - { text: "return 201->json($daten)", richtig: false }
           - { text: "response()->json($daten, 201)", richtig: true }
           - { text: "echo json($daten) . 201", richtig: false }
-          - { text: "return 201->json($daten)", richtig: false }
 test:
   zeitlimit_minuten: 15
   fragen:
     - frage: "Wie verweist eine Route auf die Methode `index` des `TrainingController`?"
       erklaerung: "Als Array aus Klasse und Methodenname."
       antworten:
+        - { text: "Route::get('/trainings', 'index.TrainingController');", richtig: false }
         - { text: "Route::get('/trainings', [TrainingController::class, 'index']);", richtig: true }
         - { text: "Route::get('/trainings', TrainingController->index);", richtig: false }
-        - { text: "Route::get('/trainings', 'index.TrainingController');", richtig: false }
     - frage: "Was liefert `$request->all()`?"
       erklaerung: "Alle Eingaben der Anfrage als Array."
       antworten:
-        - { text: "Alle Eingaben der Anfrage als Array.", richtig: true }
         - { text: "Nur die Adresse.", richtig: false }
         - { text: "Alle Routen.", richtig: false }
+        - { text: "Alle Eingaben der Anfrage als Array.", richtig: true }
     - frage: "Welcher Statuscode passt nach einem erfolgreichen Löschen ohne Antwortinhalt?"
       erklaerung: "204 bedeutet „No Content“."
       antworten:
@@ -211,9 +211,9 @@ test:
     - frage: "Welcher Statuscode steht für ungültige Eingaben?"
       erklaerung: "422 bedeutet, dass die Anfrage nicht verarbeitet werden kann, weil Eingaben ungültig sind."
       antworten:
-        - { text: "422", richtig: true }
         - { text: "200", richtig: false }
         - { text: "301", richtig: false }
+        - { text: "422", richtig: true }
     - frage: "Was passiert bei `show(Training $training)`, wenn die ID nicht existiert?"
       erklaerung: "Das implizit gebundene Modell wird nicht gefunden, Laravel antwortet mit 404."
       antworten:

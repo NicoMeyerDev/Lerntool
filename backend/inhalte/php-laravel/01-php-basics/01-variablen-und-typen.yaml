@@ -46,21 +46,21 @@ abschnitte:
       - frage: "Womit beginnt PHP-Code in einer reinen PHP-Datei?"
         erklaerung: "Der Öffnungs-Tag `<?php` sagt, dass ab hier PHP-Code folgt."
         antworten:
-          - { text: "mit <?php", richtig: true }
           - { text: "mit #!php", richtig: false }
           - { text: "mit <script php>", richtig: false }
+          - { text: "mit <?php", richtig: true }
       - frage: "Womit endet in PHP normalerweise jede Anweisung?"
         erklaerung: "Das Semikolon beendet eine Anweisung. Ohne es gibt es einen Syntaxfehler."
         antworten:
+          - { text: "mit einem Semikolon", richtig: true }
           - { text: "mit einem Punkt", richtig: false }
           - { text: "mit einem Doppelpunkt", richtig: false }
-          - { text: "mit einem Semikolon", richtig: true }
       - frage: "Wie startest du die Datei `hallo.php` im Terminal?"
         erklaerung: "Der Befehl `php` führt die Datei aus."
         antworten:
+          - { text: "hallo.php start", richtig: false }
           - { text: "php hallo.php", richtig: true }
           - { text: "run hallo.php", richtig: false }
-          - { text: "hallo.php start", richtig: false }
   - titel: Variablen und Konstanten
     inhalt: |
       Eine **Variable** ist eine beschriftete Schublade, in die du einen Wert legst.
@@ -93,15 +93,15 @@ abschnitte:
       - frage: "Welcher Variablenname ist in PHP gültig?"
         erklaerung: "Variablen beginnen mit `$`, danach folgt ein Buchstabe oder `_`. Eine Zahl am Anfang ist nicht erlaubt."
         antworten:
+          - { text: "$name", richtig: true }
           - { text: "$1name", richtig: false }
           - { text: "name", richtig: false }
-          - { text: "$name", richtig: true }
       - frage: "Sind `$name` und `$Name` in PHP dieselbe Variable?"
         erklaerung: "Variablennamen unterscheiden Groß- und Kleinschreibung, es sind also zwei verschiedene Variablen."
         antworten:
+          - { text: "Nur wenn sie im selben Skript stehen.", richtig: false }
           - { text: "Nein, es sind zwei verschiedene Variablen.", richtig: true }
           - { text: "Ja, die Schreibweise ist egal.", richtig: false }
-          - { text: "Nur wenn sie im selben Skript stehen.", richtig: false }
       - frage: "Was ist der Unterschied zwischen Variable und Konstante?"
         erklaerung: "Eine Konstante wird einmal festgelegt und kann danach nicht mehr geändert werden."
         antworten:
@@ -135,9 +135,9 @@ abschnitte:
       - frage: "Welchen Typ hat der Wert `3.14`?"
         erklaerung: "Zahlen mit Dezimalpunkt sind in PHP vom Typ `float`."
         antworten:
+          - { text: "string", richtig: false }
           - { text: "int", richtig: false }
           - { text: "float", richtig: true }
-          - { text: "string", richtig: false }
       - frage: "Welche Funktion zeigt dir Typ und Wert einer Variablen?"
         erklaerung: "`var_dump()` gibt Typ und Wert aus, hilfreich beim Suchen von Fehlern."
         antworten:
@@ -147,9 +147,9 @@ abschnitte:
       - frage: "Wofür steht `null`?"
         erklaerung: "`null` bedeutet: Es gibt keinen Wert."
         antworten:
-          - { text: "für die Zahl 0", richtig: false }
           - { text: "für einen leeren Text", richtig: false }
           - { text: "für „kein Wert“", richtig: true }
+          - { text: "für die Zahl 0", richtig: false }
   - titel: Strings – Texte
     inhalt: |
       Ein **String** ist ein Text. Du setzt ihn in einfache oder doppelte Anführungszeichen.
@@ -183,21 +183,21 @@ abschnitte:
       - frage: "Was gibt `echo 'Hallo $name';` aus?"
         erklaerung: "In einfachen Anführungszeichen wird die Variable nicht eingesetzt, der Text bleibt wörtlich."
         antworten:
-          - { text: "Hallo Nico", richtig: false }
           - { text: "Hallo $name", richtig: true }
           - { text: "einen Fehler", richtig: false }
+          - { text: "Hallo Nico", richtig: false }
       - frage: "Womit verbindest du in PHP zwei Texte?"
         erklaerung: "Der Punkt `.` ist der Verkettungsoperator in PHP."
         antworten:
+          - { text: "mit .", richtig: true }
           - { text: "mit +", richtig: false }
           - { text: "mit &", richtig: false }
-          - { text: "mit .", richtig: true }
       - frage: "Was liefert `strlen('Hallo')`?"
         erklaerung: "`strlen` zählt die Zeichen. „Hallo“ hat 5 Zeichen."
         antworten:
-          - { text: "5", richtig: true }
           - { text: "4", richtig: false }
           - { text: "Hallo", richtig: false }
+          - { text: "5", richtig: true }
   - titel: Typumwandlung und Vergleiche
     inhalt: |
       PHP wandelt Typen oft **automatisch** um (Type Juggling). Das kann überraschen.
@@ -226,30 +226,30 @@ abschnitte:
       - frage: "Was ergibt `5 === '5'`?"
         erklaerung: "`===` prüft auch den Typ. `5` ist ein int, `'5'` ein string, also false."
         antworten:
-          - { text: "true", richtig: false }
           - { text: "false", richtig: true }
           - { text: "einen Fehler", richtig: false }
+          - { text: "true", richtig: false }
       - frage: "Welchen Wert hat `(int) 3.9`?"
         erklaerung: "Beim Cast nach int werden die Nachkommastellen abgeschnitten, nicht gerundet."
         antworten:
+          - { text: "3.9", richtig: false }
           - { text: "4", richtig: false }
           - { text: "3", richtig: true }
-          - { text: "3.9", richtig: false }
       - frage: "Welchen Vergleich solltest du in der Regel benutzen?"
         erklaerung: "`===` vergleicht Wert und Typ und vermeidet überraschende automatische Umwandlungen."
         antworten:
+          - { text: "=", richtig: false }
           - { text: "==", richtig: false }
           - { text: "===", richtig: true }
-          - { text: "=", richtig: false }
 test:
   zeitlimit_minuten: 20
   fragen:
     - frage: "Was passiert, wenn am Ende einer Anweisung das Semikolon fehlt?"
       erklaerung: "PHP erwartet das Semikolon als Ende der Anweisung und meldet sonst einen Syntaxfehler."
       antworten:
+        - { text: "Die Zeile wird einfach übersprungen.", richtig: false }
         - { text: "PHP meldet einen Syntaxfehler.", richtig: true }
         - { text: "PHP ergänzt es automatisch.", richtig: false }
-        - { text: "Die Zeile wird einfach übersprungen.", richtig: false }
     - frage: "Welche Zeile legt in PHP korrekt eine Variable an?"
       erklaerung: "Variablen beginnen mit `$` und bekommen den Wert per `=` zugewiesen."
       antworten:
@@ -259,21 +259,21 @@ test:
     - frage: "Wie wird eine Konstante `MAX` mit dem Wert 5 festgelegt?"
       erklaerung: "Mit `const NAME = Wert;` legst du eine Konstante an. Sie hat kein `$`."
       antworten:
+        - { text: "constant $MAX = 5;", richtig: false }
         - { text: "const MAX = 5;", richtig: true }
         - { text: "$MAX = 5;", richtig: false }
-        - { text: "constant $MAX = 5;", richtig: false }
     - frage: "Welchen Typ hat der Wert `'42'` (in Anführungszeichen)?"
       erklaerung: "Alles in Anführungszeichen ist ein String, auch wenn es wie eine Zahl aussieht."
       antworten:
-        - { text: "int", richtig: false }
         - { text: "string", richtig: true }
         - { text: "float", richtig: false }
+        - { text: "int", richtig: false }
     - frage: "Was gibt `$x = 7; echo \"Wert: $x\";` aus?"
       erklaerung: "In doppelten Anführungszeichen setzt PHP den Wert der Variablen ein."
       antworten:
-        - { text: "Wert: $x", richtig: false }
         - { text: "Wert: 7", richtig: true }
         - { text: "Wert: x", richtig: false }
+        - { text: "Wert: $x", richtig: false }
     - frage: "Welches Ergebnis hat `'Hallo ' . 'Welt'`?"
       erklaerung: "Der Punkt verbindet beide Texte zu „Hallo Welt“."
       antworten:
@@ -283,9 +283,9 @@ test:
     - frage: "Was ergibt `5 == '5'`?"
       erklaerung: "Der lose Vergleich gleicht die Typen an und findet beide Werte gleich."
       antworten:
+        - { text: "null", richtig: false }
         - { text: "false", richtig: false }
         - { text: "true", richtig: true }
-        - { text: "null", richtig: false }
     - frage: "Warum solltest du meist `===` statt `==` verwenden?"
       erklaerung: "`===` prüft Wert und Typ und vermeidet Überraschungen durch automatische Umwandlung."
       antworten:

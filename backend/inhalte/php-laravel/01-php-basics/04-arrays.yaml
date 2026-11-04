@@ -47,9 +47,9 @@ abschnitte:
       - frage: "Wie greifst du bei `$person = ['name' => 'Nico']` auf den Namen zu?"
         erklaerung: "Bei assoziativen Arrays nutzt du den Schlüssel in eckigen Klammern."
         antworten:
-          - { text: "$person[0]", richtig: false }
           - { text: "$person['name']", richtig: true }
           - { text: "$person->name", richtig: false }
+          - { text: "$person[0]", richtig: false }
       - frage: "Wofür steht `=>` in einem Array?"
         erklaerung: "`=>` verbindet einen Schlüssel mit seinem Wert."
         antworten:
@@ -95,15 +95,15 @@ abschnitte:
       - frage: "Welche Funktion entfernt das letzte Element eines Arrays?"
         erklaerung: "`array_pop` nimmt das letzte Element heraus."
         antworten:
+          - { text: "array_last", richtig: false }
           - { text: "array_shift", richtig: false }
           - { text: "array_pop", richtig: true }
-          - { text: "array_last", richtig: false }
       - frage: "Wie prüfst du, ob der Schlüssel 'name' in `$person` vorhanden und nicht null ist?"
         erklaerung: "`isset($person['name'])` liefert true, wenn der Schlüssel existiert und nicht null ist."
         antworten:
+          - { text: "$person['name'] == null", richtig: false }
           - { text: "isset($person['name'])", richtig: true }
           - { text: "has($person, 'name')", richtig: false }
-          - { text: "$person['name'] == null", richtig: false }
   - titel: Über Arrays laufen mit foreach
     inhalt: |
       `foreach` geht jedes Element eines Arrays der Reihe nach durch.
@@ -145,9 +145,9 @@ abschnitte:
       - frage: "Warum ist `foreach` für Arrays oft besser als `for`?"
         erklaerung: "Es braucht keinen Zähler und geht automatisch alle Elemente durch."
         antworten:
-          - { text: "Es braucht keinen Zähler und kann sich nicht verzählen.", richtig: true }
           - { text: "Es ändert das Array automatisch.", richtig: false }
           - { text: "Es ist die einzige Schleife, die Arrays kann.", richtig: false }
+          - { text: "Es braucht keinen Zähler und kann sich nicht verzählen.", richtig: true }
       - frage: "Was gibt `foreach ($person as $k => $v) { echo $k; }` bei `['name' => 'Nico', 'alter' => 30]` aus?"
         erklaerung: "`$k` ist der Schlüssel. Ausgegeben werden „name“ und „alter“."
         antworten:
@@ -187,15 +187,15 @@ abschnitte:
       - frage: "Was liefert `count([5, 3, 8, 1])`?"
         erklaerung: "`count` zählt die Elemente: 4."
         antworten:
+          - { text: "8", richtig: false }
           - { text: "17", richtig: false }
           - { text: "4", richtig: true }
-          - { text: "8", richtig: false }
       - frage: "Was macht `array_filter` mit einem Array?"
         erklaerung: "Es behält nur die Elemente, für die die Funktion true liefert."
         antworten:
+          - { text: "Es verdoppelt jedes Element.", richtig: false }
           - { text: "Es behält nur Elemente, die die Bedingung erfüllen.", richtig: true }
           - { text: "Es sortiert das Array.", richtig: false }
-          - { text: "Es verdoppelt jedes Element.", richtig: false }
       - frage: "Was liefert `array_sum([5, 3, 8, 1])`?"
         erklaerung: "5 + 3 + 8 + 1 = 17."
         antworten:
@@ -240,9 +240,9 @@ abschnitte:
       - frage: "Welchen Wert liefert `$laeufe[1]['km']` im Beispiel?"
         erklaerung: "`[1]` ist der zweite Lauf (Zählung ab 0), davon der Schlüssel 'km': 8.0."
         antworten:
-          - { text: "5.2", richtig: false }
           - { text: "8", richtig: true }
           - { text: "10.5", richtig: false }
+          - { text: "5.2", richtig: false }
       - frage: "Was liefert `array_column($laeufe, 'km')`?"
         erklaerung: "Es holt aus jedem Datensatz den Wert zum Schlüssel 'km' und gibt sie als Liste zurück."
         antworten:
@@ -261,21 +261,21 @@ test:
     - frage: "Welcher Index gehört zum ersten Element eines indizierten Arrays?"
       erklaerung: "Die Nummerierung beginnt bei 0."
       antworten:
+        - { text: "-1", richtig: false }
         - { text: "0", richtig: true }
         - { text: "1", richtig: false }
-        - { text: "-1", richtig: false }
     - frage: "Welche Zeile legt ein assoziatives Array an?"
       erklaerung: "Schlüssel und Wert werden mit `=>` verbunden."
       antworten:
+        - { text: "$a = (x: 1, y: 2);", richtig: false }
         - { text: "$a = ['x' => 1, 'y' => 2];", richtig: true }
         - { text: "$a = {'x': 1, 'y': 2};", richtig: false }
-        - { text: "$a = (x: 1, y: 2);", richtig: false }
     - frage: "Was macht `$zahlen[] = 7;`?"
       erklaerung: "Der Wert wird hinten an das Array angehängt."
       antworten:
-        - { text: "Er hängt 7 hinten an.", richtig: true }
         - { text: "Er setzt das erste Element auf 7.", richtig: false }
         - { text: "Er löscht alle 7er.", richtig: false }
+        - { text: "Er hängt 7 hinten an.", richtig: true }
     - frage: "Was liefert `in_array(3, [1, 2, 3])`?"
       erklaerung: "Die 3 ist im Array enthalten, also true."
       antworten:
@@ -285,24 +285,24 @@ test:
     - frage: "Was liefert `array_map(fn(int $z): int => $z + 1, [1, 2])`?"
       erklaerung: "Zu jedem Element wird 1 addiert: [2, 3]."
       antworten:
-        - { text: "[2, 3]", richtig: true }
         - { text: "[1, 2]", richtig: false }
         - { text: "3", richtig: false }
+        - { text: "[2, 3]", richtig: true }
     - frage: "Was liefert `array_sum([2, 4, 6])`?"
       erklaerung: "2 + 4 + 6 = 12."
       antworten:
+        - { text: "[2, 4, 6]", richtig: false }
         - { text: "3", richtig: false }
         - { text: "12", richtig: true }
-        - { text: "[2, 4, 6]", richtig: false }
     - frage: "Was bleibt bei `array_filter([3, 8, 5, 12], fn(int $z): bool => $z > 6)` übrig?"
       erklaerung: "Nur Werte größer als 6 bleiben: 8 und 12."
       antworten:
-        - { text: "8 und 12", richtig: true }
         - { text: "3 und 5", richtig: false }
         - { text: "alle vier Werte", richtig: false }
+        - { text: "8 und 12", richtig: true }
     - frage: "Wie liest du aus `$daten = [['km' => 5], ['km' => 8]]` den Wert 8?"
       erklaerung: "Das zweite Element hat den Index 1. Darin liest du den Schlüssel 'km'."
       antworten:
+        - { text: "$daten[2]['km']", richtig: false }
         - { text: "$daten[1]['km']", richtig: true }
         - { text: "$daten['km'][1]", richtig: false }
-        - { text: "$daten[2]['km']", richtig: false }

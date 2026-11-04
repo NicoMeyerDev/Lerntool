@@ -85,9 +85,9 @@ abschnitte:
       - frage: "Wozu dient `#[Fillable]`?"
         erklaerung: "Es legt fest, welche Felder per Massenzuweisung gesetzt werden dürfen."
         antworten:
+          - { text: "Es füllt die Tabelle mit Testdaten.", richtig: false }
           - { text: "Es legt die per Massenzuweisung setzbaren Felder fest.", richtig: true }
           - { text: "Es legt die Tabellennamen fest.", richtig: false }
-          - { text: "Es füllt die Tabelle mit Testdaten.", richtig: false }
       - frage: "Welches Risiko schützt `#[Fillable]`?"
         erklaerung: "Es verhindert, dass Nutzer Felder setzen, die sie nicht setzen dürfen."
         antworten:
@@ -241,9 +241,9 @@ test:
     - frage: "Was passiert mit einem Feld, das nicht in `#[Fillable]` steht, bei `create()`?"
       erklaerung: "Es wird nicht per Massenzuweisung übernommen."
       antworten:
-        - { text: "Es wird nicht übernommen.", richtig: true }
         - { text: "Es wird verschlüsselt gespeichert.", richtig: false }
         - { text: "Es wird als Admin-Feld gesetzt.", richtig: false }
+        - { text: "Es wird nicht übernommen.", richtig: true }
     - frage: "In welcher Tabelle steht bei „Sportler hat viele Trainings“ der Fremdschlüssel?"
       erklaerung: "Auf der „viele“-Seite, also in `trainings` als `sportler_id`."
       antworten:
