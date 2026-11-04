@@ -1,0 +1,191 @@
+titel: Datenbank und Migrationen
+zusammenfassung: Die Datenbank anbinden, Tabellen über Migrationen anlegen, Query Builder und Testdaten mit Seedern.
+quellen:
+  - titel: "Laravel 13.x – Database: Getting started"
+    url: https://laravel.com/docs/13.x/database
+  - titel: Laravel 13.x – Migrations
+    url: https://laravel.com/docs/13.x/migrations
+  - titel: Laravel 13.x – Query builder
+    url: https://laravel.com/docs/13.x/queries
+  - titel: Laravel 13.x – Seeding
+    url: https://laravel.com/docs/13.x/seeding
+abschnitte:
+  - titel: Datenbank anbinden
+    inhalt: |
+      Laravel liest die Datenbank-Einstellungen aus der `.env`. Ein neues Projekt nutzt
+      **SQLite**. Willst du MySQL oder PostgreSQL, trägst du die `DB_*`-Werte ein:
+
+      ```ini
+      DB_CONNECTION=mysql
+      DB_HOST=127.0.0.1
+      DB_PORT=3306
+      DB_DATABASE=laravel
+      DB_USERNAME=root
+      DB_PASSWORD=
+      ```
+
+      Bei einer anderen Datenbank als SQLite musst du sie selbst anlegen und danach die
+      Migrationen ausführen:
+
+      ```bash
+      php artisan migrate
+      ```
+
+      Die Zugangsdaten stehen nur in der `.env`, nie im Code.
+    quiz:
+      - frage: "Wo stehen die Datenbank-Einstellungen?"
+        erklaerung: "In der `.env` als `DB_*`-Werte."
+        antworten:
+          - { text: "In der .env-Datei.", richtig: true }
+          - { text: "In der Route.", richtig: false }
+          - { text: "Im Browser.", richtig: false }
+      - frage: "Welcher Befehl führt die Migrationen aus?"
+        erklaerung: "`php artisan migrate`."
+        antworten:
+          - { text: "php artisan migrate", richtig: true }
+          - { text: "php artisan db:start", richtig: false }
+          - { text: "composer migrate", richtig: false }
+  - titel: Migrationen
+    inhalt: |
+      Eine **Migration** beschreibt in PHP, wie die Datenbank aussehen soll. Sie ist wie ein
+      Bauplan mit Versionsgeschichte: Jede Änderung ist eine neue Datei.
+
+      ```bash
+      php artisan make:migration create_trainings_table
+      ```
+
+      ```php
+      public function up(): void
+      {
+          Schema::create('trainings', function (Blueprint $table) {
+              $table->id();
+              $table->date('datum');
+              $table->string('sportart');
+              $table->decimal('distanz_km', 6, 2);
+              $table->unsignedInteger('dauer_min');
+              $table->timestamps();
+          });
+      }
+
+      public function down(): void
+      {
+          Schema::dropIfExists('trainings');
+      }
+      ```
+
+      - `up()` führt die Änderung aus, `down()` macht sie rückgängig.
+      - `id()` erzeugt den Primärschlüssel, `timestamps()` die Spalten `created_at` und `updated_at`.
+      - `php artisan migrate` führt neue Migrationen aus.
+      - `php artisan migrate:rollback` nimmt den letzten Schub zurück.
+
+      **Vorteil:** Alle im Team haben mit einem Befehl dieselbe Datenbankstruktur.
+
+      *Eselsbrücke Python:* Das entspricht den Django-Migrationen.
+    quiz:
+      - frage: "Wozu dient die Methode `down()` in einer Migration?"
+        erklaerung: "Sie macht die Änderung von `up()` rückgängig."
+        antworten:
+          - { text: "Sie macht die Änderung rückgängig.", richtig: true }
+          - { text: "Sie löscht das Projekt.", richtig: false }
+          - { text: "Sie startet den Server neu.", richtig: false }
+      - frage: "Warum nutzt man Migrationen statt Tabellen von Hand anzulegen?"
+        erklaerung: "Die Struktur ist als Code festgehalten und überall mit einem Befehl reproduzierbar."
+        antworten:
+          - { text: "Die Struktur ist Code und überall mit einem Befehl herstellbar.", richtig: true }
+          - { text: "Weil PHP keine Tabellen anlegen kann.", richtig: false }
+          - { text: "Weil Migrationen schneller laufen als SQL.", richtig: false }
+  - titel: Query Builder und Seeder
+    inhalt: |
+      Der **Query Builder** baut Datenbankabfragen in PHP. Die Werte werden dabei sicher
+      übergeben (Schutz vor SQL-Injection).
+
+      ```php
+      use Illuminate\Support\Facades\DB;
+
+      $laeufe = DB::table('trainings')->where('sportart', 'Lauf')->get();
+      $erster = DB::table('trainings')->where('sportart', 'Lauf')->first();
+
+      DB::table('trainings')->insert([
+          'datum' => '2026-11-04', 'sportart' => 'Lauf',
+          'distanz_km' => 5, 'dauer_min' => 30,
+      ]);
+
+      DB::table('trainings')->where('id', 1)->update(['dauer_min' => 28]);
+      DB::table('trainings')->where('id', 1)->delete();
+      ```
+
+      - `where(...)` schränkt ein, welche Zeilen gemeint sind.
+      - `get()` liefert **alle** passenden Zeilen als Liste.
+      - `first()` liefert nur die **erste** passende Zeile (oder `null`).
+
+      **Seeder** füllen die Datenbank mit Testdaten, damit du beim Entwickeln nicht jedes Mal
+      Daten von Hand eintippen musst. Du legst einen mit `php artisan make:seeder` an. Die
+      Methode `run()` enthält die Daten:
+
+      ```php
+      class TrainingSeeder extends Seeder
+      {
+          public function run(): void
+          {
+              DB::table('trainings')->insert([
+                  'datum' => '2026-11-04', 'sportart' => 'Lauf',
+                  'distanz_km' => 5, 'dauer_min' => 30,
+                  'created_at' => now(), 'updated_at' => now(),
+              ]);
+          }
+      }
+      ```
+
+      (Imports gekürzt: `Seeder` und `DB` müssen oben in der Datei mit `use` eingebunden sein.)
+
+      Gestartet wird er mit `php artisan db:seed --class=TrainingSeeder`. (Mit Eloquent und
+      Factories geht das später kürzer.)
+
+      Im nächsten Abschnitt lernst du **Eloquent**. Es baut auf dem Query Builder auf und ist
+      im Alltag bequemer.
+    quiz:
+      - frage: "Wofür ist ein Seeder da?"
+        erklaerung: "Er füllt die Datenbank mit Testdaten."
+        antworten:
+          - { text: "Er füllt die Datenbank mit Testdaten.", richtig: true }
+          - { text: "Er löscht alte Migrationen.", richtig: false }
+          - { text: "Er prüft Eingaben.", richtig: false }
+      - frage: "Welche Zeile liest alle Zeilen der Tabelle `trainings`?"
+        erklaerung: "`DB::table('trainings')->get()` liefert alle Zeilen."
+        antworten:
+          - { text: "DB::table('trainings')->get()", richtig: true }
+          - { text: "DB::read('trainings')", richtig: false }
+          - { text: "Table::all('trainings')", richtig: false }
+test:
+  zeitlimit_minuten: 15
+  fragen:
+    - frage: "Welcher Befehl erzeugt eine neue Migrationsdatei?"
+      erklaerung: "`php artisan make:migration name`."
+      antworten:
+        - { text: "php artisan make:migration create_trainings_table", richtig: true }
+        - { text: "php artisan new:table trainings", richtig: false }
+        - { text: "composer make migration", richtig: false }
+    - frage: "Was erzeugt `$table->timestamps()`?"
+      erklaerung: "Die Spalten `created_at` und `updated_at`."
+      antworten:
+        - { text: "Die Spalten created_at und updated_at.", richtig: true }
+        - { text: "Eine Spalte für das Passwort.", richtig: false }
+        - { text: "Einen Zeitplan für Backups.", richtig: false }
+    - frage: "Welche Zeile gehört in `down()` für eine Migration, die `trainings` anlegt?"
+      erklaerung: "`Schema::dropIfExists('trainings')` löscht die Tabelle wieder."
+      antworten:
+        - { text: "Schema::dropIfExists('trainings');", richtig: true }
+        - { text: "Schema::create('trainings');", richtig: false }
+        - { text: "DB::seed('trainings');", richtig: false }
+    - frage: "Warum ist der Query Builder gegen SQL-Injection geschützt?"
+      erklaerung: "Er übergibt die Werte getrennt vom SQL-Text (Parameterbindung)."
+      antworten:
+        - { text: "Er übergibt Werte getrennt vom SQL-Text.", richtig: true }
+        - { text: "Er erlaubt nur Zahlen.", richtig: false }
+        - { text: "Er verschlüsselt die Datenbank.", richtig: false }
+    - frage: "Wie startest du nur den Seeder `TrainingSeeder`?"
+      erklaerung: "Mit `php artisan db:seed --class=TrainingSeeder`."
+      antworten:
+        - { text: "php artisan db:seed --class=TrainingSeeder", richtig: true }
+        - { text: "php artisan seed TrainingSeeder", richtig: false }
+        - { text: "php artisan migrate --seed-only", richtig: false }

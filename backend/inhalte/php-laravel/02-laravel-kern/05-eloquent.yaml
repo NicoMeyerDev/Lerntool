@@ -1,0 +1,252 @@
+titel: Eloquent
+zusammenfassung: Modelle und Tabellen, Anlegen, Lesen, Ändern und Löschen, Beziehungen (eins-zu-viele, viele-zu-viele), das N+1-Problem und Factories.
+quellen:
+  - titel: "Laravel 13.x – Eloquent: Getting started"
+    url: https://laravel.com/docs/13.x/eloquent
+  - titel: "Laravel 13.x – Eloquent: Relationships"
+    url: https://laravel.com/docs/13.x/eloquent-relationships
+  - titel: "Laravel 13.x – Eloquent: Factories"
+    url: https://laravel.com/docs/13.x/eloquent-factories
+abschnitte:
+  - titel: Modelle und CRUD
+    inhalt: |
+      **Eloquent** ist der ORM von Laravel. Jede Tabelle hat ein **Modell**, eine PHP-Klasse.
+      Eine Zeile der Tabelle ist ein Objekt dieser Klasse.
+
+      ```bash
+      php artisan make:model Training -m
+      ```
+
+      `-m` erzeugt gleich die passende Migration. Nach Konvention gehört das Modell
+      `Training` zur Tabelle `trainings` (Plural in snake_case).
+
+      **CRUD** steht für Create, Read, Update, Delete:
+
+      ```php
+      $t = Training::create(['datum' => '2026-11-04', 'sportart' => 'Lauf', 'distanz_km' => 5, 'dauer_min' => 30]);
+
+      $alle = Training::all();
+      $eins = Training::find(1);          // null, wenn es sie nicht gibt
+      $eins = Training::findOrFail(1);    // wirft sonst einen 404-Fehler
+
+      $eins->update(['dauer_min' => 28]);
+      $eins->delete();
+      ```
+
+      **Bild:** Eine Zeile der Tabelle ist eine Karteikarte, das Modell der Karteikasten.
+
+      **Achtung:** `create()` funktioniert erst, wenn du am Modell die erlaubten Felder
+      festgelegt hast. Das lernst du im nächsten Abschnitt („Massenzuweisung und Fillable“).
+
+      *Eselsbrücke Python:* Das Modell entspricht einem Django-Model, `Training::all()` etwa
+      `Training.objects.all()`.
+    quiz:
+      - frage: "Zu welcher Tabelle gehört das Modell `Training` nach Konvention?"
+        erklaerung: "Der Tabellenname ist der Plural in snake_case: `trainings`."
+        antworten:
+          - { text: "trainings", richtig: true }
+          - { text: "Training", richtig: false }
+          - { text: "training_model", richtig: false }
+      - frage: "Was passiert bei `Training::findOrFail(99)`, wenn es die Zeile nicht gibt?"
+        erklaerung: "Es wird ein Fehler geworfen, der als 404-Antwort endet."
+        antworten:
+          - { text: "Es wird ein Fehler geworfen (404 in der Antwort).", richtig: true }
+          - { text: "Es wird die Zeile 99 neu angelegt.", richtig: false }
+          - { text: "Es wird null zurückgegeben.", richtig: false }
+  - titel: Massenzuweisung und Fillable
+    inhalt: |
+      `Training::create([...])` setzt viele Felder auf einmal (**Massenzuweisung**). Das ist
+      bequem, aber riskant: Schickt jemand ein Feld mit, das er nicht setzen darf, würde es
+      sonst mitgeschrieben.
+
+      Darum sind Modelle standardmäßig gegen Massenzuweisung geschützt. Für `create()` musst
+      du am Modell mit dem Attribut `Fillable` festlegen, welche Felder erlaubt sind:
+
+      ```php
+      use Illuminate\Database\Eloquent\Attributes\Fillable;
+      use Illuminate\Database\Eloquent\Factories\HasFactory;
+      use Illuminate\Database\Eloquent\Model;
+
+      #[Fillable(['datum', 'sportart', 'distanz_km', 'dauer_min'])]
+      class Training extends Model
+      {
+          use HasFactory;
+      }
+      ```
+
+      Nur diese Felder nimmt `create()` oder `update()` per Massenzuweisung an. Alle anderen
+      werden stillschweigend verworfen. (Ältere Anleitungen zeigen dafür eine Eigenschaft
+      `$fillable`. Diese Lektion folgt der 13.x-Doku, die das Attribut nutzt.)
+
+      Der Trait `HasFactory` im Beispiel brauchst du im Abschnitt „Factories“.
+
+      **Merke:** Nimm in `#[Fillable]` nur Felder auf, die ein Nutzer wirklich setzen darf.
+    quiz:
+      - frage: "Wozu dient `#[Fillable]`?"
+        erklaerung: "Es legt fest, welche Felder per Massenzuweisung gesetzt werden dürfen."
+        antworten:
+          - { text: "Es legt die per Massenzuweisung setzbaren Felder fest.", richtig: true }
+          - { text: "Es legt die Tabellennamen fest.", richtig: false }
+          - { text: "Es füllt die Tabelle mit Testdaten.", richtig: false }
+      - frage: "Welches Risiko schützt `#[Fillable]`?"
+        erklaerung: "Es verhindert, dass Nutzer Felder setzen, die sie nicht setzen dürfen."
+        antworten:
+          - { text: "Dass Nutzer unerlaubte Felder mitschreiben.", richtig: true }
+          - { text: "Dass der Server zu langsam wird.", richtig: false }
+          - { text: "Dass die Datenbank voll läuft.", richtig: false }
+  - titel: Beziehungen und N+1
+    inhalt: |
+      Tabellen hängen oft zusammen. (Die Beispiele hier sind nur zur Veranschaulichung und
+      nicht Teil deines Projekts.) Beispiel: Ein **Sportler** hat **viele** Trainings, ein
+      Training gehört zu **einem** Sportler.
+
+      ```php
+      class Sportler extends Model
+      {
+          public function trainings(): HasMany
+          {
+              return $this->hasMany(Training::class);
+          }
+      }
+
+      class Training extends Model
+      {
+          public function sportler(): BelongsTo
+          {
+              return $this->belongsTo(Sportler::class);
+          }
+      }
+      ```
+
+      (`HasMany` und `BelongsTo` sind Klassen aus `Illuminate\Database\Eloquent\Relations`,
+      die du oben in der Datei mit `use` einbindest.)
+
+      Der Fremdschlüssel steht in der Tabelle `trainings` als `sportler_id`.
+
+      **Viele-zu-viele:** Ein Training kann mehrere Tags haben (z. B. „Intervalle“, „Regen“),
+      und ein Tag gehört zu vielen Trainings. Dafür gibt es eine **Zwischentabelle**, die
+      beide verbindet. Nach Konvention heißt sie wie die beiden Tabellen im Singular, in
+      alphabetischer Reihenfolge: `tag_training`. Sie hat die Spalten `training_id` und `tag_id`.
+
+      ```php
+      // im Modell Training
+      public function tags(): BelongsToMany
+      {
+          return $this->belongsToMany(Tag::class);
+      }
+
+      $training->tags()->attach($tag->id); // Tag zuordnen
+      ```
+
+      **Bild:** Die Zwischentabelle ist eine Liste von Paaren: „Training 4 hat Tag 2“.
+
+      **Das N+1-Problem:** Du holst 100 Sportler und fragst dann für jeden einzeln seine
+      Trainings ab. Das sind 1 + 100 Abfragen. Die Lösung heißt **Eager Loading**: Du lädst
+      die Beziehung gleich mit.
+
+      ```php
+      $alle = Sportler::with('trainings')->get(); // nur 2 Abfragen
+      ```
+
+      **Bild:** Statt 100-mal ins Lager zu laufen, nimmst du alles in einer Fuhre mit.
+    quiz:
+      - frage: "Wie heißt nach Konvention die Zwischentabelle zwischen `trainings` und `tags`?"
+        erklaerung: "Beide Namen im Singular, alphabetisch sortiert: `tag_training`."
+        antworten:
+          - { text: "tag_training", richtig: true }
+          - { text: "trainings_tags_table", richtig: false }
+          - { text: "training", richtig: false }
+      - frage: "Welche Beziehung beschreibt „ein Sportler hat viele Trainings“?"
+        erklaerung: "Das ist `hasMany` auf der Seite des Sportlers."
+        antworten:
+          - { text: "hasMany", richtig: true }
+          - { text: "belongsTo", richtig: false }
+          - { text: "hasNothing", richtig: false }
+      - frage: "Was löst das N+1-Problem?"
+        erklaerung: "Eager Loading mit `with()` lädt die Beziehung in wenigen Abfragen mit."
+        antworten:
+          - { text: "Eager Loading mit with()", richtig: true }
+          - { text: "Mehr Arbeitsspeicher", richtig: false }
+          - { text: "Weniger Spalten", richtig: false }
+  - titel: Factories
+    inhalt: |
+      Eine **Factory** erzeugt Modelle mit Beispieldaten. Du brauchst sie für Tests und zum
+      Befüllen der Datenbank beim Entwickeln.
+
+      ```bash
+      php artisan make:factory TrainingFactory
+      ```
+
+      ```php
+      class TrainingFactory extends Factory
+      {
+          public function definition(): array
+          {
+              return [
+                  'datum'      => fake()->date(),
+                  'sportart'   => fake()->randomElement(['Lauf', 'Rad', 'Schwimmen']),
+                  'distanz_km' => fake()->randomFloat(2, 1, 40),
+                  'dauer_min'  => fake()->numberBetween(10, 180),
+              ];
+          }
+      }
+      ```
+
+      - `definition()` beschreibt die Standardwerte eines Modells.
+      - `fake()` liefert Zufallsdaten (Namen, Zahlen, Datum).
+      - Das Modell braucht den Trait `HasFactory`, damit `Training::factory()` funktioniert.
+
+      ```php
+      Training::factory()->create();                       // eines speichern
+      Training::factory()->count(10)->create();            // zehn speichern
+      Training::factory()->create(['sportart' => 'Rad']);  // Wert überschreiben
+      ```
+
+      Beim Erzeugen über eine Factory ist der Schutz vor Massenzuweisung ausgeschaltet. Du
+      musst die Felder dafür also nicht extra freigeben.
+    quiz:
+      - frage: "Wozu dient eine Factory?"
+        erklaerung: "Sie erzeugt Modelle mit Testdaten."
+        antworten:
+          - { text: "Sie erzeugt Testdaten für Modelle.", richtig: true }
+          - { text: "Sie startet den Server.", richtig: false }
+          - { text: "Sie verschlüsselt Passwörter.", richtig: false }
+      - frage: "Welche Methode der Factory legt die Standardwerte fest?"
+        erklaerung: "`definition()` gibt die Standardwerte als Array zurück."
+        antworten:
+          - { text: "definition()", richtig: true }
+          - { text: "fill()", richtig: false }
+          - { text: "boot()", richtig: false }
+test:
+  zeitlimit_minuten: 20
+  fragen:
+    - frage: "Welcher Befehl erzeugt Modell und Migration zusammen?"
+      erklaerung: "`php artisan make:model Name -m`."
+      antworten:
+        - { text: "php artisan make:model Training -m", richtig: true }
+        - { text: "php artisan make:table Training", richtig: false }
+        - { text: "php artisan model Training --db", richtig: false }
+    - frage: "Welche Zeile ändert die Dauer eines gefundenen Trainings?"
+      erklaerung: "`$t->update([...])` ändert die Felder und speichert."
+      antworten:
+        - { text: "$t->update(['dauer_min' => 28]);", richtig: true }
+        - { text: "Training::change($t, 28);", richtig: false }
+        - { text: "$t = 28;", richtig: false }
+    - frage: "Warum nutzt man `with('trainings')`?"
+      erklaerung: "Damit vermeidet man viele Einzelabfragen (N+1)."
+      antworten:
+        - { text: "Um viele Einzelabfragen (N+1) zu vermeiden.", richtig: true }
+        - { text: "Um Trainings zu löschen.", richtig: false }
+        - { text: "Um die Migration auszuführen.", richtig: false }
+    - frage: "Was passiert mit einem Feld, das nicht in `#[Fillable]` steht, bei `create()`?"
+      erklaerung: "Es wird nicht per Massenzuweisung übernommen."
+      antworten:
+        - { text: "Es wird nicht übernommen.", richtig: true }
+        - { text: "Es wird verschlüsselt gespeichert.", richtig: false }
+        - { text: "Es wird als Admin-Feld gesetzt.", richtig: false }
+    - frage: "In welcher Tabelle steht bei „Sportler hat viele Trainings“ der Fremdschlüssel?"
+      erklaerung: "Auf der „viele“-Seite, also in `trainings` als `sportler_id`."
+      antworten:
+        - { text: "In trainings als sportler_id.", richtig: true }
+        - { text: "In sportlers als training_id.", richtig: false }
+        - { text: "In der .env.", richtig: false }
