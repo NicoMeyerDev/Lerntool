@@ -181,3 +181,13 @@ Abweichungen von `docs/CURRICULUM_ENGLISCH.md`:
 - **(i) „Persönliche E-Mails beginnen“** stützt sich auf eine B1-Seite; im Text als unsicher gekennzeichnet.
 - **(j) Quellenlage:** Die Quelle ist fast nur British Council LearnEnglish. Für die Rechtschreibung der -ing-Form gibt es keine zweite unabhängige Quelle; sie ist als eigene Erklärung gekennzeichnet.
 - **(k) Lektionsnamen:** `01-gerade-jetzt-und-vergangenes`, `02-unterwegs-im-ausland`, `03-schriftlicher-alltag`; `thema.yaml` hat `reihenfolge: 2`. Das Projekt „Reiseplan“ läuft in der App ohne Hörteil und mit 8 Punkten.
+
+## 2026-11-04 – D1 Backend-Wiederholung, Teil 1
+
+- **(a) Aufteilung:** D1 wird in mehrere kleine Teile zerlegt, Reihenfolge nach der Priorität im Backlog. Teil 1: Themen 3 Django, 4 Datenbanken, 5 DRF mit Testing, 6 Auth. Teil 2: 8 DevOps/CI/CD, 9 Monitoring. Teil 3: 1 HTTP, 2 Python, 7 erweiterte Konzepte, 10 SQL. Alternative: alles in einem Schritt (zu groß für eine Prüfung und ein Review).
+- **(b) Quelle:** Die versionierte Django-Doku unter `/en/5.2/`, weil das Projekt Django 5.2 nutzt und die Seite „stable“ inzwischen Django 6.1 zeigt. Die DRF-Doku ist unversioniert; Stand geprüft am 2026-11-04. Alternative: „stable“ verlinken (würde Funktionen beschreiben, die im Projekt nicht gelten).
+- **(c) Struktur:** `thema.yaml` hat `reihenfolge: 4`. Die Phasen-Ordner tragen die Nummer des Themas aus dem Lernplan (03 bis 06). Lücken in der Nummerierung sind gewollt und vom Importer erlaubt. Alternative: fortlaufend 01 bis 04 nummerieren (Bezug zum Lernplan ginge verloren).
+- **(d) Form:** Als Wiederholung formuliert, je Themenfeld ein bis drei Lektionen mit drei Abschnitten, je Phase ein kleines Projekt. Alternative: ausführliche Einführung (nicht nötig, Vorwissen ist laut Lernplan vorhanden).
+- **(e) Umfang Thema 5:** „DRF“ umfasst Serializer, Views und Router, Pagination und Filter sowie Tests. Themen aus 7 (Caching, Task-Queues, Dateimanagement) kommen bewusst erst in Teil 3. Alternative: alles zu 7 jetzt mitnehmen (Teil 1 würde zu groß).
+- **(f) Antwortreihenfolge:** Die richtige Antwort ist gleichmäßig auf die Positionen verteilt, weil die App die Antworten nicht mischt (siehe `OFFEN.md`). Alternative: immer an erster Stelle (würde erratbar).
+- **Freigaben:** `quellenpruefer` und `reviewer` (Runde 2) stehen vor dem Merge noch aus.

@@ -62,3 +62,13 @@ Reine Notiz für die spätere Ausarbeitung (Backlog C6), keine Entscheidung des 
 
 - **Problem:** Offen war, ob ein API-Schlüssel angelegt und echte Aufrufe gemacht werden (Kosten, Sicherheit).
 - **Lösung (Antwort des Lernenden):** Der Lernende möchte vorerst keinen API-Schlüssel anlegen. Phase 1 geht ohne Aufruf; Phasen mit echten Aufrufen bleiben bis zu einer neuen Entscheidung zurückgestellt.
+
+### 2026-11-04 – Antwortreihenfolge in älteren Inhalten
+
+- **Problem:** In den Inhalten `php-laravel` (rund 78 Prozent), `ai-engineering` und `englisch` (je 100 Prozent) steht die richtige Antwort überwiegend an erster Stelle. Die App mischt die Antworten nicht, die Lösung ist so erratbar.
+- **Plan:** Kleiner Fix-PR, der die Reihenfolge in diesen Dateien verteilt (das Skript liegt nur lokal). Später eventuell Mischen im Frontend (Funktion, gehört ins Backlog). Kein Entscheidungsbedarf des Lernenden.
+
+### 2026-11-04 – DRF 3.18 und Django 5.2
+
+- **Problem:** Die Release-Notes von DRF 3.18.0 bestätigen Django 5.2 nicht ausdrücklich (sie nennen 6.1 und den Wegfall von 4.2, 5.0 und 5.1).
+- **Plan:** Vor einem Versions-Update prüfen.
