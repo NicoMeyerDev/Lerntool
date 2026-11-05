@@ -1,0 +1,109 @@
+titel: Fehlerbehandlung und Dateien
+zusammenfassung: Du erinnerst dich an try, except, else und finally, an raise und an das sichere Lesen und Schreiben von Dateien mit with, f-Strings und JSON.
+quellen:
+  - titel: Python-Bibliothek – Eingebaute Ausnahmen (Hierarchie)
+    url: https://docs.python.org/3.13/library/exceptions.html
+  - titel: Python-Sprachreferenz – try-Anweisung
+    url: https://docs.python.org/3.13/reference/compound_stmts.html#the-try-statement
+  - titel: Python-Tutorial – Fehler und Ausnahmen
+    url: https://docs.python.org/3.13/tutorial/errors.html
+  - titel: Python-Tutorial – Ein- und Ausgabe
+    url: https://docs.python.org/3.13/tutorial/inputoutput.html
+abschnitte:
+  - titel: try, except, else, finally
+    inhalt: |
+      Im `try`-Block steht der Code, der fehlschlagen kann. Passt eine Ausnahme zu einem `except`,
+      läuft dessen Block, danach geht das Programm normal weiter.
+
+      ```python
+      try:
+          zahl = int(eingabe)
+      except ValueError:
+          print('Das war keine Zahl.')
+      ```
+
+      - `else` läuft nur, wenn **keine** Ausnahme auftrat.
+      - `finally` läuft **immer**, auch bei einem Fehler.
+      - Es läuft höchstens ein `except`, das erste passende. Spezielle zuerst, allgemeine danach.
+      - Mehrere Typen: `except (TypeError, NameError):`.
+      - Mit `raise` löst du selbst eine Ausnahme aus. Ein einzelnes `raise` im `except` gibt sie nach
+        dem Loggen weiter.
+
+      Fange so **gezielt** wie möglich. Die Doku rät, unerwartete Ausnahmen weiterlaufen zu lassen. Ein
+      nacktes `except:` fängt dagegen auch Ausnahmen, die nicht von `Exception` erben, zum Beispiel
+      `KeyboardInterrupt` und `SystemExit` (siehe die Hierarchie der eingebauten Ausnahmen), und versteckt echte Fehler.
+    quiz:
+      - frage: "Wann läuft der `finally`-Block?"
+        erklaerung: "Immer, ob eine Ausnahme auftrat oder nicht."
+        antworten:
+          - { text: "Nur bei einer Ausnahme.", richtig: false }
+          - { text: "Nur ohne Ausnahme.", richtig: false }
+          - { text: "Immer, ob eine Ausnahme auftrat oder nicht.", richtig: true }
+      - frage: "Warum ist ein nacktes `except:` schlecht?"
+        erklaerung: "Es fängt auch KeyboardInterrupt und SystemExit und versteckt echte Fehler."
+        antworten:
+          - { text: "Es fängt auch KeyboardInterrupt und SystemExit und versteckt echte Fehler.", richtig: true }
+          - { text: "Es ist in Python nicht erlaubt.", richtig: false }
+          - { text: "Es macht das Programm schneller.", richtig: false }
+  - titel: Dateien, f-Strings und JSON
+    inhalt: |
+      Öffne Dateien mit `with`. Der Block schließt die Datei danach automatisch, auch bei einem Fehler:
+
+      ```python
+      with open('daten.txt', encoding='utf-8') as f:
+          for zeile in f:
+              print(zeile, end='')
+      ```
+
+      - Modi: `'r'` lesen (Standard), `'w'` schreiben und die Datei leeren, `'a'` anhängen, `'b'` für Binärdaten.
+      - Gib bei Textdateien `encoding='utf-8'` an. JSON-Dateien müssen UTF-8 sein.
+      - **f-Strings** setzen Werte ein: `f'Pi ist etwa {math.pi:.3f}'`.
+      - `json.dump(x, f)` schreibt JSON in eine Datei, `json.load(f)` liest es, `json.dumps` und
+        `json.loads` arbeiten mit Strings.
+      - Lade `pickle`-Daten nur aus vertrauenswürdiger Quelle, weil dabei beliebiger Code laufen kann.
+    quiz:
+      - frage: "Was bringt `with open(...)`?"
+        erklaerung: "Die Datei wird nach dem Block automatisch geschlossen, auch bei einem Fehler."
+        antworten:
+          - { text: "Die Datei wird verschlüsselt.", richtig: false }
+          - { text: "Die Datei wird nach dem Block automatisch geschlossen, auch bei einem Fehler.", richtig: true }
+          - { text: "Die Datei wird nur kopiert.", richtig: false }
+      - frage: "Was macht der Modus `'w'`?"
+        erklaerung: "Er schreibt in die Datei und leert eine vorhandene."
+        antworten:
+          - { text: "Er hängt an das Ende an.", richtig: false }
+          - { text: "Er liest die Datei nur.", richtig: false }
+          - { text: "Er schreibt in die Datei und leert eine vorhandene.", richtig: true }
+test:
+  zeitlimit_minuten: 10
+  fragen:
+    - frage: "Welcher Block läuft nur, wenn keine Ausnahme auftrat?"
+      erklaerung: "else."
+      antworten:
+        - { text: "else", richtig: true }
+        - { text: "finally", richtig: false }
+        - { text: "except", richtig: false }
+    - frage: "Welche Schreibweise zeigt das Tutorial, um zwei Ausnahme-Typen in einem except zu fangen?"
+      erklaerung: "Die Typen stehen als Tupel in Klammern: except (TypeError, NameError)."
+      antworten:
+        - { text: "Zwei except-Blöcke mit demselben Inhalt sind die einzige Möglichkeit.", richtig: false }
+        - { text: "Die Typen stehen als Tupel in Klammern: except (TypeError, NameError).", richtig: true }
+        - { text: "Die Typen werden mit dem Wort and verknüpft.", richtig: false }
+    - frage: "Welches Format müssen JSON-Dateien laut Tutorial haben?"
+      erklaerung: "UTF-8."
+      antworten:
+        - { text: "UTF-8", richtig: true }
+        - { text: "ASCII-Binär", richtig: false }
+        - { text: "Jede beliebige Kodierung", richtig: false }
+    - frage: "Was bewirkt ein einzelnes `raise` in einem except-Block?"
+      erklaerung: "Es gibt die aktive Ausnahme erneut weiter."
+      antworten:
+        - { text: "Es löscht die Ausnahme.", richtig: false }
+        - { text: "Es gibt die aktive Ausnahme erneut weiter.", richtig: true }
+        - { text: "Es beendet die Schleife.", richtig: false }
+    - frage: "Warum nur vertrauenswürdige `pickle`-Daten laden?"
+      erklaerung: "Beim Laden kann beliebiger Code ausgeführt werden."
+      antworten:
+        - { text: "Weil pickle nur Zahlen kennt.", richtig: false }
+        - { text: "Weil die Dateien riesig sind.", richtig: false }
+        - { text: "Beim Laden kann beliebiger Code ausgeführt werden.", richtig: true }

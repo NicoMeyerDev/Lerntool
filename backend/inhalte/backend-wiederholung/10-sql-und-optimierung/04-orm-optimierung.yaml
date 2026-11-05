@@ -1,0 +1,103 @@
+titel: Das Django-ORM beschleunigen
+zusammenfassung: Du erinnerst dich an das N+1-Problem, an select_related und prefetch_related und daran, dass du Abfragen erst messen und dann optimieren solltest.
+quellen:
+  - titel: Django 5.2 – Datenbankzugriff optimieren
+    url: https://docs.djangoproject.com/en/5.2/topics/db/optimization/
+  - titel: Django 5.2 – QuerySet-Referenz (select_related, prefetch_related, defer, only)
+    url: https://docs.djangoproject.com/en/5.2/ref/models/querysets/#select-related
+abschnitte:
+  - titel: Das N+1-Problem und seine Lösungen
+    inhalt: |
+      Ohne Vorsorge löst jeder Zugriff auf ein verbundenes Objekt eine **eigene Abfrage** aus. Läufst du
+      über 100 Objekte und greifst bei jedem auf eine Beziehung zu, entstehen 1 + 100 Abfragen. Das heißt
+      **N+1-Problem** (ein allgemein üblicher Begriff, die Django-Doku nennt ihn so nicht, beschreibt aber
+      das Verhalten).
+
+      - **`select_related()`** folgt einzelnen Beziehungen (ForeignKey, OneToOne) mit einem SQL-Join. Die
+        verbundenen Objekte kommen in derselben Abfrage.
+
+        ```python
+        e = Entry.objects.select_related("blog").get(id=5)
+        b = e.blog  # keine weitere Abfrage
+        ```
+
+      - **`prefetch_related()`** macht eine eigene Abfrage pro Beziehung und fügt die Ergebnisse in Python
+        zusammen. Es funktioniert für viele-zu-viele und umgekehrte ForeignKeys.
+
+        ```python
+        Pizza.objects.prefetch_related("toppings")   # 2 Abfragen insgesamt
+        ```
+
+      Faustregel (sinngemäß aus der Doku): `select_related` für Beziehungen zu **einem** Objekt, `prefetch_related` für
+      Beziehungen zu **mehreren**. Beide lassen sich kombinieren.
+    quiz:
+      - frage: "Was beschreibt das N+1-Problem?"
+        erklaerung: "Für jedes von N Objekten wird eine zusätzliche Abfrage für verbundene Daten ausgelöst."
+        antworten:
+          - { text: "Eine Tabelle hat N+1 Spalten.", richtig: false }
+          - { text: "Für jedes von N Objekten wird eine zusätzliche Abfrage für verbundene Daten ausgelöst.", richtig: true }
+          - { text: "Ein Server hat N+1 Nutzer.", richtig: false }
+      - frage: "Welche Methode passt zu einer Beziehung vom Typ viele-zu-viele?"
+        erklaerung: "prefetch_related."
+        antworten:
+          - { text: "select_related", richtig: false }
+          - { text: "prefetch_related", richtig: true }
+          - { text: "only", richtig: false }
+  - titel: Erst messen, dann optimieren
+    inhalt: |
+      Zwei weitere Werkzeuge laden weniger Daten:
+
+      - `defer("feld")` lädt bestimmte Felder zunächst nicht. Greifst du später darauf zu, kostet es eine
+        weitere Abfrage.
+      - `only("feld")` lädt nur die genannten Felder.
+
+      Die Doku rät, beides erst nach einer **Messung** einzusetzen. Zum Messen zeigt dir
+      `QuerySet.explain()` den Abfrageplan der Datenbank (siehe die vorige Lektion zu `EXPLAIN`).
+
+      **Ablauf:** Messen, die langsamste Stelle finden, ändern, wieder messen. Rate nicht.
+    quiz:
+      - frage: "Was bewirkt `only('titel')`?"
+        erklaerung: "Es lädt nur das genannte Feld."
+        antworten:
+          - { text: "Es löscht alle anderen Felder aus der Datenbank.", richtig: false }
+          - { text: "Es lädt nur das genannte Feld.", richtig: true }
+          - { text: "Es sortiert nach dem Titel.", richtig: false }
+      - frage: "Was solltest du vor dem Optimieren tun?"
+        erklaerung: "Messen, wo die Zeit wirklich verloren geht."
+        antworten:
+          - { text: "Alle Indizes löschen.", richtig: false }
+          - { text: "Messen, wo die Zeit wirklich verloren geht.", richtig: true }
+          - { text: "Den Server neu starten.", richtig: false }
+test:
+  zeitlimit_minuten: 10
+  fragen:
+    - frage: "Welche Methode lädt eine ForeignKey-Beziehung per Join in derselben Abfrage?"
+      erklaerung: "select_related."
+      antworten:
+        - { text: "select_related", richtig: true }
+        - { text: "defer", richtig: false }
+        - { text: "exclude", richtig: false }
+    - frage: "Wie viele Abfragen braucht `Pizza.objects.prefetch_related('toppings')` laut Doku-Beispiel insgesamt?"
+      erklaerung: "Zwei."
+      antworten:
+        - { text: "Eine pro Pizza", richtig: false }
+        - { text: "Zwei", richtig: true }
+        - { text: "Keine", richtig: false }
+    - frage: "Was passiert bei `defer('body')`, wenn du später auf `body` zugreifst?"
+      erklaerung: "Es wird eine weitere Abfrage ausgelöst, die das Feld nachlädt."
+      antworten:
+        - { text: "Es gibt einen Fehler.", richtig: false }
+        - { text: "Es wird eine weitere Abfrage ausgelöst, die das Feld nachlädt.", richtig: true }
+        - { text: "Das Feld ist für immer leer.", richtig: false }
+    - frage: "Welche Methode zeigt den Abfrageplan der Datenbank für ein QuerySet?"
+      erklaerung: "QuerySet.explain()."
+      antworten:
+        - { text: "QuerySet.explain()", richtig: true }
+        - { text: "QuerySet.delete()", richtig: false }
+        - { text: "QuerySet.update()", richtig: false }
+    - frage: "Warum solltest du `only()` und `defer()` nicht vorschnell überall einsetzen?"
+      erklaerung: "Die Doku rät, sie erst nach einer Messung zu nutzen, weil falscher Einsatz zusätzliche Abfragen auslösen kann."
+      antworten:
+        - { text: "Weil sie veraltet sind.", richtig: false }
+        - { text: "Die Doku rät, sie erst nach einer Messung zu nutzen, weil falscher Einsatz zusätzliche Abfragen auslösen kann.", richtig: true }
+        - { text: "Weil sie nur mit SQLite gehen.", richtig: false }

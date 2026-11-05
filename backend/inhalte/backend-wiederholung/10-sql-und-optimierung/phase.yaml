@@ -1,0 +1,28 @@
+titel: SQL und Optimierung
+beschreibung: SQL-Abfragen, Joins und Aggregation, Indizes und Abfragepläne sowie typische Bremsen im Django-ORM. Du erinnerst dich, wie du Daten abfragst und langsame Abfragen findest.
+projekt:
+  titel: Abfragen schreiben und prüfen
+  beschreibung: |
+    Du schreibst SQL-Abfragen für ein kleines Beispiel und bewertest sie.
+
+    **Aufgabe:** Denke dir zwei Tabellen aus, zum Beispiel `kurs` (id, titel) und `lektion` (id, kurs_id, titel,
+    minuten). Schreibe auf dem Papier oder in einer lokalen Test-Datenbank vier Abfragen: alle Lektionen eines
+    Kurses sortiert nach Dauer, alle Kurse samt Lektionen (auch Kurse ohne Lektion), die Anzahl der Lektionen je
+    Kurs und nur die Kurse mit mehr als drei Lektionen. Beschreibe danach, für welche Spalte du einen Index
+    anlegen würdest und warum, und nenne die Django-Methode, die bei der Anzeige von Kursen mit ihren Lektionen
+    unnötige Abfragen vermeidet.
+
+    **Regeln:**
+
+    - Nutze nur selbst erfundene Beispieldaten und eine lokale Test-Datenbank, nie eine echte.
+    - Führe `EXPLAIN ANALYZE` nur für `SELECT`-Abfragen aus. Bei Änderungen läuft die Abfrage wirklich.
+
+    **Tipp:** Überlege, ob eine Bedingung vor oder nach dem Gruppieren gelten soll (`WHERE` oder `HAVING`).
+    Quellen: [PostgreSQL-Tutorial, Joins](https://www.postgresql.org/docs/current/tutorial-join.html), [Aggregation und HAVING](https://www.postgresql.org/docs/current/tutorial-agg.html) und [Django, select_related](https://docs.djangoproject.com/en/5.2/ref/models/querysets/#select-related).
+  punkte:
+    - Die Abfrage mit Sortierung nach Dauer ist geschrieben.
+    - Die Abfrage mit LEFT JOIN zeigt auch Kurse ohne Lektion.
+    - Die Abfrage mit GROUP BY zählt die Lektionen je Kurs.
+    - Die Abfrage mit HAVING zeigt nur Kurse mit mehr als drei Lektionen.
+    - Der Index ist mit Spalte und Begründung genannt.
+    - Die Django-Methode gegen unnötige Abfragen (select_related oder prefetch_related) ist genannt.

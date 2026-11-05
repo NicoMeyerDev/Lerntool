@@ -1,0 +1,95 @@
+titel: Klassen und Objekte
+zusammenfassung: Du erinnerst dich an Klassen, __init__, self, Instanz- und Klassenattribute, Vererbung und Namenskonventionen.
+quellen:
+  - titel: Python-Tutorial – Klassen
+    url: https://docs.python.org/3.13/tutorial/classes.html
+abschnitte:
+  - titel: Klasse, Objekt und __init__
+    inhalt: |
+      Eine **Klasse** bündelt Daten und Funktionen zu einem neuen Typ. Ein **Objekt** (Instanz) entsteht,
+      wenn du die Klasse wie eine Funktion aufrufst: `x = Komplex(3.0, -4.5)`.
+
+      `__init__` läuft automatisch bei jeder neuen Instanz und setzt den Anfangszustand. Der erste
+      Parameter jeder Methode heißt per Konvention `self` und steht für die Instanz. `x.f()` ist dasselbe
+      wie `Klasse.f(x)`.
+
+      ```python
+      class Komplex:
+          def __init__(self, real, imag):
+              self.r = real
+              self.i = imag
+      ```
+
+      **Bild (eigene Idee):** Die Klasse ist der Bauplan eines Hauses, jede Instanz ein gebautes Haus.
+    quiz:
+      - frage: "Wann läuft `__init__`?"
+        erklaerung: "Automatisch, wenn eine neue Instanz erzeugt wird."
+        antworten:
+          - { text: "Nur beim Löschen eines Objekts.", richtig: false }
+          - { text: "Automatisch, wenn eine neue Instanz erzeugt wird.", richtig: true }
+          - { text: "Beim Importieren jeder Datei.", richtig: false }
+      - frage: "Wofür steht `self`?"
+        erklaerung: "Für die Instanz, auf der die Methode aufgerufen wird. Der Name ist eine Konvention."
+        antworten:
+          - { text: "Für die Klasse selbst.", richtig: false }
+          - { text: "Für ein reserviertes Schlüsselwort von Python.", richtig: false }
+          - { text: "Für die Instanz, auf der die Methode aufgerufen wird. Der Name ist eine Konvention.", richtig: true }
+  - titel: Attribute, Vererbung und Namen
+    inhalt: |
+      **Instanzattribute** gehören einem Objekt (`self.name = name`). **Klassenattribute** stehen im
+      Klassenkörper und werden von allen Instanzen geteilt. Vorsicht bei veränderbaren Klassenattributen
+      wie Listen: Sie werden von allen geteilt. Lege veränderbaren Zustand in `__init__` an
+      (`self.tricks = []`).
+
+      **Vererbung:** `class Kind(Basis):` übernimmt Attribute und Methoden der Basisklasse. Methoden
+      lassen sich überschreiben. `isinstance(obj, Klasse)` prüft den Typ inklusive Unterklassen.
+
+      **Namen:** Ein führender Unterstrich (`_name`) markiert etwas als nicht öffentlich, aber nur als
+      Konvention. Zwei führende Unterstriche (`__name`) werden von Python umbenannt, damit Unterklassen
+      nicht versehentlich dieselben Namen nutzen.
+    quiz:
+      - frage: "Wo legst du eine Liste an, die für jede Instanz eigen sein soll?"
+        erklaerung: "In __init__ mit self.liste = []."
+        antworten:
+          - { text: "Im Klassenkörper.", richtig: false }
+          - { text: "In __init__ mit self.liste = [].", richtig: true }
+          - { text: "Außerhalb der Klasse.", richtig: false }
+      - frage: "Was bedeutet `class Kind(Basis):`?"
+        erklaerung: "Kind erbt von Basis."
+        antworten:
+          - { text: "Basis erbt von Kind.", richtig: false }
+          - { text: "Kind erbt von Basis.", richtig: true }
+          - { text: "Beide Klassen werden gelöscht.", richtig: false }
+test:
+  zeitlimit_minuten: 10
+  fragen:
+    - frage: "Was beschreibt eine Klasse?"
+      erklaerung: "Daten und Funktionen, die zu einem neuen Typ gebündelt sind."
+      antworten:
+        - { text: "Daten und Funktionen, die zu einem neuen Typ gebündelt sind.", richtig: true }
+        - { text: "Nur eine einzelne Zahl.", richtig: false }
+        - { text: "Eine Datei auf der Festplatte.", richtig: false }
+    - frage: "Was ist ein Klassenattribut?"
+      erklaerung: "Ein im Klassenkörper definierter Wert, den alle Instanzen teilen."
+      antworten:
+        - { text: "Ein Wert, der nur in einer Instanz existiert.", richtig: false }
+        - { text: "Ein im Klassenkörper definierter Wert, den alle Instanzen teilen.", richtig: true }
+        - { text: "Ein Fehler im Code.", richtig: false }
+    - frage: "Was prüft `isinstance(obj, int)`?"
+      erklaerung: "Ob obj ein int ist, auch als Instanz einer Unterklasse."
+      antworten:
+        - { text: "Ob obj im Speicher liegt.", richtig: false }
+        - { text: "Ob obj ein int ist, auch als Instanz einer Unterklasse.", richtig: true }
+        - { text: "Ob obj größer als 0 ist.", richtig: false }
+    - frage: "Was markiert ein führender Unterstrich wie `_spam`?"
+      erklaerung: "Einen nicht öffentlichen Namen, nur per Konvention."
+      antworten:
+        - { text: "Einen nicht öffentlichen Namen, nur per Konvention.", richtig: true }
+        - { text: "Einen durch Python erzwungenen Zugriffsschutz.", richtig: false }
+        - { text: "Eine Konstante.", richtig: false }
+    - frage: "Was passiert mit einem Namen wie `__spam` in einer Klasse?"
+      erklaerung: "Er wird zu _Klassenname__spam umbenannt (Name Mangling)."
+      antworten:
+        - { text: "Er wird gelöscht.", richtig: false }
+        - { text: "Er wird zur Konstante.", richtig: false }
+        - { text: "Er wird zu _Klassenname__spam umbenannt (Name Mangling).", richtig: true }

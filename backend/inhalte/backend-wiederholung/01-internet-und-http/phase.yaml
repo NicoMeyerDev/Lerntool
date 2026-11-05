@@ -1,0 +1,24 @@
+titel: Internet-Architektur und HTTP
+beschreibung: Wie eine Webseite zu dir kommt (Client, Server, DNS, Pakete) und wie HTTP-Anfragen und -Antworten aufgebaut sind. Du erinnerst dich an die Grundlage jeder Web-App und jeder API.
+projekt:
+  titel: Eine Anfrage nachverfolgen
+  beschreibung: |
+    Du verfolgst, was passiert, wenn du eine Seite aufrufst, und liest eine echte HTTP-Antwort.
+
+    **Aufgabe:** Öffne in deinem Browser die Entwicklerwerkzeuge (Reiter „Netzwerk“) und lade eine
+    beliebige Seite neu. Wähle die erste Anfrage aus und notiere Methode, Statuscode, drei
+    Antwort-Header und den Typ des Inhalts. Schreibe danach in eigenen Worten die vier Schritte auf,
+    die zwischen Eingabe der Adresse und Anzeige der Seite passieren.
+
+    **Regeln:**
+
+    - Nutze nur öffentliche Seiten, die du ohnehin besuchen darfst.
+    - Gib keine Zugangsdaten und keine Cookies weiter, auch nicht in deinen Notizen.
+
+    **Tipp:** Wiederhole den Versuch mit einem Pfad, den es auf einer bekannten öffentlichen Seite nicht gibt (zum Beispiel die Adresse plus `/gibt-es-nicht-123`), und vergleiche den Statuscode. Eine Domain, die es gar nicht gibt, liefert keinen Statuscode: Schon das DNS scheitert (siehe Lektion 1).
+    Quellen: [MDN Wie das Web funktioniert](https://developer.mozilla.org/en-US/docs/Learn_web_development/Getting_started/Web_standards/How_the_web_works) und [MDN HTTP-Statuscodes](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status).
+  punkte:
+    - Methode, Statuscode und drei Header der ersten Anfrage sind notiert.
+    - Die vier Schritte vom Eingeben der Adresse bis zur Anzeige sind in eigenen Worten beschrieben.
+    - Der Versuch mit einem nicht vorhandenen Pfad ist verglichen und der Statuscode genannt.
+    - Es steht dabei, was Client und was Server in jedem Schritt tut.

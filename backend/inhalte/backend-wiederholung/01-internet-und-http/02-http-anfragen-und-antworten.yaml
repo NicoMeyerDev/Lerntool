@@ -1,0 +1,134 @@
+titel: HTTP – Anfragen, Methoden und Statuscodes
+zusammenfassung: Du erinnerst dich, wie HTTP-Nachrichten aufgebaut sind, welche Methoden es gibt (sicher und idempotent) und was die Statuscodes bedeuten.
+quellen:
+  - titel: MDN – Überblick über HTTP
+    url: https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Overview
+  - titel: MDN – HTTP-Anfragemethoden
+    url: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Methods
+  - titel: MDN – HTTP-Statuscodes
+    url: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status
+abschnitte:
+  - titel: Aufbau von Anfrage und Antwort
+    inhalt: |
+      HTTP ist ein **Client-Server-Protokoll**: Der Client (meist der Browser) schickt eine **Anfrage**
+      (Request), der Server antwortet mit einer **Antwort** (Response). Der Server fängt grundsätzlich
+      keine Anfrage an.
+
+      Eine **Anfrage** enthält die **Methode** (zum Beispiel `GET`), den **Pfad**, die HTTP-Version,
+      optionale **Header** und optional einen **Body**. Eine **Antwort** enthält die HTTP-Version, den
+      **Statuscode**, einen kurzen Text, **Header** und optional einen Body.
+
+      ```http
+      GET / HTTP/1.1
+      Host: developer.mozilla.org
+      ```
+
+      HTTP ist **zustandslos** (stateless): Zwischen zwei Anfragen gibt es von sich aus keine Verbindung.
+      **Cookies** fügen darauf aufbauend Sitzungen hinzu. (Eigene Idee: Das ist wie ein Kellner, der dich
+      bei jeder Bestellung vergisst, bis du ihm eine Marke zeigst.)
+    quiz:
+      - frage: "Was bedeutet es, dass HTTP zustandslos ist?"
+        erklaerung: "Zwischen aufeinanderfolgenden Anfragen gibt es von sich aus keine Verbindung."
+        antworten:
+          - { text: "Der Server antwortet nie.", richtig: false }
+          - { text: "Zwischen aufeinanderfolgenden Anfragen gibt es von sich aus keine Verbindung.", richtig: true }
+          - { text: "HTTP funktioniert nur ohne Internet.", richtig: false }
+      - frage: "Was enthält eine HTTP-Antwort immer?"
+        erklaerung: "Die HTTP-Version und einen Statuscode (Header und Body sind je nach Fall vorhanden)."
+        antworten:
+          - { text: "Ein Passwort.", richtig: false }
+          - { text: "Die HTTP-Version und einen Statuscode.", richtig: true }
+          - { text: "Eine Bilddatei.", richtig: false }
+  - titel: Methoden, sicher und idempotent
+    inhalt: |
+      Die Methode sagt, was der Client will:
+
+      | Methode | Bedeutung (laut MDN) | sicher | idempotent |
+      |---|---|---|---|
+      | `GET` | Daten einer Ressource holen | ja | ja |
+      | `POST` | Daten an eine Ressource senden, oft mit Änderung auf dem Server | nein | nein |
+      | `PUT` | Ressource vollständig ersetzen | nein | ja |
+      | `PATCH` | Ressource teilweise ändern | nein | nicht garantiert |
+      | `DELETE` | Ressource löschen | nein | ja |
+
+      **Sicher** heißt: Die Anfrage soll den Zustand des Servers nicht ändern. **Idempotent** heißt:
+      Mehrfaches Senden wirkt auf den Server wie einmaliges Senden. Ein zweites `DELETE` kann
+      trotzdem einen anderen Statuscode liefern (zum Beispiel `404`), der Zustand bleibt gleich.
+    quiz:
+      - frage: "Welche dieser Methoden ist laut MDN idempotent, aber nicht sicher?"
+        erklaerung: "PUT ersetzt die Ressource, wiederholtes Senden ändert nichts mehr, aber es verändert den Server."
+        antworten:
+          - { text: "GET", richtig: false }
+          - { text: "POST", richtig: false }
+          - { text: "PUT", richtig: true }
+      - frage: "Was meint „idempotent“?"
+        erklaerung: "Mehrfaches Senden wirkt auf den Server wie einmaliges Senden."
+        antworten:
+          - { text: "Die Anfrage ist verschlüsselt.", richtig: false }
+          - { text: "Mehrfaches Senden wirkt auf den Server wie einmaliges Senden.", richtig: true }
+          - { text: "Die Anfrage hat keinen Header.", richtig: false }
+  - titel: Statuscodes
+    inhalt: |
+      Die erste Ziffer sagt, in welche Klasse der Code gehört:
+
+      - **1xx** Zwischenstand, **2xx** Erfolg, **3xx** Weiterleitung, **4xx** Fehler des Clients,
+        **5xx** Fehler des Servers.
+
+      Wichtige Codes laut MDN:
+
+      - `200 OK`: Erfolg. `201 Created`: Eine neue Ressource wurde angelegt. `204 No Content`: Erfolg
+        ohne Inhalt.
+      - `301 Moved Permanently`: dauerhaft verschoben. `302 Found`: vorübergehend verschoben.
+        `304 Not Modified`: Der Cache des Clients ist noch gültig.
+      - `400 Bad Request`: fehlerhafte Anfrage. `401 Unauthorized`: bedeutet trotz des Namens „nicht
+        angemeldet“. `403 Forbidden`: Du bist bekannt, hast aber kein Recht. `404 Not Found`: Die Ressource
+        wurde nicht gefunden. `405 Method Not Allowed`: Die Methode wird für diese Ressource nicht
+        unterstützt.
+      - `500 Internal Server Error`: allgemeiner Serverfehler. `502 Bad Gateway`: ungültige Antwort eines
+        vorgeschalteten Servers. `503 Service Unavailable`: Server vorübergehend nicht bereit.
+    quiz:
+      - frage: "Was bedeutet `403 Forbidden` im Unterschied zu `401`?"
+        erklaerung: "Bei 403 ist der Client bekannt, hat aber kein Recht. Bei 401 fehlt die Anmeldung."
+        antworten:
+          - { text: "Bei 403 ist der Client bekannt, hat aber kein Recht. Bei 401 fehlt die Anmeldung.", richtig: true }
+          - { text: "403 bedeutet, dass die Seite nicht existiert.", richtig: false }
+          - { text: "403 bedeutet Erfolg.", richtig: false }
+      - frage: "In welche Klasse gehört `503`?"
+        erklaerung: "In die 5xx-Klasse, also Serverfehler."
+        antworten:
+          - { text: "Weiterleitung (3xx)", richtig: false }
+          - { text: "Fehler des Clients (4xx)", richtig: false }
+          - { text: "Fehler des Servers (5xx)", richtig: true }
+test:
+  zeitlimit_minuten: 10
+  fragen:
+    - frage: "Welche Methode eignet sich, um Daten nur zu lesen?"
+      erklaerung: "GET soll nur Daten abrufen."
+      antworten:
+        - { text: "DELETE", richtig: false }
+        - { text: "GET", richtig: true }
+        - { text: "PATCH", richtig: false }
+    - frage: "Welcher Statuscode meldet laut MDN, dass eine neue Ressource angelegt wurde?"
+      erklaerung: "201 Created."
+      antworten:
+        - { text: "201", richtig: true }
+        - { text: "301", richtig: false }
+        - { text: "404", richtig: false }
+    - frage: "Was bedeutet `404`?"
+      erklaerung: "Der Server findet die angefragte Ressource nicht."
+      antworten:
+        - { text: "Der Server ist überlastet.", richtig: false }
+        - { text: "Die Anfrage war erfolgreich.", richtig: false }
+        - { text: "Der Server findet die angefragte Ressource nicht.", richtig: true }
+    - frage: "Welcher Unterschied besteht zwischen `PUT` und `PATCH` laut MDN?"
+      erklaerung: "PUT ersetzt die Ressource vollständig, PATCH ändert sie teilweise."
+      antworten:
+        - { text: "PUT ersetzt die Ressource vollständig, PATCH ändert sie teilweise.", richtig: true }
+        - { text: "PUT löscht, PATCH liest.", richtig: false }
+        - { text: "Es gibt keinen Unterschied.", richtig: false }
+    - frage: "Was bedeutet `304 Not Modified`?"
+      erklaerung: "Die Antwort hat sich nicht geändert, der Client darf seine Kopie aus dem Cache nutzen."
+      antworten:
+        - { text: "Der Server ist ausgefallen.", richtig: false }
+        - { text: "Die Antwort hat sich nicht geändert, der Client darf seine Kopie aus dem Cache nutzen.", richtig: true }
+        - { text: "Die Seite wurde dauerhaft verschoben.", richtig: false }
