@@ -41,15 +41,15 @@ abschnitte:
       - frage: "Was ist Laravel?"
         erklaerung: "Laravel ist ein PHP-Framework: ein Grundgerüst für Webanwendungen."
         antworten:
+          - { text: "Ein Webserver-Programm wie Apache.", richtig: false }
+          - { text: "Eine Datenbank für Webanwendungen.", richtig: false }
           - { text: "Ein PHP-Framework für Webanwendungen.", richtig: true }
-          - { text: "Eine Datenbank.", richtig: false }
-          - { text: "Ein Webserver-Programm.", richtig: false }
       - frage: "Welche Datenbank nutzt ein neues Laravel-Projekt standardmäßig?"
         erklaerung: "Laut Installationsanleitung ist SQLite voreingestellt."
         antworten:
+          - { text: "SQLite", richtig: true }
           - { text: "Oracle", richtig: false }
           - { text: "MongoDB", richtig: false }
-          - { text: "SQLite", richtig: true }
   - titel: Ordnerstruktur und Konfiguration
     inhalt: |
       Wichtige Ordner im Projekt:
@@ -73,15 +73,15 @@ abschnitte:
       - frage: "In welchem Ordner liegen die Routen?"
         erklaerung: "Die Routendateien liegen in `routes/`."
         antworten:
+          - { text: "tests/", richtig: false }
           - { text: "routes/", richtig: true }
           - { text: "database/", richtig: false }
-          - { text: "tests/", richtig: false }
       - frage: "Warum gehört die `.env` nicht in die Versionsverwaltung?"
         erklaerung: "Sie enthält Zugangsdaten und ist je Rechner oder Server verschieden."
         antworten:
-          - { text: "Sie wird von Laravel automatisch gelöscht.", richtig: false }
-          - { text: "Sie enthält Zugangsdaten und unterscheidet sich je Umgebung.", richtig: true }
           - { text: "Git kann keine Dateien ohne Endung speichern.", richtig: false }
+          - { text: "Sie wird von Laravel nach dem Start automatisch gelöscht.", richtig: false }
+          - { text: "Sie enthält Zugangsdaten und unterscheidet sich je Umgebung.", richtig: true }
   - titel: Weg einer Anfrage und artisan
     inhalt: |
       Wenn ein Browser eine Adresse aufruft, läuft das grob so ab:
@@ -110,9 +110,9 @@ abschnitte:
       - frage: "Was zeigt `php artisan route:list`?"
         erklaerung: "Der Befehl listet alle registrierten Routen auf."
         antworten:
-          - { text: "Alle installierten Pakete.", richtig: false }
           - { text: "Alle Routen der Anwendung.", richtig: true }
           - { text: "Alle Datenbanktabellen.", richtig: false }
+          - { text: "Alle installierten Pakete.", richtig: false }
       - frage: "Welche Datei ist der Einstiegspunkt jeder Anfrage?"
         erklaerung: "Alle Anfragen laufen über `public/index.php`."
         antworten:
@@ -125,9 +125,9 @@ test:
     - frage: "Welcher Befehl legt ein neues Laravel-Projekt an?"
       erklaerung: "`laravel new name` erzeugt ein neues Projekt."
       antworten:
+        - { text: "php artisan new trainingstagebuch", richtig: false }
         - { text: "composer start trainingstagebuch", richtig: false }
         - { text: "laravel new trainingstagebuch", richtig: true }
-        - { text: "php artisan new trainingstagebuch", richtig: false }
     - frage: "Wo stehen Datenbank-Zugangsdaten?"
       erklaerung: "In der `.env`, die nicht in Git landet."
       antworten:
@@ -137,18 +137,18 @@ test:
     - frage: "Wozu dient Middleware?"
       erklaerung: "Sie sind Prüfstationen, durch die die Anfrage vor der Route läuft."
       antworten:
-        - { text: "Sie erzeugt HTML-Seiten.", richtig: false }
+        - { text: "Sie erzeugt aus Daten die fertigen HTML-Seiten.", richtig: false }
         - { text: "Sie prüft oder verändert eine Anfrage, bevor die Route läuft.", richtig: true }
-        - { text: "Sie speichert Daten in der Datenbank.", richtig: false }
+        - { text: "Sie speichert Daten dauerhaft in der Datenbank.", richtig: false }
     - frage: "Was erzeugt `php artisan make:controller`?"
       erklaerung: "Der Befehl erzeugt eine neue Controller-Datei mit Grundgerüst."
       antworten:
+        - { text: "Eine neue Datenbank für das Projekt.", richtig: false }
+        - { text: "Einen neuen Entwicklungsserver auf einem weiteren Port.", richtig: false }
         - { text: "Eine Controller-Datei mit Grundgerüst.", richtig: true }
-        - { text: "Eine neue Datenbank.", richtig: false }
-        - { text: "Einen neuen Server.", richtig: false }
     - frage: "Was passiert mit der Datenbank-Datei bei einem neuen Laravel-Projekt standardmäßig?"
       erklaerung: "Laut Installationsanleitung legt der Installer `database/database.sqlite` an und führt die Migrationen aus."
       antworten:
         - { text: "Es wird eine SQLite-Datei angelegt und migriert.", richtig: true }
-        - { text: "Es wird ein MySQL-Server installiert.", richtig: false }
+        - { text: "Es wird ein MySQL-Server installiert und gestartet.", richtig: false }
         - { text: "Es wird keine Datenbank vorbereitet.", richtig: false }

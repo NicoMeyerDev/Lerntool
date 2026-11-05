@@ -28,15 +28,15 @@ abschnitte:
       - frage: "Was ist der Preis eines Index?"
         erklaerung: "Er muss bei Änderungen mitgepflegt werden, das kostet Zeit beim Schreiben."
         antworten:
-          - { text: "Er macht Lesen langsamer.", richtig: false }
+          - { text: "Er macht das Lesen von Daten langsamer.", richtig: false }
           - { text: "Er muss bei Änderungen mitgepflegt werden, das kostet Zeit beim Schreiben.", richtig: true }
-          - { text: "Er löscht alte Zeilen.", richtig: false }
+          - { text: "Er löscht alte Zeilen aus der Tabelle.", richtig: false }
       - frage: "Wie durchsucht PostgreSQL eine Tabelle ohne passenden Index?"
         erklaerung: "Zeile für Zeile, die ganze Tabelle."
         antworten:
+          - { text: "Gar nicht, es gibt eine Fehlermeldung.", richtig: false }
+          - { text: "Nur die ersten zehn Zeilen der Tabelle.", richtig: false }
           - { text: "Zeile für Zeile, die ganze Tabelle.", richtig: true }
-          - { text: "Gar nicht, es gibt einen Fehler.", richtig: false }
-          - { text: "Nur die ersten zehn Zeilen.", richtig: false }
   - titel: EXPLAIN und EXPLAIN ANALYZE
     inhalt: |
       `EXPLAIN` zeigt den **Abfrageplan**: Wie will PostgreSQL die Abfrage ausführen? Der Plan ist ein
@@ -60,45 +60,45 @@ abschnitte:
       - frage: "Was ist beim Einsatz von `EXPLAIN ANALYZE` mit einem `DELETE` zu beachten?"
         erklaerung: "Die Abfrage wird wirklich ausgeführt, die Änderung geschieht also echt."
         antworten:
-          - { text: "Nichts, es ändert nie Daten.", richtig: false }
           - { text: "Die Abfrage wird wirklich ausgeführt, die Änderung geschieht also echt.", richtig: true }
+          - { text: "Nichts, es ändert nie Daten.", richtig: false }
           - { text: "Es werden nur Schätzwerte angezeigt.", richtig: false }
       - frage: "Was bedeutet ein `Seq Scan` im Plan?"
         erklaerung: "Die Tabelle wird Zeile für Zeile komplett gelesen."
         antworten:
-          - { text: "Ein Index wird benutzt.", richtig: false }
+          - { text: "Ein Index wird für die Suche benutzt.", richtig: false }
           - { text: "Die Tabelle wird Zeile für Zeile komplett gelesen.", richtig: true }
-          - { text: "Die Tabelle wird gelöscht.", richtig: false }
+          - { text: "Die Tabelle wird für den Plan vorübergehend gelöscht.", richtig: false }
 test:
   zeitlimit_minuten: 10
   fragen:
     - frage: "Welches Kommando legt einen Index an?"
       erklaerung: "CREATE INDEX."
       antworten:
-        - { text: "CREATE INDEX", richtig: true }
         - { text: "MAKE FAST", richtig: false }
         - { text: "SELECT INDEX", richtig: false }
+        - { text: "CREATE INDEX", richtig: true }
     - frage: "Warum kann ein Index das Schreiben verlangsamen?"
       erklaerung: "Der Index muss bei jeder Änderung der Tabelle mitgepflegt werden."
       antworten:
+        - { text: "Der Index muss bei jeder Änderung der Tabelle mitgepflegt werden.", richtig: true }
         - { text: "Der Index sperrt die Tabelle dauerhaft für alle Nutzer.", richtig: false }
         - { text: "Der Index kopiert bei jeder Anfrage die ganze Tabelle.", richtig: false }
-        - { text: "Der Index muss bei jeder Änderung der Tabelle mitgepflegt werden.", richtig: true }
     - frage: "Was zeigt `EXPLAIN` ohne `ANALYZE`?"
       erklaerung: "Den geplanten Ablauf mit geschätzten Kosten, ohne die Abfrage auszuführen."
       antworten:
+        - { text: "Die Ergebnisse der Abfrage in Tabellenform.", richtig: false }
         - { text: "Den geplanten Ablauf mit geschätzten Kosten, ohne die Abfrage auszuführen.", richtig: true }
-        - { text: "Die Ergebnisse der Abfrage.", richtig: false }
-        - { text: "Die Passwörter der Nutzer.", richtig: false }
+        - { text: "Die tatsächlich gemessene Laufzeit jedes Plan-Schritts.", richtig: false }
     - frage: "Wie schützt du Daten, wenn du `EXPLAIN ANALYZE` mit einem `UPDATE` testest?"
       erklaerung: "Mit BEGIN vorab und ROLLBACK danach."
       antworten:
-        - { text: "Gar nicht, es ist nicht möglich.", richtig: false }
+        - { text: "Gar nicht, das Testen mit UPDATE ist nicht möglich.", richtig: false }
+        - { text: "Mit mehr Indizes auf der betroffenen Tabelle.", richtig: false }
         - { text: "Mit BEGIN vorab und ROLLBACK danach.", richtig: true }
-        - { text: "Mit mehr Indizes.", richtig: false }
     - frage: "Was sollte mit ungenutzten Indizes geschehen?"
       erklaerung: "Sie sollten entfernt werden, weil sie das Schreiben bremsen."
       antworten:
-        - { text: "Sie sollten verdoppelt werden.", richtig: false }
         - { text: "Sie sollten entfernt werden, weil sie das Schreiben bremsen.", richtig: true }
-        - { text: "Sie sind immer nötig.", richtig: false }
+        - { text: "Sie sollten verdoppelt werden, damit sie schneller werden.", richtig: false }
+        - { text: "Sie sind immer nötig und dürfen nie entfernt werden.", richtig: false }

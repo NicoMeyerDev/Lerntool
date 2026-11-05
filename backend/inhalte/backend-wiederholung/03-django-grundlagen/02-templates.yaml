@@ -25,15 +25,15 @@ abschnitte:
       - frage: "Womit gibst du in einem Django-Template den Wert einer Variablen aus?"
         erklaerung: "Variablen stehen in doppelten geschweiften Klammern."
         antworten:
+          - { text: "{{ name }}", richtig: true }
           - { text: "{% name %}", richtig: false }
           - { text: "{# name #}", richtig: false }
-          - { text: "{{ name }}", richtig: true }
       - frage: "Wofür stehen Tags wie {% if %}?"
         erklaerung: "Tags enthalten Logik im Rendervorgang."
         antworten:
-          - { text: "Für Datenbank-Migrationen.", richtig: false }
+          - { text: "Für Datenbank-Migrationen im Template.", richtig: false }
           - { text: "Für Logik beim Rendern des Templates.", richtig: true }
-          - { text: "Für Kommentare.", richtig: false }
+          - { text: "Für Kommentare, die nicht ausgegeben werden.", richtig: false }
   - titel: Vererbung mit extends und block
     inhalt: |
       Mit **Vererbung** schreibst du das gemeinsame Gerüst (Kopf, Menü, Fuß) nur einmal.
@@ -69,15 +69,15 @@ abschnitte:
       - frage: "Was passiert, wenn ein Kind-Template einen Block des Basis-Templates nicht überschreibt?"
         erklaerung: "Dann wird der Inhalt des Blocks aus dem Eltern-Template verwendet."
         antworten:
-          - { text: "Django meldet einen Fehler.", richtig: false }
+          - { text: "Der Block bleibt in der Ausgabe leer.", richtig: false }
+          - { text: "Django meldet beim Rendern einen Fehler.", richtig: false }
           - { text: "Der Inhalt aus dem Eltern-Template wird verwendet.", richtig: true }
-          - { text: "Der Block bleibt leer.", richtig: false }
       - frage: "Wo muss {% extends %} im Template stehen?"
         erklaerung: "Es muss das erste Template-Tag sein."
         antworten:
-          - { text: "Es darf nur in der settings.py stehen.", richtig: false }
           - { text: "Es muss das erste Tag im Template sein.", richtig: true }
-          - { text: "Es muss am Ende stehen.", richtig: false }
+          - { text: "Es muss am Ende des Templates stehen.", richtig: false }
+          - { text: "Es darf nur in der Datei settings.py stehen.", richtig: false }
   - titel: Ein Template in einer View ausgeben
     inhalt: |
       Eine View macht aus einem Template und einem Kontext eine Antwort. Die Doku nennt dafür
@@ -99,15 +99,15 @@ abschnitte:
       - frage: "Was macht die Abkürzung render() laut Doku?"
         erklaerung: "Sie ruft render_to_string() auf und gibt das Ergebnis in einer HttpResponse zurück."
         antworten:
-          - { text: "Sie startet den Server.", richtig: false }
+          - { text: "Sie legt für das Template eine Migration an.", richtig: false }
           - { text: "Sie rendert das Template und liefert eine HttpResponse.", richtig: true }
-          - { text: "Sie legt eine Migration an.", richtig: false }
+          - { text: "Sie startet den Entwicklungsserver neu.", richtig: false }
       - frage: "Welche Einstellung bestimmt, wo Django nach Templates sucht?"
         erklaerung: "Die Einstellung TEMPLATES in settings.py."
         antworten:
+          - { text: "ALLOWED_HOSTS", richtig: false }
           - { text: "DATABASES", richtig: false }
           - { text: "TEMPLATES", richtig: true }
-          - { text: "ALLOWED_HOSTS", richtig: false }
   - titel: Automatisches Escaping
     inhalt: |
       Django **escaped** standardmäßig die Ausgabe jeder Variablen. Dabei werden fünf Zeichen
@@ -136,30 +136,30 @@ abschnitte:
       - frage: "Was bewirkt das automatische Escaping in Django-Templates?"
         erklaerung: "Es ersetzt Zeichen wie < und > durch HTML-Entities und schützt so vor XSS."
         antworten:
-          - { text: "Es verschlüsselt die Seite.", richtig: false }
-          - { text: "Es beschleunigt die Datenbank.", richtig: false }
           - { text: "Es ersetzt gefährliche Zeichen und schützt vor XSS.", richtig: true }
+          - { text: "Es verschlüsselt die gesamte Seite vor dem Senden.", richtig: false }
+          - { text: "Es beschleunigt die Abfragen an die Datenbank.", richtig: false }
       - frage: "Was macht der Filter safe?"
         erklaerung: "Er schaltet das Escaping für diese Variable ab."
         antworten:
           - { text: "Er macht die Variable sicher gegen XSS.", richtig: false }
-          - { text: "Er löscht die Variable.", richtig: false }
           - { text: "Er schaltet das Escaping für diese Variable ab.", richtig: true }
+          - { text: "Er löscht die Variable aus dem Kontext.", richtig: false }
 test:
   zeitlimit_minuten: 10
   fragen:
     - frage: "Welches Tag lässt ein Kind-Template von einem Basis-Template erben?"
       erklaerung: "Das Tag extends sorgt für die Vererbung."
       antworten:
-        - { text: "{% include %}", richtig: false }
         - { text: "{% safe %}", richtig: false }
+        - { text: "{% include %}", richtig: false }
         - { text: "{% extends %}", richtig: true }
     - frage: "Was ist der Kontext beim Rendern eines Templates?"
       erklaerung: "Der Kontext ist ein dict-ähnliches Objekt, das Namen auf Werte abbildet."
       antworten:
         - { text: "Ein Wörterbuch aus Namen und Werten.", richtig: true }
-        - { text: "Eine Datei mit CSS.", richtig: false }
-        - { text: "Ein Datenbank-Index.", richtig: false }
+        - { text: "Eine CSS-Datei, die das Layout vorgibt.", richtig: false }
+        - { text: "Ein Datenbank-Index für schnellere Abfragen.", richtig: false }
     - frage: "Wie wird das Zeichen < bei aktiviertem Escaping ausgegeben?"
       erklaerung: "Als &lt;."
       antworten:
@@ -169,9 +169,9 @@ test:
     - frage: "Welcher Angriff wird durch das automatische Escaping erschwert?"
       erklaerung: "Das Escaping schützt vor Cross-Site-Scripting (XSS)."
       antworten:
-        - { text: "Cross-Site-Scripting (XSS)", richtig: true }
         - { text: "Ein Ausfall des Servers durch zu viele Anfragen", richtig: false }
         - { text: "Das Erraten von Passwörtern", richtig: false }
+        - { text: "Cross-Site-Scripting (XSS)", richtig: true }
     - frage: "Wie wendest du den Filter title auf die Variable django an?"
       erklaerung: "Filter folgen mit senkrechtem Strich: {{ django|title }}."
       antworten:

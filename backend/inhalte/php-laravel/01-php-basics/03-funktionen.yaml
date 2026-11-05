@@ -56,9 +56,9 @@ abschnitte:
       - frage: "Was liefert eine Funktion ohne `return`?"
         erklaerung: "Ohne `return` ist der Rückgabewert `null`."
         antworten:
+          - { text: "null", richtig: true }
           - { text: "einen leeren Text", richtig: false }
           - { text: "0", richtig: false }
-          - { text: "null", richtig: true }
   - titel: Typdeklarationen
     inhalt: |
       Du kannst festlegen, welchen **Typ** Parameter und Rückgabewert haben müssen.
@@ -93,21 +93,21 @@ abschnitte:
       - frage: "Was bedeutet `: int` hinter der Parameterklammer einer Funktion?"
         erklaerung: "Der Rückgabetyp legt fest, dass die Funktion eine ganze Zahl zurückgeben muss."
         antworten:
+          - { text: "Die Funktion läuft nur bis 10.", richtig: false }
           - { text: "Die Funktion gibt eine ganze Zahl zurück.", richtig: true }
           - { text: "Die Funktion darf nur einen Parameter haben.", richtig: false }
-          - { text: "Die Funktion läuft nur bis 10.", richtig: false }
       - frage: "Was bedeutet `?string` als Typ?"
         erklaerung: "Das Fragezeichen erlaubt zusätzlich `null`: ein Text oder kein Wert."
         antworten:
+          - { text: "Nur ein leerer Text", richtig: false }
           - { text: "Der Text ist unsicher.", richtig: false }
           - { text: "Ein Text oder null", richtig: true }
-          - { text: "Nur ein leerer Text", richtig: false }
       - frage: "Was bewirkt `declare(strict_types=1);` am Dateianfang?"
         erklaerung: "Mit strikten Typen werden Argumente nicht mehr still umgewandelt, ein falscher Typ löst einen TypeError aus."
         antworten:
-          - { text: "Alle Variablen werden Konstanten.", richtig: false }
-          - { text: "PHP läuft dadurch schneller.", richtig: false }
           - { text: "Ein falscher Typ löst einen TypeError aus, statt still umgewandelt zu werden.", richtig: true }
+          - { text: "Alle Variablen der Datei werden zu Konstanten.", richtig: false }
+          - { text: "PHP führt den Code dadurch merklich schneller aus.", richtig: false }
   - titel: Standardwerte und benannte Argumente
     inhalt: |
       Ein Parameter kann einen **Standardwert** bekommen. Lässt du das Argument weg,
@@ -147,15 +147,15 @@ abschnitte:
       - frage: "Was ist ein benanntes Argument?"
         erklaerung: "Beim Aufruf schreibst du den Namen des Parameters dazu, zum Beispiel `gruss: 'Servus'`."
         antworten:
-          - { text: "Ein Argument, bei dem der Parametername beim Aufruf angegeben wird.", richtig: true }
           - { text: "Ein Argument, das einen Namen aus Großbuchstaben haben muss.", richtig: false }
           - { text: "Ein Argument, das immer ein Text ist.", richtig: false }
+          - { text: "Ein Argument, bei dem der Parametername beim Aufruf angegeben wird.", richtig: true }
       - frage: "Wo stehen Parameter mit Standardwert üblicherweise?"
         erklaerung: "Am Ende der Parameterliste, damit die wichtigen Parameter zuerst übergeben werden."
         antworten:
+          - { text: "am Ende der Parameterliste", richtig: true }
           - { text: "am Anfang der Parameterliste", richtig: false }
           - { text: "in einer eigenen Datei", richtig: false }
-          - { text: "am Ende der Parameterliste", richtig: true }
   - titel: Gültigkeitsbereich von Variablen
     inhalt: |
       Eine Variable, die **in** einer Funktion entsteht, existiert nur dort. Das nennt man
@@ -196,9 +196,9 @@ abschnitte:
       - frage: "Kann eine Funktion ohne weitere Angabe (ohne `global`) eine Variable `$faktor` lesen, die außerhalb definiert wurde?"
         erklaerung: "Nein. Variablen von außen sind in Funktionen nicht sichtbar. Man übergibt sie als Parameter."
         antworten:
-          - { text: "Nur wenn sie eine Zahl ist.", richtig: false }
-          - { text: "Ja, automatisch.", richtig: false }
+          - { text: "Ja, äußere Variablen sind in Funktionen immer sichtbar.", richtig: false }
           - { text: "Nein, man übergibt sie als Parameter.", richtig: true }
+          - { text: "Nur wenn der Wert der Variable eine Zahl ist.", richtig: false }
       - frage: "Wo existiert eine Variable, die innerhalb einer Funktion angelegt wird?"
         erklaerung: "Sie ist lokal und nur innerhalb der Funktion sichtbar."
         antworten:
@@ -208,9 +208,9 @@ abschnitte:
       - frage: "Wie bringst du das Ergebnis einer Funktion nach außen?"
         erklaerung: "Über `return`."
         antworten:
-          - { text: "mit public", richtig: false }
           - { text: "mit return", richtig: true }
           - { text: "mit extern", richtig: false }
+          - { text: "mit public", richtig: false }
   - titel: Anonyme Funktionen und Pfeilfunktionen
     inhalt: |
       Eine Funktion kann auch **ohne Namen** in einer Variablen stehen
@@ -251,60 +251,60 @@ abschnitte:
       - frage: "Wie holst du in eine anonyme Funktion (`function`) eine Variable von außen?"
         erklaerung: "Mit `use ($variable)` hinter der Parameterklammer."
         antworten:
-          - { text: "mit import", richtig: false }
           - { text: "mit extern", richtig: false }
           - { text: "mit use", richtig: true }
+          - { text: "mit import", richtig: false }
       - frage: "Was ist ein Merkmal der Pfeilfunktion `fn`?"
         erklaerung: "Sie übernimmt Variablen von außen automatisch und besteht aus einem einzigen Ausdruck."
         antworten:
+          - { text: "Sie kann nur Texte verarbeiten und keine Zahlen.", richtig: false }
+          - { text: "Sie braucht immer ein ausdrückliches return.", richtig: false }
           - { text: "Sie übernimmt Variablen von außen automatisch.", richtig: true }
-          - { text: "Sie kann nur Texte verarbeiten.", richtig: false }
-          - { text: "Sie braucht immer ein return.", richtig: false }
       - frage: "Was liefert `array_map(fn(int $x): int => $x * 2, [1, 2, 3])`?"
         erklaerung: "`array_map` wendet die Funktion auf jedes Element an. Ergebnis: [2, 4, 6]."
         antworten:
+          - { text: "[2, 4, 6]", richtig: true }
           - { text: "12", richtig: false }
           - { text: "[1, 2, 3]", richtig: false }
-          - { text: "[2, 4, 6]", richtig: true }
 test:
   zeitlimit_minuten: 20
   fragen:
     - frage: "Welche Zeile definiert eine Funktion korrekt?"
       erklaerung: "In PHP beginnt eine Funktionsdefinition mit dem Schlüsselwort `function`."
       antworten:
+        - { text: "fun quadrat(x) = x * x", richtig: false }
         - { text: "function quadrat(int $x): int { return $x * $x; }", richtig: true }
         - { text: "def quadrat(x): return x * x", richtig: false }
-        - { text: "fun quadrat(x) = x * x", richtig: false }
     - frage: "Was liefert `function f(int $a, int $b = 10): int { return $a + $b; }` beim Aufruf `f(5)`?"
       erklaerung: "$b hat den Standardwert 10. Also 5 + 10 = 15."
       antworten:
-        - { text: "15", richtig: true }
         - { text: "einen Fehler", richtig: false }
         - { text: "5", richtig: false }
+        - { text: "15", richtig: true }
     - frage: "Was passiert mit `declare(strict_types=1);`, wenn du einer `int`-Funktion den Text `'abc'` übergibst?"
       erklaerung: "Ein falscher Typ löst einen `TypeError` aus."
       antworten:
-        - { text: "Die Funktion wird übersprungen.", richtig: false }
         - { text: "Es gibt einen TypeError.", richtig: true }
         - { text: "PHP wandelt den Text in 0 um.", richtig: false }
+        - { text: "Die Funktion wird übersprungen.", richtig: false }
     - frage: "Welcher Rückgabetyp passt zu einer Funktion, die nichts zurückgibt?"
       erklaerung: "`void` bedeutet: kein Rückgabewert."
       antworten:
-        - { text: "empty", richtig: false }
         - { text: "none", richtig: false }
         - { text: "void", richtig: true }
+        - { text: "empty", richtig: false }
     - frage: "Wie rufst du `begruessen(string $name = 'Gast', string $gruss = 'Hallo')` auf, um nur den Gruss zu ändern?"
       erklaerung: "Mit einem benannten Argument kannst du gezielt einen Parameter setzen."
       antworten:
+        - { text: "begruessen('Servus')", richtig: false }
         - { text: "begruessen(gruss = 'Servus')", richtig: false }
         - { text: "begruessen(gruss: 'Servus')", richtig: true }
-        - { text: "begruessen('Servus')", richtig: false }
     - frage: "Welches Ergebnis hat dieser Code? function f() { return $x; } $x = 5; echo f();"
       erklaerung: "Innerhalb der Funktion ist `$x` nicht definiert (Warnung „Undefined variable“). Die Funktion liefert null, nicht 5."
       antworten:
+        - { text: "null, dazu eine Warnung wegen der undefinierten Variable", richtig: true }
         - { text: "0", richtig: false }
         - { text: "5", richtig: false }
-        - { text: "null, dazu eine Warnung wegen der undefinierten Variable", richtig: true }
     - frage: "Welche Schreibweise ist eine gültige Pfeilfunktion?"
       erklaerung: "Pfeilfunktionen beginnen mit `fn`, danach folgen Parameter, `=>` und ein Ausdruck."
       antworten:

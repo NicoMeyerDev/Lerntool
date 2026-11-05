@@ -60,9 +60,9 @@ abschnitte:
       - frage: "Wie erzeugst du ein Objekt der Klasse `Lauf`?"
         erklaerung: "Mit dem Schlüsselwort `new`."
         antworten:
+          - { text: "$lauf = new Lauf();", richtig: true }
           - { text: "$lauf = Lauf();", richtig: false }
           - { text: "$lauf = create Lauf;", richtig: false }
-          - { text: "$lauf = new Lauf();", richtig: true }
       - frage: "Wie rufst du die Methode `tempo()` am Objekt `$lauf` auf?"
         erklaerung: "Mit dem Pfeil `->`."
         antworten:
@@ -112,9 +112,9 @@ abschnitte:
       - frage: "Wie heißt der Konstruktor einer PHP-Klasse?"
         erklaerung: "Er heißt immer `__construct`."
         antworten:
-          - { text: "__construct", richtig: true }
           - { text: "__init__", richtig: false }
           - { text: "new", richtig: false }
+          - { text: "__construct", richtig: true }
       - frage: "Wer darf auf eine `private` Eigenschaft zugreifen?"
         erklaerung: "Nur die Klasse selbst."
         antworten:
@@ -124,9 +124,9 @@ abschnitte:
       - frage: "Was bewirkt `readonly` bei einer Eigenschaft?"
         erklaerung: "Der Wert kann nach dem Setzen nicht mehr geändert werden."
         antworten:
+          - { text: "Die Eigenschaft wird beim Beenden gelöscht.", richtig: false }
           - { text: "Der Wert kann nach dem Setzen nicht mehr geändert werden.", richtig: true }
           - { text: "Die Eigenschaft ist nur lesbar, aber nie setzbar.", richtig: false }
-          - { text: "Die Eigenschaft wird beim Beenden gelöscht.", richtig: false }
   - titel: Statische Mitglieder und Klassenkonstanten
     inhalt: |
       Manche Dinge gehören nicht zu einem einzelnen Objekt, sondern zur **Klasse selbst**.
@@ -157,9 +157,9 @@ abschnitte:
       - frage: "Wie rufst du eine statische Methode `kmZuMeter` der Klasse `Umrechner` auf?"
         erklaerung: "Statische Mitglieder erreichst du mit `Klasse::`."
         antworten:
-          - { text: "Umrechner::kmZuMeter(2.5)", richtig: true }
           - { text: "Umrechner->kmZuMeter(2.5)", richtig: false }
           - { text: "new Umrechner.kmZuMeter(2.5)", richtig: false }
+          - { text: "Umrechner::kmZuMeter(2.5)", richtig: true }
       - frage: "Wie sprichst du innerhalb der Klasse eine Klassenkonstante an?"
         erklaerung: "Mit `self::NAME`."
         antworten:
@@ -214,21 +214,21 @@ abschnitte:
       - frage: "Mit welchem Schlüsselwort erbt eine Klasse von einer anderen?"
         erklaerung: "Mit `extends`."
         antworten:
-          - { text: "extends", richtig: true }
           - { text: "inherits", richtig: false }
           - { text: "implements", richtig: false }
+          - { text: "extends", richtig: true }
       - frage: "Wer darf auf eine `protected` Eigenschaft zugreifen?"
         erklaerung: "Die Klasse selbst und ihre Kindklassen."
         antworten:
-          - { text: "jeder", richtig: false }
-          - { text: "nur die Klasse selbst", richtig: false }
           - { text: "die Klasse und ihre Kindklassen", richtig: true }
+          - { text: "jeder, der ein Objekt der Klasse besitzt", richtig: false }
+          - { text: "nur die Klasse selbst, nicht ihre Kindklassen", richtig: false }
       - frage: "Wie viele Elternklassen darf eine PHP-Klasse mit `extends` haben?"
         erklaerung: "Genau eine. PHP kennt keine Mehrfachvererbung von Klassen."
         antworten:
+          - { text: "beliebig viele", richtig: false }
           - { text: "höchstens eine", richtig: true }
           - { text: "mindestens zwei", richtig: false }
-          - { text: "beliebig viele", richtig: false }
   - titel: Interfaces
     inhalt: |
       Ein **Interface** ist ein Vertrag. Es legt fest, **welche Methoden** eine Klasse haben
@@ -276,15 +276,15 @@ abschnitte:
       - frage: "Was legt ein Interface fest?"
         erklaerung: "Welche Methoden eine Klasse haben muss, nicht wie sie umgesetzt werden."
         antworten:
-          - { text: "Welche Methoden eine Klasse haben muss.", richtig: true }
           - { text: "Den kompletten Code der Methoden.", richtig: false }
           - { text: "Die Farben der Ausgabe.", richtig: false }
+          - { text: "Welche Methoden eine Klasse haben muss.", richtig: true }
       - frage: "Welches Schlüsselwort nutzt eine Klasse, um ein Interface umzusetzen?"
         erklaerung: "Mit `implements`."
         antworten:
-          - { text: "extends", richtig: false }
           - { text: "implements", richtig: true }
           - { text: "uses", richtig: false }
+          - { text: "extends", richtig: false }
       - frage: "Kann eine Klasse mehrere Interfaces umsetzen?"
         erklaerung: "Ja, zum Beispiel `implements A, B`."
         antworten:
@@ -324,15 +324,15 @@ abschnitte:
       - frage: "Wofür ist ein Enum gut?"
         erklaerung: "Für eine feste Liste erlaubter Werte, damit keine ungültigen Werte vorkommen."
         antworten:
-          - { text: "für sehr lange Texte", richtig: false }
-          - { text: "um Dateien zu lesen", richtig: false }
+          - { text: "für sehr lange Texte mit vielen Zeilen", richtig: false }
+          - { text: "um Dateien zu lesen und zu schreiben", richtig: false }
           - { text: "für eine feste Liste erlaubter Werte", richtig: true }
       - frage: "Was liefert `Sportart::tryFrom('yoga')`, wenn es diesen Wert nicht gibt?"
         erklaerung: "`tryFrom` gibt null zurück. `from` würde einen Fehler werfen."
         antworten:
+          - { text: "null", richtig: true }
           - { text: "einen Fehler", richtig: false }
           - { text: "den ersten Fall", richtig: false }
-          - { text: "null", richtig: true }
       - frage: "Wie liest du den Textwert eines Falls `$art` aus einem backed Enum?"
         erklaerung: "Mit `$art->value`."
         antworten:
@@ -345,33 +345,33 @@ test:
     - frage: "Was ist `$this` innerhalb einer Methode?"
       erklaerung: "`$this` verweist auf das Objekt, dessen Methode gerade läuft."
       antworten:
-        - { text: "das aktuelle Objekt", richtig: true }
         - { text: "die Elternklasse", richtig: false }
         - { text: "die erste Variable der Klasse", richtig: false }
+        - { text: "das aktuelle Objekt", richtig: true }
     - frage: "Was passiert beim Ausführen von `new Lauf(5.0, 30)`?"
       erklaerung: "Ein neues Objekt wird erzeugt und der Konstruktor `__construct` läuft automatisch mit den Argumenten."
       antworten:
-        - { text: "Die Klasse wird gelöscht.", richtig: false }
-        - { text: "Es wird nur ein Name reserviert.", richtig: false }
         - { text: "Ein Objekt wird erzeugt und der Konstruktor läuft.", richtig: true }
+        - { text: "Die Klasse wird gelöscht und neu angelegt.", richtig: false }
+        - { text: "Es wird nur ein Name im Speicher reserviert.", richtig: false }
     - frage: "Warum macht man Eigenschaften oft `private`?"
       erklaerung: "So kann man sie nur über eigene Methoden ändern und ungültige Werte verhindern."
       antworten:
+        - { text: "Weil public in PHP nicht mehr erlaubt ist.", richtig: false }
         - { text: "Damit ungültige Werte von außen verhindert werden können.", richtig: true }
-        - { text: "Damit der Code schneller läuft.", richtig: false }
-        - { text: "Weil public nicht erlaubt ist.", richtig: false }
+        - { text: "Damit der Code dadurch schneller ausgeführt wird.", richtig: false }
     - frage: "Wie greifst du auf eine Klassenkonstante `MAX` der Klasse `Regeln` von außen zu?"
       erklaerung: "Mit `Klasse::KONSTANTE`."
       antworten:
-        - { text: "Regeln::MAX", richtig: true }
         - { text: "Regeln->MAX", richtig: false }
         - { text: "$Regeln.MAX", richtig: false }
+        - { text: "Regeln::MAX", richtig: true }
     - frage: "Wie nennt man es, wenn eine Kindklasse eine Methode der Elternklasse neu schreibt?"
       erklaerung: "Das heißt Überschreiben."
       antworten:
-        - { text: "Kapseln", richtig: false }
         - { text: "Überschreiben", richtig: true }
         - { text: "Importieren", richtig: false }
+        - { text: "Kapseln", richtig: false }
     - frage: "Was muss eine Klasse tun, die `implements Auswertbar` schreibt?"
       erklaerung: "Sie muss alle Methoden des Interfaces umsetzen."
       antworten:
@@ -381,12 +381,12 @@ test:
     - frage: "Was ist der Unterschied zwischen `extends` und `implements`?"
       erklaerung: "`extends` erbt von einer Klasse (höchstens eine), `implements` setzt ein Interface um (beliebig viele)."
       antworten:
-        - { text: "Beides ist dasselbe.", richtig: false }
-        - { text: "extends gilt nur für Funktionen.", richtig: false }
+        - { text: "Beides bedeutet in PHP genau dasselbe.", richtig: false }
+        - { text: "extends gilt nur für Funktionen, implements nur für Klassen.", richtig: false }
         - { text: "extends erbt von einer Klasse, implements setzt ein Interface um.", richtig: true }
     - frage: "Welchen Vorteil hat ein Enum gegenüber losen Texten wie 'laufen'?"
       erklaerung: "Nur die definierten Fälle sind erlaubt, Tippfehler fallen sofort auf."
       antworten:
         - { text: "Nur definierte Werte sind erlaubt.", richtig: true }
-        - { text: "Enums sind immer Zahlen.", richtig: false }
-        - { text: "Enums brauchen keine Typen.", richtig: false }
+        - { text: "Enums brauchen keine Typen und keine Namen.", richtig: false }
+        - { text: "Enums sind immer Zahlen und dadurch schneller.", richtig: false }

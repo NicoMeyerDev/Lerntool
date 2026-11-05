@@ -30,9 +30,9 @@ abschnitte:
       - frage: "Was entspricht einem Django-Modell in der Datenbank?"
         erklaerung: "Jedes Modell entspricht meistens einer Datenbanktabelle."
         antworten:
+          - { text: "Einem Index.", richtig: false }
           - { text: "Einer Tabelle.", richtig: true }
           - { text: "Einer einzelnen Zeile.", richtig: false }
-          - { text: "Einem Index.", richtig: false }
       - frage: "Welcher Befehl führt vorhandene Migrationen in der Datenbank aus?"
         erklaerung: "manage.py migrate führt die Migrationen aus, makemigrations erzeugt sie."
         antworten:
@@ -67,15 +67,15 @@ abschnitte:
       - frage: "Worin unterscheiden sich null und blank?"
         erklaerung: "null betrifft die Datenbank, blank die Validierung."
         antworten:
-          - { text: "null betrifft nur Zahlen, blank nur Text.", richtig: false }
           - { text: "null betrifft die Datenbank, blank die Prüfung von Eingaben.", richtig: true }
-          - { text: "Beide bedeuten genau dasselbe.", richtig: false }
+          - { text: "Beide bedeuten genau dasselbe und lassen sich austauschen.", richtig: false }
+          - { text: "null betrifft nur Zahlen, blank nur Text.", richtig: false }
       - frage: "Was bewirkt unique=True bei einem Feld?"
         erklaerung: "Der Wert darf in der Tabelle nur einmal vorkommen."
         antworten:
+          - { text: "Das Feld wird in Formularen und im Admin ausgeblendet.", richtig: false }
           - { text: "Der Wert darf in der Tabelle nur einmal vorkommen.", richtig: true }
-          - { text: "Das Feld wird ausgeblendet.", richtig: false }
-          - { text: "Das Feld wird automatisch befüllt.", richtig: false }
+          - { text: "Das Feld wird beim Speichern automatisch befüllt.", richtig: false }
   - titel: Beziehungen zwischen Modellen
     inhalt: |
       Django kennt drei Beziehungstypen:
@@ -107,30 +107,30 @@ abschnitte:
       - frage: "Welches Feld bildet „viele Autos gehören zu einem Hersteller“ ab?"
         erklaerung: "Viele-zu-eins-Beziehungen bildet man mit ForeignKey ab, das Feld steht im Modell auf der Viele-Seite."
         antworten:
+          - { text: "OneToOneField im Modell Manufacturer", richtig: false }
           - { text: "ManyToManyField in beiden Modellen", richtig: false }
           - { text: "ForeignKey im Modell Car", richtig: true }
-          - { text: "OneToOneField im Modell Manufacturer", richtig: false }
       - frage: "In wie vielen Modellen steht ein ManyToManyField laut Doku?"
         erklaerung: "Man setzt es nur in einem der beiden Modelle."
         antworten:
-          - { text: "In keinem, Django erkennt es selbst.", richtig: false }
           - { text: "In einem der beiden Modelle.", richtig: true }
           - { text: "In beiden Modellen.", richtig: false }
+          - { text: "In keinem, Django erkennt es selbst.", richtig: false }
 test:
   zeitlimit_minuten: 10
   fragen:
     - frage: "Von welcher Klasse erbt ein Django-Modell?"
       erklaerung: "Alle Modelle erben von django.db.models.Model."
       antworten:
-        - { text: "views.View", richtig: false }
         - { text: "forms.Form", richtig: false }
         - { text: "models.Model", richtig: true }
+        - { text: "views.View", richtig: false }
     - frage: "Wozu dient der Parameter max_length bei CharField?"
       erklaerung: "Er begrenzt die Zeichenzahl des Feldes."
       antworten:
-        - { text: "Er begrenzt die Zeichenzahl des Feldes.", richtig: true }
         - { text: "Er ist nur für ForeignKeys gedacht.", richtig: false }
-        - { text: "Er sortiert die Tabelle.", richtig: false }
+        - { text: "Er sortiert die Tabelle nach der Länge des Feldes.", richtig: false }
+        - { text: "Er begrenzt die Zeichenzahl des Feldes.", richtig: true }
     - frage: "Welches Feld erlaubt es, dass ein Wert in der Datenbank leer (NULL) ist?"
       erklaerung: "null=True speichert leere Werte als NULL."
       antworten:
@@ -140,12 +140,12 @@ test:
     - frage: "Wofür nutzt du through bei einem ManyToManyField?"
       erklaerung: "Mit through gibst du ein eigenes Zwischenmodell für zusätzliche Daten an."
       antworten:
+        - { text: "Um die Ergebnisse der Abfrage zwischenzuspeichern.", richtig: false }
         - { text: "Für ein eigenes Zwischenmodell mit zusätzlichen Daten.", richtig: true }
-        - { text: "Um das Feld zu löschen.", richtig: false }
-        - { text: "Um die Seite zu cachen.", richtig: false }
+        - { text: "Um das Feld nach der Migration wieder zu entfernen.", richtig: false }
     - frage: "Was bewirkt on_delete=models.CASCADE?"
       erklaerung: "CASCADE löscht auch das Objekt, das den ForeignKey enthält."
       antworten:
         - { text: "Der ForeignKey wird auf NULL gesetzt.", richtig: false }
+        - { text: "Das Löschen des referenzierten Objekts wird verhindert.", richtig: false }
         - { text: "Das Objekt mit dem ForeignKey wird mitgelöscht.", richtig: true }
-        - { text: "Das Löschen wird verhindert.", richtig: false }

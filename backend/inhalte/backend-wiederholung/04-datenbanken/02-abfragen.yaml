@@ -24,8 +24,8 @@ abschnitte:
         erklaerung: "Erst wenn du save() aufrufst."
         antworten:
           - { text: "Erst beim Aufruf von save().", richtig: true }
-          - { text: "Sofort beim Erzeugen des Objekts.", richtig: false }
-          - { text: "Nur beim Neustart des Servers.", richtig: false }
+          - { text: "Nur beim Neustart des Entwicklungsservers.", richtig: false }
+          - { text: "Sofort beim Erzeugen des Objekts im Speicher.", richtig: false }
       - frage: "Wie fügst du einem Eintrag einen weiteren Autor bei einer ManyToMany-Beziehung hinzu?"
         erklaerung: "Mit der Methode add(), zum Beispiel entry.authors.add(joe)."
         antworten:
@@ -88,15 +88,15 @@ abschnitte:
       - frage: "Wann trifft ein QuerySet die Datenbank?"
         erklaerung: "Erst bei der Auswertung, nicht beim Erzeugen oder Verfeinern."
         antworten:
-          - { text: "Bei jedem filter()-Aufruf.", richtig: false }
-          - { text: "Nur beim Speichern der Datei.", richtig: false }
+          - { text: "Nur beim Speichern der Projektdatei.", richtig: false }
           - { text: "Erst bei der Auswertung, zum Beispiel beim Durchlaufen.", richtig: true }
+          - { text: "Bei jedem filter()-Aufruf sofort.", richtig: false }
       - frage: "Was ist bei Entry.objects.all()[-1] zu beachten?"
         erklaerung: "Negative Indizes werden nicht unterstützt."
         antworten:
-          - { text: "Es löscht das letzte Objekt.", richtig: false }
+          - { text: "Es liefert immer das zuletzt gespeicherte Objekt.", richtig: false }
+          - { text: "Es löscht das letzte Objekt der Tabelle.", richtig: false }
           - { text: "Negative Indizes werden nicht unterstützt.", richtig: true }
-          - { text: "Es liefert immer das letzte Objekt.", richtig: false }
   - titel: Abfragen über Beziehungen
     inhalt: |
       Mit dem **doppelten Unterstrich** folgst du Beziehungen. Django erzeugt dafür die Verbindung
@@ -122,45 +122,45 @@ abschnitte:
       - frage: "Wie filterst du Einträge nach dem Namen ihres Blogs?"
         erklaerung: "Mit doppeltem Unterstrich: Entry.objects.filter(blog__name=...)."
         antworten:
-          - { text: "Entry.objects.get(blog_name)", richtig: false }
           - { text: "Entry.objects.filter(blog__name=\"Beatles Blog\")", richtig: true }
           - { text: "Entry.objects.filter(blog.name=\"Beatles Blog\")", richtig: false }
+          - { text: "Entry.objects.get(blog_name)", richtig: false }
       - frage: "Wie kommst du standardmäßig von einem Blog b zu seinen Einträgen?"
         erklaerung: "Rückwärts über b.entry_set.all()."
         antworten:
-          - { text: "b.entry", richtig: false }
           - { text: "b.blog.all()", richtig: false }
           - { text: "b.entry_set.all()", richtig: true }
+          - { text: "b.entry", richtig: false }
 test:
   zeitlimit_minuten: 10
   fragen:
     - frage: "Wie nennt man den Zugang zu den Abfragen eines Modells, standardmäßig objects?"
       erklaerung: "Das ist der Manager des Modells."
       antworten:
+        - { text: "Serializer", richtig: false }
         - { text: "Migration", richtig: false }
         - { text: "Manager", richtig: true }
-        - { text: "Serializer", richtig: false }
     - frage: "Was liefert exclude()?"
       erklaerung: "Ein neues QuerySet mit den Objekten, die nicht passen."
       antworten:
         - { text: "Die Objekte, die nicht zu den Bedingungen passen.", richtig: true }
-        - { text: "Die Objekte, die passen.", richtig: false }
-        - { text: "Genau ein Objekt.", richtig: false }
+        - { text: "Genau ein Objekt, das als Erstes gefunden wird.", richtig: false }
+        - { text: "Die Objekte, die zu den Bedingungen passen.", richtig: false }
     - frage: "Was bedeutet es, dass QuerySets träge sind?"
       erklaerung: "Das Erzeugen führt noch keine Datenbankabfrage aus."
       antworten:
-        - { text: "Sie können nicht gefiltert werden.", richtig: false }
+        - { text: "Sie können nach dem Erzeugen nicht mehr gefiltert werden.", richtig: false }
         - { text: "Das Erzeugen löst noch keine Datenbankabfrage aus.", richtig: true }
-        - { text: "Sie laufen immer im Hintergrund.", richtig: false }
+        - { text: "Sie werden immer im Hintergrund parallel ausgewertet.", richtig: false }
     - frage: "Welcher Aufruf liefert die ersten fünf Objekte?"
       erklaerung: "Slicing [:5] entspricht LIMIT 5."
       antworten:
         - { text: "Entry.objects.get(5)", richtig: false }
-        - { text: "Entry.objects.all()[:5]", richtig: true }
         - { text: "Entry.objects.all()[-5]", richtig: false }
+        - { text: "Entry.objects.all()[:5]", richtig: true }
     - frage: "Was ist ein Unterschied zwischen get() und filter()?"
       erklaerung: "get() liefert ein einzelnes Objekt oder einen Fehler, filter() liefert ein QuerySet."
       antworten:
-        - { text: "Es gibt keinen Unterschied.", richtig: false }
         - { text: "get() liefert ein Objekt oder einen Fehler, filter() liefert ein QuerySet.", richtig: true }
-        - { text: "get() liefert immer ein QuerySet.", richtig: false }
+        - { text: "Es gibt keinen Unterschied, beide liefern ein QuerySet.", richtig: false }
+        - { text: "get() liefert immer ein QuerySet, filter() ein einzelnes Objekt.", richtig: false }

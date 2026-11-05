@@ -26,15 +26,15 @@ abschnitte:
       - frage: "Wie speichert Django Passwörter?"
         erklaerung: "Nur als Hash, nie als Klartext."
         antworten:
-          - { text: "Im Klartext.", richtig: false }
-          - { text: "In einer Textdatei neben der Datenbank.", richtig: false }
           - { text: "Nur als Hash.", richtig: true }
+          - { text: "Im Klartext, damit sie bei Bedarf angezeigt werden können.", richtig: false }
+          - { text: "Verschlüsselt, sodass sie mit dem Server-Schlüssel wieder lesbar sind.", richtig: false }
       - frage: "Wie änderst du das Passwort eines Benutzers im Code richtig?"
         erklaerung: "Mit set_password() und anschließendem save()."
         antworten:
+          - { text: "Indem du das Feld password direkt mit dem neuen Text überschreibst", richtig: false }
           - { text: "Mit set_password() und save()", richtig: true }
-          - { text: "Indem du das Feld password direkt überschreibst", richtig: false }
-          - { text: "Mit delete_password()", richtig: false }
+          - { text: "Mit update_password() ohne anschließendes save()", richtig: false }
   - titel: authenticate, login und logout
     inhalt: |
       - **`authenticate()`** prüft Zugangsdaten gegen die Authentifizierungs-Backends. Es gibt
@@ -58,9 +58,9 @@ abschnitte:
       - frage: "Was liefert authenticate() bei falschen Zugangsdaten?"
         erklaerung: "None."
         antworten:
-          - { text: "None", richtig: true }
-          - { text: "Einen leeren User", richtig: false }
+          - { text: "Einen leeren User ohne Namen", richtig: false }
           - { text: "Eine Ausnahme mit Status 500", richtig: false }
+          - { text: "None", richtig: true }
       - frage: "Was ist request.user, wenn niemand angemeldet ist?"
         erklaerung: "Ein AnonymousUser."
         antworten:
@@ -96,39 +96,39 @@ abschnitte:
       - frage: "Wie bekommt ein Benutzer die Rechte einer Gruppe?"
         erklaerung: "Wer Mitglied einer Gruppe ist, hat deren Rechte automatisch."
         antworten:
-          - { text: "Gar nicht, Gruppen haben keine Rechte.", richtig: false }
+          - { text: "Gar nicht, denn Gruppen haben selbst keine Rechte.", richtig: false }
+          - { text: "Er muss sich jedes Recht einzeln aus der Gruppe kopieren.", richtig: false }
           - { text: "Durch die Mitgliedschaft in der Gruppe.", richtig: true }
-          - { text: "Er muss sich jedes Recht einzeln kopieren.", richtig: false }
 test:
   zeitlimit_minuten: 10
   fragen:
     - frage: "Wie lautet das Recht zum Ändern des Modells Bar in der App foo?"
       erklaerung: "foo.change_bar."
       antworten:
-        - { text: "foo.update", richtig: false }
         - { text: "foo.change_bar", richtig: true }
+        - { text: "foo.update", richtig: false }
         - { text: "bar.edit_foo", richtig: false }
     - frage: "Wohin leitet @login_required nicht angemeldete Nutzer um?"
       erklaerung: "Auf settings.LOGIN_URL, mit dem aktuellen Pfad im Parameter next."
       antworten:
+        - { text: "Auf die Admin-Startseite ohne weitere Parameter", richtig: false }
         - { text: "Auf LOGIN_URL, mit dem Pfad im Parameter next", richtig: true }
-        - { text: "Auf die Admin-Startseite ohne Parameter", richtig: false }
-        - { text: "Nirgendwohin, es gibt eine Fehlermeldung 500", richtig: false }
+        - { text: "Nirgendwohin, es erscheint eine Fehlerseite mit Status 500", richtig: false }
     - frage: "Was speichert login() in der Sitzung?"
       erklaerung: "Die ID des Benutzers."
       antworten:
-        - { text: "Die komplette Datenbank", richtig: false }
+        - { text: "Die komplette Benutzertabelle der Datenbank", richtig: false }
+        - { text: "Das Passwort des Benutzers im Klartext", richtig: false }
         - { text: "Die ID des Benutzers", richtig: true }
-        - { text: "Das Klartext-Passwort", richtig: false }
     - frage: "Welche Methode legt einen User mit gespeichertem Passwort-Hash an?"
       erklaerung: "create_user() speichert den Benutzer und hasht das Passwort."
       antworten:
-        - { text: "User(...).print()", richtig: false }
-        - { text: "User.objects.plain(...)", richtig: false }
         - { text: "User.objects.create_user(...)", richtig: true }
+        - { text: "User(...).save_plain()", richtig: false }
+        - { text: "User.objects.plain(...)", richtig: false }
     - frage: "Was passiert nach set_password() und save() mit den Sitzungen des Benutzers?"
       erklaerung: "Ein Passwortwechsel meldet alle Sitzungen des Benutzers ab."
       antworten:
-        - { text: "Alle Benutzer werden abgemeldet.", richtig: false }
+        - { text: "Alle Benutzer der Anwendung werden abgemeldet.", richtig: false }
         - { text: "Alle Sitzungen des Benutzers werden abgemeldet.", richtig: true }
-        - { text: "Nichts, alle bleiben angemeldet.", richtig: false }
+        - { text: "Nichts, alle Sitzungen bleiben weiterhin angemeldet.", richtig: false }

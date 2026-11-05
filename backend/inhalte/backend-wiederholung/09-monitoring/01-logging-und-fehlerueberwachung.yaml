@@ -31,15 +31,15 @@ abschnitte:
       - frage: "Was bestimmt ein Handler?"
         erklaerung: "Was mit jeder Meldung passiert, etwa auf den Bildschirm oder in eine Datei schreiben."
         antworten:
-          - { text: "Welches Passwort ein Benutzer hat.", richtig: false }
+          - { text: "Welches Passwort ein Benutzer für die Anmeldung hat.", richtig: false }
           - { text: "Was mit jeder Meldung passiert, zum Beispiel wohin sie geschrieben wird.", richtig: true }
-          - { text: "Wie der Text einer Meldung aussieht.", richtig: false }
+          - { text: "Wie der Text einer einzelnen Meldung aufgebaut ist.", richtig: false }
       - frage: "Welches Level steht für ein größeres Problem?"
         erklaerung: "ERROR beschreibt ein größeres, CRITICAL ein kritisches Problem."
         antworten:
+          - { text: "INFO", richtig: false }
           - { text: "DEBUG", richtig: false }
           - { text: "ERROR", richtig: true }
-          - { text: "INFO", richtig: false }
   - titel: Logging in Django einstellen
     inhalt: |
       Django nutzt standardmäßig das **dictConfig**-Format. Du beschreibst im Wörterbuch `LOGGING`
@@ -73,15 +73,15 @@ abschnitte:
       - frage: "In welcher Einstellung beschreibst du das Logging in Django?"
         erklaerung: "Im Wörterbuch LOGGING in settings.py."
         antworten:
-          - { text: "ALLOWED_HOSTS", richtig: false }
           - { text: "LOGGING", richtig: true }
           - { text: "DEBUG_LOG", richtig: false }
+          - { text: "ALLOWED_HOSTS", richtig: false }
       - frage: "Warum empfiehlt die Doku disable_existing_loggers auf False?"
         erklaerung: "Bei True werden alle Logger der Standardkonfiguration abgeschaltet."
         antworten:
-          - { text: "Bei False werden alle Fehler verborgen.", richtig: false }
+          - { text: "Bei False werden alle Fehler vor dem Nutzer verborgen.", richtig: false }
           - { text: "Bei True würden alle Standard-Logger abgeschaltet.", richtig: true }
-          - { text: "Bei False wird die Datenbank schneller.", richtig: false }
+          - { text: "Bei False wird die Datenbank spürbar schneller.", richtig: false }
   - titel: Meldungen im Code schreiben
     inhalt: |
       Im Code holst du dir einen Logger und rufst dessen Methoden auf. Die Python-Doku empfiehlt
@@ -113,9 +113,9 @@ abschnitte:
       - frage: "Wie holst du laut Python-Doku üblicherweise einen Logger für ein Modul?"
         erklaerung: "Mit logging.getLogger(__name__), ein Logger pro Modul."
         antworten:
-          - { text: "logger = logging.getLogger(__name__)", richtig: true }
           - { text: "logger = logging.new()", richtig: false }
           - { text: "logger = settings.LOGGING", richtig: false }
+          - { text: "logger = logging.getLogger(__name__)", richtig: true }
       - frage: "Welcher Level gilt, wenn du das Logging nicht eigens einstellst?"
         erklaerung: "Der Standard-Level ist WARNING."
         antworten:
@@ -156,9 +156,9 @@ abschnitte:
       - frage: "Wohin gehört der Aufruf von sentry_sdk.init() laut Doku?"
         erklaerung: "In settings.py, so früh wie möglich."
         antworten:
+          - { text: "In die Datenbank, damit er bei jeder Abfrage läuft.", richtig: false }
           - { text: "In settings.py, so früh wie möglich.", richtig: true }
-          - { text: "In jede einzelne View am Ende.", richtig: false }
-          - { text: "In die Datenbank.", richtig: false }
+          - { text: "In jede einzelne View, am Ende der Funktion.", richtig: false }
       - frage: "Welche Einstellung hängt Nutzerdaten wie E-Mail an Fehlermeldungen?"
         erklaerung: "send_default_pii=True (mit django.contrib.auth)."
         antworten:
@@ -172,29 +172,29 @@ test:
       erklaerung: "Der Einstiegspunkt ins Logging, ein benannter Eimer für Meldungen."
       antworten:
         - { text: "Der Einstiegspunkt ins Logging, ein benannter Eimer für Meldungen.", richtig: true }
-        - { text: "Eine Datenbanktabelle.", richtig: false }
-        - { text: "Ein Passwort-Hash.", richtig: false }
+        - { text: "Eine Datenbanktabelle, in der Meldungen dauerhaft liegen.", richtig: false }
+        - { text: "Ein Passwort-Hash, der Meldungen schützt.", richtig: false }
     - frage: "Welche Meldungen verarbeitet ein Logger mit Level WARNING?"
       erklaerung: "Nur Meldungen, deren Level mindestens WARNING ist."
       antworten:
-        - { text: "Nur DEBUG-Meldungen.", richtig: false }
-        - { text: "Alle Meldungen aller Level.", richtig: false }
+        - { text: "Alle Meldungen aller Level ohne Einschränkung.", richtig: false }
         - { text: "Meldungen ab WARNING (also WARNING, ERROR, CRITICAL).", richtig: true }
+        - { text: "Nur Meldungen mit dem Level DEBUG.", richtig: false }
     - frage: "Was beschreibt ein Formatter?"
       erklaerung: "Die genaue Form des Textes eines Log-Eintrags."
       antworten:
+        - { text: "Wohin ein Log-Eintrag geschrieben wird.", richtig: false }
+        - { text: "Welche Datenbank für die Meldungen genutzt wird.", richtig: false }
         - { text: "Wie ein Log-Eintrag als Text aussieht.", richtig: true }
-        - { text: "Wohin ein Eintrag geschrieben wird.", richtig: false }
-        - { text: "Welche Datenbank genutzt wird.", richtig: false }
     - frage: "Was erfasst Sentry laut Doku automatisch?"
       erklaerung: "Fehler, nicht abgefangene Ausnahmen und Abstürze."
       antworten:
-        - { text: "Alle Passwörter deiner Nutzer.", richtig: false }
-        - { text: "Nur Meldungen mit Level DEBUG.", richtig: false }
         - { text: "Fehler, nicht abgefangene Ausnahmen und Abstürze.", richtig: true }
+        - { text: "Alle Passwörter deiner Nutzer zur späteren Auswertung.", richtig: false }
+        - { text: "Nur Meldungen mit dem Level DEBUG.", richtig: false }
     - frage: "Was empfiehlt die Doku für traces_sample_rate im Betrieb?"
       erklaerung: "Den Wert gegenüber 1.0 zu senken."
       antworten:
-        - { text: "Ihn immer auf 1.0 zu lassen.", richtig: false }
-        - { text: "Ihn auf einen Text zu setzen.", richtig: false }
+        - { text: "Ihn auf einen frei gewählten Text zu setzen.", richtig: false }
         - { text: "Den Wert gegenüber 1.0 zu senken.", richtig: true }
+        - { text: "Ihn immer auf 1.0 zu lassen.", richtig: false }

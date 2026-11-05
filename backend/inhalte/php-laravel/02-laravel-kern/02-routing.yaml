@@ -33,15 +33,15 @@ abschnitte:
       - frage: "Was bewirkt eine Route?"
         erklaerung: "Sie verbindet eine URL und HTTP-Methode mit auszuführendem Code."
         antworten:
+          - { text: "Sie prüft Passwörter von angemeldeten Nutzern.", richtig: false }
           - { text: "Sie verbindet eine Adresse und Methode mit Code.", richtig: true }
-          - { text: "Sie legt eine Tabelle an.", richtig: false }
-          - { text: "Sie prüft Passwörter.", richtig: false }
+          - { text: "Sie legt eine Tabelle in der Datenbank an.", richtig: false }
       - frage: "Was macht Laravel, wenn eine Route ein Array zurückgibt?"
         erklaerung: "Arrays werden automatisch in eine JSON-Antwort umgewandelt."
         antworten:
-          - { text: "Es wandelt das Array in JSON um.", richtig: true }
           - { text: "Es meldet einen Fehler.", richtig: false }
           - { text: "Es gibt eine leere Seite zurück.", richtig: false }
+          - { text: "Es wandelt das Array in JSON um.", richtig: true }
   - titel: Parameter und benannte Routen
     inhalt: |
       Teile der Adresse können **Parameter** sein. Sie stehen in geschweiften Klammern:
@@ -77,9 +77,9 @@ abschnitte:
       - frage: "Wozu gibt man einer Route einen Namen?"
         erklaerung: "Mit dem Namen erzeugst du die URL über `route()`, ohne sie abzuschreiben."
         antworten:
+          - { text: "Damit die Route nur einmal aufgerufen werden darf.", richtig: false }
           - { text: "Damit man die URL über route() erzeugen kann.", richtig: true }
           - { text: "Damit die Route schneller läuft.", richtig: false }
-          - { text: "Damit die Route nur einmal aufgerufen werden darf.", richtig: false }
   - titel: Gruppen und Middleware
     inhalt: |
       Mit einer **Gruppe** fasst du Routen mit gemeinsamen Eigenschaften zusammen:
@@ -102,36 +102,36 @@ abschnitte:
       - frage: "Wofür nutzt man `Route::prefix('admin')->group(...)`?"
         erklaerung: "Alle Routen in der Gruppe bekommen das gemeinsame Präfix `/admin`."
         antworten:
+          - { text: "Um eine Datenbank für den Admin-Bereich anzulegen.", richtig: false }
+          - { text: "Um mehrere Routen auf einmal zu löschen.", richtig: false }
           - { text: "Für ein gemeinsames Adress-Präfix mehrerer Routen.", richtig: true }
-          - { text: "Um Routen zu löschen.", richtig: false }
-          - { text: "Um eine Datenbank anzulegen.", richtig: false }
       - frage: "Was ist Middleware?"
         erklaerung: "Eine Prüfstation, die eine Anfrage vor der Route durchläuft."
         antworten:
-          - { text: "Ein Testwerkzeug.", richtig: false }
           - { text: "Eine Prüfstation vor der Route.", richtig: true }
-          - { text: "Eine Datenbanktabelle.", richtig: false }
+          - { text: "Eine Datenbanktabelle für Anfragen.", richtig: false }
+          - { text: "Ein Testwerkzeug für Controller.", richtig: false }
 test:
   zeitlimit_minuten: 15
   fragen:
     - frage: "Welche Methode definiert eine Route für POST-Anfragen?"
       erklaerung: "`Route::post(...)` reagiert auf POST."
       antworten:
-        - { text: "Route::send(...)", richtig: false }
         - { text: "Route::write(...)", richtig: false }
         - { text: "Route::post(...)", richtig: true }
+        - { text: "Route::send(...)", richtig: false }
     - frage: "Wie erreichst du in `/trainings/{id}` den Wert der Adresse?"
       erklaerung: "Der Parameter wird der Closure oder Controller-Methode als Argument übergeben."
       antworten:
-        - { text: "Gar nicht, Parameter sind nur Deko.", richtig: false }
+        - { text: "Über die globale Variable $URL in der Funktion.", richtig: false }
+        - { text: "Gar nicht, Parameter in Routen sind nur Platzhalter.", richtig: false }
         - { text: "Als Argument der Closure, z. B. function (string $id).", richtig: true }
-        - { text: "Über die globale Variable $URL.", richtig: false }
     - frage: "Wie erzeugst du die URL einer benannten Route?"
       erklaerung: "Mit `route('name')`."
       antworten:
+        - { text: "route('trainings.index')", richtig: true }
         - { text: "url_of('trainings.index')", richtig: false }
         - { text: "Route::name('trainings.index')", richtig: false }
-        - { text: "route('trainings.index')", richtig: true }
     - frage: "Welcher Befehl zeigt alle Routen?"
       erklaerung: "`php artisan route:list` listet sie auf."
       antworten:
@@ -141,6 +141,6 @@ test:
     - frage: "Welche Datei legt `php artisan install:api` für API-Routen an?"
       erklaerung: "Der Befehl erzeugt `routes/api.php`. Deren Routen bekommen automatisch das Präfix `/api`."
       antworten:
-        - { text: "routes/api.php", richtig: true }
         - { text: "routes/json.php", richtig: false }
         - { text: "public/api.php", richtig: false }
+        - { text: "routes/api.php", richtig: true }

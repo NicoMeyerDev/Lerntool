@@ -29,14 +29,14 @@ abschnitte:
       - frage: "Was passiert bei einem Inner Join mit Zeilen ohne passenden Partner?"
         erklaerung: "Sie fallen aus dem Ergebnis."
         antworten:
+          - { text: "Sie werden dauerhaft aus der Tabelle gelöscht.", richtig: false }
           - { text: "Sie fallen aus dem Ergebnis.", richtig: true }
-          - { text: "Sie werden mit NULL aufgefüllt.", richtig: false }
-          - { text: "Sie werden gelöscht.", richtig: false }
+          - { text: "Sie werden mit NULL aufgefüllt und bleiben im Ergebnis.", richtig: false }
       - frage: "Was liefert ein Left Outer Join zusätzlich zum Inner Join?"
         erklaerung: "Die Zeilen der linken Tabelle ohne Partner, mit NULL in den Spalten der rechten Tabelle."
         antworten:
-          - { text: "Nichts, er ist identisch.", richtig: false }
-          - { text: "Alle Zeilen der rechten Tabelle.", richtig: false }
+          - { text: "Nichts, er liefert dasselbe Ergebnis wie der Inner Join.", richtig: false }
+          - { text: "Alle Zeilen der rechten Tabelle ohne Partner.", richtig: false }
           - { text: "Die Zeilen der linken Tabelle ohne Partner, mit NULL in den Spalten der rechten Tabelle.", richtig: true }
   - titel: Aggregatfunktionen, GROUP BY und HAVING
     inhalt: |
@@ -70,45 +70,45 @@ abschnitte:
       - frage: "Wo darf eine Aggregatfunktion wie `max()` nicht stehen?"
         erklaerung: "In der WHERE-Klausel."
         antworten:
-          - { text: "In der HAVING-Klausel.", richtig: false }
           - { text: "In der WHERE-Klausel.", richtig: true }
           - { text: "In der SELECT-Liste.", richtig: false }
+          - { text: "In der HAVING-Klausel.", richtig: false }
       - frage: "Wann wirkt `HAVING`?"
         erklaerung: "Nach dem Gruppieren, auf ganze Gruppen."
         antworten:
-          - { text: "Vor dem Gruppieren, auf einzelne Zeilen.", richtig: false }
+          - { text: "Nur beim Löschen von Zeilen mit DELETE.", richtig: false }
           - { text: "Nach dem Gruppieren, auf ganze Gruppen.", richtig: true }
-          - { text: "Nur beim Löschen von Zeilen.", richtig: false }
+          - { text: "Vor dem Gruppieren, auf einzelne Zeilen.", richtig: false }
 test:
   zeitlimit_minuten: 10
   fragen:
     - frage: "Welche Funktion zählt Zeilen?"
       erklaerung: "count."
       antworten:
+        - { text: "max", richtig: false }
         - { text: "sum", richtig: false }
         - { text: "count", richtig: true }
-        - { text: "max", richtig: false }
     - frage: "Was liefert `GROUP BY city` mit `count(*)`?"
       erklaerung: "Pro Stadt eine Zeile mit der Anzahl der Zeilen."
       antworten:
         - { text: "Pro Stadt eine Zeile mit der Anzahl der Zeilen.", richtig: true }
-        - { text: "Nur die erste Stadt.", richtig: false }
-        - { text: "Eine Zeile für alle Städte zusammen.", richtig: false }
+        - { text: "Eine einzige Zeile für alle Städte zusammen.", richtig: false }
+        - { text: "Nur die erste Stadt mit ihrer Anzahl.", richtig: false }
     - frage: "Welche Join-Art bringt Kurse auch ohne Lektion ins Ergebnis, wenn Kurse links stehen?"
       erklaerung: "LEFT OUTER JOIN."
       antworten:
         - { text: "INNER JOIN", richtig: false }
         - { text: "LEFT OUTER JOIN", richtig: true }
-        - { text: "Keine", richtig: false }
+        - { text: "Keine, das geht nicht", richtig: false }
     - frage: "Warum gehört eine Bedingung ohne Aggregat besser in `WHERE` als in `HAVING`?"
       erklaerung: "Aussortierte Zeilen werden nicht erst gruppiert, das ist effizienter."
       antworten:
-        - { text: "Weil HAVING verboten ist.", richtig: false }
+        - { text: "Weil eine Abfrage mit WHERE übersichtlicher aussieht.", richtig: false }
+        - { text: "Weil HAVING in SQL nicht erlaubt ist.", richtig: false }
         - { text: "Aussortierte Zeilen werden nicht erst gruppiert, das ist effizienter.", richtig: true }
-        - { text: "Weil WHERE schöner aussieht.", richtig: false }
     - frage: "Was ergibt ein Inner Join von `weather` und `cities`, wenn die Stadt `Hayward` nur in `weather` steht?"
       erklaerung: "Hayward fällt aus dem Ergebnis."
       antworten:
         - { text: "Hayward fällt aus dem Ergebnis.", richtig: true }
-        - { text: "Hayward erscheint mit NULL.", richtig: false }
-        - { text: "Ein Fehler.", richtig: false }
+        - { text: "Die Abfrage bricht mit einem Fehler ab.", richtig: false }
+        - { text: "Hayward erscheint mit NULL in den Spalten von cities.", richtig: false }

@@ -20,15 +20,15 @@ abschnitte:
       - frage: "Wofür ist Prometheus laut Doku gedacht?"
         erklaerung: "Für Systemüberwachung und Alarmierung."
         antworten:
-          - { text: "Zum Verwalten von Git-Branches.", richtig: false }
+          - { text: "Zum Hosten von Websites und Datenbanken.", richtig: false }
+          - { text: "Zum Verwalten von Git-Branches und Pull Requests.", richtig: false }
           - { text: "Für Systemüberwachung und Alarmierung.", richtig: true }
-          - { text: "Zum Hosten von Websites.", richtig: false }
       - frage: "Wo entstand Prometheus ursprünglich?"
         erklaerung: "Bei SoundCloud."
         antworten:
+          - { text: "Bei SoundCloud", richtig: true }
           - { text: "Bei Render", richtig: false }
           - { text: "Bei Sentry", richtig: false }
-          - { text: "Bei SoundCloud", richtig: true }
   - titel: Das Datenmodell und PromQL
     inhalt: |
       Prometheus speichert **Zeitreihen**: Messwerte mit dem Zeitpunkt, zu dem sie erfasst wurden, und
@@ -48,14 +48,14 @@ abschnitte:
       - frage: "Wie holt Prometheus die Daten laut Doku?"
         erklaerung: "Per Pull-Prinzip über HTTP."
         antworten:
-          - { text: "Die Daten werden von Hand eingetippt.", richtig: false }
-          - { text: "Per Pull über HTTP von den Zielen.", richtig: true }
           - { text: "Die Ziele schicken die Daten immer per E-Mail.", richtig: false }
+          - { text: "Per Pull über HTTP von den Zielen.", richtig: true }
+          - { text: "Die Daten werden von Hand in die Oberfläche eingetippt.", richtig: false }
       - frage: "Wodurch ist eine Zeitreihe in Prometheus eindeutig bestimmt?"
         erklaerung: "Durch Metriknamen und Schlüssel-Wert-Paare (Labels)."
         antworten:
-          - { text: "Durch die Farbe der Grafik.", richtig: false }
-          - { text: "Durch den Benutzernamen.", richtig: false }
+          - { text: "Durch die Farbe, mit der sie in der Grafik erscheint.", richtig: false }
+          - { text: "Durch den Namen des Benutzers, der sie angelegt hat.", richtig: false }
           - { text: "Durch Metriknamen und Labels.", richtig: true }
   - titel: Architektur und Alarme
     inhalt: |
@@ -78,45 +78,45 @@ abschnitte:
       - frage: "Welcher Baustein kümmert sich um Alarme?"
         erklaerung: "Der Alertmanager."
         antworten:
+          - { text: "Der Alertmanager", richtig: true }
           - { text: "Der Exporter", richtig: false }
           - { text: "Das Push-Gateway", richtig: false }
-          - { text: "Der Alertmanager", richtig: true }
       - frage: "Wofür sind Exporter gedacht?"
         erklaerung: "Sie stellen Werte von Diensten wie HAProxy oder StatsD für Prometheus bereit."
         antworten:
-          - { text: "Sie ersetzen den Prometheus-Server.", richtig: false }
+          - { text: "Sie speichern die Zeitreihen dauerhaft ab.", richtig: false }
           - { text: "Sie stellen Werte von Diensten für Prometheus bereit.", richtig: true }
-          - { text: "Sie speichern die Zeitreihen dauerhaft.", richtig: false }
+          - { text: "Sie ersetzen den Prometheus-Server vollständig.", richtig: false }
 test:
   zeitlimit_minuten: 10
   fragen:
     - frage: "Was sind Labels in Prometheus?"
       erklaerung: "Schlüssel-Wert-Paare, die eine Zeitreihe näher beschreiben."
       antworten:
+        - { text: "Fehlermeldungen, die von Sentry übernommen werden.", richtig: false }
+        - { text: "Passwörter, mit denen sich Server anmelden.", richtig: false }
         - { text: "Schlüssel-Wert-Paare, die eine Zeitreihe näher beschreiben.", richtig: true }
-        - { text: "Passwörter für den Server.", richtig: false }
-        - { text: "Fehlermeldungen von Sentry.", richtig: false }
     - frage: "Wie heißt die Abfragesprache von Prometheus?"
       erklaerung: "PromQL."
       antworten:
+        - { text: "PromQL", richtig: true }
         - { text: "SQL", richtig: false }
         - { text: "YAML", richtig: false }
-        - { text: "PromQL", richtig: true }
     - frage: "Wofür ist das Push-Gateway laut Doku gedacht?"
       erklaerung: "Für kurzlebige Jobs."
       antworten:
         - { text: "Für die Verwaltung von Git-Branches.", richtig: false }
-        - { text: "Zum Verschlüsseln von Passwörtern.", richtig: false }
         - { text: "Für kurzlebige Jobs.", richtig: true }
+        - { text: "Zum Verschlüsseln der gesammelten Metriken.", richtig: false }
     - frage: "Wer verarbeitet die von Regeln erzeugten Alarme weiter?"
       erklaerung: "Der Alertmanager."
       antworten:
-        - { text: "Der Browser", richtig: false }
         - { text: "Die Datenbank-Migration", richtig: false }
+        - { text: "Der Browser des Nutzers", richtig: false }
         - { text: "Der Alertmanager", richtig: true }
     - frage: "Welches Modell nutzt Prometheus für die Datensammlung?"
       erklaerung: "Ein Pull-Modell über HTTP."
       antworten:
         - { text: "Ein Pull-Modell über HTTP.", richtig: true }
-        - { text: "Ein Push-Modell über Fax.", richtig: false }
-        - { text: "Ein manuelles Modell über Tabellenkalkulation.", richtig: false }
+        - { text: "Ein manuelles Modell, bei dem Werte in eine Tabelle eingetragen werden.", richtig: false }
+        - { text: "Ein Push-Modell, bei dem Ziele jede Messung per E-Mail senden.", richtig: false }

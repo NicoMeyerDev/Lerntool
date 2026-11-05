@@ -57,21 +57,21 @@ abschnitte:
       - frage: "Wozu dienen Namespaces?"
         erklaerung: "Sie ordnen Klassen und verhindern Namenskonflikte."
         antworten:
-          - { text: "Sie machen Code schneller.", richtig: false }
-          - { text: "Sie ersetzen Variablen.", richtig: false }
+          - { text: "Sie ersetzen Variablen durch feste Namen.", richtig: false }
           - { text: "Sie ordnen Klassen und vermeiden gleiche Namen.", richtig: true }
+          - { text: "Sie machen den Code schneller.", richtig: false }
       - frage: 'Wie bindest du die Klasse `App\Training\Lauf` mit einem Kurznamen ein?'
         erklaerung: "Mit `use` und dem vollen Namen der Klasse."
         antworten:
+          - { text: 'import App\Training\Lauf;', richtig: false }
           - { text: 'include App\Training\Lauf;', richtig: false }
           - { text: 'use App\Training\Lauf;', richtig: true }
-          - { text: 'import App\Training\Lauf;', richtig: false }
       - frage: "Warum solltest du in einem Namespace `use Exception;` schreiben, bevor du `new Exception()` nutzt?"
         erklaerung: "PHP sucht Klassen nur im aktuellen Namespace. Die eingebaute Klasse liegt im globalen Namespace und muss importiert oder mit führendem Backslash geschrieben werden."
         antworten:
           - { text: "Weil PHP die Klasse sonst im eigenen Namespace sucht und nicht findet.", richtig: true }
-          - { text: "Weil Exception sonst nicht erlaubt ist.", richtig: false }
-          - { text: "Weil sonst der Namespace gelöscht wird.", richtig: false }
+          - { text: "Weil Exception in Namespaces grundsätzlich nicht erlaubt ist.", richtig: false }
+          - { text: "Weil sonst der Namespace der Datei gelöscht wird.", richtig: false }
   - titel: Composer – Pakete verwalten
     inhalt: |
       **Composer** ist der Paketmanager für PHP (wie `pip` bei Python). Er holt Bibliotheken
@@ -109,21 +109,21 @@ abschnitte:
       - frage: "Welche Datei hält die genauen installierten Versionen fest?"
         erklaerung: "`composer.lock` speichert die genauen Versionen."
         antworten:
-          - { text: "vendor.txt", richtig: false }
           - { text: "packages.ini", richtig: false }
           - { text: "composer.lock", richtig: true }
+          - { text: "vendor.txt", richtig: false }
       - frage: "Was macht `composer install`, wenn es eine `composer.lock` gibt?"
         erklaerung: "Es installiert genau die Versionen aus der Lock-Datei."
         antworten:
+          - { text: "Es aktualisiert alles auf die neuesten Versionen.", richtig: false }
           - { text: "Es löscht den vendor-Ordner.", richtig: false }
           - { text: "Es installiert genau die Versionen aus der Lock-Datei.", richtig: true }
-          - { text: "Es aktualisiert alles auf die neuesten Versionen.", richtig: false }
       - frage: "Gehört der Ordner `vendor/` in die Versionsverwaltung (Git)?"
         erklaerung: "Nein. Er lässt sich mit `composer install` jederzeit wiederherstellen."
         antworten:
-          - { text: "Ja, immer.", richtig: false }
-          - { text: "Nur am Wochenende.", richtig: false }
           - { text: "Nein, er wird mit composer install neu erzeugt.", richtig: true }
+          - { text: "Ja, immer, damit alle dieselben Pakete haben.", richtig: false }
+          - { text: "Nur an Wochenenden, wenn niemand sonst arbeitet.", richtig: false }
   - titel: Autoloading nach PSR-4
     inhalt: |
       Ohne Hilfe müsstest du jede Klassendatei von Hand mit `require` laden. Das ist mühsam.
@@ -168,15 +168,15 @@ abschnitte:
       - frage: 'In welcher Datei liegt die Klasse `App\Training\Lauf` bei der Zuordnung des Namespace-Präfixes `App` (in JSON als `App\\` geschrieben) auf `src/`?'
         erklaerung: 'Der Namespace nach `App\` wird zum Ordnerpfad, der Klassenname zum Dateinamen: src/Training/Lauf.php.'
         antworten:
-          - { text: 'src/App/Training/Lauf.php', richtig: false }
           - { text: 'src/training.php', richtig: false }
           - { text: 'src/Training/Lauf.php', richtig: true }
+          - { text: 'src/App/Training/Lauf.php', richtig: false }
       - frage: "Welche Zeile lädt im Hauptskript den Composer-Autoloader?"
         erklaerung: "Die Datei `vendor/autoload.php` wird mit `require` einmal eingebunden."
         antworten:
-          - { text: "require __DIR__ . '/vendor/autoload.php';", richtig: true }
           - { text: "use vendor\\autoload;", richtig: false }
           - { text: "composer load;", richtig: false }
+          - { text: "require __DIR__ . '/vendor/autoload.php';", richtig: true }
       - frage: "Was brauchst du nach Änderungen an der `autoload`-Einstellung in der `composer.json`?"
         erklaerung: "`composer dump-autoload` erzeugt die Autoload-Dateien neu."
         antworten:
@@ -189,48 +189,48 @@ test:
     - frage: 'Wie lautet der volle Name der Klasse `Lauf` im Namespace `App\Training`?'
       erklaerung: "Namespace und Klassenname werden mit Backslash verbunden."
       antworten:
-        - { text: 'App.Training.Lauf', richtig: false }
         - { text: 'App/Training/Lauf', richtig: false }
         - { text: 'App\Training\Lauf', richtig: true }
+        - { text: 'App.Training.Lauf', richtig: false }
     - frage: "Wo steht die Zeile `namespace ...;` in einer Datei?"
       erklaerung: "Der Namespace steht ganz oben in der Datei, vor dem restlichen Code."
       antworten:
-        - { text: "ganz unten", richtig: false }
-        - { text: "mitten in einer Funktion", richtig: false }
+        - { text: "ganz unten, nach allen Klassen", richtig: false }
+        - { text: "mitten in einer Funktion, wo sie gebraucht wird", richtig: false }
         - { text: "ganz oben, vor dem übrigen Code", richtig: true }
     - frage: "Welches Composer-Kommando fügt ein neues Paket hinzu?"
       erklaerung: "`composer require` trägt das Paket ein und installiert es."
       antworten:
         - { text: "composer require anbieter/paket", richtig: true }
-        - { text: "composer add-all", richtig: false }
         - { text: "composer lock", richtig: false }
+        - { text: "composer add-all", richtig: false }
     - frage: "Wozu ist die Datei `composer.lock` da?"
       erklaerung: "Sie friert die genauen Versionen ein, damit alle dieselben Pakete nutzen."
       antworten:
-        - { text: "Sie schützt die Datei vor Änderungen.", richtig: false }
         - { text: "Sie enthält den Quellcode der Pakete.", richtig: false }
         - { text: "Sie hält die genauen Versionen fest.", richtig: true }
+        - { text: "Sie schützt die Datei vor Änderungen.", richtig: false }
     - frage: "Was bedeutet die Versionsangabe `^3.0`?"
       erklaerung: "Ab Version 3.0, aber unter 4.0."
       antworten:
-        - { text: "Version 3.0 oder neuer, aber unter 4.0", richtig: true }
-        - { text: "genau Version 3.0", richtig: false }
         - { text: "jede Version unter 3.0", richtig: false }
+        - { text: "genau Version 3.0 und keine andere", richtig: false }
+        - { text: "Version 3.0 oder neuer, aber unter 4.0", richtig: true }
     - frage: "Was legt PSR-4 fest?"
       erklaerung: "Der Namespace entspricht dem Ordnerpfad, der Klassenname dem Dateinamen."
       antworten:
-        - { text: "Welche PHP-Version installiert sein muss.", richtig: false }
         - { text: "Namespace und Ordnerpfad entsprechen sich, damit Klassen automatisch gefunden werden.", richtig: true }
-        - { text: "Wie Variablen benannt werden.", richtig: false }
+        - { text: "Welche PHP-Version auf dem Server installiert sein muss.", richtig: false }
+        - { text: "Wie Variablen und Funktionen im Code benannt werden.", richtig: false }
     - frage: "Welche Datei lädst du, damit Composer-Autoloading funktioniert?"
       erklaerung: "`vendor/autoload.php`."
       antworten:
-        - { text: "composer.json", richtig: false }
         - { text: "src/index.php", richtig: false }
         - { text: "vendor/autoload.php", richtig: true }
+        - { text: "composer.json", richtig: false }
     - frage: "Was solltest du bei einer eingebauten Klasse wie `Exception` innerhalb eines Namespace tun?"
       erklaerung: "Mit `use Exception;` oder `\\Exception` zeigst du PHP, dass die globale Klasse gemeint ist."
       antworten:
-        - { text: 'use Exception; schreiben oder \Exception nutzen', richtig: true }
-        - { text: "Nichts, sie wird immer gefunden.", richtig: false }
-        - { text: "Die Klasse neu schreiben.", richtig: false }
+        - { text: "Nichts, sie wird immer automatisch gefunden.", richtig: false }
+        - { text: "Die Klasse im eigenen Namespace neu schreiben.", richtig: false }
+        - { text: "use Exception; schreiben oder \\Exception nutzen", richtig: true }

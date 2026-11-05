@@ -2,6 +2,12 @@
 
 Punkte, die eine Entscheidung oder Aktion des Nutzers brauchen.
 
+## 2026-11-05 – Quizqualität: Überarbeitung Backend, PHP/Laravel, AI Engineering, Englisch
+
+- **Stand:** Alle Themen sind überarbeitet bis auf die Quizzes der D3-CI-Lektion (nach Merge von PR #27).
+- **Positionsrotation:** Die Rotation ist zyklisch und damit vorhersagbar. Mischen im Frontend wäre besser.
+- **Vom `quellenpruefer` bestätigen lassen** (der `reviewer` konnte sie ohne Websuche nicht prüfen): Laravel 13.x mit PHP 8.3 als Mindestversion, Attribut `#[Fillable]`, Ausgabenlimit-Verhalten der Claude-API.
+
 ## 2026-11-05 – Render-Deployment: Entscheidungen für dich
 
 - **Kostenlose Datenbank läuft nach 30 Tagen ab** (Render-Doku). Danach 14 Tage Gnadenfrist, dann werden Daten gelöscht. Für dauerhaften Fortschritt ist ein bezahlter Datenbank-Tarif nötig (Kosten, Entscheidung beim Nutzer).

@@ -34,14 +34,14 @@ abschnitte:
         erklaerung: "Status 201 Created."
         antworten:
           - { text: "404 Not Found", richtig: false }
-          - { text: "201 Created", richtig: true }
           - { text: "204 No Content", richtig: false }
+          - { text: "201 Created", richtig: true }
       - frage: "Welche beiden Angaben braucht eine GenericAPIView typischerweise?"
         erklaerung: "queryset und serializer_class."
         antworten:
           - { text: "queryset und serializer_class", richtig: true }
-          - { text: "template_name und context", richtig: false }
           - { text: "model und migrate", richtig: false }
+          - { text: "template_name und context", richtig: false }
   - titel: ViewSets
     inhalt: |
       Ein **ViewSet** fasst die Logik für zusammengehörige Endpunkte in **einer** Klasse zusammen.
@@ -62,15 +62,15 @@ abschnitte:
       - frage: "Was bietet ein ViewSet statt Methoden wie get() und post()?"
         erklaerung: "Aktionen wie list, create, retrieve, update, partial_update und destroy."
         antworten:
+          - { text: "Nur Template-Tags für die Ausgabe.", richtig: false }
           - { text: "Aktionen wie list und create.", richtig: true }
-          - { text: "Nur Template-Tags.", richtig: false }
-          - { text: "Migrationen.", richtig: false }
+          - { text: "Migrationen für die Datenbank.", richtig: false }
       - frage: "Welche Aktionen bringt ein ModelViewSet mit?"
         erklaerung: "list, retrieve, create, update, partial_update und destroy."
         antworten:
+          - { text: "Nur list, damit Daten gelesen werden können.", richtig: false }
+          - { text: "login und logout für die Anmeldung.", richtig: false }
           - { text: "list, retrieve, create, update, partial_update, destroy", richtig: true }
-          - { text: "Nur list", richtig: false }
-          - { text: "login und logout", richtig: false }
   - titel: Router erzeugen die URLs
     inhalt: |
       Ein **Router** leitet aus einem ViewSet automatisch die URLs ab.
@@ -108,9 +108,9 @@ abschnitte:
       - frage: "Wie schreibst du den Präfix bei router.register richtig?"
         erklaerung: "Ohne Schrägstrich am Ende: r'users'."
         antworten:
-          - { text: "r'users/'", richtig: false }
           - { text: "r'/users/'", richtig: false }
           - { text: "r'users'", richtig: true }
+          - { text: "r'users/'", richtig: false }
 test:
   zeitlimit_minuten: 10
   fragen:
@@ -123,24 +123,24 @@ test:
     - frage: "Welche Methoden stellt RetrieveUpdateDestroyAPIView bereit?"
       erklaerung: "get, put, patch und delete."
       antworten:
+        - { text: "GET, PUT, PATCH, DELETE", richtig: true }
         - { text: "Nur GET", richtig: false }
         - { text: "Nur POST", richtig: false }
-        - { text: "GET, PUT, PATCH, DELETE", richtig: true }
     - frage: "Was erzeugt router.register(r'users', UserViewSet, basename='user') für die Sammlung?"
       erklaerung: "Die Route users/ mit list (GET) und create (POST), Name user-list."
       antworten:
         - { text: "Nur die Route users/{pk}/.", richtig: false }
         - { text: "Die Route users/ mit GET und POST, Name user-list.", richtig: true }
-        - { text: "Eine Datenbank-Tabelle.", richtig: false }
+        - { text: "Eine neue Datenbanktabelle namens users.", richtig: false }
     - frage: "Was ergänzt der DefaultRouter gegenüber dem SimpleRouter?"
       erklaerung: "Eine Startansicht api-root, die auf die Listen-Endpunkte verweist."
       antworten:
-        - { text: "Eine Benutzerverwaltung.", richtig: false }
-        - { text: "Einen Cache.", richtig: false }
+        - { text: "Eine Benutzerverwaltung mit Anmeldung.", richtig: false }
+        - { text: "Einen Cache für alle Antworten.", richtig: false }
         - { text: "Eine Startansicht api-root.", richtig: true }
     - frage: "Wann muss bei router.register ein basename angegeben werden?"
       erklaerung: "Wenn das ViewSet kein queryset-Attribut hat."
       antworten:
-        - { text: "Nur bei GET-Anfragen.", richtig: false }
         - { text: "Wenn das ViewSet kein queryset-Attribut hat.", richtig: true }
-        - { text: "Nie.", richtig: false }
+        - { text: "Nie, DRF leitet ihn immer selbst ab.", richtig: false }
+        - { text: "Nur bei GET-Anfragen.", richtig: false }

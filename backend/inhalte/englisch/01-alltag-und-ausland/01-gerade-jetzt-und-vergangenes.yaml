@@ -51,9 +51,9 @@ abschnitte:
       - frage: "Welcher Satz sagt richtig, dass Kinder gerade schlafen?"
         erklaerung: "Das present continuous besteht aus am/is/are plus Verb mit -ing: The children are sleeping."
         antworten:
-          - { text: "The children is sleeping.", richtig: false }
           - { text: "The children are sleeping.", richtig: true }
           - { text: "The children sleeping are.", richtig: false }
+          - { text: "The children is sleeping.", richtig: false }
       - frage: "Wie fragst du, was jemand nächste Woche vorhat?"
         erklaerung: "Die Frage steht im present continuous: What are you doing next week?"
         antworten:
@@ -63,9 +63,9 @@ abschnitte:
       - frage: "Welcher Satz ist laut LearnEnglish normalerweise richtig?"
         erklaerung: "Verben des Denkens und Fühlens wie understand stehen normalerweise nicht im present continuous."
         antworten:
-          - { text: "I understand you.", richtig: true }
           - { text: "I am understanding you.", richtig: false }
           - { text: "I understanding you.", richtig: false }
+          - { text: "I understand you.", richtig: true }
   - titel: Was war? (past simple)
     inhalt: |
       Mit dem **past simple** sagst du, dass etwas in der **Vergangenheit** passiert ist.
@@ -111,9 +111,9 @@ abschnitte:
       - frage: "Wie fragst du, ob jemand im Ausland gelebt hat?"
         erklaerung: "Die Frage lautet Did + Person + Grundform: Did you live abroad?"
         antworten:
+          - { text: "Do you lived abroad?", richtig: false }
           - { text: "Did you live abroad?", richtig: true }
           - { text: "Did you lived abroad?", richtig: false }
-          - { text: "Do you lived abroad?", richtig: false }
   - titel: Zeitangaben für die Vergangenheit
     inhalt: |
       Zeitangaben zeigen, dass etwas **abgeschlossen** ist. Mit ihnen nutzt du das past simple.
@@ -138,9 +138,9 @@ abschnitte:
       - frage: "Welche Zeitangabe passt zu einem Satz im past simple?"
         erklaerung: "Yesterday nennt einen abgeschlossenen Zeitpunkt in der Vergangenheit."
         antworten:
-          - { text: "yesterday", richtig: true }
           - { text: "next week", richtig: false }
           - { text: "tomorrow", richtig: false }
+          - { text: "yesterday", richtig: true }
       - frage: "Wo steht ago?"
         erklaerung: "Ago steht hinter der Zeitspanne, zum Beispiel a long time ago."
         antworten:
@@ -173,9 +173,9 @@ abschnitte:
       - frage: "Was bedeutet „When the guests arrived, Jane was cooking dinner“?"
         erklaerung: "Das past continuous zeigt: Jane war schon beim Kochen, als die Gäste kamen."
         antworten:
-          - { text: "Jane fing erst nach der Ankunft der Gäste an zu kochen.", richtig: false }
           - { text: "Jane wird später kochen.", richtig: false }
           - { text: "Jane kochte schon, als die Gäste kamen.", richtig: true }
+          - { text: "Jane fing erst nach der Ankunft der Gäste an zu kochen.", richtig: false }
       - frage: "Welcher Satz ist richtig gebaut?"
         erklaerung: "Das past continuous (was watching) beschreibt, was lief, das past simple (went off) das, was dazwischen geschah."
         antworten:
@@ -205,30 +205,30 @@ abschnitte:
       - frage: "Welche Wörter nennt LearnEnglish zum Verbinden von Sätzen?"
         erklaerung: "Die Aufgabe nennt so, but, and und because."
         antworten:
+          - { text: "so, but, and, because", richtig: true }
           - { text: "yesterday, ago, last week", richtig: false }
           - { text: "am, is, are", richtig: false }
-          - { text: "so, but, and, because", richtig: true }
       - frage: "Wie sollten die Absätze aufgebaut sein?"
         erklaerung: "Jeder Absatz hat ein eigenes Thema, die Sätze sind klar und einfach."
         antworten:
-          - { text: "Ein langer Absatz mit allem.", richtig: false }
-          - { text: "Ohne Verbindungswörter.", richtig: false }
+          - { text: "Ohne Verbindungswörter und ohne Struktur.", richtig: false }
           - { text: "Kurz, mit je einem Thema.", richtig: true }
+          - { text: "Ein langer Absatz mit allem.", richtig: false }
 test:
   zeitlimit_minuten: 15
   fragen:
     - frage: "Welcher Satz beschreibt, was gerade passiert?"
       erklaerung: "Das present continuous mit am/is/are plus -ing beschreibt, was jetzt passiert."
       antworten:
-        - { text: "I'm just leaving work.", richtig: true }
         - { text: "I left just work.", richtig: false }
         - { text: "I did just leave work.", richtig: false }
+        - { text: "I'm just leaving work.", richtig: true }
     - frage: "Wie schreibst du „live“ mit -ing?"
       erklaerung: "Ein stummes e fällt weg: living (eigene Erklärung zur Rechtschreibung)."
       antworten:
-        - { text: "livving", richtig: false }
         - { text: "living", richtig: true }
         - { text: "liveing", richtig: false }
+        - { text: "livving", richtig: false }
     - frage: "Welches Wort passt zu einem Satz im past simple?"
       erklaerung: "Last week nennt eine abgeschlossene Zeit in der Vergangenheit."
       antworten:
@@ -238,18 +238,18 @@ test:
     - frage: "Welche Form ist die unregelmäßige Vergangenheit von „go“?"
       erklaerung: "Laut LearnEnglish heißt go im past simple went."
       antworten:
-        - { text: "went", richtig: true }
         - { text: "goed", richtig: false }
         - { text: "going", richtig: false }
+        - { text: "went", richtig: true }
     - frage: "Wie lautet die Frage zu „She played tennis when she was younger“?"
       erklaerung: "Did + Person + Grundform: Did she play tennis when she was younger?"
       antworten:
+        - { text: "Did she play tennis when she was younger?", richtig: true }
         - { text: "Did she played tennis when she was younger?", richtig: false }
         - { text: "She did played tennis when she was younger?", richtig: false }
-        - { text: "Did she play tennis when she was younger?", richtig: true }
     - frage: "Was zeigt „I was studying“ laut LearnEnglish?"
       erklaerung: "Das past continuous zeigt, dass eine Handlung zu einer bestimmten Zeit in der Vergangenheit schon lief."
       antworten:
+        - { text: "Die Handlung ist nie passiert.", richtig: false }
         - { text: "Die Handlung lief zu einer bestimmten Zeit in der Vergangenheit.", richtig: true }
         - { text: "Die Handlung findet in der Zukunft statt.", richtig: false }
-        - { text: "Die Handlung ist nie passiert.", richtig: false }
