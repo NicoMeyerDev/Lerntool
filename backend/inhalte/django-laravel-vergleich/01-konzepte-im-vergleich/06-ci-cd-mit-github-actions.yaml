@@ -1,0 +1,93 @@
+titel: CI/CD mit GitHub Actions
+zusammenfassung: Du erinnerst dich, wie ein Workflow bei jedem Push Tests und Linter automatisch ausführt, in Python- wie in PHP-Projekten.
+quellen:
+  - titel: GitHub Docs – Python-Anwendungen bauen und testen
+    url: https://docs.github.com/en/actions/use-cases-and-examples/building-and-testing/building-and-testing-python
+  - titel: GitHub Docs – Workflow-Syntax
+    url: https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions
+abschnitte:
+  - titel: Ein Workflow besteht aus Jobs und Schritten
+    inhalt: |
+      **CI** (Continuous Integration) heißt: Bei jeder Änderung laufen Build, Linter und Tests automatisch. In
+      GitHub Actions beschreibst du das in einer YAML-Datei unter `.github/workflows/`.
+
+      - **Auslöser** (`on`): zum Beispiel ein Push oder ein Pull Request.
+      - **Jobs:** laufen auf einem Runner, zum Beispiel einer Linux-Maschine.
+      - **Schritte** (`steps`): Code auschecken, Sprache einrichten, Abhängigkeiten installieren, Tests starten.
+
+      **Gemeinsame Idee:** Der Workflow ist für Django und Laravel gleich aufgebaut. Es ändern sich nur die Schritte
+      zum Einrichten und Testen: bei Django Python, `pip install` und `pytest`, bei Laravel PHP, Composer und
+      `php artisan test`.
+
+      Die GitHub-Doku zeigt den Python-Fall. Die PHP-Schritte sind hier nur als Vergleich genannt und stammen nicht
+      aus einer geprüften Anleitung. Schlage sie vor dem Einsatz in der offiziellen Doku nach.
+    quiz:
+      - frage: "Wo liegen GitHub-Actions-Workflows im Repository?"
+        erklaerung: "Im Ordner .github/workflows."
+        antworten:
+          - { text: "Im Ordner .github/workflows.", richtig: true }
+          - { text: "Im Ordner node_modules.", richtig: false }
+          - { text: "In der Datei README.md.", richtig: false }
+      - frage: "Was ändert sich zwischen einem Django- und einem Laravel-Workflow hauptsächlich?"
+        erklaerung: "Die Schritte zum Einrichten der Sprache und zum Testen."
+        antworten:
+          - { text: "Der Dateiname des Repositories.", richtig: false }
+          - { text: "Die Schritte zum Einrichten der Sprache und zum Testen.", richtig: true }
+          - { text: "Die Farbe der Pull Requests.", richtig: false }
+  - titel: CI als Schranke vor dem Merge
+    inhalt: |
+      Unsere Projektregel: **Nach `main` kommt nur, was per Pull Request mit grüner CI eingeht.** Die CI ist damit
+      eine Schranke, die fehlerhaften Code früh stoppt.
+
+      - Schlägt ein Schritt fehl, ist der Lauf rot, und der Merge wird nicht freigegeben.
+      - **Geheimnisse** (Tokens, Passwörter) liegen in den Secrets des Repositories und nie in der Workflow-Datei.
+      - **CD** (Continuous Delivery oder Deployment) geht einen Schritt weiter und liefert geprüfte Änderungen
+        automatisch aus. Das behandeln wir später beim Deployment.
+
+      **Gemeinsame Idee:** Automatische Prüfung statt Hoffnung, in beiden Welten.
+    quiz:
+      - frage: "Was bedeutet ein roter CI-Lauf für den Merge?"
+        erklaerung: "Der Merge wird nicht freigegeben, bis der Fehler behoben ist."
+        antworten:
+          - { text: "Der Merge ist trotzdem erlaubt.", richtig: false }
+          - { text: "Der Merge wird nicht freigegeben, bis der Fehler behoben ist.", richtig: true }
+          - { text: "Das Repository wird gelöscht.", richtig: false }
+      - frage: "Wo liegen Tokens für einen Workflow?"
+        erklaerung: "In den Secrets des Repositories, nicht in der Workflow-Datei."
+        antworten:
+          - { text: "In der Workflow-Datei im Klartext.", richtig: false }
+          - { text: "In den Commit-Nachrichten.", richtig: false }
+          - { text: "In den Secrets des Repositories.", richtig: true }
+test:
+  zeitlimit_minuten: 10
+  fragen:
+    - frage: "Wofür steht CI?"
+      erklaerung: "Continuous Integration."
+      antworten:
+        - { text: "Continuous Integration", richtig: true }
+        - { text: "Central Internet", richtig: false }
+        - { text: "Code Inspection Only", richtig: false }
+    - frage: "In welchem Format wird ein GitHub-Actions-Workflow geschrieben?"
+      erklaerung: "In YAML."
+      antworten:
+        - { text: "In YAML", richtig: true }
+        - { text: "In Bildern", richtig: false }
+        - { text: "In Binärdateien", richtig: false }
+    - frage: "Welche Bausteine hat ein Workflow?"
+      erklaerung: "Auslöser, Jobs und Schritte."
+      antworten:
+        - { text: "Nur eine einzelne Zeile.", richtig: false }
+        - { text: "Auslöser, Jobs und Schritte.", richtig: true }
+        - { text: "Nur Kommentare.", richtig: false }
+    - frage: "Warum sind die PHP-Schritte in dieser Lektion nur ein Vergleich?"
+      erklaerung: "Sie stammen nicht aus einer geprüften Anleitung und müssen in der offiziellen Doku nachgeschlagen werden."
+      antworten:
+        - { text: "Sie stammen nicht aus einer geprüften Anleitung und müssen in der offiziellen Doku nachgeschlagen werden.", richtig: true }
+        - { text: "Weil PHP nicht in CI laufen kann.", richtig: false }
+        - { text: "Weil GitHub PHP verbietet.", richtig: false }
+    - frage: "Was ist der Unterschied zwischen CI und CD?"
+      erklaerung: "CI prüft automatisch, CD liefert geprüfte Änderungen automatisch aus."
+      antworten:
+        - { text: "Es gibt keinen Unterschied.", richtig: false }
+        - { text: "CI prüft automatisch, CD liefert geprüfte Änderungen automatisch aus.", richtig: true }
+        - { text: "CD ist der Name der Datenbank.", richtig: false }

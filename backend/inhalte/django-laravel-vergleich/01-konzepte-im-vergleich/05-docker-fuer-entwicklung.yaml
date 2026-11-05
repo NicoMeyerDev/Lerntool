@@ -1,0 +1,91 @@
+titel: Docker für die Entwicklung
+zusammenfassung: Du erinnerst dich, wie du eine Django-App selbst in einen Container packst und was Laravel Sail dir an Docker-Arbeit abnimmt.
+quellen:
+  - titel: Docker – Python-Anwendung containerisieren
+    url: https://docs.docker.com/guides/python/containerize/
+  - titel: Laravel 13.x – Sail
+    url: https://laravel.com/docs/13.x/sail
+abschnitte:
+  - titel: Zwei Wege zum Container
+    inhalt: |
+      Ein **Container** bündelt Anwendung und Umgebung, damit sie überall gleich läuft.
+
+      - **Django:** Du schreibst typischerweise selbst ein `Dockerfile` (Basis-Image, Abhängigkeiten installieren,
+        Code kopieren, Startbefehl). Die Docker-Anleitung für Python zeigt diesen Weg.
+      - **Laravel:** **Sail** ist laut Doku eine Kommandozeilen-Oberfläche für Laravels Docker-Entwicklungsumgebung.
+        Du startest sie mit einem Befehl, statt jede Datei selbst zu schreiben.
+
+      **Gemeinsame Idee:** Dieselbe Umgebung für alle Entwickler, beschrieben in Dateien, die im Repository liegen.
+
+      **Unterschied:** Bei Django baust du die Umgebung selbst, bei Laravel liefert Sail eine fertige. Ein
+      Beispiel-Dockerfile für Django findest du in der Docker-Anleitung. Wie es bei deinem Projekt aussieht, hängt
+      von dessen Anforderungen ab.
+    quiz:
+      - frage: "Was bündelt ein Container?"
+        erklaerung: "Die Anwendung und ihre Umgebung."
+        antworten:
+          - { text: "Nur die Bilder einer Webseite.", richtig: false }
+          - { text: "Die Anwendung und ihre Umgebung.", richtig: true }
+          - { text: "Nur das Betriebssystem des Handys.", richtig: false }
+      - frage: "Was ist Laravel Sail laut Doku?"
+        erklaerung: "Eine Kommandozeilen-Oberfläche für Laravels Docker-Entwicklungsumgebung."
+        antworten:
+          - { text: "Eine Kommandozeilen-Oberfläche für Laravels Docker-Entwicklungsumgebung.", richtig: true }
+          - { text: "Ein Datenbanktyp.", richtig: false }
+          - { text: "Ein Passwort-Verfahren.", richtig: false }
+  - titel: Geheimnisse gehören nicht ins Image
+    inhalt: |
+      Ein Image enthält alles, was beim Bauen hineinkommt. Landet dort ein Passwort, ist es für jeden sichtbar,
+      der das Image bekommt.
+
+      - Zugangsdaten kommen zur Laufzeit über **Umgebungsvariablen** oder einen Geheimnisspeicher.
+      - Die `.env`-Datei gehört nicht ins Image und nicht ins Repository.
+      - Eine `.dockerignore` hält unnötige oder geheime Dateien aus dem Build heraus.
+
+      **Gemeinsame Idee:** Konfiguration und Code getrennt halten, in Django wie in Laravel.
+    quiz:
+      - frage: "Wie kommen Zugangsdaten in einen Container?"
+        erklaerung: "Zur Laufzeit über Umgebungsvariablen oder einen Geheimnisspeicher."
+        antworten:
+          - { text: "Fest im Dockerfile eingetragen.", richtig: false }
+          - { text: "Zur Laufzeit über Umgebungsvariablen oder einen Geheimnisspeicher.", richtig: true }
+          - { text: "In der README.", richtig: false }
+      - frage: "Wozu dient eine .dockerignore?"
+        erklaerung: "Sie hält unnötige oder geheime Dateien aus dem Build heraus."
+        antworten:
+          - { text: "Sie startet den Container.", richtig: false }
+          - { text: "Sie erhöht die Rechenleistung.", richtig: false }
+          - { text: "Sie hält unnötige oder geheime Dateien aus dem Build heraus.", richtig: true }
+test:
+  zeitlimit_minuten: 10
+  fragen:
+    - frage: "Welche Datei beschreibt bei Django meist den Bau des Images?"
+      erklaerung: "Das Dockerfile."
+      antworten:
+        - { text: "Das Dockerfile", richtig: true }
+        - { text: "Die Datei models.py", richtig: false }
+        - { text: "Die Datei LICENSE", richtig: false }
+    - frage: "Was ist ein Unterschied zwischen Django-Docker und Sail?"
+      erklaerung: "Bei Django baust du die Umgebung selbst, bei Laravel liefert Sail eine fertige."
+      antworten:
+        - { text: "Beide kennen kein Docker.", richtig: false }
+        - { text: "Bei Django baust du die Umgebung selbst, bei Laravel liefert Sail eine fertige.", richtig: true }
+        - { text: "Sail ist ein Linter.", richtig: false }
+    - frage: "Warum gehört die .env-Datei nicht ins Image?"
+      erklaerung: "Sonst wären die Geheimnisse für jeden sichtbar, der das Image bekommt."
+      antworten:
+        - { text: "Weil sie zu klein ist.", richtig: false }
+        - { text: "Sonst wären die Geheimnisse für jeden sichtbar, der das Image bekommt.", richtig: true }
+        - { text: "Weil Docker sie nicht lesen kann.", richtig: false }
+    - frage: "Was ist die gemeinsame Idee hinter Containern?"
+      erklaerung: "Dieselbe Umgebung für alle, beschrieben in Dateien im Repository."
+      antworten:
+        - { text: "Dieselbe Umgebung für alle, beschrieben in Dateien im Repository.", richtig: true }
+        - { text: "Jeder Entwickler richtet seinen Rechner anders ein.", richtig: false }
+        - { text: "Die Umgebung wird mündlich weitergegeben.", richtig: false }
+    - frage: "Was gehört typischerweise in ein Dockerfile für eine Python-Anwendung?"
+      erklaerung: "Basis-Image, Abhängigkeiten installieren, Code kopieren und Startbefehl."
+      antworten:
+        - { text: "Die Passwörter aller Nutzer.", richtig: false }
+        - { text: "Nur die Lizenz des Projekts.", richtig: false }
+        - { text: "Basis-Image, Abhängigkeiten installieren, Code kopieren und Startbefehl.", richtig: true }

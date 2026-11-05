@@ -2,6 +2,12 @@
 
 Punkte, die eine Entscheidung oder Aktion des Nutzers brauchen.
 
+## 2026-11-05 – D3 Konzept-Vergleiche: Notizen
+
+- **PHP-GitHub-Actions-Quelle fehlt:** Für die PHP/Laravel-Schritte in der CI-Lektion gibt es keine belegte offizielle Quelle. Die Schritte sind als ungeprüft gekennzeichnet und müssen nachgeprüft werden.
+- **Laravel-Test-Datenbank:** Details zur Test-Datenbank in der Laravel-Doku nachschlagen und in der Testlektion prüfen.
+- **Quizqualität:** Wie in Teil 3 ist die richtige Antwort oft die längste Option, Falschantworten sind teils schwach. Später gleich lang und plausibel formulieren.
+
 ## 2026-11-05 – D2 DevSecOps: Notizen zu Quellen und Quizqualität
 
 Reine Notizen, keine Entscheidung des Lernenden nötig.
