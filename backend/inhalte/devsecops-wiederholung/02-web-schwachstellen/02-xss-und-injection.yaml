@@ -1,0 +1,104 @@
+titel: XSS und Injection verhindern
+zusammenfassung: "Du erinnerst dich, wie Cross-Site-Scripting und SQL-Injection entstehen und welche Verteidigungen OWASP empfiehlt: Codierung der Ausgabe gegen XSS und Parametrisierung von Abfragen gegen SQL-Injection."
+quellen:
+  - titel: OWASP – Cross Site Scripting Prevention Cheat Sheet
+    url: https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html
+  - titel: OWASP – SQL Injection Prevention Cheat Sheet
+    url: https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html
+abschnitte:
+  - titel: Cross-Site-Scripting (XSS)
+    inhalt: |
+      Bei **XSS** landen nicht vertrauenswürdige Daten so in einer Seite, dass der Browser sie als **Code**
+      behandelt. „Nicht vertrauenswürdig“ ist alles, was die Anwendung nicht selbst erzeugt hat: Formulare,
+      URL-Parameter, gespeicherte Nutzerdaten, Antworten anderer Dienste.
+
+      **Keine einzelne Technik löst XSS.** OWASP empfiehlt in allen Fällen den Schutz des Frameworks, die
+      Ausgabe passend zum Ort **codieren** (HTML-Text, Attribut, JavaScript, CSS, URL) und bei erlaubtem HTML ein
+      Sanitizing. Außerdem:
+
+      - Bevorzuge Funktionen, die Daten als **Text** behandeln (`textContent`), statt `innerHTML`.
+      - Nutze das **automatische Escaping** deines Frameworks und prüfe Ausnahmen wie `|safe` besonders.
+      - Müssen Nutzer HTML eingeben, nimm einen gepflegten **Sanitizer** (zum Beispiel DOMPurify).
+      - Eine **Content Security Policy** (CSP) ist eine zusätzliche Schutzschicht, nicht die Hauptverteidigung.
+
+      Die Quelle betont: Wer 99 Stellen schützt und eine übersieht, bleibt verwundbar.
+    quiz:
+      - frage: "Was empfiehlt OWASP laut Cheat Sheet gegen XSS?"
+        erklaerung: "Framework-Schutz, kontextgerechtes Codieren der Ausgabe und Sanitizing zusammen."
+        antworten:
+          - { text: "Eine einzige Technik wie eine Firewall davorstellen.", richtig: false }
+          - { text: "Framework-Schutz, kontextgerechtes Codieren der Ausgabe und Sanitizing zusammen.", richtig: true }
+          - { text: "Eingaben nur auf Länge prüfen und sonst unverändert ausgeben.", richtig: false }
+      - frage: "Wofür ist eine Content Security Policy laut OWASP gedacht?"
+        erklaerung: "Als zusätzliche Schutzschicht, nicht als Hauptverteidigung."
+        antworten:
+          - { text: "Als Ersatz für das Codieren der Ausgabe.", richtig: false }
+          - { text: "Als Verschlüsselung der Datenbank.", richtig: false }
+          - { text: "Als zusätzliche Schutzschicht, nicht als Hauptverteidigung.", richtig: true }
+  - titel: SQL-Injection
+    inhalt: |
+      Bei **SQL-Injection** wird nicht vertrauenswürdige Eingabe Teil der SQL-Befehlsstruktur. Folge: Daten
+      können gelesen oder verändert werden.
+
+      **Wichtigste Verteidigung:** **parametrisierte Abfragen** (Prepared Statements). Befehl und Daten
+      werden getrennt übergeben, die Datenbank behandelt die Werte nur als Daten:
+
+      ```python
+      cur.execute("SELECT * FROM users WHERE name = ?", (name,))
+      ```
+
+      - Setze Eingaben nie per Zeichenketten-Verkettung in die Abfrage.
+      - Namen von Tabellen und Spalten lassen sich nicht als Parameter binden. Ordne Nutzerauswahl festen,
+        selbst definierten Werten zu (Erlaubnisliste).
+      - Manuelles Escaping ist nur der letzte Ausweg.
+      - Gib Datenbank-Konten nur die nötigen Rechte (**geringste Rechte**). Das begrenzt den Schaden, verhindert
+        den Angriff aber nicht.
+      - Parametrisierung entscheidet nicht, wer was lesen darf. Berechtigungen sind eine eigene Kontrolle.
+
+      Django-QuerySets nutzen parametrisierte Abfragen. Bei rohem SQL musst du die Parameter selbst sauber übergeben.
+    quiz:
+      - frage: "Wie verhinderst du SQL-Injection am zuverlässigsten?"
+        erklaerung: "Mit parametrisierten Abfragen, bei denen Daten getrennt vom Befehl übergeben werden."
+        antworten:
+          - { text: "Mit längeren Passwörtern für die Datenbank.", richtig: false }
+          - { text: "Mit parametrisierten Abfragen, bei denen Daten getrennt vom Befehl übergeben werden.", richtig: true }
+          - { text: "Mit möglichst vielen Kommentaren im Code.", richtig: false }
+      - frage: "Was bewirkt das Prinzip der geringsten Rechte bei Datenbank-Konten?"
+        erklaerung: "Es begrenzt den Schaden eines Angriffs, verhindert ihn aber nicht."
+        antworten:
+          - { text: "Es verhindert jeden Angriff vollständig.", richtig: false }
+          - { text: "Es begrenzt den Schaden eines Angriffs, verhindert ihn aber nicht.", richtig: true }
+          - { text: "Es macht Abfragen schneller.", richtig: false }
+test:
+  zeitlimit_minuten: 10
+  fragen:
+    - frage: "Was ist alles „nicht vertrauenswürdige Daten“ im Sinne von XSS?"
+      erklaerung: "Alles, was die Anwendung nicht selbst erzeugt hat, etwa Formulare und URL-Parameter."
+      antworten:
+        - { text: "Nur Daten von Administratoren.", richtig: false }
+        - { text: "Alles, was die Anwendung nicht selbst erzeugt hat, etwa Formulare und URL-Parameter.", richtig: true }
+        - { text: "Nur Bilder.", richtig: false }
+    - frage: "Welche DOM-Eigenschaft behandelt Daten als reinen Text?"
+      erklaerung: "textContent."
+      antworten:
+        - { text: "innerHTML", richtig: false }
+        - { text: "textContent", richtig: true }
+        - { text: "outerHTML", richtig: false }
+    - frage: "Warum helfen Prepared Statements gegen SQL-Injection?"
+      erklaerung: "Die Datenbank behandelt gebundene Werte als Daten und nicht als SQL-Befehl."
+      antworten:
+        - { text: "Die Datenbank behandelt gebundene Werte als Daten und nicht als SQL-Befehl.", richtig: true }
+        - { text: "Sie verschlüsseln die Tabelle.", richtig: false }
+        - { text: "Sie sperren alle Nutzer aus.", richtig: false }
+    - frage: "Was gilt für Tabellen- und Spaltennamen in Abfragen laut OWASP?"
+      erklaerung: "Sie lassen sich nicht als Parameter binden, daher ordnet man Nutzerauswahl festen Werten zu."
+      antworten:
+        - { text: "Sie dürfen direkt aus der Eingabe übernommen werden.", richtig: false }
+        - { text: "Sie lassen sich nicht als Parameter binden, daher ordnet man Nutzerauswahl festen Werten zu.", richtig: true }
+        - { text: "Sie müssen großgeschrieben sein.", richtig: false }
+    - frage: "Was solltest du tun, wenn Nutzer HTML eingeben dürfen?"
+      erklaerung: "Einen gepflegten Sanitizer wie DOMPurify einsetzen."
+      antworten:
+        - { text: "Das HTML ungeprüft speichern und ausgeben.", richtig: false }
+        - { text: "Einen gepflegten Sanitizer wie DOMPurify einsetzen.", richtig: true }
+        - { text: "Nur eine Content Security Policy setzen und sonst nichts tun.", richtig: false }

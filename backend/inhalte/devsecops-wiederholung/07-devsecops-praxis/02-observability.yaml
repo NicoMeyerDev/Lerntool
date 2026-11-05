@@ -1,0 +1,88 @@
+titel: Observability – Logs, Metriken und Traces
+zusammenfassung: Du erinnerst dich, was Observability bedeutet und wie sich Logs, Metriken und Traces unterscheiden.
+quellen:
+  - titel: OpenTelemetry – Observability-Einführung
+    url: https://opentelemetry.io/docs/concepts/observability-primer/
+abschnitte:
+  - titel: Was Observability ist
+    inhalt: |
+      **Observability** (Beobachtbarkeit) bedeutet laut OpenTelemetry: Du kannst ein System **von außen** untersuchen
+      und neue Fragen dazu stellen, ohne seine Innereien zu kennen, auch bei bisher unbekannten Problemen. Sie hilft,
+      die Frage „Warum passiert das?“ zu beantworten.
+
+      Voraussetzung ist, dass die Anwendung **Signale** ausgibt. Die drei wichtigsten Signale sind Logs, Metriken
+      und Traces.
+
+      (Wie sich Monitoring und Observability unterscheiden, behandelt diese Quelle nicht. Das ist hier nicht Thema.)
+    quiz:
+      - frage: "Was bedeutet Observability laut OpenTelemetry?"
+        erklaerung: "Ein System von außen untersuchen und neue Fragen stellen zu können, ohne die Innereien zu kennen."
+        antworten:
+          - { text: "Ein System mit möglichst vielen Bildschirmen auszustatten.", richtig: false }
+          - { text: "Ein System von außen untersuchen und neue Fragen stellen zu können, ohne die Innereien zu kennen.", richtig: true }
+          - { text: "Ein System nur im Notfall abzuschalten.", richtig: false }
+      - frage: "Was ist die Voraussetzung für Observability?"
+        erklaerung: "Die Anwendung gibt Signale wie Logs, Metriken und Traces aus."
+        antworten:
+          - { text: "Die Anwendung gibt Signale wie Logs, Metriken und Traces aus.", richtig: true }
+          - { text: "Die Anwendung hat keinen Code.", richtig: false }
+          - { text: "Die Anwendung läuft nur nachts.", richtig: false }
+  - titel: Logs, Metriken, Traces
+    inhalt: |
+      - **Logs:** Zeitgestempelte Aufzeichnungen, die Software-Bausteine schreiben. Sie gehören nicht
+        zwangsläufig zu einer bestimmten Anfrage.
+      - **Metriken:** Zahlenwerte, über die Zeit zusammengefasst, zum Beispiel Fehlerrate, CPU-Last oder
+        Anfragen pro Sekunde.
+      - **Traces:** Die Aufzeichnung des Wegs **einer** Anfrage durch mehrere Dienste, aufgebaut aus einzelnen
+        Abschnitten (Spans).
+
+      **Bild (eigene Idee):** Ein Auto. Metriken sind das Armaturenbrett (Tempo, Temperatur), Logs das
+      Fahrtenbuch, Traces der aufgezeichnete Weg einer einzelnen Fahrt.
+
+      Zum Datenschutz (siehe Phase 8): Schreibe keine Passwörter und keine unnötigen personenbezogenen Daten in Logs.
+    quiz:
+      - frage: "Was zeigen Traces?"
+        erklaerung: "Den Weg einer Anfrage durch mehrere Dienste."
+        antworten:
+          - { text: "Nur die CPU-Last eines Servers.", richtig: false }
+          - { text: "Nur die Anzahl der Nutzer.", richtig: false }
+          - { text: "Den Weg einer Anfrage durch mehrere Dienste.", richtig: true }
+      - frage: "Was sind Metriken?"
+        erklaerung: "Über die Zeit zusammengefasste Zahlenwerte, etwa Fehlerrate oder CPU-Last."
+        antworten:
+          - { text: "Über die Zeit zusammengefasste Zahlenwerte, etwa Fehlerrate oder CPU-Last.", richtig: true }
+          - { text: "Einzelne Fehlermeldungen im Klartext.", richtig: false }
+          - { text: "Passwörter der Administratoren.", richtig: false }
+test:
+  zeitlimit_minuten: 10
+  fragen:
+    - frage: "Welches Signal beschreibt zeitgestempelte Aufzeichnungen von Software-Bausteinen?"
+      erklaerung: "Logs."
+      antworten:
+        - { text: "Metriken", richtig: false }
+        - { text: "Logs", richtig: true }
+        - { text: "Traces", richtig: false }
+    - frage: "Welches Signal eignet sich, um die Fehlerrate über die Zeit zu verfolgen?"
+      erklaerung: "Metriken."
+      antworten:
+        - { text: "Metriken", richtig: true }
+        - { text: "Passwörter", richtig: false }
+        - { text: "Zertifikate", richtig: false }
+    - frage: "Woraus bestehen Traces laut OpenTelemetry?"
+      erklaerung: "Aus einzelnen Abschnitten, den Spans."
+      antworten:
+        - { text: "Aus Zertifikaten", richtig: false }
+        - { text: "Aus Spans", richtig: true }
+        - { text: "Aus Hashes", richtig: false }
+    - frage: "Was gehört nicht in Logs?"
+      erklaerung: "Passwörter und unnötige personenbezogene Daten."
+      antworten:
+        - { text: "Die Uhrzeit eines Fehlers.", richtig: false }
+        - { text: "Passwörter und unnötige personenbezogene Daten.", richtig: true }
+        - { text: "Der Name der Fehlerklasse.", richtig: false }
+    - frage: "Welche Frage hilft Observability laut OpenTelemetry zu beantworten?"
+      erklaerung: "Warum etwas passiert."
+      antworten:
+        - { text: "Wie viele Festplatten es weltweit gibt.", richtig: false }
+        - { text: "Warum etwas passiert.", richtig: true }
+        - { text: "Wer die Anwendung bezahlt hat.", richtig: false }

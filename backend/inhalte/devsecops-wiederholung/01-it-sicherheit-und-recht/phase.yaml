@@ -1,0 +1,24 @@
+titel: IT-Sicherheit und Recht
+beschreibung: Schutzziele, die Phasen eines Angriffs, kritische Infrastrukturen und die rechtlichen Grenzen beim Testen von Systemen. Du erinnerst dich, warum Sicherheit eine Frage von Zielen, Regeln und Erlaubnis ist.
+projekt:
+  titel: Schutzziele und Rechtslage durchdenken
+  beschreibung: |
+    Du wendest die Schutzziele auf ein Beispiel an und klärst, was du testen darfst. Alles bleibt auf dem Papier.
+
+    **Aufgabe:** Wähle ein Beispiel (zum Beispiel diese Lern-App). Ordne drei konkrete Risiken den Schutzzielen
+    Vertraulichkeit, Integrität und Verfügbarkeit zu. Beschreibe dann einen erfundenen Angriff in drei Phasen
+    (zum Beispiel Zugang erlangen, Zugangsdaten stehlen, Daten abziehen) und nenne je Phase eine
+    Gegenmaßnahme. Schreibe zum Schluss auf, unter welchen Bedingungen ein Sicherheitstest erlaubt wäre.
+
+    **Regeln:**
+
+    - Es wird nichts getestet, kein Scan gestartet und kein fremdes System berührt.
+    - Das Beispiel ist erfunden oder gehört dir. Keine echten Firmen, keine echten Personen.
+
+    **Tipp:** Lies im Wortlaut nach, was § 202a StGB mit „unbefugt“ und „besonders gesichert“ meint.
+    Quellen: [NIST, Confidentiality](https://csrc.nist.gov/glossary/term/confidentiality), [MITRE ATT&CK](https://attack.mitre.org/) und [§ 202a StGB](https://www.gesetze-im-internet.de/stgb/__202a.html).
+  punkte:
+    - Drei Risiken sind je einem Schutzziel zugeordnet.
+    - Der erfundene Angriff hat drei Phasen mit je einer Gegenmaßnahme.
+    - Die Bedingungen für einen erlaubten Test sind genannt (Erlaubnis und Umfang).
+    - Es steht dabei, dass keine fremden Systeme getestet werden.

@@ -1,0 +1,115 @@
+titel: DSGVO – Begriffe, Grundsätze und Rechtsgrundlagen
+zusammenfassung: Du erinnerst dich, was personenbezogene Daten sind, welche sechs Grundsätze Art. 5 DSGVO nennt und welche sechs Rechtsgrundlagen Art. 6 für eine Verarbeitung kennt.
+quellen:
+  - titel: DSGVO – Verordnung (EU) 2016/679 (Amtsblatt, deutsche Fassung)
+    url: https://eur-lex.europa.eu/eli/reg/2016/679/oj/deu
+abschnitte:
+  - titel: Personenbezogene Daten
+    inhalt: |
+      **Personenbezogene Daten** sind nach Art. 4 Nr. 1 DSGVO alle Informationen, die sich auf eine **identifizierte
+      oder identifizierbare natürliche Person** beziehen. Identifizierbar ist, wer direkt oder indirekt erkannt werden
+      kann, etwa über einen Namen oder eine Online-Kennung.
+
+      Beispiele (eigene Erläuterung): ein Name, eine E-Mail-Adresse, ein Benutzername, der zu einer Person gehört,
+      oder eine IP-Adresse in Verbindung mit weiteren Angaben.
+
+      Wichtig für Entwickler: Schon ein Login-Name und der Lernfortschritt einer Person sind Daten, auf die die
+      Regeln zutreffen können. Plane Datenschutz deshalb von Anfang an mit ein.
+    quiz:
+      - frage: "Was sind personenbezogene Daten nach Art. 4 Nr. 1 DSGVO?"
+        erklaerung: "Informationen, die sich auf eine identifizierte oder identifizierbare natürliche Person beziehen."
+        antworten:
+          - { text: "Nur Daten, die einen vollen Namen enthalten.", richtig: false }
+          - { text: "Alle Daten, die auf einem Server liegen.", richtig: false }
+          - { text: "Informationen, die sich auf eine identifizierte oder identifizierbare natürliche Person beziehen.", richtig: true }
+      - frage: "Wann gilt eine Person als identifizierbar?"
+        erklaerung: "Wenn sie direkt oder indirekt erkannt werden kann, zum Beispiel über eine Online-Kennung."
+        antworten:
+          - { text: "Wenn sie direkt oder indirekt erkannt werden kann, zum Beispiel über eine Online-Kennung.", richtig: true }
+          - { text: "Nur wenn ihr Foto vorliegt.", richtig: false }
+          - { text: "Nur wenn sie eine Vollmacht unterschrieben hat.", richtig: false }
+  - titel: Die Grundsätze nach Art. 5
+    inhalt: |
+      Art. 5 Abs. 1 DSGVO nennt Grundsätze für die Verarbeitung:
+
+      - **Rechtmäßigkeit, Treu und Glauben, Transparenz.**
+      - **Zweckbindung:** Daten nur für festgelegte, eindeutige und legitime Zwecke erheben.
+      - **Datenminimierung:** Nur erheben, was für den Zweck nötig ist.
+      - **Richtigkeit:** Daten sachlich richtig und aktuell halten.
+      - **Speicherbegrenzung:** Nur so lange speichern, wie es nötig ist.
+      - **Integrität und Vertraulichkeit:** Angemessene Sicherheit der Daten.
+
+      **Verbindung zur Technik:** Integrität und Vertraulichkeit entsprechen den Schutzzielen aus Phase 1. Passwort-Hashing,
+      TLS und Zugriffsrechte (Phasen 2 bis 4) sind Wege, sie umzusetzen.
+    quiz:
+      - frage: "Was verlangt der Grundsatz der Datenminimierung?"
+        erklaerung: "Nur die Daten erheben, die für den Zweck nötig sind."
+        antworten:
+          - { text: "Möglichst viele Daten für spätere Zwecke sammeln.", richtig: false }
+          - { text: "Nur die Daten erheben, die für den Zweck nötig sind.", richtig: true }
+          - { text: "Alle Daten nach einem Tag löschen.", richtig: false }
+      - frage: "Was bedeutet Speicherbegrenzung?"
+        erklaerung: "Daten nur so lange speichern, wie es für den Zweck nötig ist."
+        antworten:
+          - { text: "Daten nur so lange speichern, wie es für den Zweck nötig ist.", richtig: true }
+          - { text: "Nur eine bestimmte Menge an Daten speichern.", richtig: false }
+          - { text: "Daten nur auf USB-Sticks speichern.", richtig: false }
+  - titel: Rechtsgrundlagen nach Art. 6
+    inhalt: |
+      Die Verarbeitung ist nur rechtmäßig, wenn mindestens eine Grundlage nach Art. 6 Abs. 1 DSGVO zutrifft:
+
+      - **a) Einwilligung** der betroffenen Person.
+      - **b) Vertrag** oder vorvertragliche Maßnahmen auf Anfrage.
+      - **c) Rechtliche Verpflichtung.**
+      - **d) Schutz lebenswichtiger Interessen.**
+      - **e) Aufgabe im öffentlichen Interesse** oder in Ausübung öffentlicher Gewalt.
+      - **f) Berechtigte Interessen**, sofern keine überwiegenden Rechte der betroffenen Person entgegenstehen.
+
+      Ob und wie die DSGVO auf ein konkretes Projekt anwendbar ist, ist eine Rechtsfrage, die dieses Material
+      nicht beantwortet. Das ist keine Rechtsberatung.
+    quiz:
+      - frage: "Welche Rechtsgrundlage nennt Art. 6 Abs. 1 Buchstabe a?"
+        erklaerung: "Die Einwilligung der betroffenen Person."
+        antworten:
+          - { text: "Die Einwilligung der betroffenen Person.", richtig: true }
+          - { text: "Die Steuernummer des Unternehmens.", richtig: false }
+          - { text: "Die Genehmigung des Webhosters.", richtig: false }
+      - frage: "Wie viele Rechtsgrundlagen zählt Art. 6 Abs. 1 auf?"
+        erklaerung: "Sechs, die Buchstaben a bis f."
+        antworten:
+          - { text: "Zwei", richtig: false }
+          - { text: "Sechs", richtig: true }
+          - { text: "Zwölf", richtig: false }
+test:
+  zeitlimit_minuten: 10
+  fragen:
+    - frage: "Welcher Grundsatz verlangt, dass Daten nur für festgelegte, eindeutige und legitime Zwecke erhoben werden?"
+      erklaerung: "Die Zweckbindung."
+      antworten:
+        - { text: "Die Richtigkeit", richtig: false }
+        - { text: "Die Zweckbindung", richtig: true }
+        - { text: "Die Speicherbegrenzung", richtig: false }
+    - frage: "Welcher Grundsatz entspricht dem Schutzziel Vertraulichkeit und Integrität?"
+      erklaerung: "Integrität und Vertraulichkeit (angemessene Sicherheit)."
+      antworten:
+        - { text: "Integrität und Vertraulichkeit (angemessene Sicherheit)", richtig: true }
+        - { text: "Zweckbindung", richtig: false }
+        - { text: "Richtigkeit", richtig: false }
+    - frage: "Auf welche Rechtsgrundlage stützt sich eine Verarbeitung, die zur Erfüllung eines Vertrags nötig ist?"
+      erklaerung: "Art. 6 Abs. 1 Buchstabe b."
+      antworten:
+        - { text: "Art. 6 Abs. 1 Buchstabe d", richtig: false }
+        - { text: "Art. 6 Abs. 1 Buchstabe e", richtig: false }
+        - { text: "Art. 6 Abs. 1 Buchstabe b", richtig: true }
+    - frage: "Was muss bei der Rechtsgrundlage der berechtigten Interessen (Buchstabe f) beachtet werden?"
+      erklaerung: "Es dürfen keine überwiegenden Rechte der betroffenen Person entgegenstehen."
+      antworten:
+        - { text: "Es dürfen keine überwiegenden Rechte der betroffenen Person entgegenstehen.", richtig: true }
+        - { text: "Die Person muss unterschreiben.", richtig: false }
+        - { text: "Die Daten müssen verschlüsselt sein.", richtig: false }
+    - frage: "Warum ist ein Login-Name mit Lernfortschritt für den Datenschutz relevant?"
+      erklaerung: "Er kann sich auf eine identifizierbare Person beziehen und ist dann ein personenbezogenes Datum."
+      antworten:
+        - { text: "Er ist nie relevant.", richtig: false }
+        - { text: "Er kann sich auf eine identifizierbare Person beziehen und ist dann ein personenbezogenes Datum.", richtig: true }
+        - { text: "Er ist nur relevant, wenn er Zahlen enthält.", richtig: false }

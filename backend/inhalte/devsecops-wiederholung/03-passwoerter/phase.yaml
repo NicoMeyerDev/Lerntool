@@ -1,0 +1,26 @@
+titel: Passwort-Sicherheit
+beschreibung: Wie Passwörter sicher gespeichert werden (Hash, Salt, Pepper) und was aktuelle Richtlinien von NIST für gute Passwörter verlangen. Du erinnerst dich, warum lange Passwörter und Passwortmanager besser sind als Sonderzeichen-Regeln.
+projekt:
+  titel: Passwortrichtlinie entwerfen
+  beschreibung: |
+    Du entwirfst auf dem Papier eine Passwortrichtlinie für eine kleine Web-App und die Regeln für die Speicherung.
+
+    **Aufgabe:** Schreibe eine halbe Seite mit Regeln für (1) die Anmeldung (Mindestlänge, erlaubte Zeichen,
+    Prüfung gegen bekannte schwache Passwörter, Wechsel nur bei Verdacht, Einfügen erlaubt), (2) die Speicherung
+    (welcher Algorithmus, warum Salt, wie ein späterer Wechsel der Einstellungen funktioniert) und (3) einen Satz,
+    warum ein zweiter Faktor sinnvoll ist.
+
+    **Regeln:**
+
+    - Es kommen keine echten Passwörter, Hashes oder Schlüssel in den Text, auch keine Beispiele aus echten Konten.
+    - Du testest nichts gegen fremde Konten und knackst keine Hashes.
+
+    **Tipp:** Vergleiche deine Regeln mit der Richtlinie von NIST, bevor du sie abschließt.
+    Quellen: [OWASP, Password Storage Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html) und [NIST SP 800-63B-4](https://pages.nist.gov/800-63-4/sp800-63b.html).
+  punkte:
+    - Die Richtlinie nennt eine Mindestlänge und erlaubt lange Passwörter.
+    - Es gibt keine Zeichenmix-Pflicht und keinen erzwungenen regelmäßigen Wechsel.
+    - Neue Passwörter werden gegen bekannte schwache Passwörter geprüft, und das Einfügen ist erlaubt.
+    - Die Speicherung nennt Hashing mit Salt und einen passenden Algorithmus.
+    - Ein zweiter Faktor ist begründet.
+    - Es stehen keine echten Passwörter oder Hashes im Text.

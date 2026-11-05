@@ -1,0 +1,25 @@
+titel: Netzwerke und Linux
+beschreibung: Wie TLS Verbindungen schützt, wie SSH-Schlüssel und der SSH-Server abgesichert werden, wofür Fail2ban da ist und wie Dateirechte unter Linux gesetzt werden. Du erinnerst dich an die Grundlagen für einen sicheren Server. Alles nur als Theorie.
+projekt:
+  titel: Härtungsplan für einen Linux-Server
+  beschreibung: |
+    Du schreibst auf dem Papier einen Plan, wie du den SSH-Zugang eines Linux-Servers absichern würdest.
+
+    **Aufgabe:** Beschreibe in einer Liste (1) wie du ein Schlüsselpaar anlegst und welchen Teil du wohin kopierst,
+    (2) welche drei Einstellungen in `sshd_config` du anpassen würdest (Anmeldung mit Schlüssel, Passwort-Anmeldung, Root-Login) und welchen Wert du wählst, (3) wie Fail2ban hilft
+    und was es nicht leistet, und (4) wer den privaten Schlüssel lesen darf.
+
+    **Regeln:**
+
+    - Es wird kein Server angelegt, nichts eingeloggt und nichts gescannt. Es bleibt ein Plan.
+    - Es stehen keine echten Schlüssel, IP-Adressen oder Passwörter im Plan.
+
+    **Tipp:** Überlege, was passiert, wenn du dich durch eine falsche Einstellung selbst aussperrst.
+    Quellen: [ssh-keygen](https://man.openbsd.org/ssh-keygen.1), [sshd_config](https://man.openbsd.org/sshd_config) und [Fail2Ban](https://github.com/fail2ban/fail2ban).
+  punkte:
+    - Der Plan nennt, dass der private Schlüssel geheim bleibt und der öffentliche auf den Server kommt.
+    - Drei Einstellungen in `sshd_config` sind mit gewähltem Wert genannt.
+    - Fail2ban ist erklärt, und die Grenze (schwache Anmeldung bleibt ein Risiko) ist genannt.
+    - Es ist begründet, dass der private Schlüssel nur für dich lesbar sein soll.
+    - Es steht dabei, wie man sich nicht selbst aussperrt.
+    - Es stehen keine echten Schlüssel, IP-Adressen oder Passwörter im Plan.

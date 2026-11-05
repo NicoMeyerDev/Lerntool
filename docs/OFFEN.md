@@ -2,6 +2,15 @@
 
 Punkte, die eine Entscheidung oder Aktion des Nutzers brauchen.
 
+## 2026-11-05 – D2 DevSecOps: Notizen zu Quellen und Quizqualität
+
+Reine Notizen, keine Entscheidung des Lernenden nötig.
+
+- **DSGVO-Quelle:** Die Quelle bei eur-lex.europa.eu konnte nicht abgerufen werden. Bitte im Browser prüfen, ob der Link stimmt und der Inhalt zur Lektion passt.
+- **Quizqualität:** Wie in D1 Teil 3 ist die richtige Antwort oft die längste Option, die Falschantworten sind teils schwach. Später gleich lang und plausibel formulieren.
+- **Review:** Runde 2 des `reviewer` war nur eine Nachprüfung der Änderungen.
+- **NIST 64 Zeichen:** Die Obergrenze von 64 Zeichen bei Passwörtern ist laut NIST ein SHOULD, keine Pflicht.
+
 ## 2026-11-05 – D1 Teil 3: Notizen zu Quizqualität, Review und Datenbankverbindung
 
 Reine Notizen, keine Entscheidung des Lernenden nötig.

@@ -1,0 +1,129 @@
+titel: SSH, Fail2ban und Dateirechte
+zusammenfassung: Du erinnerst dich, wie SSH-Schlüssel funktionieren, welche sshd-Einstellungen für die Absicherung wichtig sind, wofür Fail2ban da ist und wie chmod Rechte setzt.
+quellen:
+  - titel: OpenBSD – ssh-keygen
+    url: https://man.openbsd.org/ssh-keygen.1
+  - titel: OpenBSD – sshd_config
+    url: https://man.openbsd.org/sshd_config
+  - titel: Fail2Ban (Projekt-README)
+    url: https://github.com/fail2ban/fail2ban
+  - titel: GNU Coreutils – chmod
+    url: https://www.gnu.org/software/coreutils/manual/html_node/chmod-invocation.html
+abschnitte:
+  - titel: SSH-Schlüssel
+    inhalt: |
+      Mit `ssh-keygen` erzeugst du ein **Schlüsselpaar**. Ohne Angaben legt es einen **Ed25519**-Schlüssel an
+      (bei neueren OpenSSH-Versionen ist das der Standard, bei älteren war es ein anderer Typ).
+
+      - Der **private** Schlüssel bleibt geheim und wird mit einer **Passphrase** geschützt.
+      - Der **öffentliche** Schlüssel (Endung `.pub`) muss nicht geheim bleiben. Du trägst ihn in
+        `~/.ssh/authorized_keys` auf dem Server ein, auf dem du dich anmelden willst.
+      - Eine verlorene Passphrase lässt sich nicht wiederherstellen. Dann brauchst du ein neues Schlüsselpaar.
+
+      **Bild (eigene Idee):** Das Schloss (öffentlicher Schlüssel) hängt an vielen Türen. Der Schlüssel (privat)
+      bleibt in deiner Tasche.
+    quiz:
+      - frage: "Welchen Schlüssel trägst du in `authorized_keys` auf dem Server ein?"
+        erklaerung: "Den öffentlichen Schlüssel."
+        antworten:
+          - { text: "Den privaten Schlüssel.", richtig: false }
+          - { text: "Die Passphrase.", richtig: false }
+          - { text: "Den öffentlichen Schlüssel.", richtig: true }
+      - frage: "Welchen Schlüsseltyp erzeugt `ssh-keygen` ohne Angaben?"
+        erklaerung: "Ed25519."
+        antworten:
+          - { text: "Ed25519", richtig: true }
+          - { text: "Keinen, es verlangt immer einen Typ.", richtig: false }
+          - { text: "Ein Passwort im Klartext.", richtig: false }
+  - titel: sshd absichern und Fail2ban
+    inhalt: |
+      Wichtige Einstellungen in `sshd_config` (Standardwerte laut Handbuch):
+
+      - `PasswordAuthentication`: Passwort-Anmeldung. Standard `yes`.
+      - `PubkeyAuthentication`: Anmeldung per Schlüssel. Standard `yes`.
+      - `PermitRootLogin`: erlaubt `yes`, `prohibit-password`, `forced-commands-only` oder `no`. Standard
+        `prohibit-password`.
+      - `Port`: Standard `22`.
+
+      Gängige Härtung (eigene Empfehlung, passend zur Doku): Schlüssel nutzen, `PasswordAuthentication no`
+      setzen und Root-Login verbieten. **Vorsicht:** Teste, dass dein Schlüssel funktioniert, bevor du die
+      Passwort-Anmeldung abschaltest, sonst sperrst du dich aus.
+
+      **Fail2Ban** liest Log-Dateien (zum Beispiel für sshd) und sperrt IP-Adressen mit zu vielen
+      Fehlversuchen über Firewall-Regeln für eine einstellbare Zeit. Laut README beseitigt es **nicht** das
+      Risiko schwacher Anmeldung: Empfohlen werden Zwei-Faktor- oder Schlüssel-Anmeldung.
+    quiz:
+      - frage: "Was macht Fail2Ban?"
+        erklaerung: "Es sperrt IP-Adressen mit zu vielen Fehlversuchen über Firewall-Regeln."
+        antworten:
+          - { text: "Es verschlüsselt die Festplatte.", richtig: false }
+          - { text: "Es installiert automatisch Updates.", richtig: false }
+          - { text: "Es sperrt IP-Adressen mit zu vielen Fehlversuchen über Firewall-Regeln.", richtig: true }
+      - frage: "Was ist vor dem Abschalten der Passwort-Anmeldung wichtig?"
+        erklaerung: "Testen, dass die Anmeldung per Schlüssel funktioniert, damit man sich nicht aussperrt."
+        antworten:
+          - { text: "Testen, dass die Anmeldung per Schlüssel funktioniert, damit man sich nicht aussperrt.", richtig: true }
+          - { text: "Den Server ausschalten.", richtig: false }
+          - { text: "Den Port auf 0 stellen.", richtig: false }
+  - titel: Dateirechte mit chmod
+    inhalt: |
+      `chmod` ändert die **Zugriffsrechte** von Dateien. Nur die besitzende Person (oder ein Prozess mit
+      passenden Rechten) darf das. Die Seite im GNU-Handbuch zeigt unter anderem diese Beispiele:
+
+      ```bash
+      chmod a=r,u+w foo      # alle dürfen lesen, der Besitzer zusätzlich schreiben
+      chmod ug+x foo         # Besitzer und Gruppe dürfen ausführen
+      chmod 644 foo          # Besitzer lesen und schreiben, alle anderen nur lesen
+      ```
+
+      Option `-R` wirkt rekursiv auf Verzeichnisse und ihren Inhalt.
+
+      **Eigene Regel**, die zu OpenSSH passt: Der private Schlüssel soll nur für dich lesbar sein. Wie die Ziffern
+      von `644` zusammengesetzt sind, erklärt die verlinkte Seite nicht. Das schlägst du bei Bedarf in der
+      Handbuchseite zu den Dateirechten nach. Konkrete Ziffern musst du hier nicht auswendig kennen.
+    quiz:
+      - frage: "Wer darf laut GNU-Handbuch die Rechte einer Datei mit `chmod` ändern?"
+        erklaerung: "Die besitzende Person oder ein Prozess mit passenden Rechten."
+        antworten:
+          - { text: "Jeder, der sich im Netz befindet.", richtig: false }
+          - { text: "Die besitzende Person oder ein Prozess mit passenden Rechten.", richtig: true }
+          - { text: "Nur der Webbrowser.", richtig: false }
+      - frage: "Was bewirkt `chmod ug+x foo`?"
+        erklaerung: "Besitzer und Gruppe dürfen die Datei ausführen."
+        antworten:
+          - { text: "Besitzer und Gruppe dürfen die Datei löschen.", richtig: false }
+          - { text: "Alle verlieren alle Rechte.", richtig: false }
+          - { text: "Besitzer und Gruppe dürfen die Datei ausführen.", richtig: true }
+test:
+  zeitlimit_minuten: 10
+  fragen:
+    - frage: "Welcher Wert ist laut Handbuch der Standard für `PermitRootLogin`?"
+      erklaerung: "prohibit-password."
+      antworten:
+        - { text: "yes", richtig: false }
+        - { text: "prohibit-password", richtig: true }
+        - { text: "no", richtig: false }
+    - frage: "Welcher Port ist der Standard von sshd?"
+      erklaerung: "22."
+      antworten:
+        - { text: "22", richtig: true }
+        - { text: "80", richtig: false }
+        - { text: "443", richtig: false }
+    - frage: "Welcher Schlüssel darf öffentlich sein?"
+      erklaerung: "Der öffentliche Schlüssel mit der Endung .pub."
+      antworten:
+        - { text: "Der private Schlüssel.", richtig: false }
+        - { text: "Der öffentliche Schlüssel mit der Endung .pub.", richtig: true }
+        - { text: "Die Passphrase.", richtig: false }
+    - frage: "Welche Grenze nennt das Fail2Ban-README?"
+      erklaerung: "Es beseitigt das Risiko schwacher Anmeldung nicht."
+      antworten:
+        - { text: "Es funktioniert nur unter Windows.", richtig: false }
+        - { text: "Es kann nur Webseiten sperren.", richtig: false }
+        - { text: "Es beseitigt das Risiko schwacher Anmeldung nicht.", richtig: true }
+    - frage: "Was bedeutet die Option `-R` bei `chmod`?"
+      erklaerung: "Die Änderung wirkt auf Verzeichnisse und ihren Inhalt."
+      antworten:
+        - { text: "Die Änderung wirkt auf Verzeichnisse und ihren Inhalt.", richtig: true }
+        - { text: "Die Datei wird gelöscht.", richtig: false }
+        - { text: "Die Rechte werden nur angezeigt.", richtig: false }

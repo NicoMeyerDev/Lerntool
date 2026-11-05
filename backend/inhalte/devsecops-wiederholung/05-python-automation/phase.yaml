@@ -1,0 +1,27 @@
+titel: Python für Automation
+beschreibung: Mit Python Dateien verwalten (pathlib), Programme aufrufen (subprocess) und Skripte mit Parametern bauen (argparse). Du erinnerst dich, wie du Routineaufgaben sicher automatisierst.
+projekt:
+  titel: Aufräum-Skript schreiben
+  beschreibung: |
+    Du schreibst ein kleines Skript, das Dateien in einem Ordner nach Endung sortiert, und führst es nur in einem selbst angelegten Test-Ordner aus.
+
+    **Aufgabe:** Schreibe das Skript (nur in einem eigenen Test-Ordner mit selbst angelegten Dateien). Es nimmt den
+    Ordner per `argparse` als Argument, listet mit `pathlib` die Dateien auf, legt je Endung einen Unterordner an
+    und verschiebt die Dateien. Ein Schalter `--trocken` zeigt nur an, was passieren würde. Zum Schluss ruft es mit
+    `subprocess.run` einen harmlosen Befehl (zum Beispiel `git --version`) auf und gibt das Ergebnis aus.
+
+    **Regeln:**
+
+    - `subprocess.run` bekommt die Argumente als **Liste**, nie `shell=True` mit Nutzereingaben.
+    - Das Skript löscht nichts, überschreibt keine vorhandenen Zieldateien und arbeitet nur im übergebenen Test-Ordner.
+    - Fehler werden gezielt abgefangen (zum Beispiel `CalledProcessError`) und mit einer Meldung ausgegeben.
+
+    **Tipp:** Starte immer zuerst mit `--trocken`.
+    Quellen: [pathlib](https://docs.python.org/3.13/library/pathlib.html), [subprocess](https://docs.python.org/3.13/library/subprocess.html) und [argparse](https://docs.python.org/3.13/library/argparse.html).
+  punkte:
+    - Der Ordner wird per `argparse` übergeben, und `--help` funktioniert.
+    - Die Dateien werden mit `pathlib` aufgelistet und mit `mkdir(parents=True, exist_ok=True)` einsortiert.
+    - Der Schalter `--trocken` ändert nichts und zeigt nur an.
+    - '`subprocess.run` nutzt eine Argumentliste, kein `shell=True`, und prüft Fehler.'
+    - Das Skript löscht nichts, prüft vor dem Verschieben mit `exists()`, ob die Zieldatei schon da ist, und überspringt sie dann.
+    - Das Skript bricht mit einer Meldung ab, wenn der übergebene Ordner nicht existiert.
