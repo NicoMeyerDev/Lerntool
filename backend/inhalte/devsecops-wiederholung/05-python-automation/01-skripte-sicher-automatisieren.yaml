@@ -1,0 +1,148 @@
+titel: Skripte sicher automatisieren
+zusammenfassung: Du erinnerst dich an pathlib für Pfade, subprocess.run für externe Programme (und warum shell=True gefährlich ist) und argparse für Kommandozeilen-Argumente.
+quellen:
+  - titel: Python 3.13 – pathlib
+    url: https://docs.python.org/3.13/library/pathlib.html
+  - titel: Python 3.13 – subprocess
+    url: https://docs.python.org/3.13/library/subprocess.html
+  - titel: Python 3.13 – argparse
+    url: https://docs.python.org/3.13/library/argparse.html
+abschnitte:
+  - titel: Pfade mit pathlib
+    inhalt: |
+      Mit `pathlib.Path` arbeitest du mit Pfaden als Objekte, unabhängig vom Betriebssystem.
+
+      ```python
+      from pathlib import Path
+
+      ziel = Path('daten') / 'berichte' / 'april.txt'   # / verbindet Teile
+      ziel.parent.mkdir(parents=True, exist_ok=True)     # Ordner anlegen
+      ziel.write_text('Inhalt', encoding='utf-8')
+      print(ziel.exists(), ziel.read_text(encoding='utf-8'))
+      for datei in sorted(Path('daten').glob('*.txt')):  # nur im Ordner
+          print(datei)
+      ```
+
+      - `/` setzt Pfade zusammen. Ist die rechte Seite ein absoluter Pfad, ersetzt er die linke.
+      - `glob()` sucht im Ordner, `rglob()` auch in Unterordnern. Die Reihenfolge ist nicht festgelegt,
+        sortiere bei Bedarf.
+      - `mkdir(parents=True, exist_ok=True)` legt fehlende Elternordner an und wirft keinen Fehler, wenn der
+        Ordner schon da ist.
+      - `write_text()` überschreibt eine vorhandene Datei.
+    quiz:
+      - frage: "Was bewirkt `mkdir(parents=True, exist_ok=True)`?"
+        erklaerung: "Es legt fehlende Elternordner an und wirft keinen Fehler, wenn der Ordner schon existiert."
+        antworten:
+          - { text: "Es löscht den Ordner, falls er existiert.", richtig: false }
+          - { text: "Es legt fehlende Elternordner an und wirft keinen Fehler, wenn der Ordner schon existiert.", richtig: true }
+          - { text: "Es verschlüsselt den Ordnerinhalt.", richtig: false }
+      - frage: "Welche Methode durchsucht Unterordner mit?"
+        erklaerung: "rglob()."
+        antworten:
+          - { text: "iterdir()", richtig: false }
+          - { text: "exists()", richtig: false }
+          - { text: "rglob()", richtig: true }
+  - titel: Programme aufrufen mit subprocess
+    inhalt: |
+      Für externe Programme empfiehlt die Doku `subprocess.run()`.
+
+      ```python
+      import subprocess
+
+      try:
+          ergebnis = subprocess.run(
+              ['git', '--version'],   # Liste statt String
+              capture_output=True,    # Ausgabe einsammeln
+              text=True,              # Text statt Bytes
+              check=True,             # Fehler als Ausnahme
+              timeout=10,             # Sekunden
+          )
+          print(ergebnis.stdout)
+      except subprocess.CalledProcessError as fehler:
+          print(f'Fehler mit Code {fehler.returncode}')
+      except subprocess.TimeoutExpired:
+          print('Zeitüberschreitung')
+      ```
+
+      **Sicherheit:** Gib die Argumente als **Liste** an. Dann kümmert sich Python um Anführungszeichen und
+      Leerzeichen. Mit `shell=True` interpretiert die Shell Sonderzeichen. Setzt du dort Nutzereingaben ein,
+      entsteht eine **Shell-Injection**. Vermeide `shell=True` mit nicht vertrauenswürdigen Eingaben.
+    quiz:
+      - frage: "Warum übergibt man Argumente an `subprocess.run` als Liste?"
+        erklaerung: "Python übernimmt dann Anführungszeichen und Leerzeichen und schützt so vor Shell-Injection."
+        antworten:
+          - { text: "Weil Strings in Python verboten sind.", richtig: false }
+          - { text: "Weil Listen immer schneller sind.", richtig: false }
+          - { text: "Python übernimmt dann Anführungszeichen und Leerzeichen und schützt so vor Shell-Injection.", richtig: true }
+      - frage: "Was bewirkt `check=True`?"
+        erklaerung: "Ein Rückgabecode ungleich 0 löst eine CalledProcessError-Ausnahme aus."
+        antworten:
+          - { text: "Ein Rückgabecode ungleich 0 löst eine CalledProcessError-Ausnahme aus.", richtig: true }
+          - { text: "Das Programm läuft immer im Hintergrund.", richtig: false }
+          - { text: "Die Ausgabe wird verschlüsselt.", richtig: false }
+  - titel: Argumente mit argparse
+    inhalt: |
+      `argparse` baut eine Kommandozeile mit Hilfe-Text:
+
+      ```python
+      import argparse
+
+      parser = argparse.ArgumentParser(description='Räumt einen Ordner auf.')
+      parser.add_argument('ordner')                                  # Pflicht
+      parser.add_argument('-t', '--trocken', action='store_true',
+                          help='nur anzeigen, nichts ändern')        # Schalter
+      args = parser.parse_args()
+      ```
+
+      - Ein Name ohne Bindestrich ist ein **Positionsargument** (Pflicht). Mit Bindestrichen ist es eine **Option**.
+      - `type=int` wandelt den Text in eine Zahl um, `default` legt einen Standardwert fest.
+      - `-h` und `--help` gibt es automatisch.
+      - Bei ungültiger Eingabe zeigt `parse_args()` die Verwendung und beendet das Programm mit Status 2.
+      - Der Schalter `store_true` ist hier eine eigene Ergänzung zum Beispiel: Die Doku erklärt `action` in der
+        Argument-Referenz. Lies dort nach.
+    quiz:
+      - frage: "Woran erkennt argparse ein Positionsargument?"
+        erklaerung: "Der Name hat keinen Bindestrich am Anfang."
+        antworten:
+          - { text: "Der Name hat zwei Unterstriche.", richtig: false }
+          - { text: "Es steht immer in Großbuchstaben.", richtig: false }
+          - { text: "Der Name hat keinen Bindestrich am Anfang.", richtig: true }
+      - frage: "Was passiert bei ungültiger Eingabe in `parse_args()`?"
+        erklaerung: "Eine Hilfe zur Verwendung wird angezeigt und das Programm endet mit Status 2."
+        antworten:
+          - { text: "Eine Hilfe zur Verwendung wird angezeigt und das Programm endet mit Status 2.", richtig: true }
+          - { text: "Das Programm löscht die Eingabe.", richtig: false }
+          - { text: "Das Programm läuft mit Zufallswerten weiter.", richtig: false }
+test:
+  zeitlimit_minuten: 10
+  fragen:
+    - frage: "Welchen Operator nutzt pathlib, um Pfadteile zu verbinden?"
+      erklaerung: "Den Schrägstrich /."
+      antworten:
+        - { text: "Das Pluszeichen +", richtig: false }
+        - { text: "Den Schrägstrich /", richtig: true }
+        - { text: "Das Prozentzeichen %", richtig: false }
+    - frage: "Was liefert `subprocess.run` zurück?"
+      erklaerung: "Ein CompletedProcess-Objekt mit Rückgabecode und gesammelter Ausgabe."
+      antworten:
+        - { text: "Ein CompletedProcess-Objekt mit Rückgabecode und gesammelter Ausgabe.", richtig: true }
+        - { text: "Nur eine Zahl.", richtig: false }
+        - { text: "Immer None.", richtig: false }
+    - frage: "Was ist das Risiko von `shell=True` mit Nutzereingaben?"
+      erklaerung: "Die Shell interpretiert Sonderzeichen, es kann Shell-Injection entstehen."
+      antworten:
+        - { text: "Das Programm wird zu langsam.", richtig: false }
+        - { text: "Die Shell interpretiert Sonderzeichen, es kann Shell-Injection entstehen.", richtig: true }
+        - { text: "Es gibt kein Risiko.", richtig: false }
+    - frage: "Was passiert bei einem Timeout in `subprocess.run(..., timeout=10)`?"
+      erklaerung: "Der Prozess wird beendet und TimeoutExpired wird ausgelöst."
+      antworten:
+        - { text: "Der Prozess läuft einfach weiter.", richtig: false }
+        - { text: "Der Prozess wird beendet und TimeoutExpired wird ausgelöst.", richtig: true }
+        - { text: "Der Rechner startet neu.", richtig: false }
+    - frage: "Wie lautet der Aufruf für die automatische Hilfe eines argparse-Skripts?"
+      erklaerung: "-h oder --help."
+      antworten:
+        - { text: "-x", richtig: false }
+        - { text: "--hilfe-zeigen", richtig: false }
+        - { text: "-h oder --help", richtig: true }

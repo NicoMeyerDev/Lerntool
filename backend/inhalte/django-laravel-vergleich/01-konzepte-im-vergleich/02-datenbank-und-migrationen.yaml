@@ -1,0 +1,100 @@
+titel: Datenbank, Modelle und Migrationen
+zusammenfassung: Du erinnerst dich, wie Django-Modelle und Laravel-Eloquent-Modelle Tabellen abbilden und wie Migrationen das Schema versionieren.
+quellen:
+  - titel: Django 5.2 – Migrationen
+    url: https://docs.djangoproject.com/en/5.2/topics/migrations/
+  - titel: Django 5.2 – Modelle
+    url: https://docs.djangoproject.com/en/5.2/topics/db/models/
+  - titel: Laravel 13.x – Migrationen
+    url: https://laravel.com/docs/13.x/migrations
+  - titel: Laravel 13.x – Eloquent
+    url: https://laravel.com/docs/13.x/eloquent
+abschnitte:
+  - titel: Modelle als Brücke zur Tabelle
+    inhalt: |
+      Beide Frameworks nutzen ein **ORM**: Eine Klasse steht für eine Tabelle, ein Objekt für eine Zeile.
+
+      | Aufgabe | Django | Laravel |
+      | --- | --- | --- |
+      | Modell | Klasse in `models.py` (erbt von `models.Model`) | Eloquent-Klasse (erbt von `Model`) |
+      | Abfrage | `Book.objects.filter(...)` (QuerySet) | `Book::where(...)->get()` |
+      | Beziehungen | `ForeignKey`, `ManyToManyField` | `belongsTo`, `hasMany`, `belongsToMany` |
+
+      **Gemeinsame Idee:** Du schreibst Python- oder PHP-Code statt SQL. Das ORM erzeugt die Abfrage und bindet
+      Werte als Parameter, was hilft, SQL-Injection zu vermeiden.
+
+      **Unterschied beim Aufbau:** In Django beschreibst du die Felder im Modell. In Laravel beschreibst du die
+      Spalten in der Migration, das Eloquent-Modell bleibt schlank.
+    quiz:
+      - frage: "Wofür steht bei einem ORM ein Objekt der Modell-Klasse?"
+        erklaerung: "Für eine Zeile der Tabelle."
+        antworten:
+          - { text: "Für die ganze Datenbank.", richtig: false }
+          - { text: "Für eine Zeile der Tabelle.", richtig: true }
+          - { text: "Für einen Webserver.", richtig: false }
+      - frage: "Wo legst du in Laravel die Spalten einer Tabelle fest?"
+        erklaerung: "In der Migration."
+        antworten:
+          - { text: "In der Migration.", richtig: true }
+          - { text: "In der Datei .gitignore.", richtig: false }
+          - { text: "In der Route.", richtig: false }
+  - titel: Migrationen versionieren das Schema
+    inhalt: |
+      Eine **Migration** ist eine versionierte Änderung am Datenbankschema. Sie liegt im Repository und lässt sich auf
+      jedem Rechner gleich ausführen.
+
+      | Schritt | Django | Laravel |
+      | --- | --- | --- |
+      | Migration erzeugen | `python manage.py makemigrations` (aus Modelländerungen) | `php artisan make:migration` (du schreibst sie) |
+      | Migration anwenden | `python manage.py migrate` | `php artisan migrate` |
+
+      **Gemeinsame Idee:** Das Schema ändert sich nur über Migrationen, nie von Hand in der Produktivdatenbank.
+
+      **Vorsicht:** Eine Migration kann Daten verändern oder löschen. Prüfe sie vor dem Anwenden, besonders
+      auf echten Daten, und sichere sie vorher.
+    quiz:
+      - frage: "Welcher Django-Befehl erzeugt Migrationen aus Modelländerungen?"
+        erklaerung: "makemigrations."
+        antworten:
+          - { text: "python manage.py runserver", richtig: false }
+          - { text: "python manage.py makemigrations", richtig: true }
+          - { text: "python manage.py check", richtig: false }
+      - frage: "Warum gehören Migrationen ins Repository?"
+        erklaerung: "Damit das Schema auf jedem Rechner gleich aufgebaut werden kann."
+        antworten:
+          - { text: "Damit sie niemand lesen kann.", richtig: false }
+          - { text: "Damit das Schema auf jedem Rechner gleich aufgebaut werden kann.", richtig: true }
+          - { text: "Damit die Datenbank schneller wird.", richtig: false }
+test:
+  zeitlimit_minuten: 10
+  fragen:
+    - frage: "Welcher Laravel-Befehl wendet Migrationen an?"
+      erklaerung: "php artisan migrate."
+      antworten:
+        - { text: "php artisan migrate", richtig: true }
+        - { text: "php artisan serve", richtig: false }
+        - { text: "php artisan down", richtig: false }
+    - frage: "Welche Django-Beziehung bildet eine Many-to-One-Verbindung ab?"
+      erklaerung: "ForeignKey."
+      antworten:
+        - { text: "CharField", richtig: false }
+        - { text: "ForeignKey", richtig: true }
+        - { text: "DateField", richtig: false }
+    - frage: "Was ist ein Unterschied beim Aufbau von Modell und Spalten?"
+      erklaerung: "Django beschreibt Felder im Modell, Laravel beschreibt Spalten in der Migration."
+      antworten:
+        - { text: "Django beschreibt Felder im Modell, Laravel beschreibt Spalten in der Migration.", richtig: true }
+        - { text: "Beide kennen keine Migrationen.", richtig: false }
+        - { text: "In beiden schreibt man nur SQL von Hand.", richtig: false }
+    - frage: "Worauf solltest du vor dem Anwenden einer Migration auf echten Daten achten?"
+      erklaerung: "Sie kann Daten verändern oder löschen, deshalb prüfen und vorher sichern."
+      antworten:
+        - { text: "Auf nichts, Migrationen sind immer harmlos.", richtig: false }
+        - { text: "Sie kann Daten verändern oder löschen, deshalb prüfen und vorher sichern.", richtig: true }
+        - { text: "Nur auf die Farbe der Konsole.", richtig: false }
+    - frage: "Was ist die gemeinsame Idee von Django-Modellen und Eloquent-Modellen?"
+      erklaerung: "Eine Klasse steht für eine Tabelle, ein Objekt für eine Zeile."
+      antworten:
+        - { text: "Eine Klasse steht für eine Tabelle, ein Objekt für eine Zeile.", richtig: true }
+        - { text: "Eine Klasse steht für einen Browser-Tab.", richtig: false }
+        - { text: "Ein Objekt steht für eine ganze Datenbank.", richtig: false }

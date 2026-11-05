@@ -285,7 +285,7 @@ backend/
   config/          Django-Konfiguration: settings.py, env.py (Umgebungsvariablen), urls.py
   core/            Health-Endpunkt (Views, Services, URLs), Anmeldung (auth_views.py, anmeldung.py)
   lernen/          Lerninhalte und Fortschritt: Modelle, Migrationen, API (serializers.py, services.py, dashboard.py, wochenplan.py, views.py, urls.py, inhalte_import.py, management/commands/import_inhalte.py)
-  inhalte/         Lerninhalte als YAML-Dateien (thema.yaml, phase.yaml, Lektionen; PHP/Laravel: Phase 1 PHP-Basics, Phase 2 Laravel-Kern; AI Engineering: Phase 1 Grundlagen; Englisch: Phase 1 ab A2; Backend-Wiederholung: Django, Datenbanken, DRF, Authentifizierung, DevOps, Monitoring; Teil 1 und 2); Import mit `python manage.py import_inhalte`
+  inhalte/         Lerninhalte als YAML-Dateien (thema.yaml, phase.yaml, Lektionen; PHP/Laravel: Phase 1 PHP-Basics, Phase 2 Laravel-Kern; AI Engineering: Phase 1 Grundlagen; Englisch: Phase 1 ab A2; Backend-Wiederholung: Django, Datenbanken, DRF, Authentifizierung, DevOps, Monitoring, HTTP, Python, erweiterte Konzepte, SQL; Teil 1 bis 3, alle zehn Themen; Django und Laravel im Vergleich: Anmeldung, Datenbank, API, Tests, Docker, CI/CD; DevSecOps-Wiederholung: Sicherheit und Recht, Web-Schwachstellen, Passwörter, Netzwerke, Python-Automation, Cloud, DevSecOps-Praxis, Datenschutz); Import mit `python manage.py import_inhalte`
   tests/           pytest-Tests, gemeinsame Fixtures (conftest.py) und Testdaten-Fabrik (fabrik.py)
   manage.py        Django-Verwaltungsbefehle
   requirements.txt Python-Abhängigkeiten

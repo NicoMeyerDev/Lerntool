@@ -1,0 +1,120 @@
+titel: Die OWASP Top 10 (2025)
+zusammenfassung: Du erinnerst dich, was die OWASP Top 10 sind, welche zehn Kategorien die Ausgabe 2025 nennt und welche davon für eine Django-App besonders wichtig sind.
+quellen:
+  - titel: OWASP Top 10:2025
+    url: https://top10.owasp.org/2025
+  - titel: Django 5.2 – Sicherheit in Django
+    url: https://docs.djangoproject.com/en/5.2/topics/security/
+abschnitte:
+  - titel: Was die OWASP Top 10 sind
+    inhalt: |
+      Die **OWASP Top 10** sind eine Liste der zehn wichtigsten Risiko-Kategorien für Web-Anwendungen.
+      OWASP ist eine offene Gemeinschaft rund um Anwendungssicherheit. Die aktuelle Ausgabe ist
+      **OWASP Top 10:2025**.
+
+      Die Liste ist ein **Überblick**, keine vollständige Prüfliste. Sie hilft, sich auf die häufigsten
+      und folgenreichsten Fehler zu konzentrieren.
+
+      **Bild (eigene Idee):** Wie die „Top-Gründe, warum ein Haus nicht dicht ist“: Du prüfst erst die
+      großen Lecks, bevor du Kleinigkeiten angehst.
+    quiz:
+      - frage: "Wofür sind die OWASP Top 10 gedacht?"
+        erklaerung: "Als Überblick über die wichtigsten Risiko-Kategorien für Web-Anwendungen."
+        antworten:
+          - { text: "Als vollständige Liste aller Programmierfehler der Welt.", richtig: false }
+          - { text: "Als Anleitung, wie man fremde Server angreift.", richtig: false }
+          - { text: "Als Überblick über die wichtigsten Risiko-Kategorien für Web-Anwendungen.", richtig: true }
+      - frage: "Welche Ausgabe der Liste behandelt diese Lektion?"
+        erklaerung: "OWASP Top 10:2025."
+        antworten:
+          - { text: "OWASP Top 10:2025", richtig: true }
+          - { text: "OWASP Top 10:2010", richtig: false }
+          - { text: "OWASP Top 100", richtig: false }
+  - titel: Die zehn Kategorien 2025
+    inhalt: |
+      Die Ausgabe 2025 nennt diese Kategorien:
+
+      1. **A01 Broken Access Control:** Zugriffsrechte werden nicht richtig durchgesetzt. Auch CSRF ordnet OWASP hier ein.
+      2. **A02 Security Misconfiguration:** Falsche oder unsichere Einstellungen.
+      3. **A03 Software Supply Chain Failures:** Probleme in Abhängigkeiten und der Lieferkette.
+      4. **A04 Cryptographic Failures:** Fehler bei Verschlüsselung und Schlüsseln.
+      5. **A05 Injection:** Eingaben werden als Befehl ausgeführt (zum Beispiel SQL). Auch Cross-Site-Scripting (XSS) ordnet OWASP hier ein.
+      6. **A06 Insecure Design:** Sicherheit wurde im Entwurf nicht bedacht.
+      7. **A07 Authentication Failures:** Fehler bei der Anmeldung.
+      8. **A08 Software or Data Integrity Failures:** Code und Daten werden nicht auf Unversehrtheit geprüft.
+      9. **A09 Security Logging and Alerting Failures:** Zu wenig Protokolle und Alarme.
+      10. **A10 Mishandling of Exceptional Conditions:** Fehler- und Ausnahmefälle werden schlecht behandelt.
+
+      Merke dir nicht die Reihenfolge, sondern die **Ideen**. Die Kurzbeschreibungen oben sind in eigenen Worten
+      zusammengefasst.
+    quiz:
+      - frage: "Welche Kategorie steht in der Ausgabe 2025 an erster Stelle?"
+        erklaerung: "A01 Broken Access Control."
+        antworten:
+          - { text: "A05 Injection", richtig: false }
+          - { text: "A01 Broken Access Control", richtig: true }
+          - { text: "A09 Security Logging and Alerting Failures", richtig: false }
+      - frage: "Wofür steht die Kategorie A03 der Ausgabe 2025?"
+        erklaerung: "Software Supply Chain Failures, also Probleme in Abhängigkeiten und der Lieferkette."
+        antworten:
+          - { text: "Zu schwache Passwörter bei der Anmeldung.", richtig: false }
+          - { text: "Software Supply Chain Failures, also Probleme in Abhängigkeiten und der Lieferkette.", richtig: true }
+          - { text: "Falsch eingestellte Server-Zeitzonen.", richtig: false }
+  - titel: Was Django schon für dich tut
+    inhalt: |
+      Django schützt laut Doku vor mehreren dieser Risiken, wenn du seine Werkzeuge nutzt:
+
+      - **Templates** schreiben gefährliche Zeichen um (Escaping) und verhindern so die meisten XSS-Angriffe.
+      - **QuerySets** erzeugen parametrisierte Abfragen und schützen vor SQL-Injection.
+      - **`CsrfViewMiddleware`** verlangt bei jedem POST ein geheimes Token pro Nutzer (CSRF-Schutz).
+      - **`ALLOWED_HOSTS`** prüft den Host-Header.
+      - Einstellungen wie `SECURE_SSL_REDIRECT`, sichere Cookies und HSTS erzwingen HTTPS.
+
+      Der Schutz greift nicht, wenn du ihn umgehst: `|safe`, `mark_safe`, `csrf_exempt` und rohes SQL
+      sind die typischen Stellen für Fehler.
+    quiz:
+      - frage: "Was macht `CsrfViewMiddleware` bei einem POST?"
+        erklaerung: "Sie verlangt ein geheimes Token, damit fremde Seiten das Formular nicht unterschieben können."
+        antworten:
+          - { text: "Sie verlangt ein geheimes Token, damit fremde Seiten das Formular nicht unterschieben können.", richtig: true }
+          - { text: "Sie speichert das Passwort im Klartext.", richtig: false }
+          - { text: "Sie leitet alle Nutzer auf die Startseite.", richtig: false }
+      - frage: "Welche Stelle ist ein typischer Fehler, der den Escaping-Schutz aushebelt?"
+        erklaerung: "Die Ausgabe mit dem Filter safe oder mark_safe."
+        antworten:
+          - { text: "Die Nutzung von QuerySets.", richtig: false }
+          - { text: "Die Ausgabe mit dem Filter safe oder mark_safe.", richtig: true }
+          - { text: "Das Setzen von ALLOWED_HOSTS.", richtig: false }
+test:
+  zeitlimit_minuten: 10
+  fragen:
+    - frage: "Zu welcher Kategorie gehört SQL-Injection?"
+      erklaerung: "A05 Injection."
+      antworten:
+        - { text: "A04 Cryptographic Failures", richtig: false }
+        - { text: "A02 Security Misconfiguration", richtig: false }
+        - { text: "A05 Injection", richtig: true }
+    - frage: "Worum geht es bei Broken Access Control?"
+      erklaerung: "Zugriffsrechte werden nicht richtig durchgesetzt."
+      antworten:
+        - { text: "Das Passwort ist zu kurz.", richtig: false }
+        - { text: "Der Server ist zu langsam.", richtig: false }
+        - { text: "Zugriffsrechte werden nicht richtig durchgesetzt.", richtig: true }
+    - frage: "Welche Einstellung prüft in Django den Host-Header?"
+      erklaerung: "ALLOWED_HOSTS."
+      antworten:
+        - { text: "ALLOWED_HOSTS", richtig: true }
+        - { text: "STATIC_URL", richtig: false }
+        - { text: "TIME_ZONE", richtig: false }
+    - frage: "Warum sind die Top 10 keine vollständige Prüfliste?"
+      erklaerung: "Sie sind ein Überblick über die wichtigsten Risiko-Kategorien und decken nicht alle Fehler ab."
+      antworten:
+        - { text: "Sie sind ein Überblick über die wichtigsten Risiko-Kategorien und decken nicht alle Fehler ab.", richtig: true }
+        - { text: "Sie sind nur für Mobil-Apps gedacht.", richtig: false }
+        - { text: "Sie wurden nie aktualisiert.", richtig: false }
+    - frage: "Was bedeutet Supply Chain Failures in der Kategorie A03?"
+      erklaerung: "Probleme in Abhängigkeiten und der Lieferkette der Software."
+      antworten:
+        - { text: "Lieferprobleme beim Versand von Hardware an Kunden.", richtig: false }
+        - { text: "Probleme in Abhängigkeiten und der Lieferkette der Software.", richtig: true }
+        - { text: "Zu langsame Internetleitungen.", richtig: false }

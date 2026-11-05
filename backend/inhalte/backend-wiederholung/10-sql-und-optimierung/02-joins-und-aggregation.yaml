@@ -1,0 +1,114 @@
+titel: Joins und Aggregation
+zusammenfassung: Du erinnerst dich an INNER JOIN und LEFT JOIN, an Aggregatfunktionen, GROUP BY und den Unterschied zwischen WHERE und HAVING.
+quellen:
+  - titel: PostgreSQL-Dokumentation – Joins zwischen Tabellen
+    url: https://www.postgresql.org/docs/current/tutorial-join.html
+  - titel: PostgreSQL-Dokumentation – Aggregatfunktionen
+    url: https://www.postgresql.org/docs/current/tutorial-agg.html
+abschnitte:
+  - titel: Tabellen verbinden
+    inhalt: |
+      Ein **Join** verbindet Zeilen aus zwei Tabellen anhand einer Bedingung.
+
+      - **Inner Join:** liefert nur Zeilenpaare, bei denen die Bedingung passt. Zeilen ohne Partner fallen weg.
+
+        ```sql
+        SELECT * FROM weather JOIN cities ON weather.city = cities.name;
+        ```
+
+      - **Left Outer Join:** liefert jede Zeile der **linken** Tabelle mindestens einmal. Ohne Partner stehen
+        in den Spalten der rechten Tabelle `NULL`-Werte.
+
+        ```sql
+        SELECT * FROM weather LEFT OUTER JOIN cities ON weather.city = cities.name;
+        ```
+
+      Die Doku rät, Spalten bei gleichen Namen mit dem Tabellennamen zu versehen (`weather.city`).
+      Die ausdrückliche Schreibweise `JOIN ... ON` ist klarer als die ältere mit Komma und `WHERE`.
+    quiz:
+      - frage: "Was passiert bei einem Inner Join mit Zeilen ohne passenden Partner?"
+        erklaerung: "Sie fallen aus dem Ergebnis."
+        antworten:
+          - { text: "Sie fallen aus dem Ergebnis.", richtig: true }
+          - { text: "Sie werden mit NULL aufgefüllt.", richtig: false }
+          - { text: "Sie werden gelöscht.", richtig: false }
+      - frage: "Was liefert ein Left Outer Join zusätzlich zum Inner Join?"
+        erklaerung: "Die Zeilen der linken Tabelle ohne Partner, mit NULL in den Spalten der rechten Tabelle."
+        antworten:
+          - { text: "Nichts, er ist identisch.", richtig: false }
+          - { text: "Alle Zeilen der rechten Tabelle.", richtig: false }
+          - { text: "Die Zeilen der linken Tabelle ohne Partner, mit NULL in den Spalten der rechten Tabelle.", richtig: true }
+  - titel: Aggregatfunktionen, GROUP BY und HAVING
+    inhalt: |
+      **Aggregatfunktionen** berechnen aus vielen Zeilen einen Wert: `count`, `sum`, `avg`, `max`, `min`.
+
+      ```sql
+      SELECT max(temp_lo) FROM weather;
+      ```
+
+      `GROUP BY` bildet Gruppen und liefert pro Gruppe eine Zeile:
+
+      ```sql
+      SELECT city, count(*), max(temp_lo) FROM weather GROUP BY city;
+      ```
+
+      **WHERE oder HAVING?**
+
+      - `WHERE` filtert **vor** dem Gruppieren, einzelne Zeilen. Aggregatfunktionen sind dort nicht erlaubt.
+      - `HAVING` filtert **nach** dem Gruppieren, ganze Gruppen, meist mit Aggregatfunktionen.
+
+      ```sql
+      SELECT city, count(*), max(temp_lo)
+        FROM weather
+       GROUP BY city
+      HAVING max(temp_lo) < 40;
+      ```
+
+      Bedingungen ohne Aggregat gehören laut Doku in `WHERE`. Das ist effizienter, weil aussortierte Zeilen
+      gar nicht erst gruppiert werden.
+    quiz:
+      - frage: "Wo darf eine Aggregatfunktion wie `max()` nicht stehen?"
+        erklaerung: "In der WHERE-Klausel."
+        antworten:
+          - { text: "In der HAVING-Klausel.", richtig: false }
+          - { text: "In der WHERE-Klausel.", richtig: true }
+          - { text: "In der SELECT-Liste.", richtig: false }
+      - frage: "Wann wirkt `HAVING`?"
+        erklaerung: "Nach dem Gruppieren, auf ganze Gruppen."
+        antworten:
+          - { text: "Vor dem Gruppieren, auf einzelne Zeilen.", richtig: false }
+          - { text: "Nach dem Gruppieren, auf ganze Gruppen.", richtig: true }
+          - { text: "Nur beim Löschen von Zeilen.", richtig: false }
+test:
+  zeitlimit_minuten: 10
+  fragen:
+    - frage: "Welche Funktion zählt Zeilen?"
+      erklaerung: "count."
+      antworten:
+        - { text: "sum", richtig: false }
+        - { text: "count", richtig: true }
+        - { text: "max", richtig: false }
+    - frage: "Was liefert `GROUP BY city` mit `count(*)`?"
+      erklaerung: "Pro Stadt eine Zeile mit der Anzahl der Zeilen."
+      antworten:
+        - { text: "Pro Stadt eine Zeile mit der Anzahl der Zeilen.", richtig: true }
+        - { text: "Nur die erste Stadt.", richtig: false }
+        - { text: "Eine Zeile für alle Städte zusammen.", richtig: false }
+    - frage: "Welche Join-Art bringt Kurse auch ohne Lektion ins Ergebnis, wenn Kurse links stehen?"
+      erklaerung: "LEFT OUTER JOIN."
+      antworten:
+        - { text: "INNER JOIN", richtig: false }
+        - { text: "LEFT OUTER JOIN", richtig: true }
+        - { text: "Keine", richtig: false }
+    - frage: "Warum gehört eine Bedingung ohne Aggregat besser in `WHERE` als in `HAVING`?"
+      erklaerung: "Aussortierte Zeilen werden nicht erst gruppiert, das ist effizienter."
+      antworten:
+        - { text: "Weil HAVING verboten ist.", richtig: false }
+        - { text: "Aussortierte Zeilen werden nicht erst gruppiert, das ist effizienter.", richtig: true }
+        - { text: "Weil WHERE schöner aussieht.", richtig: false }
+    - frage: "Was ergibt ein Inner Join von `weather` und `cities`, wenn die Stadt `Hayward` nur in `weather` steht?"
+      erklaerung: "Hayward fällt aus dem Ergebnis."
+      antworten:
+        - { text: "Hayward fällt aus dem Ergebnis.", richtig: true }
+        - { text: "Hayward erscheint mit NULL.", richtig: false }
+        - { text: "Ein Fehler.", richtig: false }

@@ -1,0 +1,124 @@
+titel: Sicherheit in der CI/CD-Pipeline
+zusammenfassung: Du erinnerst dich an Shift-left und an die Prüfungen Secrets-Suche, SCA, SAST und DAST und daran, wo in der Pipeline sie ihren Platz haben.
+quellen:
+  - titel: OWASP DevSecOps Guideline
+    url: https://owasp.github.io/www-project-devsecops-guideline/latest
+  - titel: OWASP DevSecOps Guideline – Secrets Management
+    url: https://owasp.github.io/www-project-devsecops-guideline/latest/01a-Secrets-Management
+  - titel: OWASP DevSecOps Guideline – SAST
+    url: https://owasp.github.io/www-project-devsecops-guideline/latest/02a-Static-Application-Security-Testing
+  - titel: OWASP DevSecOps Guideline – DAST
+    url: https://owasp.github.io/www-project-devsecops-guideline/latest/02b-Dynamic-Application-Security-Testing
+  - titel: OWASP DevSecOps Guideline – Software Composition Analysis
+    url: https://owasp.github.io/www-project-devsecops-guideline/latest/02d-Software-Composition-Analysis
+abschnitte:
+  - titel: Shift-left und die Pipeline
+    inhalt: |
+      Die OWASP-Guideline beschreibt, wie man eine sichere DevOps-Pipeline aufbaut. Das Ziel: Sicherheitsprobleme
+      **so früh wie möglich** erkennen („shift-left“, also nach links, in Richtung Anfang der Entwicklung).
+
+      Ihre Stufen sind unter anderem:
+
+      - **Vor dem Commit (Pre-commit):** Secrets-Verwaltung und Linting.
+      - **Schwachstellen-Prüfung:** SAST, DAST, IAST, SCA sowie Prüfung von Infrastruktur und Containern.
+      - **Compliance-Prüfung.**
+      - Dazu kommt die **Bedrohungsmodellierung** (Threat Modeling) schon beim Entwurf.
+
+      **Bild (eigene Idee):** Ein Fehler beim Entwurf kostet einen Radiergummi. Derselbe Fehler im Betrieb kostet einen Umbau.
+    quiz:
+      - frage: "Was bedeutet Shift-left?"
+        erklaerung: "Sicherheitsprüfungen so früh wie möglich in die Entwicklung verlegen."
+        antworten:
+          - { text: "Sicherheitsprüfungen erst nach dem Release machen.", richtig: false }
+          - { text: "Sicherheitsprüfungen so früh wie möglich in die Entwicklung verlegen.", richtig: true }
+          - { text: "Den Server nach links im Rack schieben.", richtig: false }
+      - frage: "Was ist Threat Modeling?"
+        erklaerung: "Bedrohungen schon beim Entwurf durchdenken."
+        antworten:
+          - { text: "Ein Test mit echten Angreifern am Release-Tag.", richtig: false }
+          - { text: "Ein Werkzeug zum Komprimieren von Dateien.", richtig: false }
+          - { text: "Bedrohungen schon beim Entwurf durchdenken.", richtig: true }
+  - titel: Secrets-Suche und SCA
+    inhalt: |
+      **Secrets-Suche:** Gesucht wird nach Passwörtern, geheimen Schlüsseln und vertraulichen Daten in Commits und
+      Repositories. Am besten **vor dem Commit** (Pre-commit), denn einmal committet, bleiben Geheimnisse in der
+      Historie. Ein Beispiel für ein Werkzeug nach der Guideline ist `git-secrets`, das Commits mit Zugangsdaten
+      blockiert. **Ein offengelegtes Geheimnis ist bereits kompromittiert:** Es muss ungültig gemacht werden.
+
+      **SCA (Software Composition Analysis):** Verwaltet Fremd- und Open-Source-Bausteine im Projekt. Es findet
+      **Abhängigkeiten**, **bekannte Schwachstellen** darin und liefert **Lizenzangaben**. Es soll früh laufen und
+      die Bausteine dauerhaft beobachten. Das hilft gegen Angriffe über die Lieferkette (siehe OWASP Top 10, A03).
+    quiz:
+      - frage: "Warum sucht man nach Geheimnissen am besten vor dem Commit?"
+        erklaerung: "Einmal committet, bleiben Geheimnisse in der Historie."
+        antworten:
+          - { text: "Einmal committet, bleiben Geheimnisse in der Historie.", richtig: true }
+          - { text: "Weil Git dann schneller läuft.", richtig: false }
+          - { text: "Weil Passwörter nur vor dem Commit gelten.", richtig: false }
+      - frage: "Was liefert SCA laut Guideline?"
+        erklaerung: "Abhängigkeiten, bekannte Schwachstellen und Lizenzangaben der Bausteine."
+        antworten:
+          - { text: "Nur die Farbe des Logos.", richtig: false }
+          - { text: "Den Schutz vor Stromausfall.", richtig: false }
+          - { text: "Abhängigkeiten, bekannte Schwachstellen und Lizenzangaben der Bausteine.", richtig: true }
+  - titel: SAST und DAST
+    inhalt: |
+      **SAST** (Static Application Security Testing) untersucht den **Quellcode, ohne das Programm auszuführen**
+      (White-Box). Es meldet laut Guideline Syntaxverstöße, Sicherheitslücken, Programmierfehler und Verstöße
+      gegen Programmierstandards. Es läuft oft als Teil einer Code-Prüfung.
+
+      **DAST** (Dynamic Application Security Testing) testet die **laufende Anwendung** von außen (Black-Box),
+      ohne Quellcode. Es schickt Angriffs-Eingaben und findet Schwächen wie SQL-Injection und XSS. Es eignet sich
+      für Prüfungen von Ein- und Ausgaben, Anmeldeproblemen und Server-Konfigurationsfehlern und kann
+      beispielsweise als nächtlicher Scan laufen.
+
+      **Merksatz (eigene Idee):** SAST liest das Rezept, DAST probiert das fertige Gericht.
+
+      **Wichtig (eigene Regel):** DAST darfst du nur gegen Systeme laufen lassen, die dir gehören oder für die du
+      eine Erlaubnis hast (siehe Phase 1, § 202a StGB).
+    quiz:
+      - frage: "Was unterscheidet SAST von DAST?"
+        erklaerung: "SAST untersucht den Code ohne ihn auszuführen, DAST testet die laufende Anwendung."
+        antworten:
+          - { text: "SAST testet die laufende Anwendung, DAST liest den Code.", richtig: false }
+          - { text: "SAST untersucht den Code ohne ihn auszuführen, DAST testet die laufende Anwendung.", richtig: true }
+          - { text: "Es gibt keinen Unterschied.", richtig: false }
+      - frage: "Welche Aussage über DAST ist laut Guideline richtig?"
+        erklaerung: "Es braucht keinen Quellcode (Black-Box)."
+        antworten:
+          - { text: "Es braucht den kompletten Quellcode.", richtig: false }
+          - { text: "Es funktioniert nur ohne laufende Anwendung.", richtig: false }
+          - { text: "Es braucht keinen Quellcode (Black-Box).", richtig: true }
+test:
+  zeitlimit_minuten: 10
+  fragen:
+    - frage: "Welche Prüfung gehört in die Stufe vor dem Commit?"
+      erklaerung: "Die Suche nach Geheimnissen."
+      antworten:
+        - { text: "Die Suche nach Geheimnissen", richtig: true }
+        - { text: "Der nächtliche DAST-Scan der Testumgebung", richtig: false }
+        - { text: "Das Überwachen des Live-Systems", richtig: false }
+    - frage: "Welche Prüfung findet bekannte Schwachstellen in Drittbibliotheken?"
+      erklaerung: "SCA."
+      antworten:
+        - { text: "SAST", richtig: false }
+        - { text: "SCA", richtig: true }
+        - { text: "Linting", richtig: false }
+    - frage: "Was ist mit einem Schlüssel zu tun, der versehentlich öffentlich geworden ist?"
+      erklaerung: "Er gilt als kompromittiert und muss ungültig gemacht werden."
+      antworten:
+        - { text: "Er gilt als kompromittiert und muss ungültig gemacht werden.", richtig: true }
+        - { text: "Nichts, die Historie ist privat.", richtig: false }
+        - { text: "Man löscht nur die Datei.", richtig: false }
+    - frage: "Welche Prüfung sieht den Quellcode, ohne das Programm zu starten?"
+      erklaerung: "SAST."
+      antworten:
+        - { text: "DAST", richtig: false }
+        - { text: "SAST", richtig: true }
+        - { text: "Ein Lasttest", richtig: false }
+    - frage: "Wogegen darfst du DAST nur einsetzen?"
+      erklaerung: "Gegen Systeme, die dir gehören oder für die du eine Erlaubnis hast."
+      antworten:
+        - { text: "Gegen jede öffentlich erreichbare Seite.", richtig: false }
+        - { text: "Gegen Systeme, die dir gehören oder für die du eine Erlaubnis hast.", richtig: true }
+        - { text: "Gegen die Seiten deiner Mitbewerber.", richtig: false }

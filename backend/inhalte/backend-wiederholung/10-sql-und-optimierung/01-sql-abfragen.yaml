@@ -1,0 +1,110 @@
+titel: SQL-Abfragen mit SELECT
+zusammenfassung: Du erinnerst dich an SELECT, WHERE, ORDER BY, DISTINCT und Aliase und daran, dass ohne ORDER BY keine Reihenfolge garantiert ist.
+quellen:
+  - titel: PostgreSQL-Dokumentation – Tabellen abfragen
+    url: https://www.postgresql.org/docs/current/tutorial-select.html
+  - titel: PostgreSQL-Dokumentation – Zeilen sortieren
+    url: https://www.postgresql.org/docs/current/queries-order.html
+abschnitte:
+  - titel: Spalten wählen und filtern
+    inhalt: |
+      Eine Abfrage beginnt mit `SELECT`. Mit `*` holst du alle Spalten:
+
+      ```sql
+      SELECT * FROM weather;
+      ```
+
+      Die Doku nennt `SELECT *` praktisch für schnelle Abfragen, im Produktionscode aber schlechten Stil.
+      Besser ist eine **Spaltenliste**, weil eine neue Spalte in der Tabelle dann die Ausgabe nicht verändert:
+
+      ```sql
+      SELECT city, temp_lo, temp_hi, prcp, date FROM weather;
+      ```
+
+      In der Liste dürfen **Ausdrücke** stehen. Mit `AS` gibst du einer Spalte einen Namen (**Alias**):
+
+      ```sql
+      SELECT city, (temp_hi+temp_lo)/2 AS temp_avg, date FROM weather;
+      ```
+
+      `WHERE` liefert nur Zeilen, bei denen die Bedingung wahr ist. Mit `AND`, `OR` und `NOT` verknüpfst du
+      Bedingungen:
+
+      ```sql
+      SELECT * FROM weather WHERE city = 'San Francisco' AND prcp > 0.0;
+      ```
+    quiz:
+      - frage: "Wofür steht `*` in `SELECT * FROM tabelle`?"
+        erklaerung: "Für alle Spalten der Tabelle."
+        antworten:
+          - { text: "Für alle Spalten der Tabelle.", richtig: true }
+          - { text: "Für alle Tabellen der Datenbank.", richtig: false }
+          - { text: "Für die erste Zeile.", richtig: false }
+      - frage: "Was bewirkt `AS` in `... AS temp_avg`?"
+        erklaerung: "Es gibt der Ausgabespalte einen Namen (Alias)."
+        antworten:
+          - { text: "Es löscht die Spalte.", richtig: false }
+          - { text: "Es verschlüsselt den Wert.", richtig: false }
+          - { text: "Es gibt der Ausgabespalte einen Namen (Alias).", richtig: true }
+  - titel: Sortieren und Duplikate entfernen
+    inhalt: |
+      `ORDER BY` sortiert. Mit einem zweiten Schlüssel legst du die Reihenfolge bei Gleichstand fest:
+
+      ```sql
+      SELECT * FROM weather ORDER BY city, temp_lo;
+      ```
+
+      `DISTINCT` entfernt doppelte Zeilen im Ergebnis:
+
+      ```sql
+      SELECT DISTINCT city FROM weather ORDER BY city;
+      ```
+
+      **Wichtig:** Ohne `ORDER BY` ist die Reihenfolge der Zeilen **nicht garantiert**, auch nicht mit
+      `DISTINCT`. Verlasse dich nie auf eine zufällig beobachtete Reihenfolge.
+    quiz:
+      - frage: "Was gilt für die Reihenfolge der Zeilen ohne `ORDER BY`?"
+        erklaerung: "Sie ist nicht garantiert."
+        antworten:
+          - { text: "Sie ist immer nach der ID sortiert.", richtig: false }
+          - { text: "Sie ist nicht garantiert.", richtig: true }
+          - { text: "Sie ist immer alphabetisch.", richtig: false }
+      - frage: "Was macht `SELECT DISTINCT city FROM weather`?"
+        erklaerung: "Es liefert jede Stadt nur einmal."
+        antworten:
+          - { text: "Es liefert jede Stadt nur einmal.", richtig: true }
+          - { text: "Es löscht doppelte Städte aus der Tabelle.", richtig: false }
+          - { text: "Es zählt die Städte.", richtig: false }
+test:
+  zeitlimit_minuten: 10
+  fragen:
+    - frage: "Welche Klausel filtert Zeilen nach einer Bedingung?"
+      erklaerung: "WHERE."
+      antworten:
+        - { text: "ORDER BY", richtig: false }
+        - { text: "WHERE", richtig: true }
+        - { text: "AS", richtig: false }
+    - frage: "Wie sortierst du erst nach `city`, dann nach `temp_lo`?"
+      erklaerung: "ORDER BY city, temp_lo."
+      antworten:
+        - { text: "ORDER BY city, temp_lo", richtig: true }
+        - { text: "SORT city temp_lo", richtig: false }
+        - { text: "GROUP BY city, temp_lo", richtig: false }
+    - frage: "Warum ist eine Spaltenliste besser als `*`?"
+      erklaerung: "Eine neue Spalte in der Tabelle verändert die Ausgabe dann nicht."
+      antworten:
+        - { text: "Eine neue Spalte in der Tabelle verändert die Ausgabe dann nicht.", richtig: true }
+        - { text: "`*` ist in SQL verboten.", richtig: false }
+        - { text: "Die Datenbank wird dadurch kleiner.", richtig: false }
+    - frage: "Welche Operatoren verknüpfen Bedingungen in WHERE?"
+      erklaerung: "AND, OR und NOT."
+      antworten:
+        - { text: "PLUS und MINUS", richtig: false }
+        - { text: "AND, OR und NOT", richtig: true }
+        - { text: "IF und ELSE", richtig: false }
+    - frage: "Welche Aussage über Duplikate ist richtig?"
+      erklaerung: "DISTINCT entfernt doppelte Zeilen aus dem Ergebnis."
+      antworten:
+        - { text: "DISTINCT löscht Daten aus der Tabelle.", richtig: false }
+        - { text: "DISTINCT entfernt doppelte Zeilen aus dem Ergebnis.", richtig: true }
+        - { text: "DISTINCT sortiert nach dem Alphabet und sonst nichts.", richtig: false }

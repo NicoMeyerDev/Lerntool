@@ -1,0 +1,103 @@
+titel: PostgreSQL mit Django
+zusammenfassung: Du erinnerst dich, wie Django mit PostgreSQL verbunden wird, welche Treiber es gibt und was CONN_MAX_AGE für Verbindungen bedeutet.
+quellen:
+  - titel: Django 5.2 – PostgreSQL-Operationen für Migrationen
+    url: https://docs.djangoproject.com/en/5.2/ref/contrib/postgres/operations/
+  - titel: Django 5.2 – Datenbanken, Hinweise zu PostgreSQL
+    url: https://docs.djangoproject.com/en/5.2/ref/databases/#postgresql-notes
+abschnitte:
+  - titel: Verbindung einrichten
+    inhalt: |
+      Django 5.2 unterstützt laut Doku **PostgreSQL 14 und höher**. Als Treiber empfiehlt die Doku
+      **psycopg 3** (ab 3.1.8) oder alternativ psycopg2 (ab 2.8.4).
+
+      ```python
+      DATABASES = {
+          "default": {
+              "ENGINE": "django.db.backends.postgresql",
+              "NAME": "mydb",
+              "USER": "myuser",
+              "PASSWORD": "...",   # aus einer Umgebungsvariable lesen
+              "HOST": "localhost",
+              "PORT": "5432",
+          }
+      }
+      ```
+
+      In diesem Projekt kommt die Verbindung über die Umgebungsvariable `DATABASE_URL`. Zugangsdaten
+      gehören nie in den Code.
+    quiz:
+      - frage: "Welchen Treiber empfiehlt die Django-Doku für PostgreSQL?"
+        erklaerung: "psycopg 3."
+        antworten:
+          - { text: "mysqlclient", richtig: false }
+          - { text: "psycopg 3", richtig: true }
+          - { text: "sqlite3", richtig: false }
+      - frage: "Wie heißt die ENGINE für PostgreSQL?"
+        erklaerung: "django.db.backends.postgresql."
+        antworten:
+          - { text: "django.db.backends.postgresql", richtig: true }
+          - { text: "django.db.backends.mysql", richtig: false }
+          - { text: "django.cache.postgres", richtig: false }
+  - titel: Verbindungen und Besonderheiten
+    inhalt: |
+      Mit dem Standard `CONN_MAX_AGE = 0` schließt Django die Verbindung am Ende jeder Anfrage. Ein
+      positiver Wert hält die Verbindung so viele Sekunden offen, `None` unbegrenzt. Unter **ASGI** rät die Doku,
+      dauerhafte Verbindungen abzuschalten und stattdessen **Pooling** zu nutzen (eingebaut mit `OPTIONS` und `pool`,
+      nur psycopg 3, seit Django 5.1, dafür braucht es `psycopg[pool]`, oder ein externer Pool). In der
+      **Entwicklung** rät sie nur, dauerhafte Verbindungen nicht zu aktivieren.
+
+      (Eigene Anmerkung: Dieses Projekt setzt `conn_max_age=600` in der Datenbank-Einstellung, weil es auf einem Server mit
+      wenigen gleichzeitigen Zugriffen läuft. Unter ASGI oder in der Entwicklung gilt der Rat der Doku.)
+
+      Weitere Hinweise:
+
+      - Die Isolationsstufe ist standardmäßig `READ COMMITTED`.
+      - Setzt du Primärschlüssel von Hand, wird die Sequenz nicht angepasst. Dann hilft `sqlsequencereset`.
+      - Erweiterungen wie `hstore` aktivierst du in Migrationen mit einer Operation wie `HStoreExtension` (eine Variante von `CreateExtension`).
+    quiz:
+      - frage: "Was bedeutet `CONN_MAX_AGE = 0`?"
+        erklaerung: "Die Verbindung wird am Ende jeder Anfrage geschlossen."
+        antworten:
+          - { text: "Die Verbindung bleibt für immer offen.", richtig: false }
+          - { text: "Die Datenbank ist abgeschaltet.", richtig: false }
+          - { text: "Die Verbindung wird am Ende jeder Anfrage geschlossen.", richtig: true }
+      - frage: "Was empfiehlt die Doku unter ASGI statt dauerhafter Verbindungen?"
+        erklaerung: "Einen Verbindungs-Pool."
+        antworten:
+          - { text: "Einen Verbindungs-Pool.", richtig: true }
+          - { text: "Gar keine Datenbank.", richtig: false }
+          - { text: "Mehr Passwörter.", richtig: false }
+test:
+  zeitlimit_minuten: 10
+  fragen:
+    - frage: "Welche PostgreSQL-Versionen unterstützt Django 5.2?"
+      erklaerung: "PostgreSQL 14 und höher."
+      antworten:
+        - { text: "Nur Version 9", richtig: false }
+        - { text: "PostgreSQL 14 und höher", richtig: true }
+        - { text: "Keine", richtig: false }
+    - frage: "Welche Isolationsstufe ist der Standard?"
+      erklaerung: "READ COMMITTED."
+      antworten:
+        - { text: "READ COMMITTED", richtig: true }
+        - { text: "SERIALIZABLE", richtig: false }
+        - { text: "READ UNCOMMITTED", richtig: false }
+    - frage: "Wozu dient `sqlsequencereset`?"
+      erklaerung: "Es erzeugt das SQL zum Korrigieren der Sequenzen, wenn Primärschlüssel von Hand vergeben wurden."
+      antworten:
+        - { text: "Es löscht alle Tabellen.", richtig: false }
+        - { text: "Es erzeugt das SQL zum Korrigieren der Sequenzen, wenn Primärschlüssel von Hand vergeben wurden.", richtig: true }
+        - { text: "Es startet den Server.", richtig: false }
+    - frage: "Wie aktivierst du die PostgreSQL-Erweiterung `hstore`?"
+      erklaerung: "Mit einer Migrations-Operation wie HStoreExtension (eine Variante von CreateExtension)."
+      antworten:
+        - { text: "Mit einer E-Mail an den Support.", richtig: false }
+        - { text: "Mit einer Migrations-Operation wie HStoreExtension (eine Variante von CreateExtension).", richtig: true }
+        - { text: "Gar nicht, sie ist immer aktiv.", richtig: false }
+    - frage: "Warum gehört das Datenbank-Passwort nicht in `settings.py` im Klartext?"
+      erklaerung: "Es könnte versehentlich im Repository landen. Zugangsdaten kommen aus Umgebungsvariablen."
+      antworten:
+        - { text: "Weil Django keine Passwörter kennt.", richtig: false }
+        - { text: "Weil es dann schneller ist.", richtig: false }
+        - { text: "Es könnte versehentlich im Repository landen. Zugangsdaten kommen aus Umgebungsvariablen.", richtig: true }

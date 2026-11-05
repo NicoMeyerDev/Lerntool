@@ -28,12 +28,12 @@ Regeln: Immer die oberste offene Aufgabe aus „Jetzt“ bearbeiten. Aufgaben au
 - [x] **E1 AI Engineering, Gliederung und Phase 1:** Themen 1-3 aus `/docs/LERNPLAN.md`, Block 5, in Abschnitte und Quizze zerlegen. Mit `quellenpruefer`, aktuelle Doku zwingend.
 - [ ] **C6 Englisch, Lücken schließen:** Hören (nach Audio-Umsetzung), Reisen, Restaurant/Arzt, Texte überfliegen und Wegbeschreibung aus belegter Erwachsenenquelle nachtragen (siehe OFFEN.md).
 - [ ] Audio-Umsetzung für Hörübungen (eigene, gut verständliche Aufnahmen oder Sprachausgabe; Frontend-Player)
-- **D1 Wiederholung Backend:** Themen 1-10 der Backend-Roadmap in Abschnitte und Quizze zerlegen. Priorität: Auth, Datenbanken, API, Testing, CI/CD, Monitoring.
+- [x] **D1 Wiederholung Backend:** Themen 1-10 der Backend-Roadmap in Abschnitte und Quizze zerlegen. Priorität: Auth, Datenbanken, API, Testing, CI/CD, Monitoring.
   - [x] D1 Teil 1: Django-Grundlagen, Datenbanken, DRF mit Testing, Authentifizierung (Themen 3 bis 6)
   - [x] D1 Teil 2: DevOps/CI/CD (Git, CI/CD, Cloud-Hosting) und Monitoring
-  - [ ] D1 Teil 3: Internet-Architektur und HTTP, Python-Grundlagen, erweiterte Konzepte (Caching mit Redis, Task-Queues, Postgres, Dateimanagement), SQL und Optimierung
-- [ ] **D2 Wiederholung DevSecOps:** Themen 1-10 der DevSecOps-Roadmap. Praktische Labs (Kali, Metasploitable, Juice Shop) nur als Theorie und Quiz, Labs nur in der eigenen Umgebung.
-- [ ] **D3 Konzept-Vergleiche Django und Laravel:** Auth, Datenbanken, API, Testing, Docker, CI/CD als gemeinsame Lektionen mit zwei Umsetzungen.
+  - [x] D1 Teil 3: Internet-Architektur und HTTP, Python-Grundlagen, erweiterte Konzepte (Caching mit Redis, Task-Queues, Postgres, Dateimanagement), SQL und Optimierung
+- [x] **D2 Wiederholung DevSecOps:** Themen 1-10 der DevSecOps-Roadmap. Praktische Labs (Kali, Metasploitable, Juice Shop) nur als Theorie und Quiz, Labs nur in der eigenen Umgebung.
+- [x] **D3 Konzept-Vergleiche Django und Laravel:** Auth, Datenbanken, API, Testing, Docker, CI/CD als gemeinsame Lektionen mit zwei Umsetzungen.
 - [ ] Antworten im Frontend zufällig mischen (Quiz und Test)
 - [ ] KI-Analyse der Schwächen und adaptive Aufgaben
 - [ ] Offline-Modus

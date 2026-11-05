@@ -2,6 +2,29 @@
 
 Punkte, die eine Entscheidung oder Aktion des Nutzers brauchen.
 
+## 2026-11-05 – D3 Konzept-Vergleiche: Notizen
+
+- **PHP-GitHub-Actions-Quelle fehlt:** Für die PHP/Laravel-Schritte in der CI-Lektion gibt es keine belegte offizielle Quelle. Die Schritte sind als ungeprüft gekennzeichnet und müssen nachgeprüft werden.
+- **Laravel-Test-Datenbank:** Details zur Test-Datenbank in der Laravel-Doku nachschlagen und in der Testlektion prüfen.
+- **Quizqualität:** Wie in Teil 3 ist die richtige Antwort oft die längste Option, Falschantworten sind teils schwach. Später gleich lang und plausibel formulieren.
+
+## 2026-11-05 – D2 DevSecOps: Notizen zu Quellen und Quizqualität
+
+Reine Notizen, keine Entscheidung des Lernenden nötig.
+
+- **DSGVO-Quelle:** Die Quelle bei eur-lex.europa.eu konnte nicht abgerufen werden. Bitte im Browser prüfen, ob der Link stimmt und der Inhalt zur Lektion passt.
+- **Quizqualität:** Wie in D1 Teil 3 ist die richtige Antwort oft die längste Option, die Falschantworten sind teils schwach. Später gleich lang und plausibel formulieren.
+- **Review:** Runde 2 des `reviewer` war nur eine Nachprüfung der Änderungen.
+- **NIST 64 Zeichen:** Die Obergrenze von 64 Zeichen bei Passwörtern ist laut NIST ein SHOULD, keine Pflicht.
+
+## 2026-11-05 – D1 Teil 3: Notizen zu Quizqualität, Review und Datenbankverbindung
+
+Reine Notizen, keine Entscheidung des Lernenden nötig.
+
+- **Quizqualität:** In D1 Teil 3 ist die richtige Antwort oft die längste Option und häufig an Position 2 (ca. 30, 48 und 21 Prozent auf Position 1, 2 und 3). Das Frontend mischt noch nicht (Backlog). Später die Falschantworten plausibel und gleich lang formulieren.
+- **Review-Umfang:** Der `reviewer` hat in Runde 2 nur 7 von 18 Dateien erneut gelesen; Runde 1 hat alle gelesen.
+- **Datenbankverbindung:** Das Projekt nutzt `DATABASE_URL` mit `conn_max_age=600`; die Django-Doku rät für ASGI bzw. die Entwicklung zu anderen Einstellungen. Beim Deployment prüfen.
+
 ## 2026-11-04 – D1 Teil 2: Kleine Lücken in DevOps und Monitoring
 
 Reine Notiz, keine Entscheidung des Lernenden nötig.

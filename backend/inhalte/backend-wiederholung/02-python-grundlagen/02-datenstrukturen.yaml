@@ -1,0 +1,93 @@
+titel: Listen, Tupel, Mengen und Wörterbücher
+zusammenfassung: Du erinnerst dich an die vier wichtigsten Datenstrukturen, an List Comprehensions und an sichere Zugriffe auf Wörterbücher.
+quellen:
+  - titel: Python-Tutorial – Datenstrukturen
+    url: https://docs.python.org/3.13/tutorial/datastructures.html
+abschnitte:
+  - titel: Listen und Tupel
+    inhalt: |
+      Eine **Liste** ist veränderbar: `append(x)` hängt hinten an, `pop()` entfernt und liefert das letzte
+      Element. Eine **List Comprehension** baut Listen kurz und lesbar, auch mit Filter:
+
+      ```python
+      [x**2 for x in range(5)]          # [0, 1, 4, 9, 16]
+      [x for x in vec if x >= 0]        # nur nicht negative Werte
+      ```
+
+      Ein **Tupel** ist **unveränderbar**: `t[0] = 1` löst einen `TypeError` aus. Ein Tupel mit einem
+      Element braucht ein Komma: `('hallo',)`. Mit **Entpacken** weist du Elemente Variablen zu:
+      `x, y, z = t`.
+
+      Für Warteschlangen ist `collections.deque` besser geeignet als eine Liste, weil `pop(0)` bei Listen
+      langsam ist.
+    quiz:
+      - frage: "Was passiert bei `t[0] = 5`, wenn `t` ein Tupel ist?"
+        erklaerung: "Es gibt einen TypeError, weil Tupel unveränderbar sind."
+        antworten:
+          - { text: "Das erste Element wird geändert.", richtig: false }
+          - { text: "Es gibt einen TypeError, weil Tupel unveränderbar sind.", richtig: true }
+          - { text: "Das Tupel wird zu einer Liste.", richtig: false }
+      - frage: "Was ergibt `[x**2 for x in range(5)]`?"
+        erklaerung: "[0, 1, 4, 9, 16]."
+        antworten:
+          - { text: "[1, 4, 9, 16, 25]", richtig: false }
+          - { text: "[0, 2, 4, 6, 8]", richtig: false }
+          - { text: "[0, 1, 4, 9, 16]", richtig: true }
+  - titel: Mengen und Wörterbücher
+    inhalt: |
+      Eine **Menge** (`set`) ist ungeordnet und enthält keine Duplikate: `{'apfel', 'birne', 'apfel'}`
+      enthält `'apfel'` nur einmal. Eine **leere** Menge ist `set()`, denn `{}` ist ein leeres Wörterbuch.
+      Mengen kennen Operatoren: `a | b` (Vereinigung), `a & b` (Schnitt), `a - b` (Differenz).
+
+      Ein **Wörterbuch** (`dict`) ordnet Schlüssel Werten zu. Schlüssel sind eindeutig und müssen
+      unveränderbar sein (Strings, Zahlen, Tupel, aber keine Listen).
+
+      - `d[key]` löst bei fehlendem Schlüssel einen `KeyError` aus.
+      - `d.get(key)` liefert dann `None` oder einen Standardwert, den du angibst.
+      - `d.items()` liefert Schlüssel-Wert-Paare, `enumerate(liste)` liefert Index und Wert.
+    quiz:
+      - frage: "Wie legst du eine leere Menge an?"
+        erklaerung: "Mit set(). {} ergibt ein leeres Wörterbuch."
+        antworten:
+          - { text: "{}", richtig: false }
+          - { text: "[]", richtig: false }
+          - { text: "set()", richtig: true }
+      - frage: "Was ist der Unterschied zwischen `d[key]` und `d.get(key)` bei fehlendem Schlüssel?"
+        erklaerung: "d[key] löst einen KeyError aus, d.get(key) liefert None oder einen Standardwert."
+        antworten:
+          - { text: "d[key] löst einen KeyError aus, d.get(key) liefert None oder einen Standardwert.", richtig: true }
+          - { text: "Beide löschen den Eintrag.", richtig: false }
+          - { text: "Es gibt keinen Unterschied.", richtig: false }
+test:
+  zeitlimit_minuten: 10
+  fragen:
+    - frage: "Welche Struktur enthält keine Duplikate?"
+      erklaerung: "Die Menge (set)."
+      antworten:
+        - { text: "Die Liste", richtig: false }
+        - { text: "Die Menge (set)", richtig: true }
+        - { text: "Das Tupel", richtig: false }
+    - frage: "Welcher Schlüssel ist in einem Wörterbuch erlaubt?"
+      erklaerung: "Ein Tupel aus Zahlen, weil es unveränderbar ist."
+      antworten:
+        - { text: "Eine Liste", richtig: false }
+        - { text: "Ein Tupel aus Zahlen", richtig: true }
+        - { text: "Ein anderes Wörterbuch", richtig: false }
+    - frage: "Was liefert `d.items()`?"
+      erklaerung: "Die Schlüssel-Wert-Paare."
+      antworten:
+        - { text: "Nur die Schlüssel.", richtig: false }
+        - { text: "Die Anzahl der Einträge.", richtig: false }
+        - { text: "Die Schlüssel-Wert-Paare.", richtig: true }
+    - frage: "Wozu dient `enumerate(['a', 'b'])`?"
+      erklaerung: "Es liefert Paare aus Index und Wert."
+      antworten:
+        - { text: "Es liefert Paare aus Index und Wert.", richtig: true }
+        - { text: "Es sortiert die Liste.", richtig: false }
+        - { text: "Es löscht doppelte Werte.", richtig: false }
+    - frage: "Was ergibt `{1, 2, 3} & {2, 3, 4}`?"
+      erklaerung: "Den Schnitt {2, 3}."
+      antworten:
+        - { text: "{1, 2, 3, 4}", richtig: false }
+        - { text: "{1}", richtig: false }
+        - { text: "{2, 3}", richtig: true }
