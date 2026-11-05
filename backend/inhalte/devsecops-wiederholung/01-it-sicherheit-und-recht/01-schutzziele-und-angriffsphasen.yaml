@@ -28,15 +28,15 @@ abschnitte:
       - frage: "Welches Schutzziel verletzt ein Angreifer, der heimlich Werte in einer Datenbank ändert?"
         erklaerung: "Die Integrität, denn Informationen werden unbefugt verändert."
         antworten:
+          - { text: "Die Integrität, denn Informationen werden unbefugt verändert.", richtig: true }
           - { text: "Die Vertraulichkeit, weil jemand mitliest.", richtig: false }
           - { text: "Die Verfügbarkeit, weil die Daten gelöscht werden.", richtig: false }
-          - { text: "Die Integrität, denn Informationen werden unbefugt verändert.", richtig: true }
       - frage: "Was meint Verfügbarkeit laut NIST?"
         erklaerung: "Rechtzeitiger und zuverlässiger Zugang zu Informationen und ihre Nutzung."
         antworten:
+          - { text: "Der Schutz vor unbefugtem Mitlesen und Weitergeben der gespeicherten Daten.", richtig: false }
           - { text: "Rechtzeitiger und zuverlässiger Zugang zu Informationen und ihre Nutzung.", richtig: true }
-          - { text: "Der Schutz vor unbefugtem Mitlesen der Daten.", richtig: false }
-          - { text: "Die Sicherheit, dass Daten nie geändert werden.", richtig: false }
+          - { text: "Die Sicherheit, dass Daten nach dem Speichern nie wieder geändert werden.", richtig: false }
   - titel: Ein Angriff hat Phasen
     inhalt: |
       Angriffe laufen selten in einem Schritt ab. **MITRE ATT&CK** ist eine frei verfügbare Wissenssammlung
@@ -57,45 +57,45 @@ abschnitte:
       - frage: "Was ist MITRE ATT&CK?"
         erklaerung: "Eine frei verfügbare Wissenssammlung über Taktiken und Techniken von Angreifern."
         antworten:
-          - { text: "Ein Virenscanner der Firma MITRE.", richtig: false }
-          - { text: "Ein Gesetz zur Datensicherheit.", richtig: false }
+          - { text: "Ein kostenpflichtiger Virenscanner, der Schadsoftware auf Rechnern entfernt.", richtig: false }
+          - { text: "Ein Gesetz, das die Mindestsicherheit von Unternehmensnetzen vorschreibt.", richtig: false }
           - { text: "Eine frei verfügbare Wissenssammlung über Taktiken und Techniken von Angreifern.", richtig: true }
       - frage: "Welche Taktik beschreibt das Sammeln von Informationen über ein Ziel?"
         erklaerung: "Reconnaissance."
         antworten:
-          - { text: "Impact", richtig: false }
           - { text: "Reconnaissance", richtig: true }
           - { text: "Persistence", richtig: false }
+          - { text: "Impact", richtig: false }
 test:
   zeitlimit_minuten: 10
   fragen:
     - frage: "Ein Angreifer legt einen Online-Shop durch Überlastung lahm. Welches Schutzziel ist verletzt?"
       erklaerung: "Die Verfügbarkeit."
       antworten:
-        - { text: "Die Vertraulichkeit", richtig: false }
         - { text: "Die Integrität", richtig: false }
         - { text: "Die Verfügbarkeit", richtig: true }
+        - { text: "Die Vertraulichkeit", richtig: false }
     - frage: "Ein Angreifer liest ohne Erlaubnis Kundendaten. Welches Schutzziel ist verletzt?"
       erklaerung: "Die Vertraulichkeit."
       antworten:
-        - { text: "Die Vertraulichkeit", richtig: true }
         - { text: "Die Verfügbarkeit", richtig: false }
         - { text: "Die Integrität", richtig: false }
+        - { text: "Die Vertraulichkeit", richtig: true }
     - frage: "Warum ist es hilfreich, die Phasen eines Angriffs zu kennen?"
       erklaerung: "Man kann in jeder Phase Gegenmaßnahmen einplanen."
       antworten:
-        - { text: "Man kann nur nach dem Schaden reagieren.", richtig: false }
-        - { text: "Man braucht dann keine Passwörter mehr.", richtig: false }
         - { text: "Man kann in jeder Phase Gegenmaßnahmen einplanen.", richtig: true }
+        - { text: "Dann reicht eine einzige Maßnahme am Rand des Netzwerks aus.", richtig: false }
+        - { text: "Man weiß dadurch, dass Angriffe immer in genau derselben Reihenfolge ablaufen.", richtig: false }
     - frage: "Welche Taktik beschreibt das dauerhafte Halten eines Zugangs?"
       erklaerung: "Persistence."
       antworten:
+        - { text: "Exfiltration", richtig: false }
         - { text: "Persistence", richtig: true }
         - { text: "Reconnaissance", richtig: false }
-        - { text: "Exfiltration", richtig: false }
     - frage: "Was bedeutet Integrität laut NIST?"
       erklaerung: "Schutz vor unbefugter Änderung oder Zerstörung von Informationen."
       antworten:
-        - { text: "Schnelle Erreichbarkeit der Daten.", richtig: false }
+        - { text: "Schnelle und zuverlässige Erreichbarkeit der Daten für alle berechtigten Nutzer.", richtig: false }
+        - { text: "Schutz vor dem Mitlesen der Daten durch Dritte ohne Berechtigung.", richtig: false }
         - { text: "Schutz vor unbefugter Änderung oder Zerstörung von Informationen.", richtig: true }
-        - { text: "Schutz vor dem Mitlesen durch Dritte.", richtig: false }

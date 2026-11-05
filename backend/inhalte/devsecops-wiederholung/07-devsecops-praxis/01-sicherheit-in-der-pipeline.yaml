@@ -29,15 +29,15 @@ abschnitte:
       - frage: "Was bedeutet Shift-left?"
         erklaerung: "Sicherheitsprüfungen so früh wie möglich in die Entwicklung verlegen."
         antworten:
-          - { text: "Sicherheitsprüfungen erst nach dem Release machen.", richtig: false }
+          - { text: "Sicherheitsprüfungen erst nach dem Release im laufenden Betrieb durchführen.", richtig: false }
+          - { text: "Den Server im Rechenzentrum an eine andere Stelle im Rack verschieben.", richtig: false }
           - { text: "Sicherheitsprüfungen so früh wie möglich in die Entwicklung verlegen.", richtig: true }
-          - { text: "Den Server nach links im Rack schieben.", richtig: false }
       - frage: "Was ist Threat Modeling?"
         erklaerung: "Bedrohungen schon beim Entwurf durchdenken."
         antworten:
+          - { text: "Bedrohungen schon beim Entwurf durchdenken.", richtig: true }
           - { text: "Ein Test mit echten Angreifern am Release-Tag.", richtig: false }
           - { text: "Ein Werkzeug zum Komprimieren von Dateien.", richtig: false }
-          - { text: "Bedrohungen schon beim Entwurf durchdenken.", richtig: true }
   - titel: Secrets-Suche und SCA
     inhalt: |
       **Secrets-Suche:** Gesucht wird nach Passwörtern, geheimen Schlüsseln und vertraulichen Daten in Commits und
@@ -52,14 +52,14 @@ abschnitte:
       - frage: "Warum sucht man nach Geheimnissen am besten vor dem Commit?"
         erklaerung: "Einmal committet, bleiben Geheimnisse in der Historie."
         antworten:
+          - { text: "Weil Passwörter nur gelten, solange sie nicht committet wurden.", richtig: false }
           - { text: "Einmal committet, bleiben Geheimnisse in der Historie.", richtig: true }
-          - { text: "Weil Git dann schneller läuft.", richtig: false }
-          - { text: "Weil Passwörter nur vor dem Commit gelten.", richtig: false }
+          - { text: "Weil Git nach einem Commit mit Passwörtern nicht mehr funktioniert.", richtig: false }
       - frage: "Was liefert SCA laut Guideline?"
         erklaerung: "Abhängigkeiten, bekannte Schwachstellen und Lizenzangaben der Bausteine."
         antworten:
-          - { text: "Nur die Farbe des Logos.", richtig: false }
-          - { text: "Den Schutz vor Stromausfall.", richtig: false }
+          - { text: "Einen Test, der simuliert, wie viele Nutzer gleichzeitig zugreifen können.", richtig: false }
+          - { text: "Eine Übersicht über die Rechenzeit, die der Code beim Test verbraucht.", richtig: false }
           - { text: "Abhängigkeiten, bekannte Schwachstellen und Lizenzangaben der Bausteine.", richtig: true }
   - titel: SAST und DAST
     inhalt: |
@@ -80,45 +80,45 @@ abschnitte:
       - frage: "Was unterscheidet SAST von DAST?"
         erklaerung: "SAST untersucht den Code ohne ihn auszuführen, DAST testet die laufende Anwendung."
         antworten:
-          - { text: "SAST testet die laufende Anwendung, DAST liest den Code.", richtig: false }
           - { text: "SAST untersucht den Code ohne ihn auszuführen, DAST testet die laufende Anwendung.", richtig: true }
-          - { text: "Es gibt keinen Unterschied.", richtig: false }
+          - { text: "SAST testet die laufende Anwendung, DAST liest den Quellcode.", richtig: false }
+          - { text: "Beide untersuchen dasselbe, nur der Name der Werkzeuge ist verschieden.", richtig: false }
       - frage: "Welche Aussage über DAST ist laut Guideline richtig?"
         erklaerung: "Es braucht keinen Quellcode (Black-Box)."
         antworten:
-          - { text: "Es braucht den kompletten Quellcode.", richtig: false }
           - { text: "Es funktioniert nur ohne laufende Anwendung.", richtig: false }
           - { text: "Es braucht keinen Quellcode (Black-Box).", richtig: true }
+          - { text: "Es braucht den kompletten Quellcode.", richtig: false }
 test:
   zeitlimit_minuten: 10
   fragen:
     - frage: "Welche Prüfung gehört in die Stufe vor dem Commit?"
       erklaerung: "Die Suche nach Geheimnissen."
       antworten:
-        - { text: "Die Suche nach Geheimnissen", richtig: true }
         - { text: "Der nächtliche DAST-Scan der Testumgebung", richtig: false }
         - { text: "Das Überwachen des Live-Systems", richtig: false }
+        - { text: "Die Suche nach Geheimnissen", richtig: true }
     - frage: "Welche Prüfung findet bekannte Schwachstellen in Drittbibliotheken?"
       erklaerung: "SCA."
       antworten:
-        - { text: "SAST", richtig: false }
         - { text: "SCA", richtig: true }
         - { text: "Linting", richtig: false }
+        - { text: "SAST", richtig: false }
     - frage: "Was ist mit einem Schlüssel zu tun, der versehentlich öffentlich geworden ist?"
       erklaerung: "Er gilt als kompromittiert und muss ungültig gemacht werden."
       antworten:
+        - { text: "Es genügt, die betroffene Datei im nächsten Commit zu löschen.", richtig: false }
         - { text: "Er gilt als kompromittiert und muss ungültig gemacht werden.", richtig: true }
-        - { text: "Nichts, die Historie ist privat.", richtig: false }
-        - { text: "Man löscht nur die Datei.", richtig: false }
+        - { text: "Nichts, denn die Historie eines Repositories ist immer privat.", richtig: false }
     - frage: "Welche Prüfung sieht den Quellcode, ohne das Programm zu starten?"
       erklaerung: "SAST."
       antworten:
+        - { text: "Ein Lasttest", richtig: false }
         - { text: "DAST", richtig: false }
         - { text: "SAST", richtig: true }
-        - { text: "Ein Lasttest", richtig: false }
     - frage: "Wogegen darfst du DAST nur einsetzen?"
       erklaerung: "Gegen Systeme, die dir gehören oder für die du eine Erlaubnis hast."
       antworten:
-        - { text: "Gegen jede öffentlich erreichbare Seite.", richtig: false }
         - { text: "Gegen Systeme, die dir gehören oder für die du eine Erlaubnis hast.", richtig: true }
-        - { text: "Gegen die Seiten deiner Mitbewerber.", richtig: false }
+        - { text: "Gegen jede öffentlich erreichbare Seite, die im Internet gefunden wird.", richtig: false }
+        - { text: "Gegen die Seiten von Mitbewerbern, um deren Schwächen zu kennen.", richtig: false }

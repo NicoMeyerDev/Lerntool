@@ -24,15 +24,15 @@ abschnitte:
       - frage: "Welche drei Schritte hat ein typischer Test?"
         erklaerung: "Zustand vorbereiten, Aktion ausführen, Ergebnis prüfen."
         antworten:
-          - { text: "Löschen, Kopieren, Einfügen.", richtig: false }
           - { text: "Zustand vorbereiten, Aktion ausführen, Ergebnis prüfen.", richtig: true }
-          - { text: "Starten, Warten, Beenden.", richtig: false }
+          - { text: "Code schreiben, Code veröffentlichen, Rückmeldung sammeln.", richtig: false }
+          - { text: "Datenbank leeren, Server starten, Seite aufrufen.", richtig: false }
       - frage: "Womit startest du die Tests in Laravel?"
         erklaerung: "Mit php artisan test."
         antworten:
+          - { text: "Mit python manage.py test.", richtig: false }
           - { text: "Mit php artisan test.", richtig: true }
-          - { text: "Mit python manage.py migrate.", richtig: false }
-          - { text: "Mit docker build.", richtig: false }
+          - { text: "Mit php artisan migrate.", richtig: false }
   - titel: Was du testest
     inhalt: |
       - **Einheitstests** prüfen kleine Bausteine, zum Beispiel eine Funktion im Service.
@@ -46,45 +46,45 @@ abschnitte:
       - frage: "Was prüft ein HTTP-Test?"
         erklaerung: "Eine Route von der Anfrage bis zur Antwort."
         antworten:
-          - { text: "Nur die Farbe der Buttons.", richtig: false }
-          - { text: "Nur die Länge des Quellcodes.", richtig: false }
+          - { text: "Nur die Darstellung der Seite im Browser, nicht die Antwort.", richtig: false }
+          - { text: "Nur die Funktionsweise einer einzelnen Funktion ohne Anfrage.", richtig: false }
           - { text: "Eine Route von der Anfrage bis zur Antwort.", richtig: true }
       - frage: "Welche Daten gehören in Tests?"
         erklaerung: "Erfundene Beispieldaten, keine echten Passwörter oder Tokens."
         antworten:
           - { text: "Erfundene Beispieldaten.", richtig: true }
-          - { text: "Echte Kundendaten.", richtig: false }
-          - { text: "Das echte Admin-Passwort.", richtig: false }
+          - { text: "Kopien der echten Kundendaten aus dem Produktivsystem.", richtig: false }
+          - { text: "Das echte Admin-Passwort, damit die Anmeldung getestet werden kann.", richtig: false }
 test:
   zeitlimit_minuten: 10
   fragen:
     - frage: "Wozu dient der Django-Test-Client?"
       erklaerung: "Er simuliert Anfragen an die Anwendung."
       antworten:
+        - { text: "Er installiert die Abhängigkeiten, die der Test braucht.", richtig: false }
         - { text: "Er simuliert Anfragen an die Anwendung.", richtig: true }
-        - { text: "Er baut Docker-Images.", richtig: false }
-        - { text: "Er installiert Pakete.", richtig: false }
+        - { text: "Er baut die Docker-Images für die Testumgebung.", richtig: false }
     - frage: "Was bedeutet das Muster Arrange, Act, Assert?"
       erklaerung: "Vorbereiten, ausführen, prüfen."
       antworten:
-        - { text: "Anmelden, Abmelden, Löschen", richtig: false }
+        - { text: "Anlegen, Archivieren, Auswerten", richtig: false }
+        - { text: "Planen, Programmieren, Ausliefern", richtig: false }
         - { text: "Vorbereiten, ausführen, prüfen", richtig: true }
-        - { text: "Planen, Bauen, Verkaufen", richtig: false }
     - frage: "Warum testet man auch Fehlerfälle?"
       erklaerung: "Weil falsche Eingaben und fehlende Anmeldung im Alltag vorkommen."
       antworten:
-        - { text: "Weil Fehler nie vorkommen.", richtig: false }
         - { text: "Weil falsche Eingaben und fehlende Anmeldung im Alltag vorkommen.", richtig: true }
-        - { text: "Weil Tests sonst zu kurz sind.", richtig: false }
+        - { text: "Weil Fehlerfälle in der Praxis nie vorkommen und nur theoretisch sind.", richtig: false }
+        - { text: "Weil Frameworks Fehlerfälle automatisch abdecken und nicht testen müssen.", richtig: false }
     - frage: "Arbeitet ein Test mit den echten Produktivdaten?"
       erklaerung: "Nein, er baut seinen Zustand selbst auf."
       antworten:
-        - { text: "Ja, immer.", richtig: false }
+        - { text: "Ja, aber nur lesend, damit nichts verändert wird.", richtig: false }
         - { text: "Nein, er baut seinen Zustand selbst auf.", richtig: true }
-        - { text: "Nur sonntags.", richtig: false }
+        - { text: "Ja, damit der Test möglichst echte Daten verwendet.", richtig: false }
     - frage: "Was prüft ein Einheitstest?"
       erklaerung: "Einen kleinen Baustein, zum Beispiel eine Funktion im Service."
       antworten:
+        - { text: "Eine Route von der Anfrage bis zur Antwort im Browser.", richtig: false }
+        - { text: "Das Zusammenspiel aller Dienste der fertigen Anwendung.", richtig: false }
         - { text: "Einen kleinen Baustein, zum Beispiel eine Funktion im Service.", richtig: true }
-        - { text: "Immer die komplette Anwendung inklusive Browser.", richtig: false }
-        - { text: "Nur das Aussehen der Seite.", richtig: false }

@@ -24,45 +24,45 @@ abschnitte:
       - frage: "Wie müssen die Impressumsangaben nach § 5 DDG bereitgehalten werden?"
         erklaerung: "Leicht erkennbar, unmittelbar erreichbar und ständig verfügbar."
         antworten:
-          - { text: "Nur auf Anfrage per Post.", richtig: false }
           - { text: "Leicht erkennbar, unmittelbar erreichbar und ständig verfügbar.", richtig: true }
-          - { text: "Nur nach dem Einloggen.", richtig: false }
+          - { text: "Nur auf Anfrage und dann per Post an die anfragende Person.", richtig: false }
+          - { text: "Nur für Nutzer, die sich zuvor auf der Seite angemeldet haben.", richtig: false }
       - frage: "Welche Kontaktangabe nennt § 5 DDG ausdrücklich?"
         erklaerung: "Eine E-Mail-Adresse."
         antworten:
-          - { text: "Die private Handynummer der Geschäftsleitung.", richtig: false }
+          - { text: "Die Steuernummer des Unternehmens.", richtig: false }
           - { text: "Eine E-Mail-Adresse.", richtig: true }
-          - { text: "Ein Faxgerät.", richtig: false }
+          - { text: "Die private Handynummer der Geschäftsleitung.", richtig: false }
 test:
   zeitlimit_minuten: 10
   fragen:
     - frage: "Wie heißt das Gesetz, in dem die Impressumspflicht heute steht?"
       erklaerung: "Digitale-Dienste-Gesetz (DDG)."
       antworten:
+        - { text: "Bundesdatenschutzgesetz (BDSG)", richtig: false }
+        - { text: "Telekommunikationsgesetz (TKG)", richtig: false }
         - { text: "Digitale-Dienste-Gesetz (DDG)", richtig: true }
-        - { text: "Bundesdatenschutzgesetz", richtig: false }
-        - { text: "Straßenverkehrsordnung", richtig: false }
     - frage: "Welche Angabe gehört bei juristischen Personen zusätzlich ins Impressum?"
       erklaerung: "Rechtsform und vertretungsberechtigte Personen."
       antworten:
-        - { text: "Das Lieblingsessen der Geschäftsleitung", richtig: false }
         - { text: "Rechtsform und vertretungsberechtigte Personen", richtig: true }
-        - { text: "Die Zahl der Besucher", richtig: false }
+        - { text: "Die Anzahl der Mitarbeitenden", richtig: false }
+        - { text: "Der Jahresumsatz des Unternehmens", richtig: false }
     - frage: "Auf wen zielt § 5 DDG laut Gesetzestext?"
       erklaerung: "Auf Diensteanbieter geschäftsmäßiger digitaler Dienste, die in der Regel gegen Entgelt angeboten werden."
       antworten:
+        - { text: "Ausschließlich auf Behörden und öffentliche Einrichtungen des Bundes.", richtig: false }
         - { text: "Auf Diensteanbieter geschäftsmäßiger digitaler Dienste, die in der Regel gegen Entgelt angeboten werden.", richtig: true }
-        - { text: "Auf alle Menschen, die einen Computer besitzen.", richtig: false }
-        - { text: "Nur auf Behörden.", richtig: false }
+        - { text: "Auf alle Privatpersonen, die einen Computer oder ein Handy besitzen.", richtig: false }
     - frage: "Wann müssen die Angaben verfügbar sein?"
       erklaerung: "Ständig."
       antworten:
-        - { text: "Nur werktags", richtig: false }
+        - { text: "Nur nach vorheriger Anmeldung", richtig: false }
+        - { text: "Nur während der üblichen Geschäftszeiten", richtig: false }
         - { text: "Ständig", richtig: true }
-        - { text: "Nur beim ersten Besuch", richtig: false }
     - frage: "Warum ersetzt dieses Material keine Rechtsberatung?"
       erklaerung: "Ob ein Impressum nötig ist, hängt vom Einzelfall ab."
       antworten:
         - { text: "Ob ein Impressum nötig ist, hängt vom Einzelfall ab.", richtig: true }
-        - { text: "Weil Gesetze nie angewendet werden.", richtig: false }
-        - { text: "Weil Impressen verboten sind.", richtig: false }
+        - { text: "Weil Impressumspflichten ausschließlich für Behörden gelten.", richtig: false }
+        - { text: "Weil Rechtsberatung grundsätzlich nur online angeboten werden darf.", richtig: false }

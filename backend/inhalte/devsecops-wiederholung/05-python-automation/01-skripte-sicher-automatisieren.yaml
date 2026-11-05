@@ -33,9 +33,9 @@ abschnitte:
       - frage: "Was bewirkt `mkdir(parents=True, exist_ok=True)`?"
         erklaerung: "Es legt fehlende Elternordner an und wirft keinen Fehler, wenn der Ordner schon existiert."
         antworten:
-          - { text: "Es löscht den Ordner, falls er existiert.", richtig: false }
+          - { text: "Es löscht den Ordner zuerst, falls er bereits existiert, und legt ihn neu an.", richtig: false }
           - { text: "Es legt fehlende Elternordner an und wirft keinen Fehler, wenn der Ordner schon existiert.", richtig: true }
-          - { text: "Es verschlüsselt den Ordnerinhalt.", richtig: false }
+          - { text: "Es verschlüsselt den Inhalt des Ordners, nachdem er angelegt wurde.", richtig: false }
       - frage: "Welche Methode durchsucht Unterordner mit?"
         erklaerung: "rglob()."
         antworten:
@@ -71,15 +71,15 @@ abschnitte:
       - frage: "Warum übergibt man Argumente an `subprocess.run` als Liste?"
         erklaerung: "Python übernimmt dann Anführungszeichen und Leerzeichen und schützt so vor Shell-Injection."
         antworten:
-          - { text: "Weil Strings in Python verboten sind.", richtig: false }
-          - { text: "Weil Listen immer schneller sind.", richtig: false }
           - { text: "Python übernimmt dann Anführungszeichen und Leerzeichen und schützt so vor Shell-Injection.", richtig: true }
+          - { text: "Weil Zeichenketten in Python für Programmaufrufe grundsätzlich verboten sind.", richtig: false }
+          - { text: "Weil Listen in Python immer schneller verarbeitet werden als Zeichenketten.", richtig: false }
       - frage: "Was bewirkt `check=True`?"
         erklaerung: "Ein Rückgabecode ungleich 0 löst eine CalledProcessError-Ausnahme aus."
         antworten:
+          - { text: "Das aufgerufene Programm läuft immer im Hintergrund weiter.", richtig: false }
           - { text: "Ein Rückgabecode ungleich 0 löst eine CalledProcessError-Ausnahme aus.", richtig: true }
-          - { text: "Das Programm läuft immer im Hintergrund.", richtig: false }
-          - { text: "Die Ausgabe wird verschlüsselt.", richtig: false }
+          - { text: "Die Ausgabe des Programms wird automatisch verschlüsselt gespeichert.", richtig: false }
   - titel: Argumente mit argparse
     inhalt: |
       `argparse` baut eine Kommandozeile mit Hilfe-Text:
@@ -104,15 +104,15 @@ abschnitte:
       - frage: "Woran erkennt argparse ein Positionsargument?"
         erklaerung: "Der Name hat keinen Bindestrich am Anfang."
         antworten:
-          - { text: "Der Name hat zwei Unterstriche.", richtig: false }
-          - { text: "Es steht immer in Großbuchstaben.", richtig: false }
+          - { text: "Der Name ist immer vollständig in Großbuchstaben geschrieben.", richtig: false }
+          - { text: "Der Name enthält zwei Unterstriche am Anfang, zum Beispiel __ordner.", richtig: false }
           - { text: "Der Name hat keinen Bindestrich am Anfang.", richtig: true }
       - frage: "Was passiert bei ungültiger Eingabe in `parse_args()`?"
         erklaerung: "Eine Hilfe zur Verwendung wird angezeigt und das Programm endet mit Status 2."
         antworten:
           - { text: "Eine Hilfe zur Verwendung wird angezeigt und das Programm endet mit Status 2.", richtig: true }
-          - { text: "Das Programm löscht die Eingabe.", richtig: false }
-          - { text: "Das Programm läuft mit Zufallswerten weiter.", richtig: false }
+          - { text: "Das Programm löscht die ungültige Eingabe und läuft stillschweigend weiter.", richtig: false }
+          - { text: "Das Programm ersetzt die Eingabe durch Zufallswerte und fährt fort.", richtig: false }
 test:
   zeitlimit_minuten: 10
   fragen:
@@ -125,21 +125,21 @@ test:
     - frage: "Was liefert `subprocess.run` zurück?"
       erklaerung: "Ein CompletedProcess-Objekt mit Rückgabecode und gesammelter Ausgabe."
       antworten:
+        - { text: "Nur eine einzelne Zahl, nämlich den Rückgabecode des Programms.", richtig: false }
+        - { text: "Immer None, die Ausgabe erscheint nur in der Konsole.", richtig: false }
         - { text: "Ein CompletedProcess-Objekt mit Rückgabecode und gesammelter Ausgabe.", richtig: true }
-        - { text: "Nur eine Zahl.", richtig: false }
-        - { text: "Immer None.", richtig: false }
     - frage: "Was ist das Risiko von `shell=True` mit Nutzereingaben?"
       erklaerung: "Die Shell interpretiert Sonderzeichen, es kann Shell-Injection entstehen."
       antworten:
-        - { text: "Das Programm wird zu langsam.", richtig: false }
         - { text: "Die Shell interpretiert Sonderzeichen, es kann Shell-Injection entstehen.", richtig: true }
-        - { text: "Es gibt kein Risiko.", richtig: false }
+        - { text: "Das Programm wird dadurch merklich langsamer und braucht mehr Speicher.", richtig: false }
+        - { text: "Es gibt dabei grundsätzlich kein Risiko, solange Python aktuell ist.", richtig: false }
     - frage: "Was passiert bei einem Timeout in `subprocess.run(..., timeout=10)`?"
       erklaerung: "Der Prozess wird beendet und TimeoutExpired wird ausgelöst."
       antworten:
-        - { text: "Der Prozess läuft einfach weiter.", richtig: false }
+        - { text: "Der Prozess läuft ungestört weiter und das Skript wartet unbegrenzt.", richtig: false }
         - { text: "Der Prozess wird beendet und TimeoutExpired wird ausgelöst.", richtig: true }
-        - { text: "Der Rechner startet neu.", richtig: false }
+        - { text: "Der Rechner wird neu gestartet, um den Prozess zu beenden.", richtig: false }
     - frage: "Wie lautet der Aufruf für die automatische Hilfe eines argparse-Skripts?"
       erklaerung: "-h oder --help."
       antworten:

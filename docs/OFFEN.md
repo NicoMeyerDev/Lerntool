@@ -102,3 +102,10 @@ Reine Notiz für die spätere Ausarbeitung (Backlog C6), keine Entscheidung des 
 
 - **Problem:** Die Release-Notes von DRF 3.18.0 bestätigen Django 5.2 nicht ausdrücklich (sie nennen 6.1 und den Wegfall von 4.2, 5.0 und 5.1).
 - **Plan:** Vor einem Versions-Update prüfen.
+
+### 2026-11-05 – Quizqualität (richtige Antwort erratbar)
+
+- **Problem:** Falsche Antworten waren oft kürzer oder offensichtlich falsch, die richtige Antwort war häufig die längste.
+- **Stand:** Erledigt für D2 (`devsecops-wiederholung`) und D3 (`django-laravel-vergleich`); die D3-CI-Lektion folgt nach dem Merge von PR #27.
+- **Offen:** `backend-wiederholung` (310 Fragen), `php-laravel` (233), `ai-engineering` (45), `englisch` (47).
+- **Hinweis:** Die Positionsrotation ist zyklisch und daher vorhersagbar. Besser wäre Mischen im Frontend (siehe Backlog, Später).

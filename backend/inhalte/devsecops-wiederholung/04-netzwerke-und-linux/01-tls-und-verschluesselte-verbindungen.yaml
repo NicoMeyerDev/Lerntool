@@ -22,15 +22,15 @@ abschnitte:
       - frage: "Welche drei Dinge leistet TLS laut MDN?"
         erklaerung: "Verschlüsselung, Integrität und Echtheit des Servers."
         antworten:
-          - { text: "Schnellere Seiten, kleinere Dateien und Werbung.", richtig: false }
+          - { text: "Kompression, Caching und Lastverteilung.", richtig: false }
+          - { text: "Anmeldung, Rechteverwaltung und Abrechnung.", richtig: false }
           - { text: "Verschlüsselung, Integrität und Echtheit des Servers.", richtig: true }
-          - { text: "Backup, Monitoring und Logging.", richtig: false }
       - frage: "Was ist HTTPS?"
         erklaerung: "HTTP über TLS."
         antworten:
-          - { text: "Ein anderes Wort für DNS.", richtig: false }
-          - { text: "Ein Programm zum Hashen von Passwörtern.", richtig: false }
           - { text: "HTTP über TLS", richtig: true }
+          - { text: "Ein Protokoll, das Webseiten komprimiert, damit sie schneller laden", richtig: false }
+          - { text: "HTTP mit einer zusätzlichen Prüfsumme für jede Datei", richtig: false }
   - titel: Zertifikate und der Verbindungsaufbau
     inhalt: |
       Ein **Zertifikat** enthält eine digital signierte Kopie des öffentlichen Schlüssels des Servers und bindet
@@ -46,14 +46,14 @@ abschnitte:
       - frage: "Was bindet ein Zertifikat an einen Domainnamen?"
         erklaerung: "Den öffentlichen Schlüssel des Servers."
         antworten:
-          - { text: "Das Passwort des Nutzers.", richtig: false }
+          - { text: "Die IP-Adresse des Rechners, von dem aus die Seite aufgerufen wird.", richtig: false }
           - { text: "Den öffentlichen Schlüssel des Servers.", richtig: true }
-          - { text: "Die IP-Adresse des Clients.", richtig: false }
+          - { text: "Das Passwort, mit dem sich Nutzer auf der Webseite anmelden.", richtig: false }
       - frage: "Wer stellt Zertifikate aus?"
         erklaerung: "Zertifizierungsstellen, zum Beispiel Let's Encrypt."
         antworten:
-          - { text: "Der Browser selbst bei jedem Aufruf.", richtig: false }
-          - { text: "Das Betriebssystem des Servers.", richtig: false }
+          - { text: "Das Betriebssystem des Servers stellt sie beim Start automatisch aus.", richtig: false }
+          - { text: "Der Browser erzeugt bei jedem Seitenaufruf ein neues Zertifikat selbst.", richtig: false }
           - { text: "Zertifizierungsstellen, zum Beispiel Let's Encrypt.", richtig: true }
 test:
   zeitlimit_minuten: 10
@@ -61,30 +61,30 @@ test:
     - frage: "Wovor schützt TLS laut MDN besonders?"
       erklaerung: "Vor Manipulator-in-the-Middle-Angriffen."
       antworten:
-        - { text: "Vor Manipulator-in-the-Middle-Angriffen.", richtig: true }
-        - { text: "Vor zu langen Passwörtern.", richtig: false }
-        - { text: "Vor langsamer Hardware.", richtig: false }
+        - { text: "Vor Angriffen, bei denen ein Dritter die Verbindung abhört oder verändert (Manipulator-in-the-Middle).", richtig: true }
+        - { text: "Vor Webseiten, deren Passwörter zu lang oder zu komplex gewählt wurden.", richtig: false }
+        - { text: "Vor Verbindungen, die wegen langsamer Hardware regelmäßig abbrechen.", richtig: false }
     - frage: "Wie weist der Server beim Verbindungsaufbau seine Identität nach?"
       erklaerung: "Mit einem digitalen Zertifikat."
       antworten:
-        - { text: "Mit seinem Passwort im Klartext.", richtig: false }
+        - { text: "Mit seiner IP-Adresse, die der Browser vorher gespeichert hat.", richtig: false }
         - { text: "Mit einem digitalen Zertifikat.", richtig: true }
-        - { text: "Gar nicht, das ist nicht vorgesehen.", richtig: false }
+        - { text: "Mit einem Passwort, das er im Klartext an den Browser schickt.", richtig: false }
     - frage: "Welche TLS-Version nennt MDN als aktuell?"
       erklaerung: "TLS 1.3."
       antworten:
-        - { text: "TLS 0.9", richtig: false }
         - { text: "TLS 1.0", richtig: false }
+        - { text: "TLS 1.1", richtig: false }
         - { text: "TLS 1.3", richtig: true }
     - frage: "Was passiert im Handshake?"
       erklaerung: "Die Partner einigen sich auf Version und Verfahren und erzeugen einen gemeinsamen Schlüssel."
       antworten:
         - { text: "Die Partner einigen sich auf Version und Verfahren und erzeugen einen gemeinsamen Schlüssel.", richtig: true }
-        - { text: "Der Server löscht alle Daten.", richtig: false }
-        - { text: "Der Browser lädt die Webseite herunter.", richtig: false }
+        - { text: "Der Server löscht alle alten Sitzungsdaten und startet sich anschließend neu.", richtig: false }
+        - { text: "Der Browser lädt die komplette Webseite herunter und speichert sie lokal.", richtig: false }
     - frage: "Was bietet Let's Encrypt laut MDN?"
       erklaerung: "Kostenlose Zertifikate."
       antworten:
-        - { text: "Einen Passwortmanager.", richtig: false }
+        - { text: "Einen Anbieter für verwaltetes Hosting von Webservern.", richtig: false }
         - { text: "Kostenlose Zertifikate.", richtig: true }
-        - { text: "Einen Virenscanner.", richtig: false }
+        - { text: "Einen Dienst, der Webseiten gegen Bezahlung vor Angriffen schützt.", richtig: false }
