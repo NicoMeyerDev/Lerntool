@@ -5,6 +5,7 @@ Entwicklung werden sie zusätzlich aus `backend/.env` geladen (siehe
 `.env.example`). Echte Zugangsdaten stehen nie im Code.
 """
 
+import os
 from pathlib import Path
 
 import dj_database_url
@@ -20,6 +21,24 @@ load_dotenv(BASE_DIR / ".env")
 SECRET_KEY = env_required("DJANGO_SECRET_KEY")
 DEBUG = env_bool("DJANGO_DEBUG", default=False)
 ALLOWED_HOSTS = env_list("DJANGO_ALLOWED_HOSTS", default="localhost,127.0.0.1")
+# Render setzt den öffentlichen Hostnamen des Dienstes selbst (siehe docs/DEPLOYMENT.md).
+_render_host = os.environ.get("RENDER_EXTERNAL_HOSTNAME", "").strip()
+if _render_host:
+    ALLOWED_HOSTS.append(_render_host)
+
+# Adressen des Frontends, die die API aufrufen dürfen (CORS). Lokal leer: Der Vite-Proxy genügt.
+CORS_ALLOWED_ORIGINS = env_list("DJANGO_CORS_ORIGINS", default="")
+
+# Im Betrieb hinter dem Render-Proxy: HTTPS erzwingen und Cookies absichern.
+# Lokal und in Tests aus, weil dort kein HTTPS läuft.
+if env_bool("DJANGO_HTTPS_ERZWINGEN", default=False):
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+    SECURE_SSL_REDIRECT = True
+    # Der Health-Check der Plattform läuft ohne Umleitung.
+    SECURE_REDIRECT_EXEMPT = [r"^api/health/$"]
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_HSTS_SECONDS = 3600
 
 INSTALLED_APPS = [
     "django.contrib.auth",
@@ -29,12 +48,14 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "rest_framework.authtoken",
+    "corsheaders",
     "core",
     "lernen",
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",

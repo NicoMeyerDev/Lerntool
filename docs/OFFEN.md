@@ -2,6 +2,13 @@
 
 Punkte, die eine Entscheidung oder Aktion des Nutzers brauchen.
 
+## 2026-11-05 – Render-Deployment: Entscheidungen für dich
+
+- **Kostenlose Datenbank läuft nach 30 Tagen ab** (Render-Doku). Danach 14 Tage Gnadenfrist, dann werden Daten gelöscht. Für dauerhaften Fortschritt ist ein bezahlter Datenbank-Tarif nötig (Kosten, Entscheidung beim Nutzer).
+- **Nicht getestet:** `render.yaml` wurde nicht auf Render ausprobiert, nur lokal Build, Tests und `check --deploy`. Das genaue Verhalten (z. B. `staticPublishPath` relativ zu `rootDir`, Rewrite-Syntax) bitte beim ersten Apply prüfen.
+- **Login-Bremse hinter dem Render-Proxy:** Ohne `NUM_PROXIES` kann ein Angreifer den Header `X-Forwarded-For` selbst setzen und die Bremse (10 Versuche pro Minute) umgehen. Die Render-Doku nennt die Zahl der vorgeschalteten Proxys nicht, deshalb ist der Wert nicht gesetzt. Nach dem Deployment prüfen (Header der Anfrage ansehen) und `NUM_PROXIES` setzen. Zusätzlich zählt der Standard-Cache pro Prozess. Bis dahin schützt das lange Passwort.
+- **Passwort ändern im Betrieb** geht ohne Shell nicht über `LERNTOOL_PASSWORT` (siehe `docs/DEPLOYMENT.md`).
+
 ## 2026-11-05 – D3 Konzept-Vergleiche: Notizen
 
 - **PHP-CI-Schritte (erledigt 2026-11-05):** Die CI-Lektion belegt die PHP-Schritte jetzt mit der `setup-php`-README, der Composer-Doku und der Laravel-Testing-Doku. `setup-php` ist eine Drittanbieter-Action, das steht in der Lektion.
