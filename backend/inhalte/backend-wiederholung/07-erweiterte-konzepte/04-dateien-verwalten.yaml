@@ -1,0 +1,103 @@
+titel: Dateimanagement und Uploads
+zusammenfassung: Du erinnerst dich, wie Django Dateien in Modellen ablegt (FileField, MEDIA_ROOT), wie Uploads ankommen und warum sie nie blind vertraut werden.
+quellen:
+  - titel: Django 5.2 – Einstellung FILE_UPLOAD_MAX_MEMORY_SIZE
+    url: https://docs.djangoproject.com/en/5.2/ref/settings/#file-upload-max-memory-size
+  - titel: Django 5.2 – Sicherheit, vom Nutzer hochgeladene Inhalte
+    url: https://docs.djangoproject.com/en/5.2/topics/security/#user-uploaded-content
+  - titel: Django 5.2 – Modellfelder, FileField und upload_to
+    url: https://docs.djangoproject.com/en/5.2/ref/models/fields/#filefield
+  - titel: Django 5.2 – Dateien verwalten
+    url: https://docs.djangoproject.com/en/5.2/topics/files/
+  - titel: Django 5.2 – Datei-Uploads
+    url: https://docs.djangoproject.com/en/5.2/topics/http/file-uploads/
+abschnitte:
+  - titel: Dateien im Modell
+    inhalt: |
+      Modellfelder für Dateien sind `FileField` und `ImageField` (Letzteres für Bilder, mit Breite und
+      Höhe). `upload_to` legt den Unterordner fest:
+
+      ```python
+      photo = models.ImageField(upload_to="cars")
+      specs = models.FileField(upload_to="specs")
+      ```
+
+      - `MEDIA_ROOT` ist der Ordner im Dateisystem, in dem die Dateien liegen.
+      - `MEDIA_URL` ist die URL-Basis, unter der sie erreichbar sind.
+      - In der **Datenbank** steht nur der **relative Name** (zum Beispiel `cars/chevy.jpg`), nicht die
+        Datei selbst. `photo.path` und `photo.url` werden daraus abgeleitet.
+      - `default_storage` ist die globale Speicher-Instanz zum Speichern, Lesen und Löschen.
+    quiz:
+      - frage: "Was speichert die Datenbank bei einem `FileField`?"
+        erklaerung: "Den relativen Dateinamen, nicht die Datei selbst."
+        antworten:
+          - { text: "Die komplette Datei.", richtig: false }
+          - { text: "Den relativen Dateinamen, nicht die Datei selbst.", richtig: true }
+          - { text: "Nur die Dateigröße.", richtig: false }
+      - frage: "Wofür steht `MEDIA_ROOT`?"
+        erklaerung: "Für den Ordner im Dateisystem, in dem hochgeladene Dateien liegen."
+        antworten:
+          - { text: "Für die URL der Seite.", richtig: false }
+          - { text: "Für den Ordner im Dateisystem, in dem hochgeladene Dateien liegen.", richtig: true }
+          - { text: "Für den Namen der Datenbank.", richtig: false }
+  - titel: Uploads empfangen und absichern
+    inhalt: |
+      Hochgeladene Dateien liegen in `request.FILES`. Das gilt nur, wenn die Anfrage ein `POST` ist und
+      das Formular `enctype="multipart/form-data"` hat. Sonst ist `request.FILES` leer.
+
+      Kleine Uploads liegen im Speicher, größere werden in eine temporäre Datei geschrieben. Die Grenze
+      liegt laut Doku bei 2,5 MB (`FILE_UPLOAD_MAX_MEMORY_SIZE`). Große Dateien liest du mit
+      `f.chunks()` Stück für Stück.
+
+      **Sicherheit:** Die Doku warnt, dass Uploads von nicht vertrauenswürdigen Nutzern ein Risiko sind.
+      Laut Doku gibt es auf Framework-Ebene keine wasserdichte Dateiprüfung. Ein `ImageField` prüft Bilder zum
+      Beispiel mit Pillow, aber eine Datei mit Bild-Kopf kann trotzdem anderen Inhalt enthalten. Die Doku nennt
+      deshalb unter anderem eine **Erlaubnisliste für Dateiendungen** und das Ausliefern von Uploads von einer
+      **getrennten Domain**. (Eigene Regeln dazu: Größe prüfen, Dateinamen nicht blind übernehmen, Uploads nicht
+      ausführbar ablegen.)
+    quiz:
+      - frage: "Was braucht ein Formular, damit `request.FILES` gefüllt wird?"
+        erklaerung: "Eine POST-Anfrage und enctype=\"multipart/form-data\"."
+        antworten:
+          - { text: "Nur einen Button.", richtig: false }
+          - { text: "Eine POST-Anfrage und enctype=\"multipart/form-data\".", richtig: true }
+          - { text: "Eine GET-Anfrage.", richtig: false }
+      - frage: "Wie liest du große Uploads speicherschonend?"
+        erklaerung: "Mit f.chunks() Stück für Stück."
+        antworten:
+          - { text: "Mit f.read() auf einmal.", richtig: false }
+          - { text: "Mit f.chunks() Stück für Stück.", richtig: true }
+          - { text: "Gar nicht, sie sind verboten.", richtig: false }
+test:
+  zeitlimit_minuten: 10
+  fragen:
+    - frage: "Wofür steht `upload_to` bei einem FileField?"
+      erklaerung: "Für den Unterordner relativ zu MEDIA_ROOT (siehe Feldreferenz zu FileField)."
+      antworten:
+        - { text: "Für die maximale Dateigröße.", richtig: false }
+        - { text: "Für den Unterordner relativ zu MEDIA_ROOT.", richtig: true }
+        - { text: "Für den Benutzernamen.", richtig: false }
+    - frage: "Welches Feld ist für Bilder gedacht?"
+      erklaerung: "ImageField."
+      antworten:
+        - { text: "ImageField", richtig: true }
+        - { text: "CharField", richtig: false }
+        - { text: "BooleanField", richtig: false }
+    - frage: "Warum sind Uploads ein Sicherheitsrisiko?"
+      erklaerung: "Nicht vertrauenswürdige Nutzer können gefährliche Dateien hochladen."
+      antworten:
+        - { text: "Nicht vertrauenswürdige Nutzer können gefährliche Dateien hochladen.", richtig: true }
+        - { text: "Weil Dateien immer zu groß sind.", richtig: false }
+        - { text: "Es gibt kein Risiko.", richtig: false }
+    - frage: "Welche Klasse ist Djangos Wrapper für Dateien?"
+      erklaerung: "django.core.files.File."
+      antworten:
+        - { text: "django.http.Request", richtig: false }
+        - { text: "django.db.Model", richtig: false }
+        - { text: "django.core.files.File", richtig: true }
+    - frage: "Was liefert `photo.url`?"
+      erklaerung: "Die URL, die aus MEDIA_URL und dem Dateinamen gebildet wird."
+      antworten:
+        - { text: "Die URL, die aus MEDIA_URL und dem Dateinamen gebildet wird.", richtig: true }
+        - { text: "Den Dateiinhalt.", richtig: false }
+        - { text: "Das Passwort des Nutzers.", richtig: false }

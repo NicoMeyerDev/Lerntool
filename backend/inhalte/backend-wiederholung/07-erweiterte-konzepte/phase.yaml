@@ -1,0 +1,27 @@
+titel: Erweiterte Konzepte
+beschreibung: Caching mit Redis, Task-Queues mit Celery, PostgreSQL mit Django und Dateimanagement. Du erinnerst dich an die Bausteine, die eine Django-App im Betrieb schneller und robuster machen.
+projekt:
+  titel: Architekturplan für eine Hintergrund-Aufgabe
+  beschreibung: |
+    Du planst auf dem Papier, wie eine langsame Aufgabe in einer Django-App schneller wird.
+
+    **Aufgabe:** Wähle ein Beispiel (zum Beispiel einen Bericht als PDF, der 20 Sekunden dauert, und eine
+    Startseite mit teurer Datenbankabfrage). Beschreibe in einem Dokument:
+    (1) was zwischengespeichert wird, mit Schlüssel und Ablaufzeit,
+    (2) welche Aufgabe in eine Celery-Task wandert und was der Nutzer währenddessen sieht,
+    (3) wo hochgeladene Dateien liegen und wie du sie prüfst,
+    (4) welche Einstellungen für PostgreSQL nötig sind.
+
+    **Regeln:**
+
+    - Es wird kein Redis-Server, kein Celery-Worker und keine Datenbank angelegt, der Plan bleibt auf dem Papier.
+    - Es kommen keine echten Zugangsdaten in den Plan. Nenne nur Namen von Umgebungsvariablen.
+
+    **Tipp:** Frage dich bei jedem Zwischenspeicher: Wann wird er ungültig?
+    Quellen: [Django Cache-Framework](https://docs.djangoproject.com/en/5.2/topics/cache/), [Celery mit Django](https://docs.celeryq.dev/en/stable/django/first-steps-with-django.html), [Django Datei-Uploads](https://docs.djangoproject.com/en/5.2/topics/http/file-uploads/) und [Django, PostgreSQL-Hinweise](https://docs.djangoproject.com/en/5.2/ref/databases/#postgresql-notes).
+  punkte:
+    - Der Plan nennt, was zwischengespeichert wird, mit Schlüssel und Ablaufzeit.
+    - Der Plan nennt, wann der Zwischenspeicher ungültig wird.
+    - Die langsame Aufgabe ist als Celery-Task beschrieben, inklusive dessen, was der Nutzer währenddessen sieht.
+    - Der Speicherort und die Prüfung hochgeladener Dateien sind beschrieben.
+    - Die PostgreSQL-Einstellungen nennen nur Namen von Umgebungsvariablen, keine Werte.

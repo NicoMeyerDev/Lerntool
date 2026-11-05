@@ -1,0 +1,104 @@
+titel: Indizes und Abfragepläne
+zusammenfassung: Du erinnerst dich, wozu Indizes da sind, was sie kosten und wie EXPLAIN zeigt, wie PostgreSQL eine Abfrage ausführt.
+quellen:
+  - titel: PostgreSQL-Dokumentation – Indizes, Einführung
+    url: https://www.postgresql.org/docs/current/indexes-intro.html
+  - titel: PostgreSQL-Dokumentation – EXPLAIN verwenden
+    url: https://www.postgresql.org/docs/current/using-explain.html
+abschnitte:
+  - titel: Indizes
+    inhalt: |
+      Ohne Index muss PostgreSQL bei einer Suche die **ganze Tabelle Zeile für Zeile** durchsuchen. Ein
+      **Index** ist eine zusätzliche Struktur, mit der es passende Zeilen schneller findet.
+
+      **Bild (aus der Doku, sinngemäß):** Das Stichwortverzeichnis eines Sachbuchs. Du schlägst ein Wort
+      nach und blätterst nicht das ganze Buch durch.
+
+      ```sql
+      CREATE INDEX test1_id_index ON test1 (id);
+      ```
+
+      Indizes beschleunigen vor allem Lesen (`SELECT`, auch `UPDATE`, `DELETE` und Joins). Sie haben aber
+      einen **Preis**: Das System muss sie bei jeder Änderung der Tabelle mitpflegen, das kostet Zeit beim
+      Schreiben. Nicht benutzte Indizes sollten daher entfernt werden (`DROP INDEX`).
+
+      (Beachte: Welche Spalten sich lohnen, hängt davon ab, wonach du oft suchst. Das ist eine Überlegung,
+      keine feste Regel.)
+    quiz:
+      - frage: "Was ist der Preis eines Index?"
+        erklaerung: "Er muss bei Änderungen mitgepflegt werden, das kostet Zeit beim Schreiben."
+        antworten:
+          - { text: "Er macht Lesen langsamer.", richtig: false }
+          - { text: "Er muss bei Änderungen mitgepflegt werden, das kostet Zeit beim Schreiben.", richtig: true }
+          - { text: "Er löscht alte Zeilen.", richtig: false }
+      - frage: "Wie durchsucht PostgreSQL eine Tabelle ohne passenden Index?"
+        erklaerung: "Zeile für Zeile, die ganze Tabelle."
+        antworten:
+          - { text: "Zeile für Zeile, die ganze Tabelle.", richtig: true }
+          - { text: "Gar nicht, es gibt einen Fehler.", richtig: false }
+          - { text: "Nur die ersten zehn Zeilen.", richtig: false }
+  - titel: EXPLAIN und EXPLAIN ANALYZE
+    inhalt: |
+      `EXPLAIN` zeigt den **Abfrageplan**: Wie will PostgreSQL die Abfrage ausführen? Der Plan ist ein
+      Baum aus Schritten. Wichtige Begriffe:
+
+      - **Seq Scan:** liest jede Zeile der Tabelle.
+      - **Index Scan:** holt Zeilen über einen Index, gut bei wenigen Treffern.
+      - **cost:** geschätzte Kosten in einer frei gewählten Einheit (Start..Gesamt).
+      - **rows:** geschätzte Zahl der Ergebniszeilen des Schritts.
+
+      ```sql
+      EXPLAIN SELECT * FROM tenk1 WHERE unique1 = 42;
+      ```
+
+      `EXPLAIN ANALYZE` **führt die Abfrage wirklich aus** und zeigt zusätzlich die tatsächlichen Zeiten
+      und Zeilenzahlen. Bei `INSERT`, `UPDATE` oder `DELETE` werden die Änderungen also echt durchgeführt.
+      Die Doku empfiehlt dann eine Transaktion mit `BEGIN` und `ROLLBACK`. Die Doku rät, zu prüfen, ob die
+      geschätzten Zeilenzahlen der Wirklichkeit nahekommen. (Manche Abweichungen, etwa durch `LIMIT`, sind
+      keine Schätzfehler.)
+    quiz:
+      - frage: "Was ist beim Einsatz von `EXPLAIN ANALYZE` mit einem `DELETE` zu beachten?"
+        erklaerung: "Die Abfrage wird wirklich ausgeführt, die Änderung geschieht also echt."
+        antworten:
+          - { text: "Nichts, es ändert nie Daten.", richtig: false }
+          - { text: "Die Abfrage wird wirklich ausgeführt, die Änderung geschieht also echt.", richtig: true }
+          - { text: "Es werden nur Schätzwerte angezeigt.", richtig: false }
+      - frage: "Was bedeutet ein `Seq Scan` im Plan?"
+        erklaerung: "Die Tabelle wird Zeile für Zeile komplett gelesen."
+        antworten:
+          - { text: "Ein Index wird benutzt.", richtig: false }
+          - { text: "Die Tabelle wird Zeile für Zeile komplett gelesen.", richtig: true }
+          - { text: "Die Tabelle wird gelöscht.", richtig: false }
+test:
+  zeitlimit_minuten: 10
+  fragen:
+    - frage: "Welches Kommando legt einen Index an?"
+      erklaerung: "CREATE INDEX."
+      antworten:
+        - { text: "CREATE INDEX", richtig: true }
+        - { text: "MAKE FAST", richtig: false }
+        - { text: "SELECT INDEX", richtig: false }
+    - frage: "Warum kann ein Index das Schreiben verlangsamen?"
+      erklaerung: "Der Index muss bei jeder Änderung der Tabelle mitgepflegt werden."
+      antworten:
+        - { text: "Der Index sperrt die Tabelle dauerhaft für alle Nutzer.", richtig: false }
+        - { text: "Der Index kopiert bei jeder Anfrage die ganze Tabelle.", richtig: false }
+        - { text: "Der Index muss bei jeder Änderung der Tabelle mitgepflegt werden.", richtig: true }
+    - frage: "Was zeigt `EXPLAIN` ohne `ANALYZE`?"
+      erklaerung: "Den geplanten Ablauf mit geschätzten Kosten, ohne die Abfrage auszuführen."
+      antworten:
+        - { text: "Den geplanten Ablauf mit geschätzten Kosten, ohne die Abfrage auszuführen.", richtig: true }
+        - { text: "Die Ergebnisse der Abfrage.", richtig: false }
+        - { text: "Die Passwörter der Nutzer.", richtig: false }
+    - frage: "Wie schützt du Daten, wenn du `EXPLAIN ANALYZE` mit einem `UPDATE` testest?"
+      erklaerung: "Mit BEGIN vorab und ROLLBACK danach."
+      antworten:
+        - { text: "Gar nicht, es ist nicht möglich.", richtig: false }
+        - { text: "Mit BEGIN vorab und ROLLBACK danach.", richtig: true }
+        - { text: "Mit mehr Indizes.", richtig: false }
+    - frage: "Was sollte mit ungenutzten Indizes geschehen?"
+      erklaerung: "Sie sollten entfernt werden, weil sie das Schreiben bremsen."
+      antworten:
+        - { text: "Sie sollten verdoppelt werden.", richtig: false }
+        - { text: "Sie sollten entfernt werden, weil sie das Schreiben bremsen.", richtig: true }
+        - { text: "Sie sind immer nötig.", richtig: false }

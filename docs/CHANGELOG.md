@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-11-05
+
+- D1 Backend-Wiederholung, Teil 3 (damit ist D1 abgeschlossen): Phasen 01 Internet und HTTP (2 Lektionen), 02 Python-Grundlagen (4), 07 Erweiterte Konzepte (4: Redis-Caching, Celery, PostgreSQL mit Django, Dateien) und 10 SQL und Optimierung (4), je Phase ein Projekt, zusammen 14 Lektionen, in `backend/inhalte/backend-wiederholung/`. Der Import enthält jetzt 14 Phasen, 50 Lektionen, 160 Abschnitte, 635 Fragen und 14 Projekte. Entscheidungen in `docs/ENTSCHEIDUNGEN.md`, neue offene Punkte in `docs/OFFEN.md`.
+
 ## 2026-11-04
 
 - D1 Backend-Wiederholung, Teil 2: Phasen 08 DevOps (Git und Pull Requests, CI/CD mit GitHub Actions, Deployment und Hosting) und 09 Monitoring (Logging und Fehlerüberwachung, Systemüberwachung), je mit Projekt, in `backend/inhalte/backend-wiederholung/`. Der Import enthält jetzt 10 Phasen, 36 Lektionen, 129 Abschnitte, 503 Fragen und 10 Projekte. Entscheidungen in `docs/ENTSCHEIDUNGEN.md`, neue offene Punkte in `docs/OFFEN.md`.

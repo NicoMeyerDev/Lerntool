@@ -1,0 +1,29 @@
+titel: Python-Grundlagen
+beschreibung: Kontrollfluss und Funktionen, Listen, Tupel, Mengen und Wörterbücher, Fehlerbehandlung mit Dateien und Klassen. Du frischst die Python-Bausteine auf, die jedes Django-Projekt braucht.
+projekt:
+  titel: Kleines Auswertungsskript
+  beschreibung: |
+    Du schreibst ein kleines Python-Skript, das Daten aus einer Datei liest und auswertet.
+
+    **Aufgabe:** Lege eine Textdatei mit Zeilen im Format `name,punkte` an (mindestens fünf Zeilen, eine
+    davon absichtlich fehlerhaft). Das Skript liest die Datei mit `with open(...)`, sammelt die Punkte in
+    einem Wörterbuch, überspringt fehlerhafte Zeilen mit einer verständlichen Meldung und gibt am Ende die
+    beste Person und den Durchschnitt aus. Eine kleine Klasse `Ergebnis` fasst Name und Punkte zusammen.
+
+    **Regeln:**
+
+    - Fange gezielt `ValueError` und `FileNotFoundError` ab, kein nacktes `except:`.
+    - Jede Funktion bekommt einen Docstring.
+    - Es werden nur selbst erfundene Beispieldaten genutzt, keine echten Personendaten.
+
+    **Tipp:** Lies zuerst, wie `with open(...)` Dateien schließt, und wie `d.get(key)` bei fehlendem Schlüssel reagiert.
+    Quellen: [Python-Tutorial, Datenstrukturen](https://docs.python.org/3.13/tutorial/datastructures.html), [Klassen](https://docs.python.org/3.13/tutorial/classes.html) und [Python-Tutorial, Fehler und Ausnahmen](https://docs.python.org/3.13/tutorial/errors.html).
+  punkte:
+    - Die Datei wird mit `with open(...)` gelesen und wieder geschlossen.
+    - Die Punkte landen in einem Wörterbuch.
+    - Fehlerhafte Zeilen werden mit gezieltem `except ValueError` übersprungen und gemeldet.
+    - Eine fehlende Datei wird mit `FileNotFoundError` abgefangen, und es gibt kein nacktes `except:`.
+    - Die Beispieldaten sind selbst erfunden.
+    - Eine Klasse `Ergebnis` mit `__init__` ist vorhanden.
+    - Beste Person und Durchschnitt werden ausgegeben.
+    - Alle Funktionen haben einen Docstring.

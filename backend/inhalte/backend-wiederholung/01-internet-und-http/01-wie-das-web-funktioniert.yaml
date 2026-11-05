@@ -1,0 +1,111 @@
+titel: Wie das Web funktioniert
+zusammenfassung: Du erinnerst dich, wie Client und Server zusammenarbeiten, wofür DNS, IP-Adressen und Pakete da sind und was beim Laden einer Seite passiert.
+quellen:
+  - titel: MDN – Wie das Web funktioniert
+    url: https://developer.mozilla.org/en-US/docs/Learn_web_development/Getting_started/Web_standards/How_the_web_works
+abschnitte:
+  - titel: Client und Server
+    inhalt: |
+      Geräte im Internet sind **Clients** oder **Server**. Clients sind deine Geräte (Laptop, Handy)
+      und die Software darauf, meist der **Browser**. Server speichern Webseiten und Apps. Fragt ein
+      Client nach einer Seite, wird eine Kopie des Codes zu ihm geschickt und der Browser zeigt sie an.
+
+      **Bild (aus der Quelle):** Das Internet ist eine Straße. Dein Gerät ist dein Haus, der Server ist
+      ein Laden, in dem du etwas bestellst. Die Internetverbindung ist die Straße, TCP/IP das Fahrzeug,
+      DNS das Nachschlagen der Adresse und HTTP die Sprache, in der du bestellst.
+
+      Eine Webseite besteht aus **Code** (HTML, CSS, JavaScript) und **Dateien** wie Bildern oder PDFs.
+    quiz:
+      - frage: "Was ist laut MDN ein Client?"
+        erklaerung: "Ein Gerät des Nutzers und die Software darauf, meist der Browser."
+        antworten:
+          - { text: "Ein Gerät des Nutzers und die Software darauf, meist der Browser.", richtig: true }
+          - { text: "Ein Rechner, der Webseiten speichert.", richtig: false }
+          - { text: "Ein Kabel zwischen zwei Servern.", richtig: false }
+      - frage: "Woraus besteht eine Webseite?"
+        erklaerung: "Aus Code (HTML, CSS, JavaScript) und Dateien wie Bildern."
+        antworten:
+          - { text: "Nur aus Bildern.", richtig: false }
+          - { text: "Aus Code (HTML, CSS, JavaScript) und Dateien wie Bildern.", richtig: true }
+          - { text: "Nur aus Passwörtern.", richtig: false }
+  - titel: DNS, IP-Adresse und Pakete
+    inhalt: |
+      Menschen merken sich Namen wie `mozilla.org`. Rechner brauchen **IP-Adressen** wie `192.0.2.172`.
+      Das **DNS** (Domain Name System) ist das Adressbuch, das einen Namen in die passende IP-Adresse
+      übersetzt.
+
+      Die Daten reisen nach den Regeln von **TCP/IP** in kleinen **Paketen**. Jedes Paket hat einen
+      **Kopf** (zum Beispiel Absender, Empfänger und Paketnummer) und die **Nutzdaten**. Das hat Vorteile:
+      Ein verlorenes Paket muss einzeln neu angefordert werden, und Pakete können verschiedene Wege
+      nehmen. Kommen sie durcheinander an, setzt der Client sie anhand der Köpfe wieder zusammen.
+    quiz:
+      - frage: "Wofür ist DNS da?"
+        erklaerung: "Es übersetzt einen Domainnamen in eine IP-Adresse."
+        antworten:
+          - { text: "Es verschlüsselt Passwörter.", richtig: false }
+          - { text: "Es übersetzt einen Domainnamen in eine IP-Adresse.", richtig: true }
+          - { text: "Es speichert die Webseite.", richtig: false }
+      - frage: "Warum werden Daten in Pakete zerlegt?"
+        erklaerung: "Verlorene Pakete lassen sich einzeln neu anfordern, und Pakete können verschiedene Wege nehmen."
+        antworten:
+          - { text: "Weil Browser nur kleine Dateien anzeigen können.", richtig: false }
+          - { text: "Damit Webseiten teurer werden.", richtig: false }
+          - { text: "Verlorene Pakete lassen sich einzeln neu anfordern, und Pakete können verschiedene Wege nehmen.", richtig: true }
+  - titel: Was beim Laden einer Seite passiert
+    inhalt: |
+      Die Quelle beschreibt vier Schritte:
+
+      1. Der Browser fragt das **DNS** nach der IP-Adresse des Servers.
+      2. Der Browser schickt eine **HTTP-Anfrage** an den Server (übertragen per TCP/IP).
+      3. Ist der Server einverstanden, antwortet er mit `200 OK` und schickt die Dateien als Pakete.
+      4. Der Browser setzt die Pakete zusammen und zeigt die Seite an.
+
+      Eine **URL** wie `https://developer.mozilla.org/en-US/` besteht aus dem **Protokoll** (`https`, die
+      verschlüsselte Variante von HTTP), dem **Domainnamen** (`developer.mozilla.org`, mit der
+      **Subdomain** `developer`) und dem **Pfad** (`/en-US/`).
+    quiz:
+      - frage: "Was geschieht als Erstes, wenn du eine Adresse im Browser eingibst?"
+        erklaerung: "Der Browser fragt das DNS nach der IP-Adresse des Servers."
+        antworten:
+          - { text: "Der Browser fragt das DNS nach der IP-Adresse des Servers.", richtig: true }
+          - { text: "Der Server schickt sofort alle Dateien.", richtig: false }
+          - { text: "Der Browser löscht den Cache.", richtig: false }
+      - frage: "Was ist in `https://developer.mozilla.org/en-US/` der Pfad?"
+        erklaerung: "Der Pfad ist /en-US/."
+        antworten:
+          - { text: "https", richtig: false }
+          - { text: "developer", richtig: false }
+          - { text: "/en-US/", richtig: true }
+test:
+  zeitlimit_minuten: 10
+  fragen:
+    - frage: "Was ist ein Server laut MDN?"
+      erklaerung: "Ein Rechner, der Webseiten, Sites oder Apps speichert."
+      antworten:
+        - { text: "Ein Rechner, der Webseiten, Sites oder Apps speichert.", richtig: true }
+        - { text: "Das Programm, mit dem man Seiten anschaut.", richtig: false }
+        - { text: "Ein Passwortmanager.", richtig: false }
+    - frage: "Was bedeutet DNS?"
+      erklaerung: "Domain Name System."
+      antworten:
+        - { text: "Digital Network Service", richtig: false }
+        - { text: "Data Name Standard", richtig: false }
+        - { text: "Domain Name System", richtig: true }
+    - frage: "Was steht im Kopf eines Pakets?"
+      erklaerung: "Zum Beispiel Adressen von Client und Server und die Paketnummer."
+      antworten:
+        - { text: "Zum Beispiel Adressen von Client und Server und die Paketnummer.", richtig: true }
+        - { text: "Das Passwort des Nutzers.", richtig: false }
+        - { text: "Nur die Farbe der Seite.", richtig: false }
+    - frage: "Was bedeutet das S in https?"
+      erklaerung: "Es kennzeichnet die sichere (verschlüsselte) Variante von HTTP."
+      antworten:
+        - { text: "Server", richtig: false }
+        - { text: "Es kennzeichnet die sichere (verschlüsselte) Variante von HTTP.", richtig: true }
+        - { text: "Schnell", richtig: false }
+    - frage: "Was passiert, wenn Pakete in falscher Reihenfolge ankommen?"
+      erklaerung: "Der Client setzt sie anhand der Köpfe wieder richtig zusammen."
+      antworten:
+        - { text: "Die Seite wird nie angezeigt.", richtig: false }
+        - { text: "Der Server löscht die Seite.", richtig: false }
+        - { text: "Der Client setzt sie anhand der Köpfe wieder richtig zusammen.", richtig: true }

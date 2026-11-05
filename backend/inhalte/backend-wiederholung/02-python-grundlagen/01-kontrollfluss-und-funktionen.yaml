@@ -1,0 +1,109 @@
+titel: Kontrollfluss und Funktionen
+zusammenfassung: Du erinnerst dich an if, for, range, break und continue und an Funktionen mit Standardwerten, Schlüsselwort-Argumenten, *args, **kwargs und Docstrings.
+quellen:
+  - titel: Python-Sprachreferenz – Aufrufe
+    url: https://docs.python.org/3.13/reference/expressions.html#calls
+  - titel: Python-Tutorial – Mehr zu Kontrollfluss
+    url: https://docs.python.org/3.13/tutorial/controlflow.html
+abschnitte:
+  - titel: Verzweigen und Wiederholen
+    inhalt: |
+      Mit `if`, `elif` und `else` wählt Python einen Zweig. Die Zweige werden von oben nach unten
+      geprüft, der erste wahre gewinnt.
+
+      ```python
+      if x < 0:
+          print('Negativ')
+      elif x == 0:
+          print('Null')
+      else:
+          print('Mehr')
+      ```
+
+      Eine `for`-Schleife geht Element für Element durch eine Folge. `range(5, 10)` erzeugt die Zahlen
+      5 bis 9, der Endwert gehört nicht dazu. `break` verlässt die innerste Schleife, `continue`
+      springt zum nächsten Durchlauf.
+
+      **Bild (eigene Idee):** `for` ist wie ein Fließband: Jedes Stück läuft einmal an dir vorbei.
+      `continue` legt ein Stück beiseite, `break` stoppt das Band.
+    quiz:
+      - frage: "Welche Zahlen liefert `range(5, 10)`?"
+        erklaerung: "5 bis 9, der Endwert 10 ist nicht enthalten."
+        antworten:
+          - { text: "5 bis 10", richtig: false }
+          - { text: "5 bis 9", richtig: true }
+          - { text: "6 bis 10", richtig: false }
+      - frage: "Was macht `continue` in einer Schleife?"
+        erklaerung: "Es springt zum nächsten Durchlauf."
+        antworten:
+          - { text: "Es beendet die ganze Schleife.", richtig: false }
+          - { text: "Es beendet das Programm.", richtig: false }
+          - { text: "Es springt zum nächsten Durchlauf.", richtig: true }
+  - titel: Funktionen
+    inhalt: |
+      Eine Funktion wird mit `def` definiert und gibt mit `return` einen Wert zurück. Fehlt `return`
+      (oder steht keine Angabe dahinter), liefert die Funktion `None`.
+
+      - **Standardwerte:** `def f(a, b=4)`: `b` ist beim Aufruf optional.
+      - **Schlüsselwort-Argumente:** `f(a=1, b=2)`: Reihenfolge egal, aber hinter positionalen Argumenten.
+      - **`*args`** sammelt weitere Positionsargumente in einem Tupel, **`**kwargs`** weitere
+        Schlüsselwort-Argumente in einem Wörterbuch.
+      - **Docstring:** Ein String als erste Anweisung der Funktion beschreibt sie.
+
+      **Falle:** Standardwerte werden **einmal** beim Definieren ausgewertet. Eine Liste als Standardwert
+      wird deshalb von allen Aufrufen geteilt. Besser `None` als Standard und die Liste in der Funktion
+      anlegen:
+
+      ```python
+      def g(a, liste=None):
+          if liste is None:
+              liste = []
+          liste.append(a)
+          return liste
+      ```
+    quiz:
+      - frage: "Was gibt eine Funktion ohne `return` zurück?"
+        erklaerung: "None."
+        antworten:
+          - { text: "0", richtig: false }
+          - { text: "None", richtig: true }
+          - { text: "Einen leeren String", richtig: false }
+      - frage: "Warum ist `def f(a, L=[])` problematisch?"
+        erklaerung: "Der Standardwert wird einmal beim Definieren erzeugt und von allen Aufrufen geteilt."
+        antworten:
+          - { text: "Python erlaubt keine Listen als Parameter.", richtig: false }
+          - { text: "Der Standardwert wird einmal beim Definieren erzeugt und von allen Aufrufen geteilt.", richtig: true }
+          - { text: "Die Funktion läuft dadurch langsamer.", richtig: false }
+test:
+  zeitlimit_minuten: 10
+  fragen:
+    - frage: "Welches Schlüsselwort verlässt die innerste Schleife?"
+      erklaerung: "break."
+      antworten:
+        - { text: "continue", richtig: false }
+        - { text: "pass", richtig: false }
+        - { text: "break", richtig: true }
+    - frage: "Was sammelt `*args` in einer Funktion?"
+      erklaerung: "Weitere Positionsargumente, als Tupel."
+      antworten:
+        - { text: "Weitere Positionsargumente, als Tupel.", richtig: true }
+        - { text: "Alle Schlüsselwort-Argumente, als Wörterbuch.", richtig: false }
+        - { text: "Nur Zahlen.", richtig: false }
+    - frage: "Was liefert `list(range(0, 10, 3))`?"
+      erklaerung: "[0, 3, 6, 9]."
+      antworten:
+        - { text: "[0, 3, 6, 9, 12]", richtig: false }
+        - { text: "[3, 6, 9]", richtig: false }
+        - { text: "[0, 3, 6, 9]", richtig: true }
+    - frage: "Wo steht ein Docstring?"
+      erklaerung: "Als String an erster Stelle im Funktionskörper."
+      antworten:
+        - { text: "Als String an erster Stelle im Funktionskörper.", richtig: true }
+        - { text: "Hinter dem Wort return.", richtig: false }
+        - { text: "In einer eigenen Datei.", richtig: false }
+    - frage: "Für `def parrot(voltage, state='tot')` wird `parrot(voltage=5.0, 'dead')` aufgerufen. Was passiert?"
+      erklaerung: "Der Aufruf ist ungültig (in CPython ein SyntaxError), weil ein positionales Argument nicht hinter einem Schlüsselwort-Argument stehen darf."
+      antworten:
+        - { text: "Es läuft ohne Fehler.", richtig: false }
+        - { text: "Ein SyntaxError, weil ein positionales Argument nicht hinter einem Schlüsselwort-Argument stehen darf.", richtig: true }
+        - { text: "Es wird 5.0 ausgegeben.", richtig: false }
