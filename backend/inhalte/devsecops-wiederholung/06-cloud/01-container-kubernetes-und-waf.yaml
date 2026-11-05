@@ -1,0 +1,123 @@
+titel: Container, Kubernetes und WAF
+zusammenfassung: Du erinnerst dich, was Container sind, was Kubernetes für Betrieb und Skalierung leistet und wie eine Web Application Firewall HTTP-Verkehr filtert.
+quellen:
+  - titel: Docker – Was ist ein Container?
+    url: https://docs.docker.com/get-started/docker-concepts/the-basics/what-is-a-container/
+  - titel: Kubernetes – Überblick
+    url: https://kubernetes.io/docs/concepts/overview/
+  - titel: OWASP – Web Application Firewall
+    url: https://community.owasp.org/Web_Application_Firewall
+abschnitte:
+  - titel: Container
+    inhalt: |
+      Ein **Container** ist laut Docker ein **isolierter Prozess**, der alle Dateien mitbringt, die er zum Laufen
+      braucht. Seine Eigenschaften:
+
+      - **Eigenständig:** Er braucht keine auf dem Rechner installierte Zusatz-Software.
+      - **Isoliert:** Er beeinflusst den Rechner und andere Container kaum. Das verbessert die Sicherheit.
+      - **Unabhängig:** Du verwaltest ihn für sich. Löschst du einen, bleiben die anderen unberührt.
+      - **Portabel:** Er läuft gleich auf dem Laptop, im Rechenzentrum und in der Cloud.
+
+      Anders als eine **virtuelle Maschine** (mit eigenem Betriebssystem und Kern) teilen sich Container den Kern
+      des Rechners. Dadurch läuft auf weniger Hardware mehr.
+
+      **Bild (eigene Idee):** Ein Container ist wie eine fertig gepackte Lunchbox: alles drin, was du brauchst, egal wo du isst.
+    quiz:
+      - frage: "Was ist ein Container laut Docker?"
+        erklaerung: "Ein isolierter Prozess mit allen Dateien, die er zum Laufen braucht."
+        antworten:
+          - { text: "Ein komplettes eigenes Betriebssystem mit eigenem Kern.", richtig: false }
+          - { text: "Ein isolierter Prozess mit allen Dateien, die er zum Laufen braucht.", richtig: true }
+          - { text: "Eine Datenbank für Passwörter.", richtig: false }
+      - frage: "Worin unterscheiden sich Container von virtuellen Maschinen?"
+        erklaerung: "Container teilen sich den Kern des Rechners, eine VM bringt ein eigenes Betriebssystem mit."
+        antworten:
+          - { text: "Container bringen ein eigenes Betriebssystem mit.", richtig: false }
+          - { text: "Container teilen sich den Kern des Rechners, eine VM bringt ein eigenes Betriebssystem mit.", richtig: true }
+          - { text: "Es gibt keinen Unterschied.", richtig: false }
+  - titel: Kubernetes
+    inhalt: |
+      **Kubernetes** ist laut Doku eine quelloffene Plattform zur Verwaltung containerisierter Anwendungen. Du
+      beschreibst den **Soll-Zustand**, Kubernetes sorgt dafür, dass der Ist-Zustand ihm entspricht.
+
+      Es bietet unter anderem:
+
+      - **Dienste finden und Last verteilen:** Container sind über DNS-Namen oder IP erreichbar, der Verkehr wird verteilt.
+      - **Automatische Rollouts und Rollbacks:** Änderungen werden kontrolliert eingespielt und zurückgenommen.
+      - **Selbstheilung:** Ausgefallene Container werden neu gestartet oder ersetzt.
+      - **Horizontale Skalierung:** Mehr oder weniger Instanzen, per Befehl oder automatisch nach Auslastung.
+      - **Geheimnisse und Konfiguration verwalten**, ohne die Images neu zu bauen.
+
+      Kubernetes ist **kein** komplettes Rundum-Paket: Es baut keinen Code, liefert keine Datenbank und keine
+      fertige CI/CD. Protokollierung und Überwachung sind austauschbare Bausteine.
+    quiz:
+      - frage: "Was versteht man unter horizontaler Skalierung in Kubernetes?"
+        erklaerung: "Die Zahl der laufenden Instanzen wird erhöht oder verringert."
+        antworten:
+          - { text: "Ein einzelner Container bekommt eine größere Festplatte.", richtig: false }
+          - { text: "Der Quellcode wird in mehrere Dateien aufgeteilt.", richtig: false }
+          - { text: "Die Zahl der laufenden Instanzen wird erhöht oder verringert.", richtig: true }
+      - frage: "Was bedeutet Selbstheilung bei Kubernetes?"
+        erklaerung: "Ausgefallene Container werden neu gestartet oder ersetzt."
+        antworten:
+          - { text: "Ausgefallene Container werden neu gestartet oder ersetzt.", richtig: true }
+          - { text: "Fehler im Quellcode werden automatisch repariert.", richtig: false }
+          - { text: "Die Hardware repariert sich selbst.", richtig: false }
+  - titel: Web Application Firewall (WAF)
+    inhalt: |
+      Eine **WAF** ist laut OWASP eine Anwendungs-Firewall für **HTTP-Anwendungen**. Sie filtert Verkehr nach
+      Regeln. Sie kann als Gerät, als Plug-in oder als Filter laufen und auch als Reverse-Proxy arbeiten.
+
+      - Sie schützt **Server** (die Web-Anwendung), nicht die Clients.
+      - Sie hilft gegen verbreitete Angriffe wie **XSS** und **SQL-Injection**.
+      - Sie braucht **Anpassung** an die Anwendung. Laut OWASP kann dieser Aufwand erheblich sein, und sie muss
+        gepflegt werden, wenn die Anwendung sich ändert.
+
+      **Wichtig (aus dem XSS-Cheat-Sheet):** Eine WAF ersetzt nicht das richtige Codieren der Ausgabe und sauberen Code.
+      Sie ist eine zusätzliche Schicht.
+    quiz:
+      - frage: "Was schützt eine WAF?"
+        erklaerung: "Die Web-Anwendung auf dem Server vor verbreiteten HTTP-Angriffen."
+        antworten:
+          - { text: "Die Festplatte des Nutzers vor Hardwarefehlern.", richtig: false }
+          - { text: "Die Web-Anwendung auf dem Server vor verbreiteten HTTP-Angriffen.", richtig: true }
+          - { text: "Den Browser vor falschen Zertifikaten.", richtig: false }
+      - frage: "Warum ersetzt eine WAF sicheren Code nicht?"
+        erklaerung: "Sie ist eine zusätzliche Schutzschicht und braucht Anpassung und Pflege."
+        antworten:
+          - { text: "Sie ist nur eine zusätzliche Schutzschicht und braucht Anpassung und Pflege.", richtig: true }
+          - { text: "Sie funktioniert nur ohne HTTP.", richtig: false }
+          - { text: "Sie wird nur in Spielen eingesetzt.", richtig: false }
+test:
+  zeitlimit_minuten: 10
+  fragen:
+    - frage: "Welche Eigenschaft von Containern verbessert laut Docker die Sicherheit?"
+      erklaerung: "Die Isolation vom Rechner und von anderen Containern."
+      antworten:
+        - { text: "Die Isolation vom Rechner und von anderen Containern.", richtig: true }
+        - { text: "Dass sie immer laufen.", richtig: false }
+        - { text: "Dass sie sehr groß sind.", richtig: false }
+    - frage: "Wie funktioniert Kubernetes laut Überblick im Kern?"
+      erklaerung: "Du beschreibst den Soll-Zustand, Kubernetes gleicht den Ist-Zustand daran an."
+      antworten:
+        - { text: "Du startest jeden Container von Hand neu.", richtig: false }
+        - { text: "Du beschreibst den Soll-Zustand, Kubernetes gleicht den Ist-Zustand daran an.", richtig: true }
+        - { text: "Es ersetzt den Quellcode.", richtig: false }
+    - frage: "Was liefert Kubernetes laut Doku nicht?"
+      erklaerung: "Eine eingebaute Datenbank."
+      antworten:
+        - { text: "Selbstheilung", richtig: false }
+        - { text: "Eine eingebaute Datenbank", richtig: true }
+        - { text: "Lastverteilung", richtig: false }
+    - frage: "Gegen welche Angriffe hilft eine WAF laut OWASP?"
+      erklaerung: "Gegen verbreitete Angriffe wie XSS und SQL-Injection."
+      antworten:
+        - { text: "Gegen verbreitete Angriffe wie XSS und SQL-Injection.", richtig: true }
+        - { text: "Gegen Stromausfall.", richtig: false }
+        - { text: "Gegen Tippfehler in Mails.", richtig: false }
+    - frage: "Was ist eine Grenze von WAFs laut OWASP?"
+      erklaerung: "Sie brauchen Anpassung und laufende Pflege."
+      antworten:
+        - { text: "Sie funktionieren nur mit Fotos.", richtig: false }
+        - { text: "Sie sind immer perfekt eingestellt.", richtig: false }
+        - { text: "Sie brauchen Anpassung und laufende Pflege.", richtig: true }

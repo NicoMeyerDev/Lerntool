@@ -1,0 +1,27 @@
+titel: DevSecOps in der Praxis
+beschreibung: Sicherheit früh in die Entwicklung einbauen (Shift-left), die Prüfungen in der CI/CD-Pipeline (Secrets, SCA, SAST, DAST) und Observability mit Logs, Metriken und Traces. Du erinnerst dich, wo in der Pipeline welche Prüfung hingehört. Nur Theorie, kein Scanner wird gestartet.
+projekt:
+  titel: Sichere Pipeline entwerfen
+  beschreibung: |
+    Du entwirfst auf dem Papier eine Pipeline mit Sicherheitsprüfungen für eine kleine Django-App.
+
+    **Aufgabe:** Zeichne die Stufen einer Pipeline (vor dem Commit, beim Build, nach dem Deployment auf einer
+    Testumgebung) und trage ein, welche Prüfung wo läuft: Secrets-Suche, Abhängigkeitsprüfung (SCA), statische
+    Analyse (SAST), dynamischer Test (DAST). Nenne je Prüfung, was sie findet. Ergänze, welche Logs, Metriken und
+    Traces du für den Betrieb brauchst.
+
+    **Regeln:**
+
+    - Es wird kein Werkzeug installiert und kein Scan gestartet. Es bleibt ein Entwurf.
+    - DAST würde nur gegen deine eigene Testumgebung laufen, nie gegen fremde Systeme.
+    - Es stehen keine echten Schlüssel oder Passwörter im Entwurf.
+
+    **Tipp:** Frage dich bei jeder Prüfung, ob sie Quellcode oder die laufende App ansieht.
+    Quellen: [OWASP DevSecOps Guideline](https://owasp.github.io/www-project-devsecops-guideline/latest) und [OpenTelemetry, Observability-Einführung](https://opentelemetry.io/docs/concepts/observability-primer/).
+  punkte:
+    - Die Pipeline hat Stufen vor dem Commit, beim Build und nach dem Deployment.
+    - Secrets-Suche, SCA, SAST und DAST sind je einer Stufe zugeordnet.
+    - Je Prüfung steht, was sie findet.
+    - Logs, Metriken und Traces sind mit je einem Beispiel genannt.
+    - DAST läuft nur gegen die eigene Testumgebung.
+    - Es stehen keine echten Schlüssel oder Passwörter im Entwurf.

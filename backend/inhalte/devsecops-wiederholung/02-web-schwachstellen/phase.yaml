@@ -1,0 +1,26 @@
+titel: Web-Schwachstellen
+beschreibung: Die OWASP Top 10, Cross-Site-Scripting und Injection. Du erinnerst dich, wie die häufigsten Fehler in Web-Anwendungen entstehen und wie man sie verhindert. Alles nur als Theorie und Quiz.
+projekt:
+  titel: Schwachstellen im eigenen Code finden
+  beschreibung: |
+    Du prüfst auf dem Papier, wo ein kleines Django-Beispiel verwundbar wäre.
+
+    **Aufgabe:** Dir liegt dieser erfundene Code vor (nur lesen, nicht ausführen):
+    eine View, die einen Suchbegriff aus der URL in eine SQL-Zeichenkette einsetzt (`"... WHERE name = '" + term + "'"`),
+    ein Template, das einen Kommentar mit `|safe` ausgibt, und ein Formular ohne CSRF-Schutz.
+    Benenne zu jeder Stelle die Schwachstelle, ordne sie einer OWASP-Top-10-Kategorie zu und beschreibe
+    die richtige Lösung in einem Satz.
+
+    **Regeln:**
+
+    - Du testest nichts gegen echte Webseiten oder fremde Systeme. Es geht nur um Lesen und Verstehen.
+    - Schreibe keine Angriffsbeispiele, die du gegen andere einsetzen könntest. Nenne nur die Verteidigung.
+
+    **Tipp:** Lies nach, was Django bei QuerySets, Templates und CSRF schon automatisch macht.
+    Quellen: [OWASP Top 10:2025](https://top10.owasp.org/2025), [Django, Sicherheit](https://docs.djangoproject.com/en/5.2/topics/security/) und [OWASP, SQL-Injection-Prävention](https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html).
+  punkte:
+    - Die SQL-Stelle ist als Injection benannt und mit parametrisierter Abfrage gelöst.
+    - Die `|safe`-Stelle ist als Cross-Site-Scripting benannt und mit automatischem Escaping gelöst.
+    - Das Formular ohne CSRF-Schutz ist erkannt und mit `CsrfViewMiddleware` und dem Token gelöst.
+    - Jede Schwachstelle ist einer Kategorie der OWASP Top 10 zugeordnet.
+    - Es wurde nichts gegen echte Systeme getestet.

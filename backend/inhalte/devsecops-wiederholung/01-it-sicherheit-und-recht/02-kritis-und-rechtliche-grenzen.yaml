@@ -1,0 +1,105 @@
+titel: KRITIS und rechtliche Grenzen beim Testen
+zusammenfassung: Du erinnerst dich, was kritische Infrastrukturen sind, warum Ausspähen von Daten strafbar ist und warum Sicherheitstests immer eine Erlaubnis brauchen.
+quellen:
+  - titel: BSI – Kritische Infrastrukturen (KRITIS)
+    url: https://www.bsi.bund.de/DE/Themen/Regulierte-Wirtschaft/Kritische-Infrastrukturen/kritis_node.html
+  - titel: KRITIS-Dachgesetz (KRITISDachG), § 2 Begriffsbestimmungen
+    url: https://www.gesetze-im-internet.de/kritisdachg/__2.html
+  - titel: BSI-Gesetz (BSIG), § 28 Besonders wichtige und wichtige Einrichtungen
+    url: https://www.gesetze-im-internet.de/bsig_2025/__28.html
+  - titel: Strafgesetzbuch § 202a – Ausspähen von Daten
+    url: https://www.gesetze-im-internet.de/stgb/__202a.html
+  - titel: Strafgesetzbuch § 202c – Vorbereiten des Ausspähens und Abfangens von Daten
+    url: https://www.gesetze-im-internet.de/stgb/__202c.html
+abschnitte:
+  - titel: Kritische Infrastrukturen (KRITIS)
+    inhalt: |
+      Das BSI-Gesetz verweist für **kritische Anlagen** und **kritische Dienstleistungen** auf das
+      KRITIS-Dachgesetz. Dort dient eine kritische
+      Dienstleistung der Versorgung der Allgemeinheit. Fällt sie aus, drohen erhebliche
+      Versorgungsengpässe oder Gefahren für die öffentliche Sicherheit.
+
+      Die BSI-Seite nennt als Sektoren unter anderem Energie, Transport und Verkehr, Finanzwesen,
+      Gesundheitswesen, Wasser, Ernährung sowie Informationstechnik und Telekommunikation.
+
+      **Wichtig:** Die Rechtslage hat sich durch das NIS-2-Umsetzungsgesetz geändert. Das BSI-Gesetz spricht
+      jetzt von „besonders wichtigen“ und „wichtigen Einrichtungen“. Betreiber kritischer Anlagen sind eine
+      Teilmenge davon. Welche Pflichten für ein konkretes Unternehmen gelten, steht im Gesetz und auf den
+      BSI-Seiten. Dieses Wissen ersetzt keine Rechtsberatung.
+    quiz:
+      - frage: "Was zeichnet eine kritische Dienstleistung laut KRITIS-Dachgesetz aus?"
+        erklaerung: "Ihr Ausfall würde Versorgungsengpässe oder erhebliche Störungen der öffentlichen Sicherheit verursachen."
+        antworten:
+          - { text: "Sie gehören immer dem Staat.", richtig: false }
+          - { text: "Sie haben besonders viele Mitarbeitende.", richtig: false }
+          - { text: "Ihr Ausfall würde Versorgungsengpässe oder erhebliche Störungen der öffentlichen Sicherheit verursachen.", richtig: true }
+      - frage: "Welcher Bereich gehört laut BSI zu den Sektoren?"
+        erklaerung: "Die Wasserversorgung."
+        antworten:
+          - { text: "Die Wasserversorgung", richtig: true }
+          - { text: "Der Einzelhandel mit Mode", richtig: false }
+          - { text: "Das Hobby-Blog einer Privatperson", richtig: false }
+  - titel: Ausspähen von Daten und erlaubte Tests
+    inhalt: |
+      **§ 202a StGB** stellt das **Ausspähen von Daten** unter Strafe: Wer sich oder einem anderen **unbefugt**
+      Zugang zu Daten verschafft, die nicht für ihn bestimmt und **besonders gegen unberechtigten Zugang
+      gesichert** sind, und dabei die Zugangssicherung überwindet, riskiert bis zu drei Jahre Freiheitsstrafe
+      oder eine Geldstrafe.
+
+      **§ 202c StGB** betrifft die **Vorbereitung**: Strafbar kann schon sein, Passwörter oder
+      Computerprogramme, deren Zweck eine solche Tat ist, herzustellen, zu beschaffen, zu verkaufen,
+      zu überlassen, zu verbreiten oder zugänglich zu machen.
+
+      **Folge für dich (eigene Regeln, passend zum Gesetz):**
+
+      - Teste nur Systeme, die dir gehören oder für die du eine **eindeutige, am besten schriftliche Erlaubnis**
+        hast, die den Umfang nennt.
+      - Übe in einer eigenen, abgeschotteten Umgebung. In dieser App werden Labs (Kali, Metasploitable, Juice Shop)
+        nur als Theorie und Quiz behandelt.
+      - Unsicher? Frage vorher eine fachkundige Stelle. Das hier ist keine Rechtsberatung.
+    quiz:
+      - frage: "Welches Wort aus § 202a StGB ist für die Strafbarkeit entscheidend?"
+        erklaerung: "„Unbefugt“: Der Zugang geschieht ohne Berechtigung."
+        antworten:
+          - { text: "„Online“, denn nur das Internet zählt.", richtig: false }
+          - { text: "„Unbefugt“: Der Zugang geschieht ohne Berechtigung.", richtig: true }
+          - { text: "„Kostenlos“, denn nur unbezahlte Daten zählen.", richtig: false }
+      - frage: "Was regelt § 202c StGB?"
+        erklaerung: "Das Vorbereiten des Ausspähens und Abfangens von Daten, zum Beispiel durch Programme oder Passwörter."
+        antworten:
+          - { text: "Nur die Strafe für Diebstahl von Geräten.", richtig: false }
+          - { text: "Die Pflicht zum Impressum.", richtig: false }
+          - { text: "Das Vorbereiten des Ausspähens und Abfangens von Daten, zum Beispiel durch Programme oder Passwörter.", richtig: true }
+test:
+  zeitlimit_minuten: 10
+  fragen:
+    - frage: "Wann ist ein Sicherheitstest an einem System unproblematisch?"
+      erklaerung: "Wenn das System dir gehört oder du eine eindeutige Erlaubnis mit klarem Umfang hast."
+      antworten:
+        - { text: "Wenn das System dir gehört oder du eine eindeutige Erlaubnis mit klarem Umfang hast.", richtig: true }
+        - { text: "Wenn das System öffentlich im Internet erreichbar ist.", richtig: false }
+        - { text: "Wenn du nichts verändern willst.", richtig: false }
+    - frage: "Wie hoch ist die Höchststrafe in § 202a Absatz 1 StGB?"
+      erklaerung: "Bis zu drei Jahre Freiheitsstrafe oder Geldstrafe."
+      antworten:
+        - { text: "Bis zu zwei Jahre", richtig: false }
+        - { text: "Nur eine Verwarnung", richtig: false }
+        - { text: "Bis zu drei Jahre Freiheitsstrafe oder Geldstrafe", richtig: true }
+    - frage: "Welche Aussage über Daten nach § 202a ist richtig?"
+      erklaerung: "Sie müssen besonders gegen unberechtigten Zugang gesichert sein."
+      antworten:
+        - { text: "Sie müssen auf Papier gedruckt sein.", richtig: false }
+        - { text: "Sie müssen besonders gegen unberechtigten Zugang gesichert sein.", richtig: true }
+        - { text: "Sie müssen immer personenbezogen sein.", richtig: false }
+    - frage: "Warum werden Labs wie Kali oder Juice Shop in dieser App nur als Theorie behandelt?"
+      erklaerung: "Praktische Übungen gehören nur in eine eigene, abgeschottete Umgebung."
+      antworten:
+        - { text: "Praktische Übungen gehören nur in eine eigene, abgeschottete Umgebung.", richtig: true }
+        - { text: "Weil diese Werkzeuge verboten sind.", richtig: false }
+        - { text: "Weil sie nur auf Handys laufen.", richtig: false }
+    - frage: "Wie hat sich die Rechtslage für kritische Infrastrukturen laut BSI geändert?"
+      erklaerung: "Das BSI-Gesetz spricht durch NIS-2 von besonders wichtigen und wichtigen Einrichtungen."
+      antworten:
+        - { text: "Sie wurde ersatzlos abgeschafft.", richtig: false }
+        - { text: "Das BSI-Gesetz spricht durch NIS-2 von besonders wichtigen und wichtigen Einrichtungen.", richtig: true }
+        - { text: "Es gelten nur noch private Regeln.", richtig: false }

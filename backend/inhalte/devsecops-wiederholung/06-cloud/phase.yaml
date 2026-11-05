@@ -1,0 +1,24 @@
+titel: Cloud, Container und Schutz am Rand
+beschreibung: Was Container sind, was Kubernetes für Betrieb und Skalierung leistet und wofür eine Web Application Firewall (WAF) da ist. Du erinnerst dich an die Bausteine moderner Cloud-Umgebungen. Nur Theorie, es wird nichts gestartet.
+projekt:
+  titel: Architektur-Skizze für eine kleine Web-App
+  beschreibung: |
+    Du zeichnest auf Papier eine Architektur für eine kleine Web-App in der Cloud.
+
+    **Aufgabe:** Beschreibe in einer Skizze oder Liste: (1) in welchen Containern die App und die Datenbank
+    laufen würden, (2) was Kubernetes für dich übernehmen würde (zum Beispiel Neustart bei Absturz, Verteilen
+    der Last, Skalieren), (3) wo eine WAF stünde und wovor sie schützt, und (4) was sie nicht ersetzt.
+
+    **Regeln:**
+
+    - Es wird kein Container gestartet und kein Cloud-Konto genutzt. Es entstehen keine Kosten.
+    - Es stehen keine echten Zugangsdaten in der Skizze. Zugangsdaten kämen aus Geheimnis-Verwaltung und Umgebungsvariablen.
+
+    **Tipp:** Überlege, was ausfällt, wenn ein Container abstürzt, und wie Kubernetes damit umgeht.
+    Quellen: [Docker, Was ist ein Container](https://docs.docker.com/get-started/docker-concepts/the-basics/what-is-a-container/), [Kubernetes, Überblick](https://kubernetes.io/docs/concepts/overview/) und [OWASP, Web Application Firewall](https://community.owasp.org/Web_Application_Firewall).
+  punkte:
+    - Die Skizze nennt Container für App und Datenbank.
+    - Die Skizze nennt mindestens drei Aufgaben, die Kubernetes übernimmt.
+    - Die WAF ist eingezeichnet und ihr Schutzumfang ist genannt.
+    - Es steht dabei, dass eine WAF sicheren Code nicht ersetzt.
+    - Es stehen keine echten Zugangsdaten in der Skizze.

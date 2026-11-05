@@ -205,3 +205,11 @@ Abweichungen von `docs/CURRICULUM_ENGLISCH.md`:
 - **(a) Versionen der Quellen:** Python-Quellen sind auf Version 3.13 festgelegt (`/3.13/`), Django auf 5.2. Grund: `/3/` zeigt auf 3.14, und dort ist `except` ohne Klammern erlaubt (PEP 758); das hätte eine Quizfrage mehrdeutig gemacht. Alternative: `/3/` ohne Version.
 - **(b) Nur Theorie und Papier:** Redis, Celery und PostgreSQL werden nur erklärt und im Projekt auf Papier bearbeitet. Es wird kein Dienst eingerichtet, es entstehen keine Kosten. Alternative: Dienste lokal oder gehostet einrichten (Aufwand, Kosten).
 - **(c) Celery unter Windows:** Laut Doku wird Celery unter Windows nicht offiziell unterstützt. Die Lektion enthält einen Hinweis; die Empfehlung WSL oder Docker ist eine eigene Empfehlung und als solche gekennzeichnet.
+
+## 2026-11-05 – D2 DevSecOps-Wiederholung
+
+- **(a) Labs nur Theorie:** Die praktischen Labs (Kali, Metasploitable, Juice Shop) werden nur als Theorie und Quiz behandelt, nichts wird eingerichtet oder angegriffen (CLAUDE.md Abschnitt 7: Sicherheit). Alternative: Labs lokal aufbauen (Aufwand, Risiko bei Fehlbedienung).
+- **(b) Quellen:** BSI (Grundschutz und Veröffentlichungen), KRITISDachG, NIST SP 800-63B-4 (Passwörter) und OWASP Top 10 2025. Nur offizielle Quellen, keine Foren oder Blogs.
+- **(c) Keine Rechtsberatung:** Die Lektionen zu Datenschutz und Recht erklären nur Grundlagen und sind keine Rechtsberatung. Alternative: Rechtsthemen weglassen (wäre für den Kurs zu lückenhaft).
+- **Freigaben:** `quellenpruefer`: Nachbesserungen in Runde 1, KRITIS-Quelle korrigiert. `reviewer`: FREIGABE in Runde 2 (nur Nachprüfung).
+

@@ -1,0 +1,101 @@
+titel: Schutzziele und Angriffsphasen
+zusammenfassung: Du erinnerst dich an die drei Schutzziele Vertraulichkeit, Integrität und Verfügbarkeit und daran, dass ein Angriff aus mehreren Schritten besteht, die sich mit MITRE ATT&CK beschreiben lassen.
+quellen:
+  - titel: NIST – Glossar, Confidentiality
+    url: https://csrc.nist.gov/glossary/term/confidentiality
+  - titel: NIST – Glossar, Integrity
+    url: https://csrc.nist.gov/glossary/term/integrity
+  - titel: NIST – Glossar, Availability
+    url: https://csrc.nist.gov/glossary/term/availability
+  - titel: MITRE ATT&CK
+    url: https://attack.mitre.org/
+abschnitte:
+  - titel: Die drei Schutzziele
+    inhalt: |
+      Informationssicherheit lässt sich auf drei Ziele zurückführen. NIST (Glossar, aus FIPS 200) beschreibt sie so:
+
+      - **Vertraulichkeit (Confidentiality):** Der Zugriff auf Informationen und ihre Weitergabe sind
+        auf Berechtigte beschränkt.
+      - **Integrität (Integrity):** Informationen werden vor unbefugter Änderung oder Zerstörung geschützt.
+      - **Verfügbarkeit (Availability):** Informationen sind rechtzeitig und zuverlässig nutzbar.
+
+      **Bild (eigene Idee):** Ein Tresor mit Tagebuch. Vertraulichkeit: Nur du hast den Schlüssel. Integrität:
+      Niemand kann heimlich Seiten ändern. Verfügbarkeit: Du kommst jederzeit an den Tresor.
+
+      Ein Angriff trifft meist ein Ziel besonders: Ein Datenleck trifft die Vertraulichkeit, manipulierte
+      Daten die Integrität, ein Ausfall durch Überlastung die Verfügbarkeit.
+    quiz:
+      - frage: "Welches Schutzziel verletzt ein Angreifer, der heimlich Werte in einer Datenbank ändert?"
+        erklaerung: "Die Integrität, denn Informationen werden unbefugt verändert."
+        antworten:
+          - { text: "Die Vertraulichkeit, weil jemand mitliest.", richtig: false }
+          - { text: "Die Verfügbarkeit, weil die Daten gelöscht werden.", richtig: false }
+          - { text: "Die Integrität, denn Informationen werden unbefugt verändert.", richtig: true }
+      - frage: "Was meint Verfügbarkeit laut NIST?"
+        erklaerung: "Rechtzeitiger und zuverlässiger Zugang zu Informationen und ihre Nutzung."
+        antworten:
+          - { text: "Rechtzeitiger und zuverlässiger Zugang zu Informationen und ihre Nutzung.", richtig: true }
+          - { text: "Der Schutz vor unbefugtem Mitlesen der Daten.", richtig: false }
+          - { text: "Die Sicherheit, dass Daten nie geändert werden.", richtig: false }
+  - titel: Ein Angriff hat Phasen
+    inhalt: |
+      Angriffe laufen selten in einem Schritt ab. **MITRE ATT&CK** ist eine frei verfügbare Wissenssammlung
+      über Taktiken und Techniken von Angreifern, aus echten Beobachtungen gebaut. Die **Taktiken** sind die
+      Ziele eines Angreifers, grob in der Reihenfolge eines Angriffs, zum Beispiel:
+
+      - **Reconnaissance:** Informationen über das Ziel sammeln.
+      - **Initial Access:** den ersten Zugang erlangen.
+      - **Persistence:** den Zugang dauerhaft halten.
+      - **Credential Access:** Zugangsdaten stehlen.
+      - **Lateral Movement:** sich im Netz weiterbewegen.
+      - **Exfiltration:** Daten abziehen.
+      - **Impact:** Schaden anrichten (zum Beispiel Daten löschen).
+
+      Die Liste und die Namen ändern sich mit der Version der Wissenssammlung. Merke dir die Idee: Wer die
+      Phasen kennt, kann an **jeder** Stelle eine Gegenmaßnahme einbauen.
+    quiz:
+      - frage: "Was ist MITRE ATT&CK?"
+        erklaerung: "Eine frei verfügbare Wissenssammlung über Taktiken und Techniken von Angreifern."
+        antworten:
+          - { text: "Ein Virenscanner der Firma MITRE.", richtig: false }
+          - { text: "Ein Gesetz zur Datensicherheit.", richtig: false }
+          - { text: "Eine frei verfügbare Wissenssammlung über Taktiken und Techniken von Angreifern.", richtig: true }
+      - frage: "Welche Taktik beschreibt das Sammeln von Informationen über ein Ziel?"
+        erklaerung: "Reconnaissance."
+        antworten:
+          - { text: "Impact", richtig: false }
+          - { text: "Reconnaissance", richtig: true }
+          - { text: "Persistence", richtig: false }
+test:
+  zeitlimit_minuten: 10
+  fragen:
+    - frage: "Ein Angreifer legt einen Online-Shop durch Überlastung lahm. Welches Schutzziel ist verletzt?"
+      erklaerung: "Die Verfügbarkeit."
+      antworten:
+        - { text: "Die Vertraulichkeit", richtig: false }
+        - { text: "Die Integrität", richtig: false }
+        - { text: "Die Verfügbarkeit", richtig: true }
+    - frage: "Ein Angreifer liest ohne Erlaubnis Kundendaten. Welches Schutzziel ist verletzt?"
+      erklaerung: "Die Vertraulichkeit."
+      antworten:
+        - { text: "Die Vertraulichkeit", richtig: true }
+        - { text: "Die Verfügbarkeit", richtig: false }
+        - { text: "Die Integrität", richtig: false }
+    - frage: "Warum ist es hilfreich, die Phasen eines Angriffs zu kennen?"
+      erklaerung: "Man kann in jeder Phase Gegenmaßnahmen einplanen."
+      antworten:
+        - { text: "Man kann nur nach dem Schaden reagieren.", richtig: false }
+        - { text: "Man braucht dann keine Passwörter mehr.", richtig: false }
+        - { text: "Man kann in jeder Phase Gegenmaßnahmen einplanen.", richtig: true }
+    - frage: "Welche Taktik beschreibt das dauerhafte Halten eines Zugangs?"
+      erklaerung: "Persistence."
+      antworten:
+        - { text: "Persistence", richtig: true }
+        - { text: "Reconnaissance", richtig: false }
+        - { text: "Exfiltration", richtig: false }
+    - frage: "Was bedeutet Integrität laut NIST?"
+      erklaerung: "Schutz vor unbefugter Änderung oder Zerstörung von Informationen."
+      antworten:
+        - { text: "Schnelle Erreichbarkeit der Daten.", richtig: false }
+        - { text: "Schutz vor unbefugter Änderung oder Zerstörung von Informationen.", richtig: true }
+        - { text: "Schutz vor dem Mitlesen durch Dritte.", richtig: false }

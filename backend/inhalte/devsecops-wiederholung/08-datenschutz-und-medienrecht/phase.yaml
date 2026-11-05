@@ -1,0 +1,26 @@
+titel: Datenschutz und Medienrecht
+beschreibung: Die Grundbegriffe und Grundsätze der DSGVO und die Impressumspflicht nach dem Digitale-Dienste-Gesetz. Du erinnerst dich, welche Pflichten beim Umgang mit personenbezogenen Daten und beim Betrieb einer Webseite gelten. Das ist Grundlagenwissen und keine Rechtsberatung.
+projekt:
+  titel: Datenschutz-Check für die eigene App
+  beschreibung: |
+    Du prüfst auf dem Papier, wie diese Lern-App oder eine erfundene App mit Daten umgehen würde.
+
+    **Aufgabe:** Liste auf, welche personenbezogenen Daten die App speichert (zum Beispiel Benutzername, Lernfortschritt).
+    Ordne jedem Datum einen Zweck und eine Rechtsgrundlage nach Art. 6 DSGVO zu. Prüfe die Grundsätze aus Art. 5
+    (Datenminimierung, Speicherbegrenzung, Sicherheit) und nenne je eine konkrete Maßnahme. Schreibe außerdem
+    auf, ob und warum die App ein Impressum bräuchte, wenn sie öffentlich im Netz stünde.
+
+    **Regeln:**
+
+    - Es werden keine echten Personendaten verwendet, nur erfundene Beispiele.
+    - Es entsteht kein veröffentlichtes Dokument, die Prüfung bleibt auf dem Papier.
+    - Bei echten Fragen zur Rechtslage holst du dir fachkundigen Rat, dies hier ist keine Rechtsberatung.
+
+    **Tipp:** Frage dich bei jedem Datum: Brauche ich es wirklich, und wie lange?
+    Quellen: [DSGVO, Verordnung (EU) 2016/679](https://eur-lex.europa.eu/eli/reg/2016/679/oj/deu) und [§ 5 DDG](https://www.gesetze-im-internet.de/ddg/__5.html).
+  punkte:
+    - Die gespeicherten personenbezogenen Daten sind aufgelistet.
+    - Zu jedem Datum stehen Zweck und Rechtsgrundlage nach Art. 6.
+    - Zu mindestens drei Grundsätzen aus Art. 5 steht eine konkrete Maßnahme.
+    - Die Frage nach dem Impressum ist begründet beantwortet.
+    - Es wurden nur erfundene Daten verwendet.

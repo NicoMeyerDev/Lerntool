@@ -32,7 +32,7 @@ Regeln: Immer die oberste offene Aufgabe aus „Jetzt“ bearbeiten. Aufgaben au
   - [x] D1 Teil 1: Django-Grundlagen, Datenbanken, DRF mit Testing, Authentifizierung (Themen 3 bis 6)
   - [x] D1 Teil 2: DevOps/CI/CD (Git, CI/CD, Cloud-Hosting) und Monitoring
   - [x] D1 Teil 3: Internet-Architektur und HTTP, Python-Grundlagen, erweiterte Konzepte (Caching mit Redis, Task-Queues, Postgres, Dateimanagement), SQL und Optimierung
-- [ ] **D2 Wiederholung DevSecOps:** Themen 1-10 der DevSecOps-Roadmap. Praktische Labs (Kali, Metasploitable, Juice Shop) nur als Theorie und Quiz, Labs nur in der eigenen Umgebung.
+- [x] **D2 Wiederholung DevSecOps:** Themen 1-10 der DevSecOps-Roadmap. Praktische Labs (Kali, Metasploitable, Juice Shop) nur als Theorie und Quiz, Labs nur in der eigenen Umgebung.
 - [ ] **D3 Konzept-Vergleiche Django und Laravel:** Auth, Datenbanken, API, Testing, Docker, CI/CD als gemeinsame Lektionen mit zwei Umsetzungen.
 - [ ] Antworten im Frontend zufällig mischen (Quiz und Test)
 - [ ] KI-Analyse der Schwächen und adaptive Aufgaben

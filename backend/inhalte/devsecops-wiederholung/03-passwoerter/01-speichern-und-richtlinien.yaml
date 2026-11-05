@@ -1,0 +1,101 @@
+titel: Passwörter speichern und gute Richtlinien
+zusammenfassung: Du erinnerst dich an Hash, Salt, Pepper und Arbeitsfaktor und an die Empfehlungen von OWASP und NIST für Speicherung und Passwort-Regeln.
+quellen:
+  - titel: OWASP – Password Storage Cheat Sheet
+    url: https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html
+  - titel: NIST SP 800-63B-4 – Digital Identity Guidelines, Authentication
+    url: https://pages.nist.gov/800-63-4/sp800-63b.html
+abschnitte:
+  - titel: Sicher speichern
+    inhalt: |
+      Speichere Passwörter nie im Klartext. Du speicherst einen **Hash**: Das Ergebnis einer Einweg-Funktion,
+      aus dem sich das Passwort nicht zurückrechnen lässt. Verschlüsselung ist dagegen umkehrbar und für
+      Passwörter nur nötig, wenn du den Klartext wirklich brauchst (zum Beispiel für die Anmeldung bei einem
+      anderen System).
+
+      - **Salt:** ein zufälliger Wert **pro Passwort**. Er verhindert, dass vorberechnete Tabellen (Rainbow
+        Tables) helfen. Gute Bibliotheken erzeugen ihn automatisch.
+      - **Pepper:** ein geheimer Wert, der **getrennt** von der Datenbank liegt (zum Beispiel in einem
+        Geheimnis-Tresor). Allein bringt er laut OWASP keine zusätzliche Sicherheit.
+      - **Arbeitsfaktor:** Der Hash soll absichtlich Rechenzeit kosten. Stelle ihn so ein, dass ein Hash auf
+        deinem Server unter einer Sekunde bleibt.
+      - **Algorithmen laut OWASP:** **Argon2id** (bevorzugt, mindestens m=19 MiB, t=2, p=1), sonst scrypt, bcrypt
+        nur für Altsysteme (mit Obergrenze von 72 Byte), und PBKDF2 (mit HMAC-SHA-256, mindestens 600.000
+        Durchläufe), wenn FIPS-140 verlangt ist.
+      - Speichere Algorithmus und Parameter **mit dem Hash**. So kannst du beim nächsten Login neu hashen.
+    quiz:
+      - frage: "Welchen Algorithmus nennt OWASP als bevorzugt?"
+        erklaerung: "Argon2id."
+        antworten:
+          - { text: "MD5", richtig: false }
+          - { text: "Argon2id", richtig: true }
+          - { text: "Base64", richtig: false }
+      - frage: "Wozu dient der Salt?"
+        erklaerung: "Er ist pro Passwort zufällig und macht vorberechnete Tabellen unbrauchbar."
+        antworten:
+          - { text: "Er ist pro Passwort zufällig und macht vorberechnete Tabellen unbrauchbar.", richtig: true }
+          - { text: "Er verschlüsselt die Datenbank.", richtig: false }
+          - { text: "Er ersetzt den Hash.", richtig: false }
+  - titel: Gute Passwort-Regeln nach NIST
+    inhalt: |
+      Die aktuelle NIST-Richtlinie (SP 800-63B, Revision 4) sagt unter anderem:
+
+      - **Länge:** Als einziger Faktor mindestens **15 Zeichen**. Nur als Teil einer Mehrfaktor-Anmeldung
+        mindestens **8 Zeichen**. Erlaube mindestens **64 Zeichen**.
+      - **Zeichen:** Erlaube druckbare ASCII-Zeichen, Leerzeichen und Unicode.
+      - **Keine Zeichenmix-Pflicht** (Groß-/Kleinschreibung, Sonderzeichen erzwingen) und **kein
+        regelmäßiger Zwangswechsel**. Wechsel nur bei Hinweis auf Kompromittierung.
+      - **Sperrliste:** Neue Passwörter werden gegen bekannte, häufige oder kontextbezogene Passwörter geprüft.
+        Die Nutzenden erfahren, warum eines abgelehnt wurde.
+      - **Passwortmanager und Einfügen** müssen möglich sein.
+      - **Keine Hinweise** und keine Sicherheitsfragen.
+      - Passwörter allein sind **nicht phishing-sicher**. Ein zweiter Faktor erhöht die Sicherheit.
+
+      **Bild (eigene Idee):** Ein langer, zufälliger Satz im Passwortmanager ist ein starkes Schloss. Ein „Passwort1!“
+      mit Pflicht-Sonderzeichen ist nur ein kurzer Riegel.
+    quiz:
+      - frage: "Wie lang muss ein Passwort nach NIST mindestens sein, wenn es der einzige Faktor ist?"
+        erklaerung: "Mindestens 15 Zeichen."
+        antworten:
+          - { text: "Mindestens 6 Zeichen", richtig: false }
+          - { text: "Mindestens 8 Zeichen", richtig: false }
+          - { text: "Mindestens 15 Zeichen", richtig: true }
+      - frage: "Was gehört nach NIST SP 800-63B-4 zu dem, was Betreiber umsetzen?"
+        erklaerung: "Neue Passwörter werden gegen eine Liste bekannter schwacher Passwörter geprüft."
+        antworten:
+          - { text: "Alle Nutzer müssen ihr Passwort regelmäßig ohne besonderen Anlass wechseln.", richtig: false }
+          - { text: "Neue Passwörter werden gegen eine Liste bekannter schwacher Passwörter geprüft.", richtig: true }
+          - { text: "Passwörter müssen Sonderzeichen und Großbuchstaben enthalten.", richtig: false }
+test:
+  zeitlimit_minuten: 10
+  fragen:
+    - frage: "Was ist der Unterschied zwischen Hash und Verschlüsselung?"
+      erklaerung: "Ein Hash ist eine Einweg-Funktion, Verschlüsselung ist umkehrbar."
+      antworten:
+        - { text: "Beides ist dasselbe.", richtig: false }
+        - { text: "Ein Hash lässt sich mit dem richtigen Schlüssel zurückverwandeln.", richtig: false }
+        - { text: "Ein Hash ist eine Einweg-Funktion, Verschlüsselung ist umkehrbar.", richtig: true }
+    - frage: "Wo soll ein Pepper laut OWASP liegen?"
+      erklaerung: "Getrennt von der Datenbank, zum Beispiel in einem Geheimnis-Tresor."
+      antworten:
+        - { text: "Getrennt von der Datenbank, zum Beispiel in einem Geheimnis-Tresor.", richtig: true }
+        - { text: "In derselben Tabelle wie das Passwort.", richtig: false }
+        - { text: "In der Datei README.", richtig: false }
+    - frage: "Wie viele Durchläufe nennt OWASP mindestens für PBKDF2 mit HMAC-SHA-256?"
+      erklaerung: "600.000."
+      antworten:
+        - { text: "1.000", richtig: false }
+        - { text: "600.000", richtig: true }
+        - { text: "10", richtig: false }
+    - frage: "Welche Grenze nennt OWASP bei bcrypt?"
+      erklaerung: "Passwörter sind auf 72 Byte zu begrenzen, weil die meisten Umsetzungen sonst abschneiden."
+      antworten:
+        - { text: "Passwörter müssen genau 8 Zeichen lang sein.", richtig: false }
+        - { text: "Passwörter sind auf 72 Byte zu begrenzen, weil die meisten Umsetzungen sonst abschneiden.", richtig: true }
+        - { text: "Passwörter dürfen keine Zahlen enthalten.", richtig: false }
+    - frage: "Warum speichert man Algorithmus und Parameter mit dem Hash?"
+      erklaerung: "So lässt sich beim nächsten Login mit besseren Einstellungen neu hashen."
+      antworten:
+        - { text: "Damit Angreifer die Parameter leichter finden.", richtig: false }
+        - { text: "Damit die Datenbank kleiner wird.", richtig: false }
+        - { text: "So lässt sich beim nächsten Login mit besseren Einstellungen neu hashen.", richtig: true }
