@@ -1,0 +1,146 @@
+titel: CI/CD mit GitHub Actions
+zusammenfassung: Du erinnerst dich an die Bausteine von GitHub Actions, an den Aufbau einer Workflow-Datei und an den Umgang mit Geheimnissen in der Pipeline.
+quellen:
+  - titel: GitHub Docs – Understanding GitHub Actions
+    url: https://docs.github.com/en/actions/get-started/understand-github-actions
+  - titel: GitHub Docs – Workflow syntax for GitHub Actions
+    url: https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions
+abschnitte:
+  - titel: Was GitHub Actions ist
+    inhalt: |
+      **GitHub Actions** ist laut Doku eine **CI/CD-Plattform**, die Builds, Tests und
+      Deployments automatisiert. Sie kann auch auf andere Ereignisse im Repository reagieren, etwa
+      neue Issues automatisch beschriften.
+
+      **Eigene Erklärung:** CI (Continuous Integration) heißt, dass jede Änderung automatisch
+      gebaut und getestet wird. CD (Continuous Delivery oder Deployment) heißt, dass das Ergebnis
+      automatisch bereitgestellt wird.
+
+      Die Bausteine:
+
+      - **Workflow:** ein automatischer Ablauf aus einem oder mehreren Jobs.
+      - **Event:** ein Ereignis im Repository, das den Workflow startet, zum Beispiel ein Push oder ein Pull Request.
+      - **Job:** eine Reihe von Schritten, die auf demselben Runner laufen. Jobs laufen standardmäßig parallel.
+      - **Step:** ein einzelner Schritt, entweder ein Shell-Skript oder eine Action.
+      - **Action:** ein wiederverwendbarer, fertiger Baustein für eine bestimmte Aufgabe.
+      - **Runner:** ein Server, der den Workflow ausführt, jeweils einen Job zur Zeit. GitHub stellt Linux-, Windows- und macOS-Runner.
+
+      Workflows sind **YAML-Dateien** im Ordner `.github/workflows` des Repositorys.
+    quiz:
+      - frage: "Wo liegen Workflow-Dateien in einem Repository?"
+        erklaerung: "Im Ordner .github/workflows."
+        antworten:
+          - { text: "In der Datei README.md", richtig: false }
+          - { text: "Im Ordner node_modules", richtig: false }
+          - { text: "Im Ordner .github/workflows", richtig: true }
+      - frage: "Was ist ein Runner?"
+        erklaerung: "Ein Server, der den Workflow ausführt."
+        antworten:
+          - { text: "Ein Befehl zum Starten des Browsers.", richtig: false }
+          - { text: "Ein Passwort-Manager.", richtig: false }
+          - { text: "Ein Server, der einen Job des Workflows ausführt.", richtig: true }
+  - titel: Aufbau einer Workflow-Datei
+    inhalt: |
+      Die wichtigsten Schlüssel in der YAML-Datei (laut Syntax-Referenz):
+
+      - `name`: Name des Workflows, der im Tab „Actions“ erscheint.
+      - `on`: das oder die Ereignisse, die den Workflow starten, zum Beispiel `on: push` oder `on: [push, fork]`.
+      - `jobs`: die Jobs des Workflows. Jede Job-ID beginnt mit einem Buchstaben oder `_`.
+      - `runs-on`: die Umgebung des Runners, zum Beispiel `ubuntu-latest`.
+      - `steps`: die Schritte eines Jobs. `uses:` führt eine Action aus, `run:` einen Shell-Befehl.
+      - `needs`: Abhängigkeit zwischen Jobs. So laufen Jobs nacheinander statt parallel.
+      - `env`: Variablen, die für die Schritte der Jobs gelten.
+
+      **Beispiel-Gerüst (eigenes Beispiel nach diesen Schlüsseln):**
+
+      ```yaml
+      name: Tests
+      on: push
+      jobs:
+        test:
+          runs-on: ubuntu-latest
+          steps:
+            - uses: actions/checkout@v6
+            - run: echo "Hier würden die Tests starten"
+      ```
+
+      Der Schritt `uses: actions/checkout@v6` stammt aus den Beispielen der Doku.
+    quiz:
+      - frage: "Mit welchem Schlüssel legst du fest, dass ein Workflow bei einem Push startet?"
+        erklaerung: "Mit on, zum Beispiel on: push."
+        antworten:
+          - { text: "on: push", richtig: true }
+          - { text: "runs-on: push", richtig: false }
+          - { text: "needs: push", richtig: false }
+      - frage: "Wie lässt du einen Job erst nach einem anderen laufen?"
+        erklaerung: "Mit needs, das eine Abhängigkeit zu einem anderen Job festlegt."
+        antworten:
+          - { text: "Mit name", richtig: false }
+          - { text: "Mit needs", richtig: true }
+          - { text: "Mit env", richtig: false }
+  - titel: Geheimnisse in der Pipeline
+    inhalt: |
+      Zugangsdaten gehören **nie in die Workflow-Datei oder ins Repository**. GitHub bietet dafür den
+      **`secrets`-Kontext**: Ein Secret verwendest du mit `${{ secrets.NAME }}`.
+
+      Das Beispiel der Doku reicht ein Secret an eine Action weiter:
+
+      ```yaml
+      steps:
+        - name: Pass the received secret to an action
+          uses: ./.github/actions/my-action
+          with:
+            token: ${{ secrets.access-token }}
+      ```
+
+      **Eigene Regel dieses Projekts (CLAUDE.md):** Keine Secrets im Code. Zugangsdaten nur über
+      Umgebungsvariablen, `.env` wird nie committet.
+
+      **Eigener Rat:** Gib Secrets nur an die Schritte weiter, die sie brauchen, und lege nur
+      kurzlebige oder eingeschränkte Schlüssel in der Pipeline ab.
+    quiz:
+      - frage: "Wie greifst du in einem Workflow auf ein Secret namens API_KEY zu?"
+        erklaerung: "Über den secrets-Kontext: ${{ secrets.API_KEY }}."
+        antworten:
+          - { text: "${{ secrets.API_KEY }}", richtig: true }
+          - { text: "Du schreibst den Schlüssel direkt in die YAML-Datei.", richtig: false }
+          - { text: "Du speicherst ihn in der README.", richtig: false }
+      - frage: "Wo gehören Zugangsdaten laut Projektregel hin?"
+        erklaerung: "In Umgebungsvariablen, nie in den Code."
+        antworten:
+          - { text: "In Umgebungsvariablen, nicht in den Code.", richtig: true }
+          - { text: "Direkt in settings.py im Git.", richtig: false }
+          - { text: "In den Commit-Text.", richtig: false }
+test:
+  zeitlimit_minuten: 10
+  fragen:
+    - frage: "Welche Aussage über Jobs in einem Workflow stimmt standardmäßig?"
+      erklaerung: "Jobs laufen standardmäßig parallel, außer du legst Abhängigkeiten fest."
+      antworten:
+        - { text: "Sie laufen immer nacheinander.", richtig: false }
+        - { text: "Es darf nur einen Job geben.", richtig: false }
+        - { text: "Sie laufen parallel, solange keine Abhängigkeiten definiert sind.", richtig: true }
+    - frage: "Was bedeutet uses: in einem Step?"
+      erklaerung: "uses führt eine Action aus."
+      antworten:
+        - { text: "Er löscht den Runner.", richtig: false }
+        - { text: "Er führt eine Action aus.", richtig: true }
+        - { text: "Er führt einen Shell-Befehl aus.", richtig: false }
+    - frage: "Was bedeutet run: in einem Step?"
+      erklaerung: "run führt einen Shell-Befehl aus."
+      antworten:
+        - { text: "Er führt einen Shell-Befehl aus.", richtig: true }
+        - { text: "Er legt einen neuen Branch an.", richtig: false }
+        - { text: "Er definiert die Runner-Größe.", richtig: false }
+    - frage: "Was bedeutet runs-on: ubuntu-latest?"
+      erklaerung: "Der Job läuft auf einem Ubuntu-Runner in der neuesten Version."
+      antworten:
+        - { text: "Der Job installiert Ubuntu auf deinem Rechner.", richtig: false }
+        - { text: "Der Workflow startet nur bei Linux-Commits.", richtig: false }
+        - { text: "Der Job läuft auf einem Ubuntu-Runner.", richtig: true }
+    - frage: "Was ist ein Event im Sinne von GitHub Actions?"
+      erklaerung: "Ein Ereignis im Repository, das einen Workflow startet, etwa ein Push."
+      antworten:
+        - { text: "Ein fertiger, wiederverwendbarer Baustein.", richtig: false }
+        - { text: "Ein Ereignis im Repository, zum Beispiel ein Push, das einen Workflow startet.", richtig: true }
+        - { text: "Ein einzelner Schritt innerhalb eines Jobs.", richtig: false }

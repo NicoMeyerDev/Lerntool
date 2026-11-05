@@ -1,0 +1,99 @@
+titel: Deployment und Hosting
+zusammenfassung: Du erinnerst dich an die Django-Deployment-Checkliste und daran, wie ein Host wie Render einen Dienst baut, startet und neu ausrollt.
+quellen:
+  - titel: Django 5.2 – Deployment checklist
+    url: https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
+  - titel: Render Docs – Deploys
+    url: https://render.com/docs/deploys
+abschnitte:
+  - titel: Die Django-Checkliste für den Betrieb
+    inhalt: |
+      Die Django-Doku hat eine **Checkliste** für den Schritt in den Betrieb. Wichtige Punkte:
+
+      - **`SECRET_KEY`:** Er muss ein großer Zufallswert sein und **geheim** bleiben. Halte ihn aus der
+        Versionsverwaltung heraus und lade ihn aus einer Umgebungsvariablen, zum Beispiel
+        `SECRET_KEY = os.environ["SECRET_KEY"]`.
+      - **`DEBUG`:** Niemals im Betrieb einschalten. Der Debug-Modus verrät viele Informationen über das Projekt.
+      - **`ALLOWED_HOSTS`:** Bei `DEBUG = False` arbeitet Django ohne passenden Wert gar nicht.
+      - **HTTPS:** Der Webserver soll allen HTTP-Verkehr auf HTTPS umleiten. Dann setzt du
+        `CSRF_COOKIE_SECURE = True` und `SESSION_COOKIE_SECURE = True`.
+      - **Statische Dateien:** Im Betrieb brauchst du ein `STATIC_ROOT`, in das `collectstatic` die Dateien kopiert.
+      - **Datenbank:** Datenbank-Passwörter schützt du wie den `SECRET_KEY`. Der Datenbankserver nimmt nur
+        Verbindungen von deinen Anwendungsservern an. Richte Backups ein.
+
+      **Automatische Prüfung:** `python manage.py check --deploy` prüft einen Teil der Punkte. Führe
+      es mit den Einstellungen für den Betrieb aus.
+    quiz:
+      - frage: "Wie sollte der SECRET_KEY im Betrieb in Django gelangen?"
+        erklaerung: "Aus einer Umgebungsvariablen oder Datei, nicht aus der Versionsverwaltung."
+        antworten:
+          - { text: "Fest im Code und im Git.", richtig: false }
+          - { text: "Aus der URL der Anfrage.", richtig: false }
+          - { text: "Aus einer Umgebungsvariablen, nicht aus dem Git-Repository.", richtig: true }
+      - frage: "Welcher Befehl prüft einen Teil der Deployment-Checkliste automatisch?"
+        erklaerung: "python manage.py check --deploy."
+        antworten:
+          - { text: "python manage.py deploy", richtig: false }
+          - { text: "python manage.py check --deploy", richtig: true }
+          - { text: "python manage.py runserver --prod", richtig: false }
+  - titel: Deploys bei einem Host wie Render
+    inhalt: |
+      Dieses Projekt ist für **Render** vorgesehen. Laut Render-Doku gilt:
+
+      - **Auto-Deploy:** Pushst oder mergst du in den verknüpften Branch, baut Render den Dienst
+        standardmäßig neu und startet ihn neu. Einstellbar ist „On Commit“, „After CI Checks Pass“ oder „Off“.
+      - **Build-Befehl:** läuft zuerst und installiert Abhängigkeiten, zum Beispiel `pip install -r requirements.txt`.
+      - **Pre-Deploy-Befehl (optional):** läuft nach dem Build und vor dem Deploy, etwa für Datenbank-Migrationen.
+      - **Start-Befehl:** startet den Dienst, zum Beispiel `gunicorn your_application.wsgi`.
+      - **Deploys ohne Ausfall:** Render startet eine **neue Instanz** mit der neuen Version. Schlägt ein
+        Build oder Befehl fehl, scheitert der Deploy, und die vorherige erfolgreiche Version läuft weiter.
+      - **Umgebungsvariablen:** Ein Neustart übernimmt geänderte Umgebungsvariablen nicht, dafür ist ein neuer Deploy nötig.
+
+      **Eigener Hinweis:** Hosting kostet Geld und betrifft Sicherheit. Laut CLAUDE.md wird dazu erst
+      mit dem Lernenden entschieden. Diese Lektion erklärt nur das Prinzip.
+    quiz:
+      - frage: "Was passiert laut Render-Doku, wenn ein Build fehlschlägt?"
+        erklaerung: "Der Deploy scheitert, und die vorherige erfolgreiche Version läuft weiter."
+        antworten:
+          - { text: "Render ersetzt den Code durch eine Vorlage.", richtig: false }
+          - { text: "Der Deploy scheitert, die vorherige Version läuft weiter.", richtig: true }
+          - { text: "Die Seite wird gelöscht.", richtig: false }
+      - frage: "Wofür ist der optionale Pre-Deploy-Befehl gedacht?"
+        erklaerung: "Für Aufgaben wie Datenbank-Migrationen zwischen Build und Deploy."
+        antworten:
+          - { text: "Zum Löschen der Logs.", richtig: false }
+          - { text: "Zum Ändern des Domain-Namens.", richtig: false }
+          - { text: "Für Aufgaben wie Datenbank-Migrationen.", richtig: true }
+test:
+  zeitlimit_minuten: 10
+  fragen:
+    - frage: "Welche Einstellung darf im Betrieb nie auf True stehen?"
+      erklaerung: "DEBUG darf im Betrieb nie eingeschaltet sein."
+      antworten:
+        - { text: "DEBUG", richtig: true }
+        - { text: "ALLOWED_HOSTS", richtig: false }
+        - { text: "STATIC_ROOT", richtig: false }
+    - frage: "Was braucht Django bei DEBUG = False unbedingt?"
+      erklaerung: "Einen passenden Wert für ALLOWED_HOSTS."
+      antworten:
+        - { text: "Einen passenden Wert für ALLOWED_HOSTS.", richtig: true }
+        - { text: "Einen zweiten SECRET_KEY.", richtig: false }
+        - { text: "Eine Datei debug.txt.", richtig: false }
+    - frage: "Wozu dient collectstatic?"
+      erklaerung: "Es kopiert statische Dateien in das STATIC_ROOT-Verzeichnis."
+      antworten:
+        - { text: "Es löscht alte Migrationen.", richtig: false }
+        - { text: "Es kopiert statische Dateien nach STATIC_ROOT.", richtig: true }
+        - { text: "Es startet die Datenbank.", richtig: false }
+    - frage: "Welche beiden Cookie-Einstellungen empfiehlt die Doku nach dem Einrichten von HTTPS?"
+      erklaerung: "CSRF_COOKIE_SECURE und SESSION_COOKIE_SECURE jeweils auf True."
+      antworten:
+        - { text: "ALLOWED_COOKIES und STATIC_COOKIE", richtig: false }
+        - { text: "CSRF_COOKIE_SECURE und SESSION_COOKIE_SECURE", richtig: true }
+        - { text: "DEBUG_COOKIE und HTTP_ONLY", richtig: false }
+    - frage: "Wann baut Render bei der Standard-Einstellung den Dienst neu?"
+      erklaerung: "Wenn du in den verknüpften Branch pushst oder mergst."
+      antworten:
+        - { text: "Wenn du in den verknüpften Branch pushst oder mergst.", richtig: true }
+        - { text: "Nur wenn du es um Mitternacht anstößt.", richtig: false }
+        - { text: "Nie automatisch.", richtig: false }

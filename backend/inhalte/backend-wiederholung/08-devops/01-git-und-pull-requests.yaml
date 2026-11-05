@@ -1,0 +1,147 @@
+titel: Git, Branches und Pull Requests
+zusammenfassung: Du erinnerst dich, was ein Branch in Git ist, wie ein Merge funktioniert, wie du Konflikte erkennst und wozu ein Pull Request dient.
+quellen:
+  - titel: Pro Git – Branches in a Nutshell
+    url: https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell
+  - titel: Pro Git – Basic Branching and Merging
+    url: https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging
+  - titel: GitHub Docs – About pull requests
+    url: https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests
+abschnitte:
+  - titel: Commits und Branches
+    inhalt: |
+      Git speichert Daten als eine Reihe von **Schnappschüssen**. Jeder **Commit** enthält einen
+      Zeiger auf den Schnappschuss der vorgemerkten Dateien, Name und E-Mail der Autorin oder des
+      Autors, die Commit-Nachricht und Zeiger auf den oder die Eltern-Commits.
+
+      Ein **Branch** ist nur ein leichter, verschiebbarer **Zeiger auf einen Commit**. Mit jedem
+      neuen Commit rückt der aktuelle Branch automatisch weiter. **HEAD** ist ein besonderer Zeiger
+      auf den lokalen Branch, auf dem du gerade arbeitest.
+
+      ```text
+      git branch testing         (neuen Zeiger anlegen, nicht wechseln)
+      git switch testing         (zu testing wechseln, seit Git 2.23)
+      git switch -c neuer-zweig  (anlegen und wechseln)
+      git checkout -b neuer-zweig  (dasselbe mit dem älteren Befehl)
+      ```
+
+      Branches sind billig: Ein Branch ist eine Datei mit der Prüfsumme seines Commits. Beim
+      Wechseln passt Git die Dateien im Arbeitsverzeichnis an den Stand des Ziel-Branches an.
+
+      **Bild (eigene Idee):** Ein Branch ist ein Lesezeichen im Verlauf. Du schiebst ein neues
+      Lesezeichen hin, ohne den Rest des Buchs anzufassen.
+    quiz:
+      - frage: "Was ist ein Branch in Git?"
+        erklaerung: "Ein Branch ist ein leichter, verschiebbarer Zeiger auf einen Commit."
+        antworten:
+          - { text: "Eine Kopie des ganzen Projekts auf der Festplatte.", richtig: false }
+          - { text: "Ein Server für Pull Requests.", richtig: false }
+          - { text: "Ein leichter, verschiebbarer Zeiger auf einen Commit.", richtig: true }
+      - frage: "Welcher Befehl legt einen neuen Branch an und wechselt gleich dorthin?"
+        erklaerung: "git switch -c (oder git checkout -b) legt an und wechselt."
+        antworten:
+          - { text: "git switch -c neuer-zweig", richtig: true }
+          - { text: "git branch neuer-zweig", richtig: false }
+          - { text: "git merge neuer-zweig", richtig: false }
+  - titel: Zusammenführen und Konflikte
+    inhalt: |
+      Mit `git merge` führst du die Arbeit eines Branches in den aktuellen Branch zurück.
+
+      - **Fast-forward:** Liegt der andere Branch direkt voraus, schiebt Git nur den Zeiger weiter,
+        weil es keine auseinandergelaufene Arbeit gibt.
+      - **Drei-Wege-Merge:** Sind die Verläufe auseinandergelaufen, nutzt Git die zwei Schnappschüsse
+        der Branch-Spitzen und den gemeinsamen Vorfahren. Das Ergebnis ist ein neuer
+        **Merge-Commit** mit mehr als einem Eltern-Commit.
+
+      Nach dem Merge löschst du den nicht mehr gebrauchten Branch mit `git branch -d branchname`.
+
+      **Konflikt:** Er entsteht, wenn du in beiden Branches denselben Teil derselben Datei
+      unterschiedlich geändert hast. Git hält dann an und markiert die Stelle:
+
+      ```text
+      <<<<<<< HEAD
+      (Version des aktuellen Branches)
+      =======
+      (Version des gemergten Branches)
+      >>>>>>> iss53
+      ```
+
+      Du wählst eine Seite oder kombinierst beide, entfernst die Markierungen, markierst die Datei
+      mit `git add` als erledigt und schließt mit `git commit` ab. `git status` zeigt ungelöste
+      Konflikte als „unmerged“.
+    quiz:
+      - frage: "Wann kommt es zu einem Merge-Konflikt?"
+        erklaerung: "Wenn derselbe Teil derselben Datei in beiden Branches unterschiedlich geändert wurde."
+        antworten:
+          - { text: "Nur wenn der Branch gelöscht wurde.", richtig: false }
+          - { text: "Wenn derselbe Teil derselben Datei in beiden Branches unterschiedlich geändert wurde.", richtig: true }
+          - { text: "Immer, wenn zwei Branches existieren.", richtig: false }
+      - frage: "Was bedeutet ein Fast-forward-Merge?"
+        erklaerung: "Der Zeiger wird nur weitergeschoben, weil es keine auseinandergelaufene Arbeit gibt."
+        antworten:
+          - { text: "Git löscht den älteren Branch sofort.", richtig: false }
+          - { text: "Git erzeugt immer einen Konflikt.", richtig: false }
+          - { text: "Git schiebt nur den Zeiger weiter, es gibt keinen Merge-Commit.", richtig: true }
+  - titel: Pull Requests
+    inhalt: |
+      Ein **Pull Request** (PR) ist ein **Vorschlag, Änderungen in ein Projekt zu übernehmen**. Andere
+      können die Änderungen vorher besprechen und prüfen. So fallen Probleme früh auf und die
+      Qualität bleibt hoch.
+
+      Auf der PR-Seite gibt es laut GitHub-Doku:
+
+      - **Conversation:** Beschreibung, Verlauf, Kommentare und Reviews.
+      - **Files changed:** den Diff, den Prüfende ansehen.
+      - **Checks:** automatische Tests, Builds und andere Prüfungen.
+
+      Die Merge-Übersicht zeigt Blocker, fehlende Freigaben und weitere Voraussetzungen, bevor du
+      mergst. **Entwurfs-PRs** (Draft) können nicht gemergt werden.
+
+      **Dieses Projekt (eigene Regel aus CLAUDE.md):** Nie direkt auf `main` committen oder pushen.
+      Jede Arbeit läuft über einen Branch und einen Pull Request mit grüner CI.
+    quiz:
+      - frage: "Was ist ein Pull Request?"
+        erklaerung: "Ein Vorschlag, Änderungen in ein Projekt zu übernehmen, den andere vorher prüfen."
+        antworten:
+          - { text: "Ein Befehl, der den Server neu startet.", richtig: false }
+          - { text: "Eine Datei mit Passwörtern.", richtig: false }
+          - { text: "Ein Vorschlag, Änderungen zu übernehmen, den andere vorher prüfen können.", richtig: true }
+      - frage: "Kann ein Draft-Pull-Request gemergt werden?"
+        erklaerung: "Nein, Entwürfe können nicht gemergt werden."
+        antworten:
+          - { text: "Nur durch den Server-Administrator.", richtig: false }
+          - { text: "Nein, erst wenn er als bereit markiert ist.", richtig: true }
+          - { text: "Ja, jederzeit.", richtig: false }
+test:
+  zeitlimit_minuten: 10
+  fragen:
+    - frage: "Worauf zeigt HEAD in Git?"
+      erklaerung: "HEAD ist ein Zeiger auf den lokalen Branch, auf dem du gerade arbeitest."
+      antworten:
+        - { text: "Auf den Server.", richtig: false }
+        - { text: "Auf den lokalen Branch, auf dem du gerade arbeitest.", richtig: true }
+        - { text: "Auf den ersten Commit des Projekts.", richtig: false }
+    - frage: "Welcher Befehl löscht einen bereits gemergten Branch?"
+      erklaerung: "git branch -d löscht den Branch."
+      antworten:
+        - { text: "git merge -d iss53", richtig: false }
+        - { text: "git commit -d iss53", richtig: false }
+        - { text: "git branch -d iss53", richtig: true }
+    - frage: "Wie nennt man den Commit, der bei einem Drei-Wege-Merge entsteht?"
+      erklaerung: "Er heißt Merge-Commit und hat mehr als einen Eltern-Commit."
+      antworten:
+        - { text: "Draft-Commit", richtig: false }
+        - { text: "Merge-Commit", richtig: true }
+        - { text: "Fast-forward-Commit", richtig: false }
+    - frage: "Was tust du nach dem Lösen eines Konflikts in einer Datei als Nächstes?"
+      erklaerung: "Du markierst die Datei mit git add als erledigt und schließt mit git commit ab."
+      antworten:
+        - { text: "Den Branch umbenennen.", richtig: false }
+        - { text: "Die Datei mit git add als erledigt markieren und dann git commit.", richtig: true }
+        - { text: "Das Repository löschen.", richtig: false }
+    - frage: "Wo siehst du in einem GitHub-Pull-Request die automatischen Tests?"
+      erklaerung: "Im Tab Checks."
+      antworten:
+        - { text: "Im Tab Checks", richtig: true }
+        - { text: "Im Tab Files changed als Bild", richtig: false }
+        - { text: "In der Datei README", richtig: false }

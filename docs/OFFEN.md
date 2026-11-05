@@ -2,6 +2,13 @@
 
 Punkte, die eine Entscheidung oder Aktion des Nutzers brauchen.
 
+## 2026-11-04 – D1 Teil 2: Kleine Lücken in DevOps und Monitoring
+
+Reine Notiz, keine Entscheidung des Lernenden nötig.
+
+- **Prometheus-Metriktypen:** Stehen nicht auf der Overview-Seite und sind deshalb nicht in der Lektion. Später mit eigener Quelle ergänzen.
+- **GitHub Actions, Secrets:** Optional die ergänzende Quelle „Using secrets in GitHub Actions“ (GitHub Docs) aufnehmen.
+
 ## 2026-11-04 – Englisch (C5): Lücken in Phase 1
 
 Reine Notiz für die spätere Ausarbeitung (Backlog C6), keine Entscheidung des Lernenden nötig. Jeweils: Quelle suchen.

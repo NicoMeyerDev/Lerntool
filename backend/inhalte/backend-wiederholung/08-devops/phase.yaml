@@ -1,0 +1,28 @@
+titel: DevOps – Git, CI/CD und Hosting
+beschreibung: Git-Branches und Pull Requests, automatische Prüfungen mit GitHub Actions und die Checkliste für ein Django-Deployment auf einem Host wie Render. Du erinnerst dich, wie Code sicher vom Rechner in den Betrieb kommt.
+projekt:
+  titel: Pipeline und Deployment-Plan
+  beschreibung: |
+    Du richtest für ein kleines Projekt (zum Beispiel die Mini-Bibliothek) eine automatische
+    Prüfung ein und schreibst einen Deployment-Plan. Der Plan bleibt auf dem Papier, es wird
+    nichts veröffentlicht und nichts gekauft.
+
+    **Aufgabe:** Schreibe eine GitHub-Actions-Datei, die bei jedem Push die Tests startet. Lege
+    außerdem eine Liste an, was vor dem ersten Deployment zu klären ist.
+
+    **Regeln:**
+
+    - Arbeite auf einem eigenen Branch und öffne einen Pull Request, nie direkt auf `main`.
+    - Zugangsdaten stehen nie in der Workflow-Datei, sondern als Secrets oder Umgebungsvariablen.
+    - Die Deployment-Liste nutzt die Checkliste aus der Django-Doku.
+    - Es wird kein echter Dienst angelegt und nichts bezahlt.
+
+    **Tipp:** Halte den Workflow zuerst winzig (Code holen, dann ein `run`-Schritt mit dem Testbefehl deines Projekts) und erweitere ihn später.
+    Quellen: [GitHub Actions verstehen](https://docs.github.com/en/actions/get-started/understand-github-actions) und [Django 5.2 Deployment-Checkliste](https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/).
+  punkte:
+    - Ein eigener Branch und ein Pull Request sind angelegt.
+    - 'Eine Datei in `.github/workflows` startet bei einem Push einen Job auf `ubuntu-latest`.'
+    - 'Der Job holt den Code (`uses`) und startet in einem `run`-Schritt den Testbefehl deines Projekts.'
+    - Kein Passwort und kein Schlüssel steht im Klartext in der Workflow-Datei.
+    - Die Deployment-Liste nennt `SECRET_KEY`, `DEBUG`, `ALLOWED_HOSTS` und HTTPS-Einstellungen.
+    - Die Liste nennt `collectstatic` und `check --deploy`.

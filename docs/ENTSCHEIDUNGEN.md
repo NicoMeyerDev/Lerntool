@@ -191,3 +191,11 @@ Abweichungen von `docs/CURRICULUM_ENGLISCH.md`:
 - **(e) Umfang Thema 5:** „DRF“ umfasst Serializer, Views und Router, Pagination und Filter sowie Tests. Themen aus 7 (Caching, Task-Queues, Dateimanagement) kommen bewusst erst in Teil 3. Alternative: alles zu 7 jetzt mitnehmen (Teil 1 würde zu groß).
 - **(f) Antwortreihenfolge:** Die richtige Antwort ist gleichmäßig auf die Positionen verteilt, weil die App die Antworten nicht mischt (siehe `OFFEN.md`). Alternative: immer an erster Stelle (würde erratbar).
 - **Freigaben:** `quellenpruefer` und `reviewer` (Runde 2) stehen vor dem Merge noch aus.
+
+## 2026-11-04 – D1 Backend-Wiederholung, Teil 2 (DevOps und Monitoring)
+
+- **(a) Projekte auf Papier:** Die Projekte der Phasen 08 und 09 werden auf Papier bearbeitet. Es wird kein Konto, kein Server und keine kostenpflichtige Leistung eingerichtet (CLAUDE.md Abschnitt 7: Kosten und Sicherheit). Alternative: echtes Deployment bei Render (Kosten, Zugangsdaten).
+- **(b) Nur erklärt, nicht eingerichtet:** Render, Sentry und Prometheus werden in den Lektionen erklärt, aber nicht eingerichtet. Alternative: Konten anlegen (siehe a).
+- **(c) Eigene Regeln gekennzeichnet:** Regeln aus diesem Projekt (z. B. keine Secrets im Code, Zugangsdaten nur über Umgebungsvariablen) und eigene Ratschläge sind in den Lektionen als „Eigene Regel“ bzw. „Eigener Rat“ markiert und nicht als Aussage der Quelle dargestellt.
+- **(d) Sentry SDK 3.0:** Die Lektion weist darauf hin, dass sich Einrichtung und Optionen mit SDK 3.0 ändern können; maßgeblich ist die aktuelle Sentry-Doku. Alternative: nur die ältere Variante zeigen (würde veralten).
+- **Freigaben:** `quellenpruefer`: FREIGABE (alle Quellen erreichbar). `reviewer`: FREIGABE nach 2 Runden.

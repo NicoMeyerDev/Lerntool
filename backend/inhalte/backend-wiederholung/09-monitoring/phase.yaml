@@ -1,0 +1,27 @@
+titel: Monitoring
+beschreibung: Logging in Django, Fehlerüberwachung mit Sentry und Systemüberwachung mit Prometheus. Du erinnerst dich, wie du im Betrieb merkst, dass etwas nicht stimmt.
+projekt:
+  titel: Logging und Überwachungsplan
+  beschreibung: |
+    Du richtest in einem kleinen Django-Projekt Logging ein und schreibst einen
+    Überwachungsplan. Der Plan bleibt auf dem Papier, es wird kein Dienst angelegt.
+
+    **Aufgabe:** Konfiguriere das Logging so, dass Meldungen ab `INFO` auf der Konsole erscheinen,
+    und schreibe in einer View eine Log-Meldung. Notiere dann in einer Liste, welche Fehler und
+    welche Zahlen du im Betrieb überwachen würdest.
+
+    **Regeln:**
+
+    - Die Logging-Einstellungen stehen im `LOGGING`-Wörterbuch in `settings.py`.
+    - In die Logs gehören keine Passwörter, Schlüssel oder persönlichen Daten.
+    - Ein Sentry-Konto oder ein Prometheus-Server wird nicht angelegt. Der Plan nennt nur, wofür du sie nutzen würdest.
+
+    **Tipp:** Lies zuerst, was die Doku zu `disable_existing_loggers` sagt, bevor du das Wörterbuch schreibst.
+    Quellen: [Django 5.2 Logging](https://docs.djangoproject.com/en/5.2/topics/logging/), [Python Logging HOWTO](https://docs.python.org/3/howto/logging.html) und [Sentry für Django](https://docs.sentry.io/platforms/python/integrations/django/).
+  punkte:
+    - Das `LOGGING`-Wörterbuch hat einen `console`-Handler.
+    - '`disable_existing_loggers` steht auf `False`.'
+    - Eine Log-Meldung wird mit einem passenden Level geschrieben.
+    - Ein Test oder ein Aufruf zeigt die Meldung auf der Konsole.
+    - Der Plan nennt, welche Fehler an Sentry gemeldet würden.
+    - Der Plan nennt mindestens zwei Zahlen, die du mit Prometheus überwachen würdest.
