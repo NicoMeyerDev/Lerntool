@@ -1,15 +1,16 @@
 # Deployment auf Render
 
-Die App besteht auf Render aus drei Teilen, die `render.yaml` im Hauptordner gemeinsam anlegt:
+Die App besteht auf Render aus drei Teilen. Die Datenbank legst du selbst im Dashboard an, Backend und Frontend legt `render.yaml` im Hauptordner an:
 
 | Teil | Name | Art |
 | --- | --- | --- |
-| Datenbank | `lerntool-db` | PostgreSQL, Tarif „free“ |
+| Datenbank | frei wählbar, z. B. `lerntool-db` | PostgreSQL, Tarif nach deiner Wahl (du legst sie selbst an) |
 | Backend | `lerntool-api` | Web-Service (Python, gunicorn) |
 | Frontend | `lerntool` | Statische Seite (Vite-Build) |
 
 ## Was du vorher brauchst
 
+0. Eine PostgreSQL-Datenbank: In Render **New → Postgres**, Name z. B. `lerntool-db`, Tarif nach Wunsch, Region möglichst dieselbe wie später das Backend. Nach dem Anlegen im Dashboard der Datenbank den Wert **Internal Database URL** kopieren (beginnt mit `postgresql://`).
 1. Ein Konto bei [render.com](https://render.com) (Anmeldung mit GitHub ist am einfachsten).
 2. Dein GitHub-Repository `NicoMeyerDev/Lerntool` mit dem Branch, der die Datei `render.yaml` enthält (nach dem Merge: `main`).
 3. Einen Benutzernamen und ein langes Passwort für deinen Zugang zur App (empfohlen mindestens 12 Zeichen, nur für diese App verwenden; zu kurze oder häufige Passwörter lehnt der Start ab).
@@ -18,7 +19,8 @@ Die App besteht auf Render aus drei Teilen, die `render.yaml` im Hauptordner gem
 
 | Variable | Wer setzt sie | Bedeutung |
 | --- | --- | --- |
-| `DJANGO_SECRET_KEY`, `DATABASE_URL`, `DJANGO_DEBUG`, `DJANGO_HTTPS_ERZWINGEN`, `PYTHON_VERSION` | `render.yaml` | automatisch, nichts zu tun |
+| `DJANGO_SECRET_KEY`, `DJANGO_DEBUG`, `DJANGO_HTTPS_ERZWINGEN`, `PYTHON_VERSION` | `render.yaml` | automatisch, nichts zu tun |
+| `DATABASE_URL` | du, beim Apply | Internal Database URL deiner Datenbank |
 | `LERNTOOL_BENUTZER`, `LERNTOOL_PASSWORT` | du, beim Apply | dein Zugang zur App |
 | `DJANGO_CORS_ORIGINS` | du, nach dem ersten Start | Adresse des Frontends |
 | `VITE_API_URL` | du, nach dem ersten Start | Adresse des Backends |
@@ -26,11 +28,12 @@ Die App besteht auf Render aus drei Teilen, die `render.yaml` im Hauptordner gem
 ## Schritt für Schritt
 
 1. In Render: **New → Blueprint**, Repository `Lerntool` wählen, Branch `main`.
-2. Render liest `render.yaml` und fragt nach drei Werten (die übrigen setzt Render selbst):
+2. Render liest `render.yaml` und fragt nach vier Werten (die übrigen setzt Render selbst):
+   - `DATABASE_URL`: die kopierte Internal Database URL,
    - `LERNTOOL_BENUTZER`: dein Benutzername,
    - `LERNTOOL_PASSWORT`: dein Passwort,
    - `DJANGO_CORS_ORIGINS` und `VITE_API_URL`: beim ersten Mal **leer lassen oder `https://platzhalter.invalid` eintragen**, die echten Adressen kennst du erst nach dem ersten Start.
-3. **Apply** klicken und warten, bis alle drei Teile „Live“ zeigen.
+3. **Apply** klicken und warten, bis beide Dienste „Live“ zeigen.
 4. Adressen notieren (stehen oben im jeweiligen Dienst), zum Beispiel:
    - Backend: `https://lerntool-api.onrender.com`
    - Frontend: `https://lerntool.onrender.com`
@@ -46,7 +49,7 @@ Die App besteht auf Render aus drei Teilen, die `render.yaml` im Hauptordner gem
 ## Grenzen des kostenlosen Tarifs (Stand Render-Doku)
 
 - Das Backend schläft nach 15 Minuten ohne Aufruf ein und braucht beim nächsten Aufruf etwa eine Minute zum Aufwachen.
-- Die kostenlose Datenbank **läuft 30 Tage nach dem Anlegen ab** (dann 14 Tage Gnadenfrist zum Upgrade, danach werden die Daten gelöscht). Dein Lernfortschritt liegt dort. Für dauerhaften Betrieb muss die Datenbank auf einen bezahlten Tarif.
+- Wählst du für die Datenbank den kostenlosen Tarif, **läuft sie 30 Tage nach dem Anlegen ab** (dann 14 Tage Gnadenfrist zum Upgrade, danach werden die Daten gelöscht). Dein Lernfortschritt liegt dort. Für dauerhaften Betrieb muss die Datenbank auf einen bezahlten Tarif.
 - Es gibt keinen Shell-Zugang und keine Backups.
 - Prüfe vor dem Klick auf „Apply“ die aktuellen Preise und Grenzen unter <https://render.com/docs/free>.
 

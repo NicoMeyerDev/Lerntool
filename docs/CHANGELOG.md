@@ -1,6 +1,7 @@
 # Changelog
 
 ## 2026-11-05
+- fix: Render-Blueprint ohne eigene Datenbank: Die Datenbank legt der Nutzer selbst im Dashboard an (freie Tarifwahl), `DATABASE_URL` wird beim Apply eingetragen. Anleitung und README angepasst.
 - docs: README neu gegliedert (Inhaltsverzeichnis, Schnellstart, kürzere Ordnerstruktur und API-Tabelle, Doppelungen entfernt).
 - feat: Render-Vorbereitung: `render.yaml` (Datenbank, Backend, Frontend), `gunicorn` und `django-cors-headers`, Einstellungen für CORS, HTTPS und Render-Hostnamen, Befehl `anlegen_nutzer`, Anleitung `docs/DEPLOYMENT.md`.
 - D3 CI-Lektion nachgebessert: Die PHP-Schritte (setup-php, Composer, `php artisan test`) sind jetzt mit der `setup-php`-README, der Composer-Doku und der Laravel-Testing-Doku belegt. `setup-php` ist als Drittanbieter-Action gekennzeichnet. Der Hinweis „ungeprüft“ im Eintrag unten gilt damit nicht mehr.
