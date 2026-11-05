@@ -1,6 +1,7 @@
 # Changelog
 
 ## 2026-11-05
+- D3 CI-Lektion nachgebessert: Die PHP-Schritte (setup-php, Composer, `php artisan test`) sind jetzt mit der `setup-php`-README, der Composer-Doku und der Laravel-Testing-Doku belegt. `setup-php` ist als Drittanbieter-Action gekennzeichnet. Der Hinweis „ungeprüft“ im Eintrag unten gilt damit nicht mehr.
 
 - D3 Konzept-Vergleiche Django und Laravel: neues Thema (Reihenfolge 6) in `backend/inhalte/django-laravel-vergleich/` mit einer Phase und sechs Vergleichs-Lektionen (Anmeldung und Passwörter, Datenbank und Migrationen, API, Tests, Docker, CI/CD mit GitHub Actions), je Lektion mindestens 5 Testfragen. Die PHP-CI-Schritte sind als ungeprüft gekennzeichnet. Entscheidungen in `docs/ENTSCHEIDUNGEN.md`, neue offene Punkte in `docs/OFFEN.md`.
 - D2 DevSecOps-Wiederholung: neues Thema (Reihenfolge 5) in `backend/inhalte/devsecops-wiederholung/` mit 8 Phasen (IT-Sicherheit und Recht, Web-Schwachstellen, Passwörter, Netzwerke und Linux, Python-Automation, Cloud, DevSecOps-Praxis, Datenschutz und Medienrecht), je mit Projekt. Praktische Labs (Kali, Metasploitable, Juice Shop) sind nur Theorie und Quiz. Quellen u. a. BSI, KRITISDachG, NIST SP 800-63B-4 und OWASP Top 10 2025. Entscheidungen in `docs/ENTSCHEIDUNGEN.md`, neue offene Punkte in `docs/OFFEN.md`.
