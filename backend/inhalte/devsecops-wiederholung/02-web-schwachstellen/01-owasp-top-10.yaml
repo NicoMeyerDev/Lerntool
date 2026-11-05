@@ -21,15 +21,15 @@ abschnitte:
       - frage: "Wofür sind die OWASP Top 10 gedacht?"
         erklaerung: "Als Überblick über die wichtigsten Risiko-Kategorien für Web-Anwendungen."
         antworten:
-          - { text: "Als vollständige Liste aller Programmierfehler der Welt.", richtig: false }
-          - { text: "Als Anleitung, wie man fremde Server angreift.", richtig: false }
           - { text: "Als Überblick über die wichtigsten Risiko-Kategorien für Web-Anwendungen.", richtig: true }
+          - { text: "Als Anleitung, mit der man Schwachstellen in fremden Servern ausnutzen kann.", richtig: false }
+          - { text: "Als vollständige Liste aller Programmierfehler, die in Web-Anwendungen vorkommen können.", richtig: false }
       - frage: "Welche Ausgabe der Liste behandelt diese Lektion?"
         erklaerung: "OWASP Top 10:2025."
         antworten:
+          - { text: "OWASP Top 100", richtig: false }
           - { text: "OWASP Top 10:2025", richtig: true }
           - { text: "OWASP Top 10:2010", richtig: false }
-          - { text: "OWASP Top 100", richtig: false }
   - titel: Die zehn Kategorien 2025
     inhalt: |
       Die Ausgabe 2025 nennt diese Kategorien:
@@ -51,15 +51,15 @@ abschnitte:
       - frage: "Welche Kategorie steht in der Ausgabe 2025 an erster Stelle?"
         erklaerung: "A01 Broken Access Control."
         antworten:
+          - { text: "A09 Security Logging and Alerting Failures", richtig: false }
           - { text: "A05 Injection", richtig: false }
           - { text: "A01 Broken Access Control", richtig: true }
-          - { text: "A09 Security Logging and Alerting Failures", richtig: false }
       - frage: "Wofür steht die Kategorie A03 der Ausgabe 2025?"
         erklaerung: "Software Supply Chain Failures, also Probleme in Abhängigkeiten und der Lieferkette."
         antworten:
-          - { text: "Zu schwache Passwörter bei der Anmeldung.", richtig: false }
           - { text: "Software Supply Chain Failures, also Probleme in Abhängigkeiten und der Lieferkette.", richtig: true }
-          - { text: "Falsch eingestellte Server-Zeitzonen.", richtig: false }
+          - { text: "Zu schwache Passwörter und fehlende Sperren bei der Anmeldung von Nutzern.", richtig: false }
+          - { text: "Falsch eingestellte Zeitzonen und Datumsformate auf dem Server.", richtig: false }
   - titel: Was Django schon für dich tut
     inhalt: |
       Django schützt laut Doku vor mehreren dieser Risiken, wenn du seine Werkzeuge nutzt:
@@ -76,42 +76,42 @@ abschnitte:
       - frage: "Was macht `CsrfViewMiddleware` bei einem POST?"
         erklaerung: "Sie verlangt ein geheimes Token, damit fremde Seiten das Formular nicht unterschieben können."
         antworten:
+          - { text: "Sie leitet alle Nutzer nach dem Absenden automatisch auf die Startseite um.", richtig: false }
           - { text: "Sie verlangt ein geheimes Token, damit fremde Seiten das Formular nicht unterschieben können.", richtig: true }
-          - { text: "Sie speichert das Passwort im Klartext.", richtig: false }
-          - { text: "Sie leitet alle Nutzer auf die Startseite.", richtig: false }
+          - { text: "Sie speichert das eingegebene Passwort zur Kontrolle im Klartext in der Sitzung.", richtig: false }
       - frage: "Welche Stelle ist ein typischer Fehler, der den Escaping-Schutz aushebelt?"
         erklaerung: "Die Ausgabe mit dem Filter safe oder mark_safe."
         antworten:
-          - { text: "Die Nutzung von QuerySets.", richtig: false }
-          - { text: "Die Ausgabe mit dem Filter safe oder mark_safe.", richtig: true }
-          - { text: "Das Setzen von ALLOWED_HOSTS.", richtig: false }
+          - { text: "Die Nutzung von QuerySets für Datenbankabfragen im Code.", richtig: false }
+          - { text: "Das Setzen von ALLOWED_HOSTS in den Einstellungen des Projekts.", richtig: false }
+          - { text: "Die Ausgabe mit dem Filter safe oder mit mark_safe.", richtig: true }
 test:
   zeitlimit_minuten: 10
   fragen:
     - frage: "Zu welcher Kategorie gehört SQL-Injection?"
       erklaerung: "A05 Injection."
       antworten:
+        - { text: "A05 Injection", richtig: true }
         - { text: "A04 Cryptographic Failures", richtig: false }
         - { text: "A02 Security Misconfiguration", richtig: false }
-        - { text: "A05 Injection", richtig: true }
     - frage: "Worum geht es bei Broken Access Control?"
       erklaerung: "Zugriffsrechte werden nicht richtig durchgesetzt."
       antworten:
-        - { text: "Das Passwort ist zu kurz.", richtig: false }
-        - { text: "Der Server ist zu langsam.", richtig: false }
+        - { text: "Der Server antwortet bei hoher Last zu langsam auf Anfragen.", richtig: false }
         - { text: "Zugriffsrechte werden nicht richtig durchgesetzt.", richtig: true }
+        - { text: "Das Passwort eines Nutzers ist zu kurz gewählt worden.", richtig: false }
     - frage: "Welche Einstellung prüft in Django den Host-Header?"
       erklaerung: "ALLOWED_HOSTS."
       antworten:
-        - { text: "ALLOWED_HOSTS", richtig: true }
         - { text: "STATIC_URL", richtig: false }
         - { text: "TIME_ZONE", richtig: false }
+        - { text: "ALLOWED_HOSTS", richtig: true }
     - frage: "Warum sind die Top 10 keine vollständige Prüfliste?"
       erklaerung: "Sie sind ein Überblick über die wichtigsten Risiko-Kategorien und decken nicht alle Fehler ab."
       antworten:
         - { text: "Sie sind ein Überblick über die wichtigsten Risiko-Kategorien und decken nicht alle Fehler ab.", richtig: true }
-        - { text: "Sie sind nur für Mobil-Apps gedacht.", richtig: false }
-        - { text: "Sie wurden nie aktualisiert.", richtig: false }
+        - { text: "Sie sind ausschließlich für mobile Apps gedacht und nicht für Webseiten.", richtig: false }
+        - { text: "Sie wurden seit ihrer ersten Veröffentlichung nie aktualisiert.", richtig: false }
     - frage: "Was bedeutet Supply Chain Failures in der Kategorie A03?"
       erklaerung: "Probleme in Abhängigkeiten und der Lieferkette der Software."
       antworten:

@@ -30,15 +30,15 @@ abschnitte:
       - frage: "Was zeichnet eine kritische Dienstleistung laut KRITIS-Dachgesetz aus?"
         erklaerung: "Ihr Ausfall würde Versorgungsengpässe oder erhebliche Störungen der öffentlichen Sicherheit verursachen."
         antworten:
-          - { text: "Sie gehören immer dem Staat.", richtig: false }
-          - { text: "Sie haben besonders viele Mitarbeitende.", richtig: false }
-          - { text: "Ihr Ausfall würde Versorgungsengpässe oder erhebliche Störungen der öffentlichen Sicherheit verursachen.", richtig: true }
+          - { text: "Ihr Ausfall würde erhebliche Versorgungsengpässe oder Gefahren für die öffentliche Sicherheit verursachen.", richtig: true }
+          - { text: "Sie beschäftigt besonders viele Mitarbeitende und hat einen hohen Jahresumsatz.", richtig: false }
+          - { text: "Sie wird immer vom Staat selbst betrieben und nie von privaten Firmen.", richtig: false }
       - frage: "Welcher Bereich gehört laut BSI zu den Sektoren?"
         erklaerung: "Die Wasserversorgung."
         antworten:
+          - { text: "Das Hobby-Blog einer Privatperson", richtig: false }
           - { text: "Die Wasserversorgung", richtig: true }
           - { text: "Der Einzelhandel mit Mode", richtig: false }
-          - { text: "Das Hobby-Blog einer Privatperson", richtig: false }
   - titel: Ausspähen von Daten und erlaubte Tests
     inhalt: |
       **§ 202a StGB** stellt das **Ausspähen von Daten** unter Strafe: Wer sich oder einem anderen **unbefugt**
@@ -61,45 +61,45 @@ abschnitte:
       - frage: "Welches Wort aus § 202a StGB ist für die Strafbarkeit entscheidend?"
         erklaerung: "„Unbefugt“: Der Zugang geschieht ohne Berechtigung."
         antworten:
+          - { text: "„Kostenlos“, denn nur unbezahlte Daten zählen.", richtig: false }
           - { text: "„Online“, denn nur das Internet zählt.", richtig: false }
           - { text: "„Unbefugt“: Der Zugang geschieht ohne Berechtigung.", richtig: true }
-          - { text: "„Kostenlos“, denn nur unbezahlte Daten zählen.", richtig: false }
       - frage: "Was regelt § 202c StGB?"
         erklaerung: "Das Vorbereiten des Ausspähens und Abfangens von Daten, zum Beispiel durch Programme oder Passwörter."
         antworten:
-          - { text: "Nur die Strafe für Diebstahl von Geräten.", richtig: false }
-          - { text: "Die Pflicht zum Impressum.", richtig: false }
           - { text: "Das Vorbereiten des Ausspähens und Abfangens von Daten, zum Beispiel durch Programme oder Passwörter.", richtig: true }
+          - { text: "Die Strafe für den Diebstahl von Geräten, auf denen Daten gespeichert sind.", richtig: false }
+          - { text: "Die Pflicht, auf einer Webseite ein Impressum mit Anschrift bereitzuhalten.", richtig: false }
 test:
   zeitlimit_minuten: 10
   fragen:
     - frage: "Wann ist ein Sicherheitstest an einem System unproblematisch?"
       erklaerung: "Wenn das System dir gehört oder du eine eindeutige Erlaubnis mit klarem Umfang hast."
       antworten:
+        - { text: "Wenn du dabei nichts verändern oder löschen willst und nur lesend zugreifst.", richtig: false }
         - { text: "Wenn das System dir gehört oder du eine eindeutige Erlaubnis mit klarem Umfang hast.", richtig: true }
-        - { text: "Wenn das System öffentlich im Internet erreichbar ist.", richtig: false }
-        - { text: "Wenn du nichts verändern willst.", richtig: false }
+        - { text: "Wenn das System öffentlich im Internet erreichbar ist und keine Anmeldung verlangt.", richtig: false }
     - frage: "Wie hoch ist die Höchststrafe in § 202a Absatz 1 StGB?"
       erklaerung: "Bis zu drei Jahre Freiheitsstrafe oder Geldstrafe."
       antworten:
-        - { text: "Bis zu zwei Jahre", richtig: false }
-        - { text: "Nur eine Verwarnung", richtig: false }
+        - { text: "Bis zu fünf Jahre Freiheitsstrafe ohne Möglichkeit einer Geldstrafe", richtig: false }
+        - { text: "Bis zu zwei Jahre Freiheitsstrafe oder Geldstrafe", richtig: false }
         - { text: "Bis zu drei Jahre Freiheitsstrafe oder Geldstrafe", richtig: true }
     - frage: "Welche Aussage über Daten nach § 202a ist richtig?"
       erklaerung: "Sie müssen besonders gegen unberechtigten Zugang gesichert sein."
       antworten:
-        - { text: "Sie müssen auf Papier gedruckt sein.", richtig: false }
         - { text: "Sie müssen besonders gegen unberechtigten Zugang gesichert sein.", richtig: true }
-        - { text: "Sie müssen immer personenbezogen sein.", richtig: false }
+        - { text: "Sie müssen auf Papier ausgedruckt und im Büro aufbewahrt werden.", richtig: false }
+        - { text: "Sie müssen immer personenbezogen sein, also einer Person zugeordnet werden können.", richtig: false }
     - frage: "Warum werden Labs wie Kali oder Juice Shop in dieser App nur als Theorie behandelt?"
       erklaerung: "Praktische Übungen gehören nur in eine eigene, abgeschottete Umgebung."
       antworten:
+        - { text: "Diese Werkzeuge laufen technisch nur auf Handys und nicht auf Computern.", richtig: false }
         - { text: "Praktische Übungen gehören nur in eine eigene, abgeschottete Umgebung.", richtig: true }
-        - { text: "Weil diese Werkzeuge verboten sind.", richtig: false }
-        - { text: "Weil sie nur auf Handys laufen.", richtig: false }
+        - { text: "Diese Werkzeuge sind in Deutschland grundsätzlich verboten und strafbar.", richtig: false }
     - frage: "Wie hat sich die Rechtslage für kritische Infrastrukturen laut BSI geändert?"
       erklaerung: "Das BSI-Gesetz spricht durch NIS-2 von besonders wichtigen und wichtigen Einrichtungen."
       antworten:
-        - { text: "Sie wurde ersatzlos abgeschafft.", richtig: false }
+        - { text: "Die Vorgaben wurden ersatzlos abgeschafft und gelten nicht mehr für Unternehmen.", richtig: false }
+        - { text: "Es gelten nur noch freiwillige Branchenregeln ohne gesetzliche Grundlage.", richtig: false }
         - { text: "Das BSI-Gesetz spricht durch NIS-2 von besonders wichtigen und wichtigen Einrichtungen.", richtig: true }
-        - { text: "Es gelten nur noch private Regeln.", richtig: false }

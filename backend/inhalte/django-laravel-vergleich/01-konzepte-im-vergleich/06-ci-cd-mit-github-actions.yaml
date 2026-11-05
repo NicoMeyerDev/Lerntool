@@ -5,6 +5,12 @@ quellen:
     url: https://docs.github.com/en/actions/use-cases-and-examples/building-and-testing/building-and-testing-python
   - titel: GitHub Docs – Workflow-Syntax
     url: https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions
+  - titel: setup-php – PHP in GitHub Actions einrichten (README)
+    url: https://github.com/shivammathur/setup-php
+  - titel: Composer – Kommandozeile (install)
+    url: https://getcomposer.org/doc/03-cli.md
+  - titel: Laravel 13.x – Testing
+    url: https://laravel.com/docs/13.x/testing
 abschnitte:
   - titel: Ein Workflow besteht aus Jobs und Schritten
     inhalt: |
@@ -16,11 +22,22 @@ abschnitte:
       - **Schritte** (`steps`): Code auschecken, Sprache einrichten, Abhängigkeiten installieren, Tests starten.
 
       **Gemeinsame Idee:** Der Workflow ist für Django und Laravel gleich aufgebaut. Es ändern sich nur die Schritte
-      zum Einrichten und Testen: bei Django Python, `pip install` und `pytest`, bei Laravel PHP, Composer und
-      `php artisan test`.
+      zum Einrichten und Testen.
 
-      Die GitHub-Doku zeigt den Python-Fall. Die PHP-Schritte sind hier nur als Vergleich genannt und stammen nicht
-      aus einer geprüften Anleitung. Schlage sie vor dem Einsatz in der offiziellen Doku nach.
+      | Schritt | Django (Python) | Laravel (PHP) |
+      | --- | --- | --- |
+      | Sprache einrichten | Action `actions/setup-python` | Action `shivammathur/setup-php@v2` mit `php-version` |
+      | Abhängigkeiten | `pip install -r requirements.txt` | `composer install` |
+      | Tests | `pytest` | `php artisan test` |
+
+      Zur PHP-Spalte: Die README von `setup-php` empfiehlt den Tag `v2` und kennt Optionen wie `php-version`,
+      `extensions` und `tools` (zum Beispiel `composer`). Composer läuft in dieser Action standardmäßig ohne
+      Rückfragen, was für automatische Abläufe nötig ist. Gibt es eine `composer.lock`, installiert `composer install` genau die dort festgehaltenen Versionen.
+      Der Befehl `php artisan test` steht in der Laravel-Doku zum Testen. Welche Extensions dein Projekt braucht,
+      hängt von deinem Projekt ab.
+
+      **Hinweis:** `setup-php` ist eine Action von Drittanbietern und kein Teil von GitHub selbst. Prüfe vor dem
+      Einsatz, ob du ihr vertrauen willst.
     quiz:
       - frage: "Wo liegen GitHub-Actions-Workflows im Repository?"
         erklaerung: "Im Ordner .github/workflows."
@@ -79,12 +96,12 @@ test:
         - { text: "Nur eine einzelne Zeile.", richtig: false }
         - { text: "Auslöser, Jobs und Schritte.", richtig: true }
         - { text: "Nur Kommentare.", richtig: false }
-    - frage: "Warum sind die PHP-Schritte in dieser Lektion nur ein Vergleich?"
-      erklaerung: "Sie stammen nicht aus einer geprüften Anleitung und müssen in der offiziellen Doku nachgeschlagen werden."
+    - frage: "Welche Action richtet PHP in einem GitHub-Actions-Workflow ein, und welche Option wählt die Version?"
+      erklaerung: "shivammathur/setup-php@v2, die Version steht in php-version."
       antworten:
-        - { text: "Sie stammen nicht aus einer geprüften Anleitung und müssen in der offiziellen Doku nachgeschlagen werden.", richtig: true }
-        - { text: "Weil PHP nicht in CI laufen kann.", richtig: false }
-        - { text: "Weil GitHub PHP verbietet.", richtig: false }
+        - { text: "actions/setup-python mit der Option python-version", richtig: false }
+        - { text: "shivammathur/setup-php@v2 mit der Option php-version", richtig: true }
+        - { text: "actions/checkout mit der Option php-version", richtig: false }
     - frage: "Was ist der Unterschied zwischen CI und CD?"
       erklaerung: "CI prüft automatisch, CD liefert geprüfte Änderungen automatisch aus."
       antworten:

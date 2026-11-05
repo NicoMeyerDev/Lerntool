@@ -8,9 +8,16 @@ Punkte, die eine Entscheidung oder Aktion des Nutzers brauchen.
 - **Positionsrotation:** Die Rotation ist zyklisch und damit vorhersagbar. Mischen im Frontend wäre besser.
 - **Vom `quellenpruefer` bestätigen lassen** (der `reviewer` konnte sie ohne Websuche nicht prüfen): Laravel 13.x mit PHP 8.3 als Mindestversion, Attribut `#[Fillable]`, Ausgabenlimit-Verhalten der Claude-API.
 
+## 2026-11-05 – Render-Deployment: Entscheidungen für dich
+
+- **Kostenlose Datenbank läuft nach 30 Tagen ab** (Render-Doku). Danach 14 Tage Gnadenfrist, dann werden Daten gelöscht. Für dauerhaften Fortschritt ist ein bezahlter Datenbank-Tarif nötig (Kosten, Entscheidung beim Nutzer).
+- **Nicht getestet:** `render.yaml` wurde nicht auf Render ausprobiert, nur lokal Build, Tests und `check --deploy`. Das genaue Verhalten (z. B. `staticPublishPath` relativ zu `rootDir`, Rewrite-Syntax) bitte beim ersten Apply prüfen.
+- **Login-Bremse hinter dem Render-Proxy:** Ohne `NUM_PROXIES` kann ein Angreifer den Header `X-Forwarded-For` selbst setzen und die Bremse (10 Versuche pro Minute) umgehen. Die Render-Doku nennt die Zahl der vorgeschalteten Proxys nicht, deshalb ist der Wert nicht gesetzt. Nach dem Deployment prüfen (Header der Anfrage ansehen) und `NUM_PROXIES` setzen. Zusätzlich zählt der Standard-Cache pro Prozess. Bis dahin schützt das lange Passwort.
+- **Passwort ändern im Betrieb** geht ohne Shell nicht über `LERNTOOL_PASSWORT` (siehe `docs/DEPLOYMENT.md`).
+
 ## 2026-11-05 – D3 Konzept-Vergleiche: Notizen
 
-- **PHP-GitHub-Actions-Quelle fehlt:** Für die PHP/Laravel-Schritte in der CI-Lektion gibt es keine belegte offizielle Quelle. Die Schritte sind als ungeprüft gekennzeichnet und müssen nachgeprüft werden.
+- **PHP-CI-Schritte (erledigt 2026-11-05):** Die CI-Lektion belegt die PHP-Schritte jetzt mit der `setup-php`-README, der Composer-Doku und der Laravel-Testing-Doku. `setup-php` ist eine Drittanbieter-Action, das steht in der Lektion.
 - **Laravel-Test-Datenbank:** Details zur Test-Datenbank in der Laravel-Doku nachschlagen und in der Testlektion prüfen.
 - **Quizqualität:** Wie in Teil 3 ist die richtige Antwort oft die längste Option, Falschantworten sind teils schwach. Später gleich lang und plausibel formulieren.
 
@@ -108,3 +115,10 @@ Reine Notiz für die spätere Ausarbeitung (Backlog C6), keine Entscheidung des 
 
 - **Problem:** Die Release-Notes von DRF 3.18.0 bestätigen Django 5.2 nicht ausdrücklich (sie nennen 6.1 und den Wegfall von 4.2, 5.0 und 5.1).
 - **Plan:** Vor einem Versions-Update prüfen.
+
+### 2026-11-05 – Quizqualität (richtige Antwort erratbar)
+
+- **Problem:** Falsche Antworten waren oft kürzer oder offensichtlich falsch, die richtige Antwort war häufig die längste.
+- **Stand:** Erledigt für D2 (`devsecops-wiederholung`) und D3 (`django-laravel-vergleich`); die D3-CI-Lektion folgt nach dem Merge von PR #27.
+- **Offen:** `backend-wiederholung` (310 Fragen), `php-laravel` (233), `ai-engineering` (45), `englisch` (47).
+- **Hinweis:** Die Positionsrotation ist zyklisch und daher vorhersagbar. Besser wäre Mischen im Frontend (siehe Backlog, Später).

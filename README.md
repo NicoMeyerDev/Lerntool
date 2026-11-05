@@ -1,29 +1,61 @@
 # Lerntool
 
-Persönliche Lern-App für PC und Handy (PWA). Das Backend ist Django mit Django REST Framework und PostgreSQL in `/backend`. Das Frontend ist React, Vite, TypeScript, Tailwind und PWA in `/frontend`. Beide sprechen nur über die REST-API miteinander.
+Persönliche Lern-App für PC und Handy (PWA) mit Lektionen, Quizzen, Tests, Projekten, Fortschritt, XP und Abzeichen. Erste Themen: PHP/Laravel, Englisch, AI Engineering sowie Wiederholungen zu Backend und DevSecOps.
 
-**Inhalt:** [Voraussetzungen](#1-voraussetzungen-windows) · [Datenbank](#2-datenbank-postgresql-16) · [Backend](#3-backend-einrichten) · [Frontend](#4-frontend-einrichten) · [App starten](#5-app-starten) · [Befehle](#befehle) · [Fehlerbehebung](#fehlerbehebung) · [Linux/macOS](#kurzfassung-für-linux-und-macos) · [Struktur](#ordnerstruktur)
+- **Backend:** Python, Django, Django REST Framework, PostgreSQL (`/backend`)
+- **Frontend:** React, Vite, TypeScript, Tailwind CSS, PWA (`/frontend`)
+- Beide sprechen nur über die REST-API miteinander. Die Lerninhalte liegen als YAML-Dateien in `backend/inhalte`.
 
----
+## Inhaltsverzeichnis
 
-## Einrichtung unter Windows (Schritt für Schritt)
+1. [Schnellstart](#schnellstart)
+2. [Einrichtung unter Windows](#einrichtung-unter-windows)
+3. [App starten und bedienen](#app-starten-und-bedienen)
+4. [Befehle](#befehle)
+5. [API](#api)
+6. [Projektstruktur](#projektstruktur)
+7. [Deployment auf Render](#deployment-auf-render)
+8. [Fehlerbehebung](#fehlerbehebung)
+9. [Weitere Dokumentation](#weitere-dokumentation)
 
-Alle Befehle laufen in **PowerShell**. Öffne sie über das Startmenü (Eingabe „PowerShell“). Zeilen, die mit `#` beginnen, sind Erklärungen und werden nicht eingegeben.
+## Schnellstart
 
-### 1. Voraussetzungen (Windows)
+Für Linux und macOS (Python 3.12, Node.js 22 und Docker vorausgesetzt):
 
-Einmalig installieren:
+```bash
+# Datenbank
+docker run -d --name lerntool-postgres -e POSTGRES_USER=lerntool -e POSTGRES_PASSWORD=lerntool -e POSTGRES_DB=lerntool -p 5432:5432 postgres:16
+
+# Backend
+cd backend
+python3.12 -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt
+cp .env.example .env                 # Werte eintragen, siehe "Einstellungen"
+python manage.py migrate
+python manage.py import_inhalte      # Lerninhalte laden, gefahrlos wiederholbar
+python manage.py createsuperuser     # eigenen Zugang anlegen
+python manage.py runserver
+
+# Frontend (zweites Terminal)
+cd frontend
+npm ci
+npm run dev                          # http://localhost:5173
+```
+
+## Einrichtung unter Windows
+
+Alle Befehle laufen in **PowerShell**. Zeilen mit `#` sind Erklärungen.
+
+### 1. Programme installieren
 
 | Programm | Woher | Prüfen mit |
 | --- | --- | --- |
-| **Git** | https://git-scm.com/downloads/win (Standardoptionen genügen) | `git --version` |
-| **Python 3.12** | Python install manager von https://www.python.org/downloads/, danach in PowerShell `py install 3.12` | `py -V:3.12 --version` |
-| **Node.js 22** | https://nodejs.org/en/download, Version 22 (LTS), Windows-Installer (.msi) | `node --version` (zeigt `v22.…`) |
-| **PostgreSQL 16** | siehe Schritt 2 | – |
+| Git | https://git-scm.com/downloads/win | `git --version` |
+| Python 3.12 | Python install manager von https://www.python.org/downloads/, dann `py install 3.12` | `py -V:3.12 --version` |
+| Node.js 22 (LTS) | https://nodejs.org/en/download | `node --version` |
+| PostgreSQL 16 | siehe Schritt 2 | – |
 
-Nach jeder Installation PowerShell **schließen und neu öffnen**, damit die neuen Befehle gefunden werden.
-
-Projekt herunterladen:
+Danach PowerShell neu öffnen und das Projekt herunterladen:
 
 ```powershell
 cd $HOME
@@ -31,33 +63,23 @@ git clone https://github.com/NicoMeyerDev/Lerntool.git
 cd Lerntool
 ```
 
-### 2. Datenbank: PostgreSQL 16
+### 2. Datenbank
 
-Wähle **eine** der beiden Varianten.
+Wähle eine Variante. In beiden lautet die Verbindung `postgres://lerntool:lerntool@localhost:5432/lerntool` (einfaches Passwort, nur für lokale Entwicklung).
 
-**Variante A: Installer (empfohlen für Einsteiger)**
+**Variante A: Installer.** PostgreSQL 16 von https://www.postgresql.org/download/windows/ installieren (Standardoptionen, Port `5432`, Passwort für `postgres` merken). In *pgAdmin* über *Tools → Query Tool* **nacheinander einzeln** ausführen:
 
-1. Installer von https://www.postgresql.org/download/windows/ herunterladen (angeboten von EDB), **Version 16** wählen.
-2. Installation mit Standardoptionen. Merke dir das Passwort, das du für den Benutzer `postgres` vergibst. Port `5432` beibehalten. StackBuilder am Ende brauchst du nicht.
-3. **pgAdmin** aus dem Startmenü öffnen, mit dem `postgres`-Passwort anmelden.
-4. Links auf *Servers → PostgreSQL 16 → Databases → postgres* klicken, dann oben *Tools → Query Tool*.
-5. Die zwei Befehle **nacheinander einzeln** ausführen (zusammen schlägt `CREATE DATABASE` fehl). Erst diesen Befehl einfügen und mit dem Play-Knopf (oder `F5`) ausführen:
+```sql
+CREATE ROLE lerntool LOGIN PASSWORD 'lerntool' CREATEDB;
+```
 
-   ```sql
-   CREATE ROLE lerntool LOGIN PASSWORD 'lerntool' CREATEDB;
-   ```
+```sql
+CREATE DATABASE lerntool OWNER lerntool;
+```
 
-   Dann das Eingabefeld leeren, diesen Befehl einfügen und wieder ausführen:
+`CREATEDB` braucht der Benutzer, weil die Tests eine eigene Test-Datenbank anlegen.
 
-   ```sql
-   CREATE DATABASE lerntool OWNER lerntool;
-   ```
-
-   `CREATEDB` braucht der Benutzer, weil die Tests eine eigene Test-Datenbank anlegen.
-
-**Variante B: Docker Desktop**
-
-Wenn Docker Desktop schon läuft:
+**Variante B: Docker Desktop.**
 
 ```powershell
 docker run -d --name lerntool-postgres -e POSTGRES_USER=lerntool -e POSTGRES_PASSWORD=lerntool -e POSTGRES_DB=lerntool -p 5432:5432 postgres:16
@@ -65,44 +87,22 @@ docker run -d --name lerntool-postgres -e POSTGRES_USER=lerntool -e POSTGRES_PAS
 
 Später wieder starten: `docker start lerntool-postgres`.
 
-In beiden Varianten lautet die Verbindung:
-`postgres://lerntool:lerntool@localhost:5432/lerntool`
-(Das einfache Passwort ist nur für die lokale Entwicklung gedacht.)
-
 ### 3. Backend einrichten
 
 ```powershell
 cd $HOME\Lerntool\backend
-
-# Virtuelle Umgebung mit Python 3.12 anlegen und aktivieren
 py -V:3.12 -m venv .venv
 .venv\Scripts\Activate.ps1
-
-# Abhängigkeiten installieren
 python -m pip install -r requirements.txt
-
-# Einstellungen anlegen
 Copy-Item .env.example .env
 ```
 
-Meldet `Activate.ps1` einen Fehler wegen „Ausführungsrichtlinie“ bzw. „execution policy“, einmalig ausführen und dann erneut aktivieren:
+Meldet `Activate.ps1` einen Fehler wegen der Ausführungsrichtlinie: `Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser` und erneut aktivieren.
 
-```powershell
-Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
-```
-
-Nach dem Aktivieren steht `(.venv)` vor der Eingabezeile. Ab hier heißt der Befehl einfach `python`.
-
-**Geheimen Schlüssel erzeugen:**
-
-```powershell
-python -c "import secrets; print(secrets.token_urlsafe(50))"
-```
-
-**`backend\.env` bearbeiten** (z. B. `notepad .env`) und ausfüllen:
+**Einstellungen:** Einen Schlüssel erzeugen mit `python -c "import secrets; print(secrets.token_urlsafe(50))"` und `backend\.env` ausfüllen:
 
 ```
-DJANGO_SECRET_KEY=<hier die Ausgabe von eben einfügen>
+DJANGO_SECRET_KEY=<erzeugter Schlüssel>
 DJANGO_DEBUG=True
 DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1
 DATABASE_URL=postgres://lerntool:lerntool@localhost:5432/lerntool
@@ -110,33 +110,24 @@ DATABASE_URL=postgres://lerntool:lerntool@localhost:5432/lerntool
 
 | Variable | Pflicht | Bedeutung |
 | --- | --- | --- |
-| `DJANGO_SECRET_KEY` | ja | geheimer Schlüssel, eigener langer Zufallswert |
+| `DJANGO_SECRET_KEY` | ja | geheimer Schlüssel, langer Zufallswert |
 | `DATABASE_URL` | ja | `postgres://BENUTZER:PASSWORT@HOST:PORT/DATENBANK` |
 | `DJANGO_DEBUG` | nein | `True` nur lokal, Standard `False` |
 | `DJANGO_ALLOWED_HOSTS` | nein | kommagetrennte Hostnamen, Standard `localhost,127.0.0.1` |
 
-Die Datei `.env` enthält Geheimnisse und wird **nie committet** (steht in `.gitignore`).
+Weitere Variablen für den Betrieb stehen in [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md). Die Datei `.env` enthält Geheimnisse und wird nie committet.
 
-**Datenbanktabellen anlegen und prüfen:**
+**Tabellen, Inhalte, Zugang:**
 
 ```powershell
 python manage.py migrate
-python manage.py import_inhalte      # Lerninhalte aus backend/inhalte laden (gefahrlos wiederholbar)
+python manage.py import_inhalte      # Lerninhalte laden, gefahrlos wiederholbar
 python manage.py check
 pytest
+python manage.py createsuperuser     # einmalig: dein Zugang (die App hat genau einen Nutzer)
 ```
 
-Danach die Lerninhalte laden (`python manage.py import_inhalte`, liest `backend/inhalte`, gefahrlos wiederholbar).
-
-`check` meldet „no issues“, `pytest` meldet alle Tests als `passed`.
-
-**Deinen Zugang anlegen** (einmalig). Die App hat genau einen Nutzer, eine Registrierung gibt es nicht:
-
-```powershell
-python manage.py createsuperuser
-```
-
-Benutzername und Passwort eingeben (die E-Mail darf leer bleiben). Damit meldest du dich später in der App an. Passwort vergessen? `python manage.py changepassword <benutzername>`.
+Passwort vergessen: `python manage.py changepassword <benutzername>`.
 
 ### 4. Frontend einrichten
 
@@ -145,174 +136,108 @@ In einem **zweiten** PowerShell-Fenster:
 ```powershell
 cd $HOME\Lerntool\frontend
 npm ci
-```
-
-Eine `.env` ist lokal nicht nötig. Der Entwicklungsserver leitet alle Aufrufe an `/api` automatisch an das Backend auf `http://localhost:8000` weiter. Nur wenn das Backend woanders läuft: `Copy-Item .env.example .env` und dort `VITE_API_URL` setzen.
-
-Prüfen:
-
-```powershell
 npm test
 ```
 
-### 5. App starten
+Eine `.env` ist lokal nicht nötig: Der Entwicklungsserver leitet `/api` an `http://localhost:8000` weiter.
 
-Es laufen immer **zwei Fenster** nebeneinander.
+## App starten und bedienen
 
-Fenster 1 (Backend):
+Es laufen zwei Fenster nebeneinander.
 
 ```powershell
+# Fenster 1: Backend
 cd $HOME\Lerntool\backend
 .venv\Scripts\Activate.ps1
 python manage.py runserver
 ```
 
-Fenster 2 (Frontend):
-
 ```powershell
+# Fenster 2: Frontend
 cd $HOME\Lerntool\frontend
 npm run dev
 ```
 
-Dann im Browser **http://localhost:5173** öffnen und mit dem Nutzer anmelden, den du mit `createsuperuser` angelegt hast (Backend und Frontend müssen beide laufen).
+Dann **http://localhost:5173** öffnen und mit dem Nutzer aus `createsuperuser` anmelden. Beenden mit `Strg + C`.
 
-Bedienung:
-- Die Startseite zeigt die Themen, ein Klick öffnet die Themenseite mit den Lektionen.
-- Die Lektion zeigt einen Abschnitt pro Bildschirm (die Position steht in der Adresse als `?abschnitt=n`). „Gelesen – weiter“ markiert den Abschnitt und blättert weiter, der Fortschrittsbalken zeigt die gelesenen Abschnitte.
-- Das Quiz wird abgegeben, sobald alle Fragen beantwortet sind. Die Auswertung zeigt Punkte, Bestwert, richtige und eigene Antwort sowie die Erklärung; „Nochmal versuchen“ startet neu.
-- Unter der Lektion stehen die Quellen. „Abmelden“ oben beendet die Sitzung.
-
-Unten auf der Startseite zeigt „Systemstatus“:
-- grüner Punkt „Backend und Datenbank erreichbar“: alles läuft,
-- roter Punkt „Backend nicht erreichbar“: Fenster 1 prüfen,
-- roter Punkt „Backend erreichbar, Datenbank nicht“: PostgreSQL prüfen (Schritt 2).
-
-Beenden mit `Strg + C` im jeweiligen Fenster.
-
----
+**Bedienung:**
+- Die Startseite zeigt Themen, Fortschritt, XP, Abzeichen und den Wochenplan. Ein Klick auf ein Thema öffnet die Lektionen.
+- Eine Lektion zeigt einen Abschnitt pro Bildschirm. „Gelesen – weiter“ markiert ihn. Das Quiz wertet aus, sobald alle Fragen beantwortet sind.
+- Pro Themenfeld gibt es einen Test mit Zeitlimit und pro Themenblock ein Projekt mit Checkliste.
+- Der „Systemstatus“ unten auf der Startseite zeigt, ob Backend und Datenbank erreichbar sind.
 
 ## Befehle
 
-**Backend** (im Ordner `backend`, virtuelle Umgebung aktiviert):
-
-| Zweck | Befehl |
-| --- | --- |
-| Starten | `python manage.py runserver` |
-| Tests | `pytest` |
-| Linter | `ruff check .` |
-| Formatieren | `ruff format .` |
-| Typprüfung | `mypy .` |
-| Validieren | `python manage.py check` |
-| Datenbank migrieren | `python manage.py migrate` |
-| Lerninhalte laden (wiederholbar, löscht nichts) | `python manage.py import_inhalte` |
-
-**Frontend** (im Ordner `frontend`):
-
-| Zweck | Befehl |
-| --- | --- |
-| Starten | `npm run dev` |
-| Tests | `npm test` |
-| Linter | `npm run lint` |
-| Formatieren / prüfen | `npm run format` / `npm run format:check` |
-| Build | `npm run build` |
+| Zweck | Backend (Ordner `backend`) | Frontend (Ordner `frontend`) |
+| --- | --- | --- |
+| Starten | `python manage.py runserver` | `npm run dev` |
+| Tests | `pytest` | `npm test` |
+| Linter | `ruff check .` | `npm run lint` |
+| Formatieren | `ruff format .` | `npm run format` |
+| Typprüfung / Build | `mypy .` | `npm run build` |
+| Validieren | `python manage.py check` | – |
+| Datenbank migrieren | `python manage.py migrate` | – |
+| Lerninhalte laden | `python manage.py import_inhalte` | – |
 
 ## API
 
-Alle Endpunkte außer `health` und `login` brauchen den Header `Authorization: Token <token>`; ohne gibt es `401`.
+Alle Endpunkte außer `health` und `login` brauchen den Header `Authorization: Token <token>`, sonst gibt es `401`.
 
 | Endpunkt | Zweck |
 | --- | --- |
-| `GET /api/health/` | `200 {"status":"ok","datenbank":"ok"}`, bei nicht erreichbarer Datenbank `503` |
-| `POST /api/auth/login/` | `{"username", "password"}` → `{"token"}`; höchstens 10 Versuche pro Minute |
+| `GET /api/health/` | Zustand von API und Datenbank (`503`, wenn die Datenbank fehlt) |
+| `POST /api/auth/login/` | Anmeldung, liefert den Token (höchstens 10 Versuche pro Minute) |
 | `POST /api/auth/logout/` | Token ungültig machen |
 | `GET /api/auth/ich/` | angemeldeter Nutzer |
-| `GET /api/themen/` | alle Themen |
-| `GET /api/themen/<slug>/` | Thema mit Phasen, Lektionen, Projektaufgaben |
-| `GET /api/lektionen/<id>/` | Lektion mit Abschnitten, Quellen, Quiz- und Test-ID |
-| `GET /api/quizze/<id>/` | Fragen und Antworten **ohne** Lösung |
-| `POST /api/quizze/<id>/abgabe/` | `{"antworten": [{"frage": id, "antwort": id}]}` → Auswertung, speichert Bestwert |
-| `GET /api/tests/<id>/` | Testfragen **ohne** Lösung und Zeitlimit |
-| `POST /api/tests/<id>/start/` | startet die Uhr (serverseitig), liefert die Restzeit |
-| `POST /api/tests/<id>/abgabe/` | `{"antworten": [...]}` → Auswertung, Bestwert; `409` bei abgelaufener Zeit (30 s Kulanz) oder ohne gestarteten Versuch |
-| `GET /api/projekte/<id>/` | Projektaufgabe, Checkliste und eigener Stand |
-| `PUT /api/projekte/<id>/punkte/<punkt_id>/` | `{"erledigt": true}` hakt einen Checklistenpunkt ab oder zurück |
+| `GET /api/themen/`, `GET /api/themen/<slug>/` | Themen, mit Phasen, Lektionen und Projekten |
+| `GET /api/lektionen/<id>/` | Lektion mit Abschnitten, Quellen, Quiz und Test |
+| `GET /api/quizze/<id>/`, `POST …/abgabe/` | Quizfragen ohne Lösung, Auswertung |
+| `GET /api/tests/<id>/`, `POST …/start/`, `POST …/abgabe/` | Test mit serverseitiger Uhr, Auswertung (`409` bei abgelaufener Zeit) |
+| `GET /api/projekte/<id>/`, `PUT …/punkte/<punkt_id>/` | Projektaufgabe, Checklistenpunkt abhaken |
 | `POST /api/abschnitte/<id>/gelesen/` | Abschnitt als gelesen markieren |
-| `GET /api/fortschritt/` | eigener Fortschritt |
-| `GET /api/dashboard/` | XP, Level, Statistik, Themenfortschritt, Abzeichen und Meilensteine des angemeldeten Nutzers |
-| `GET /api/wochenplan/?datum=JJJJ-MM-TT` | Wochen- und Tagesplan der Woche (Mo–So, Europe/Berlin) mit festen Blöcken und Wochenauswertung; Jahr 2000–2100, sonst `400` |
+| `GET /api/fortschritt/`, `GET /api/dashboard/` | Fortschritt, XP, Level, Abzeichen, Meilensteine |
+| `GET /api/wochenplan/?datum=JJJJ-MM-TT` | Wochen- und Tagesplan (Mo–So) |
+
+## Projektstruktur
+
+```
+backend/
+  config/       Django-Einstellungen, Umgebungsvariablen, URLs
+  core/         Health-Check, Anmeldung, Verwaltungsbefehl anlegen_nutzer
+  lernen/       Lerninhalte, Fortschritt, Dashboard, Wochenplan, Import
+  inhalte/      Lerninhalte als YAML (Themen, Phasen, Lektionen)
+  tests/        pytest-Tests
+frontend/
+  src/api/      API-Aufrufe und Prüfung der Antworten
+  src/pages/    Seiten (Login, Start, Thema, Lektion, Test, Projekt, Plan)
+  src/components/  wiederverwendbare Komponenten
+docs/           Lernplan, Backlog, Entscheidungen, offene Punkte, Changelog, Deployment
+.github/workflows/ci.yml   CI: Linter, Typen, Tests, Build
+render.yaml     Blueprint für Render
+```
+
+## Deployment auf Render
+
+`render.yaml` legt Datenbank, Backend und Frontend an. Schritt-für-Schritt-Anleitung, benötigte Angaben und Grenzen des kostenlosen Tarifs: [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md).
 
 ## Fehlerbehebung
 
 | Meldung | Lösung |
 | --- | --- |
-| `py` oder `python` wird nicht gefunden bzw. öffnet den Microsoft Store | Windows-Einstellungen → „App-Ausführungsaliase verwalten“: Alias „Python (default)“ einschalten. PowerShell neu öffnen. |
-| `Activate.ps1 … kann nicht geladen werden` | `Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser` (siehe Schritt 3) |
-| `ImproperlyConfigured: Umgebungsvariable … fehlt` | `backend\.env` fehlt oder ist unvollständig (Schritt 3). |
-| `connection refused` / `Verbindung abgelehnt` (Port 5432) | PostgreSQL läuft nicht. Installer-Variante: in „Dienste“ den PostgreSQL-Dienst (z. B. „postgresql-x64-16“) starten. Docker-Variante: `docker start lerntool-postgres`. |
-| `password authentication failed for user "lerntool"` | Benutzer anders angelegt als in `DATABASE_URL`. SQL aus Schritt 2 prüfen. |
-| `CREATE DATABASE cannot run inside a transaction block` | Beide SQL-Befehle wurden zusammen ausgeführt. `CREATE DATABASE …` allein noch einmal ausführen (Schritt 2). |
-| `permission denied to create database` beim Testen | Dem Benutzer fehlt `CREATEDB`: in pgAdmin `ALTER ROLE lerntool CREATEDB;` |
-| `npm` wird nicht gefunden | Node.js installieren und PowerShell neu öffnen. |
-| Startseite zeigt „Backend nicht erreichbar“ | Backend in Fenster 1 starten, Port 8000 muss frei sein. |
+| `py`/`python` nicht gefunden oder Microsoft Store öffnet sich | Windows-Einstellungen → „App-Ausführungsaliase verwalten“ → „Python (default)“ einschalten, PowerShell neu öffnen |
+| `Activate.ps1 … kann nicht geladen werden` | `Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser` |
+| `Umgebungsvariable … fehlt` | `backend\.env` fehlt oder ist unvollständig |
+| `connection refused` (Port 5432) | PostgreSQL starten: Dienst „postgresql-x64-16“ oder `docker start lerntool-postgres` |
+| `password authentication failed for user "lerntool"` | Benutzer anders angelegt als in `DATABASE_URL`, SQL aus Schritt 2 prüfen |
+| `CREATE DATABASE cannot run inside a transaction block` | Die beiden SQL-Befehle einzeln ausführen |
+| `permission denied to create database` beim Testen | in pgAdmin `ALTER ROLE lerntool CREATEDB;` |
+| `npm` nicht gefunden | Node.js installieren, PowerShell neu öffnen |
+| Startseite zeigt „Backend nicht erreichbar“ | Backend starten, Port 8000 muss frei sein |
 
-## Kurzfassung für Linux und macOS
+## Weitere Dokumentation
 
-```bash
-# Datenbank (Docker)
-docker run -d --name lerntool-postgres -e POSTGRES_USER=lerntool -e POSTGRES_PASSWORD=lerntool -e POSTGRES_DB=lerntool -p 5432:5432 postgres:16
-
-# Backend
-cd backend
-python3.12 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-cp .env.example .env          # Werte wie in Schritt 3 eintragen
-python manage.py migrate
-python manage.py import_inhalte      # Lerninhalte aus backend/inhalte laden (gefahrlos wiederholbar)
-python manage.py createsuperuser   # einmalig: eigenen Zugang anlegen
-python manage.py runserver
-
-# Frontend (zweites Terminal)
-cd frontend
-npm ci
-npm run dev                   # http://localhost:5173
-```
-
-## Ordnerstruktur
-
-```
-backend/
-  config/          Django-Konfiguration: settings.py, env.py (Umgebungsvariablen), urls.py
-  core/            Health-Endpunkt (Views, Services, URLs), Anmeldung (auth_views.py, anmeldung.py)
-  lernen/          Lerninhalte und Fortschritt: Modelle, Migrationen, API (serializers.py, services.py, dashboard.py, wochenplan.py, views.py, urls.py, inhalte_import.py, management/commands/import_inhalte.py)
-  inhalte/         Lerninhalte als YAML-Dateien (thema.yaml, phase.yaml, Lektionen; PHP/Laravel: Phase 1 PHP-Basics, Phase 2 Laravel-Kern; AI Engineering: Phase 1 Grundlagen; Englisch: Phase 1 ab A2; Backend-Wiederholung: Django, Datenbanken, DRF, Authentifizierung, DevOps, Monitoring, HTTP, Python, erweiterte Konzepte, SQL; Teil 1 bis 3, alle zehn Themen; Django und Laravel im Vergleich: Anmeldung, Datenbank, API, Tests, Docker, CI/CD; DevSecOps-Wiederholung: Sicherheit und Recht, Web-Schwachstellen, Passwörter, Netzwerke, Python-Automation, Cloud, DevSecOps-Praxis, Datenschutz); Import mit `python manage.py import_inhalte`
-  tests/           pytest-Tests, gemeinsame Fixtures (conftest.py) und Testdaten-Fabrik (fabrik.py)
-  manage.py        Django-Verwaltungsbefehle
-  requirements.txt Python-Abhängigkeiten
-  pyproject.toml   Einstellungen für ruff, mypy, pytest
-  .env.example     Vorlage für backend/.env
-frontend/
-  src/main.tsx     Einstiegspunkt
-  src/App.tsx      Routen (Login, Start, Thema, Lektion, Test, Projekt, Plan)
-  src/index.css    Design-Tokens und Grundstile
-  src/api/         API-Aufrufe ans Backend: client.ts (fetch mit Token),
-                   schemas.ts (zod-Prüfung der Antworten), lernen.ts (Query-Hooks)
-  src/auth/        Token-Speicher und Anmelde-Kontext (AuthProvider)
-  src/pages/       Seiten: LoginSeite, StartSeite, ThemaSeite, LektionSeite, TestSeite, ProjektSeite, PlanSeite
-  src/components/  React-Komponenten (Layout, Markdown, QuizAnsicht, FragenListe, Fortschrittsbalken, DashboardUebersicht)
-  src/lib/         kleine Hilfsfunktionen: Abschnittsnummer, Ladefehler-Text, URL-Prüfung,
-                   zeit.ts (Zeitformat), useCountdown.ts (Test-Uhr)
-  src/test/        Test-Setup (Vitest)
-  public/          statische Dateien, PWA-Icon
-  vite.config.ts   Vite, Proxy, PWA, Tests
-  eslint.config.js ESLint
-  package.json     Node-Abhängigkeiten und npm-Skripte
-  .env.example     Vorlage für frontend/.env
-docs/          Backlog, Lernplan, Curriculum Laravel (CURRICULUM_LARAVEL.md), Curriculum Englisch (CURRICULUM_ENGLISCH.md), Curriculum AI Engineering (CURRICULUM_AI_ENGINEERING.md), Entscheidungen, offene Punkte, Changelog
-.claude/       Claude-Code-Agenten und Hooks
-.github/workflows/ci.yml   CI (Backend: Linter, Typen, Tests; Frontend: Lint, Prettier, Tests, Build)
-```
-
-## Hinweis für Claude Code unter Windows
-
-Die Hooks in `.claude/settings.json` starten mit `python3`. Laut [Python-Doku zu Windows](https://docs.python.org/3/using/windows.html) bringt der Python install manager einen `python3`-Befehl mit (gedacht als Auffanglösung). Auf einem Windows-Rechner ausprobiert ist das noch nicht. Prüfen mit `python3 --version`; fehlt der Befehl, laufen die Hooks nicht – siehe `docs/OFFEN.md`.
+- [docs/LERNPLAN.md](docs/LERNPLAN.md): Themen, Reihenfolge, Lernstil
+- [docs/BACKLOG.md](docs/BACKLOG.md): Aufgaben und Stand
+- [docs/ENTSCHEIDUNGEN.md](docs/ENTSCHEIDUNGEN.md) und [docs/OFFEN.md](docs/OFFEN.md): Entscheidungen und offene Punkte
+- [docs/CHANGELOG.md](docs/CHANGELOG.md): Änderungen
+- [CLAUDE.md](CLAUDE.md): Regeln für die Arbeit mit Claude Code

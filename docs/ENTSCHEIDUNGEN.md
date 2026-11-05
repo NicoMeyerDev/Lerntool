@@ -24,7 +24,7 @@ Format: Datum – Entscheidung – Grund – Alternativen.
 - **Tailwind CSS 4 mit `@tailwindcss/vite`, Design-Tokens per `@theme` in `src/index.css`** – Tokens erzeugen direkt Tailwind-Klassen (`bg-surface`, `text-accent-cyan`). Alternative: eigene CSS-Variablen plus `tailwind.config`.
 - **API-Aufruf mit `fetch` und TanStack Query** – Stack laut CLAUDE.md, keine weitere Bibliothek. Antworten werden per Type Guard geprüft, `503` wird als Zustand angezeigt, nicht als Fehler.
 - **React Router noch nicht eingebunden** – es gibt nur eine Seite; kommt mit der ersten weiteren Ansicht (B3). Alternative: jetzt schon einbinden (ungenutzter Code).
-- **API-Adresse über `VITE_API_URL`, lokal leer mit Vite-Proxy `/api` → `http://localhost:8000`** – keine CORS-Einstellungen im Backend nötig. Für das Deployment muss das später entschieden werden.
+- **API-Adresse über `VITE_API_URL`, lokal leer mit Vite-Proxy `/api` → `http://localhost:8000`** – lokal keine CORS-Einstellungen nötig (für das Deployment abgelöst durch den Eintrag vom 2026-11-05, Render-Deployment).
 - **PWA: `vite-plugin-pwa` mit `autoUpdate`, ein SVG-Icon** – genügt für A2. PNG-Icons (192/512 px) für ältere Geräte folgen bei Bedarf. Offline-Modus steht unter „Später“.
 - **Prettier für `npm run format`, Tests mit Vitest + jsdom + Testing Library** – Standard im Vite-Umfeld.
 - **`npm audit`: 0 Lücken in Laufzeit-Abhängigkeiten, 21 mittlere/niedrige nur in Build-Werkzeugen (workbox-Kette von `vite-plugin-pwa`)** – betreffen nicht den ausgelieferten Code. Kein `npm audit fix --force`, weil es Major-Versionen tauschen würde.
@@ -200,6 +200,15 @@ Abweichungen von `docs/CURRICULUM_ENGLISCH.md`:
 - **(d) Sentry SDK 3.0:** Die Lektion weist darauf hin, dass sich Einrichtung und Optionen mit SDK 3.0 ändern können; maßgeblich ist die aktuelle Sentry-Doku. Alternative: nur die ältere Variante zeigen (würde veralten).
 - **Freigaben:** `quellenpruefer`: FREIGABE (alle Quellen erreichbar). `reviewer`: FREIGABE nach 2 Runden.
 
+## 2026-11-05 – Render-Deployment vorbereitet
+
+- **Frontend und Backend als getrennte Render-Dienste** (statische Seite + Web-Service), Verbindung per CORS (`django-cors-headers`) und `VITE_API_URL`. Grund: Architektur aus CLAUDE.md bleibt strikt getrennt. Alternative: Rewrite `/api/*` auf das Backend (braucht die Backend-Adresse schon in `render.yaml`) oder Frontend über Django ausliefern.
+- **Migration, Inhalts-Import und Nutzeranlage im `startCommand`** statt `preDeployCommand`. Grund: Die Render-Doku nennt für den kostenlosen Tarif keine Zusage für Pre-Deploy-Befehle und keinen Shell-Zugang. Alle drei Befehle sind wiederholbar. Alternative: `preDeployCommand` (bezahlter Tarif).
+- **Befehl `anlegen_nutzer`** legt den einzigen Nutzer aus `LERNTOOL_BENUTZER`/`LERNTOOL_PASSWORT` an, nur wenn noch keiner existiert. Grund: ohne Shell kein `createsuperuser`. Alternative: `createsuperuser --noinput` (schlägt beim zweiten Start fehl).
+- **HTTPS-Absicherung nur mit `DJANGO_HTTPS_ERZWINGEN=True`**, nicht an `DEBUG` gekoppelt. Grund: Tests und CI laufen ohne HTTPS. Der Health-Check ist von der Umleitung ausgenommen. HSTS nur 1 Stunde, ohne Subdomains/Preload, weil `onrender.com` nicht dir gehört.
+- **Kein `whitenoise`**, keine statischen Dateien aus Django: Die API liefert nur JSON.
+- **Kostenlose Datenbank läuft nach 30 Tagen ab** (Render-Doku, Stand 2026-11-05). Entscheidung über einen bezahlten Tarif liegt beim Nutzer, siehe `docs/OFFEN.md`.
+
 ## 2026-11-05 – D1 Backend-Wiederholung, Teil 3 (HTTP, Python, erweiterte Konzepte, SQL)
 
 - **(a) Versionen der Quellen:** Python-Quellen sind auf Version 3.13 festgelegt (`/3.13/`), Django auf 5.2. Grund: `/3/` zeigt auf 3.14, und dort ist `except` ohne Klammern erlaubt (PEP 758); das hätte eine Quizfrage mehrdeutig gemacht. Alternative: `/3/` ohne Version.
@@ -222,5 +231,11 @@ Abweichungen von `docs/CURRICULUM_ENGLISCH.md`:
 ## 2026-11-05 – D3 Konzept-Vergleiche Django und Laravel
 
 - **(a) Aufbau:** Neues Thema `django-laravel-vergleich` (Reihenfolge 6) mit einer Phase und sechs Vergleichs-Lektionen: Anmeldung und Passwörter, Datenbank und Migrationen, API, Tests, Docker, CI/CD. Jede Lektion zeigt dieselbe Aufgabe in Django und Laravel. Alternative: getrennte Lektionen je Framework (verdeckt die gemeinsame Idee).
-- **(b) PHP-CI-Schritte ungeprüft:** Die Schritte für PHP/Laravel in GitHub Actions sind bewusst als ungeprüft gekennzeichnet, weil eine belegte Quelle fehlt (siehe `OFFEN.md`). Nichts wurde erfunden. Alternative: den Abschnitt weglassen (Vergleich wäre unvollständig).
+- **(b) PHP-CI-Schritte (2026-11-05 belegt):** Die Schritte für PHP/Laravel in GitHub Actions stützen sich jetzt auf die `setup-php`-README, die Composer-Doku und die Laravel-Testing-Doku statt auf php.net. Grund: php.net beschreibt keine CI-Abläufe. Alternative: Abschnitt weglassen (Vergleich unvollständig).
 - **(c) Nur Theorie:** Es wird nichts eingerichtet, keine Konten, keine Kosten.
+
+## 2026-11-05 – Quizqualität D2/D3
+
+- **Vorgehen:** Die Antwortzeilen wurden skriptgestützt ersetzt. Falsche Antworten sind typische Verwechslungen in ähnlicher Länge wie die richtige Antwort. Die richtige Antwort wird gleichmäßig auf Position 1, 2 und 3 gedreht (zyklisch). Alternative: nur im Frontend mischen (löst die Längenauffälligkeit nicht).
+- **Grenze:** Bei Fachdefinitionen und Rechtstexten bleibt die richtige Antwort oft die längste, weil Genauigkeit Länge braucht. Das wurde nicht künstlich erzwungen, um keine Fakten zu verfälschen.
+- **Freigabe:** `reviewer`: FREIGABE (nur Hinweise, behoben).

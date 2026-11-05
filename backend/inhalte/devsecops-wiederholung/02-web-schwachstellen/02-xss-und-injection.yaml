@@ -26,15 +26,15 @@ abschnitte:
       - frage: "Was empfiehlt OWASP laut Cheat Sheet gegen XSS?"
         erklaerung: "Framework-Schutz, kontextgerechtes Codieren der Ausgabe und Sanitizing zusammen."
         antworten:
-          - { text: "Eine einzige Technik wie eine Firewall davorstellen.", richtig: false }
+          - { text: "Eingaben nur auf ihre Länge prüfen und sonst unverändert wieder ausgeben.", richtig: false }
+          - { text: "Eine einzelne Technik wie eine vorgeschaltete Firewall als alleinigen Schutz.", richtig: false }
           - { text: "Framework-Schutz, kontextgerechtes Codieren der Ausgabe und Sanitizing zusammen.", richtig: true }
-          - { text: "Eingaben nur auf Länge prüfen und sonst unverändert ausgeben.", richtig: false }
       - frage: "Wofür ist eine Content Security Policy laut OWASP gedacht?"
         erklaerung: "Als zusätzliche Schutzschicht, nicht als Hauptverteidigung."
         antworten:
-          - { text: "Als Ersatz für das Codieren der Ausgabe.", richtig: false }
-          - { text: "Als Verschlüsselung der Datenbank.", richtig: false }
           - { text: "Als zusätzliche Schutzschicht, nicht als Hauptverteidigung.", richtig: true }
+          - { text: "Als Ersatz für das Codieren der Ausgabe, damit man darauf verzichten kann.", richtig: false }
+          - { text: "Als Verschlüsselung der gespeicherten Daten in der Datenbank.", richtig: false }
   - titel: SQL-Injection
     inhalt: |
       Bei **SQL-Injection** wird nicht vertrauenswürdige Eingabe Teil der SQL-Befehlsstruktur. Folge: Daten
@@ -60,24 +60,24 @@ abschnitte:
       - frage: "Wie verhinderst du SQL-Injection am zuverlässigsten?"
         erklaerung: "Mit parametrisierten Abfragen, bei denen Daten getrennt vom Befehl übergeben werden."
         antworten:
-          - { text: "Mit längeren Passwörtern für die Datenbank.", richtig: false }
+          - { text: "Mit einer Prüfung, die Eingaben mit Anführungszeichen einfach ablehnt.", richtig: false }
           - { text: "Mit parametrisierten Abfragen, bei denen Daten getrennt vom Befehl übergeben werden.", richtig: true }
-          - { text: "Mit möglichst vielen Kommentaren im Code.", richtig: false }
+          - { text: "Mit besonders langen und komplexen Passwörtern für das Datenbank-Konto.", richtig: false }
       - frage: "Was bewirkt das Prinzip der geringsten Rechte bei Datenbank-Konten?"
         erklaerung: "Es begrenzt den Schaden eines Angriffs, verhindert ihn aber nicht."
         antworten:
-          - { text: "Es verhindert jeden Angriff vollständig.", richtig: false }
+          - { text: "Es sorgt dafür, dass Abfragen an die Datenbank schneller laufen.", richtig: false }
+          - { text: "Es verhindert jeden Angriff auf die Datenbank vollständig.", richtig: false }
           - { text: "Es begrenzt den Schaden eines Angriffs, verhindert ihn aber nicht.", richtig: true }
-          - { text: "Es macht Abfragen schneller.", richtig: false }
 test:
   zeitlimit_minuten: 10
   fragen:
     - frage: "Was ist alles „nicht vertrauenswürdige Daten“ im Sinne von XSS?"
       erklaerung: "Alles, was die Anwendung nicht selbst erzeugt hat, etwa Formulare und URL-Parameter."
       antworten:
-        - { text: "Nur Daten von Administratoren.", richtig: false }
         - { text: "Alles, was die Anwendung nicht selbst erzeugt hat, etwa Formulare und URL-Parameter.", richtig: true }
-        - { text: "Nur Bilder.", richtig: false }
+        - { text: "Nur Daten, die von Administratoren der Anwendung eingegeben wurden.", richtig: false }
+        - { text: "Nur Bilder und Dateien, die Nutzer auf den Server hochladen.", richtig: false }
     - frage: "Welche DOM-Eigenschaft behandelt Daten als reinen Text?"
       erklaerung: "textContent."
       antworten:
@@ -87,15 +87,15 @@ test:
     - frage: "Warum helfen Prepared Statements gegen SQL-Injection?"
       erklaerung: "Die Datenbank behandelt gebundene Werte als Daten und nicht als SQL-Befehl."
       antworten:
+        - { text: "Sie sperren Nutzer automatisch, sobald diese Sonderzeichen eingeben.", richtig: false }
+        - { text: "Sie verschlüsseln die gespeicherten Tabellen, sodass Angreifer nichts lesen können.", richtig: false }
         - { text: "Die Datenbank behandelt gebundene Werte als Daten und nicht als SQL-Befehl.", richtig: true }
-        - { text: "Sie verschlüsseln die Tabelle.", richtig: false }
-        - { text: "Sie sperren alle Nutzer aus.", richtig: false }
     - frage: "Was gilt für Tabellen- und Spaltennamen in Abfragen laut OWASP?"
       erklaerung: "Sie lassen sich nicht als Parameter binden, daher ordnet man Nutzerauswahl festen Werten zu."
       antworten:
-        - { text: "Sie dürfen direkt aus der Eingabe übernommen werden.", richtig: false }
         - { text: "Sie lassen sich nicht als Parameter binden, daher ordnet man Nutzerauswahl festen Werten zu.", richtig: true }
-        - { text: "Sie müssen großgeschrieben sein.", richtig: false }
+        - { text: "Sie müssen immer in Großbuchstaben geschrieben werden, damit sie sicher sind.", richtig: false }
+        - { text: "Sie dürfen direkt aus der Eingabe übernommen werden, wenn sie klein geschrieben sind.", richtig: false }
     - frage: "Was solltest du tun, wenn Nutzer HTML eingeben dürfen?"
       erklaerung: "Einen gepflegten Sanitizer wie DOMPurify einsetzen."
       antworten:
