@@ -218,7 +218,7 @@ render.yaml     Blueprint für Render
 
 ## Deployment auf Render
 
-`render.yaml` legt Datenbank, Backend und Frontend an. Schritt-für-Schritt-Anleitung, benötigte Angaben und Grenzen des kostenlosen Tarifs: [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md).
+`render.yaml` legt Backend und Frontend an, die Datenbank erstellst du vorher selbst in Render. Schritt-für-Schritt-Anleitung, benötigte Angaben und Grenzen des kostenlosen Tarifs: [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md).
 
 ## Fehlerbehebung
 
