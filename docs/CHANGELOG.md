@@ -1,6 +1,8 @@
 # Changelog
 
 ## 2026-11-05
+- docs: README neu gegliedert (Inhaltsverzeichnis, Schnellstart, kürzere Ordnerstruktur und API-Tabelle, Doppelungen entfernt).
+- feat: Render-Vorbereitung: `render.yaml` (Datenbank, Backend, Frontend), `gunicorn` und `django-cors-headers`, Einstellungen für CORS, HTTPS und Render-Hostnamen, Befehl `anlegen_nutzer`, Anleitung `docs/DEPLOYMENT.md`.
 - D3 CI-Lektion nachgebessert: Die PHP-Schritte (setup-php, Composer, `php artisan test`) sind jetzt mit der `setup-php`-README, der Composer-Doku und der Laravel-Testing-Doku belegt. `setup-php` ist als Drittanbieter-Action gekennzeichnet. Der Hinweis „ungeprüft“ im Eintrag unten gilt damit nicht mehr.
 
 - fix: Quizqualität D2/D3: In `devsecops-wiederholung` und `django-laravel-vergleich` (ohne die CI/CD-Lektion, siehe PR #27) sind falsche Antworten jetzt plausible Verwechslungen in ähnlicher Länge, die richtige Antwort steht gleichmäßig an Position 1, 2 und 3. Anteil „richtige Antwort ist die längste“: D2 vorher 81 Prozent, jetzt 52 Prozent; D3 vorher 78 Prozent, jetzt 37 Prozent. Es ändern sich nur Antworttexte, keine Fakten.
