@@ -38,15 +38,15 @@ abschnitte:
       - frage: "Was hilft laut Doku, wenn du den Prompt prüfen willst?"
         erklaerung: "Man zeigt ihn einem Kollegen ohne Vorwissen. Wäre er verwirrt, wäre es das Modell auch."
         antworten:
-          - { text: "Ihn möglichst kurz zu halten.", richtig: false }
           - { text: "Ihn einem Kollegen ohne Vorwissen zu zeigen.", richtig: true }
-          - { text: "Ihn in Großbuchstaben zu schreiben.", richtig: false }
+          - { text: "Ihn komplett in Großbuchstaben zu schreiben.", richtig: false }
+          - { text: "Ihn möglichst kurz zu halten.", richtig: false }
       - frage: "Warum hilft es, den Grund einer Anweisung zu nennen?"
         erklaerung: "Das Modell erhält mehr Information über dein Ziel und kann daraus verallgemeinern."
         antworten:
+          - { text: "Die Anfrage wird dadurch günstiger.", richtig: false }
           - { text: "Das Modell versteht das Ziel besser und kann verallgemeinern.", richtig: true }
           - { text: "Die Antwort wird dadurch immer kürzer.", richtig: false }
-          - { text: "Die Anfrage wird billiger.", richtig: false }
   - titel: Beispiele geben
     inhalt: |
       Beispiele gehören laut Doku zu den zuverlässigsten Mitteln, Format, Ton und Aufbau der
@@ -93,9 +93,9 @@ abschnitte:
       - frage: "Warum sollten Beispiele vielfältig sein?"
         erklaerung: "Damit das Modell keine unbeabsichtigten Muster übernimmt und Sonderfälle abgedeckt sind."
         antworten:
-          - { text: "Damit die Temperatur sinkt.", richtig: false }
           - { text: "Damit das Modell keine unbeabsichtigten Muster lernt.", richtig: true }
-          - { text: "Damit der Prompt länger wird.", richtig: false }
+          - { text: "Damit die Temperatur des Modells sinkt.", richtig: false }
+          - { text: "Damit der Prompt insgesamt länger wird.", richtig: false }
   - titel: Struktur mit XML-Tags und Rolle
     inhalt: |
       Enthält ein Prompt Anweisungen, Hintergrund, Beispiele und Eingaben, kann das Modell sie
@@ -126,15 +126,15 @@ abschnitte:
       - frage: "Wozu dienen XML-Tags in einem Prompt?"
         erklaerung: "Sie trennen Anweisungen, Kontext, Beispiele und Eingaben, damit nichts verwechselt wird."
         antworten:
-          - { text: "Sie senken die Kosten.", richtig: false }
+          - { text: "Sie verschlüsseln den Inhalt des Prompts.", richtig: false }
           - { text: "Sie trennen die Teile des Prompts eindeutig.", richtig: true }
-          - { text: "Sie verschlüsseln den Prompt.", richtig: false }
+          - { text: "Sie senken die Kosten der Anfrage.", richtig: false }
       - frage: "Wo legst du laut Doku die Rolle für das Modell fest?"
         erklaerung: "Im System-Prompt."
         antworten:
+          - { text: "In der vorherigen Antwort des Modells.", richtig: false }
+          - { text: "In der URL der API-Anfrage.", richtig: false }
           - { text: "Im System-Prompt.", richtig: true }
-          - { text: "In der URL der API.", richtig: false }
-          - { text: "In der Antwort des Modells.", richtig: false }
   - titel: Ausgabeformat steuern und Prompts testen
     inhalt: |
       **Das Format steuern.** Die Doku nennt wirksame Wege:
@@ -178,30 +178,30 @@ test:
     - frage: "Welcher Prompt ist nach den Regeln „klar und direkt“ am besten?"
       erklaerung: "Er nennt Format, Länge, Zielgruppe und Sprache."
       antworten:
-        - { text: "Erkläre HTTP in drei kurzen Sätzen auf Deutsch für Python-Kenner.", richtig: true }
         - { text: "Erkläre HTTP.", richtig: false }
         - { text: "HTTP???", richtig: false }
+        - { text: "Erkläre HTTP in drei kurzen Sätzen auf Deutsch für Python-Kenner.", richtig: true }
     - frage: "Wozu nutzt man Few-Shot-Beispiele?"
       erklaerung: "Sie steuern Format, Ton und Aufbau der Antwort."
       antworten:
-        - { text: "Um das Kontextfenster zu vergrößern.", richtig: false }
-        - { text: "Um den API-Schlüssel zu ersetzen.", richtig: false }
         - { text: "Um Format, Ton und Struktur der Antwort zu steuern.", richtig: true }
+        - { text: "Um den API-Schlüssel zu ersetzen.", richtig: false }
+        - { text: "Um das Kontextfenster zu vergrößern.", richtig: false }
     - frage: "Wie kennzeichnest du Beispiele im Prompt, damit sie nicht mit Anweisungen verwechselt werden?"
       erklaerung: "In `<example>`-Tags, mehrere in `<examples>`."
       antworten:
-        - { text: "Mit drei Ausrufezeichen davor.", richtig: false }
-        - { text: "In einer eigenen API-Anfrage.", richtig: false }
+        - { text: "In einer eigenen, getrennten API-Anfrage.", richtig: false }
         - { text: "In <example>-Tags, mehrere in <examples>.", richtig: true }
+        - { text: "Mit drei Ausrufezeichen davor.", richtig: false }
     - frage: "Wo steht die Rolle des Modells in einer API-Anfrage?"
       erklaerung: "Im System-Prompt (Parameter `system`)."
       antworten:
-        - { text: "Im System-Prompt.", richtig: true }
         - { text: "Im Header anthropic-version.", richtig: false }
         - { text: "Im Parameter max_tokens.", richtig: false }
+        - { text: "Im System-Prompt.", richtig: true }
     - frage: "Warum sind Erfolgskriterien vor dem Prompt-Feinschliff wichtig?"
       erklaerung: "Ohne Kriterien lässt sich nicht beurteilen, ob eine Änderung besser ist."
       antworten:
-        - { text: "Sie senken die Tokenkosten.", richtig: false }
-        - { text: "Sie ersetzen den System-Prompt.", richtig: false }
         - { text: "Ohne sie kannst du nicht beurteilen, ob eine Änderung besser ist.", richtig: true }
+        - { text: "Sie senken die Tokenkosten der Anfragen.", richtig: false }
+        - { text: "Sie ersetzen den System-Prompt vollständig.", richtig: false }

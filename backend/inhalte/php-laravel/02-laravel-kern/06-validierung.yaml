@@ -40,15 +40,15 @@ abschnitte:
       - frage: "Was liefert `$request->validate([...])` zurück?"
         erklaerung: "Die geprüften Daten, nämlich nur die Felder mit Regeln."
         antworten:
-          - { text: "Immer true.", richtig: false }
           - { text: "Die gesamte Datenbank.", richtig: false }
           - { text: "Nur die geprüften Daten.", richtig: true }
+          - { text: "Immer true.", richtig: false }
       - frage: "Welche Antwort bekommt ein JSON-Client bei ungültigen Eingaben?"
         erklaerung: "Status 422 mit den Fehlermeldungen."
         antworten:
+          - { text: "301 mit einer Weiterleitung", richtig: false }
+          - { text: "200 mit leerem Text", richtig: false }
           - { text: "422 mit Fehlermeldungen als JSON.", richtig: true }
-          - { text: "200 mit leerem Text.", richtig: false }
-          - { text: "301 mit Weiterleitung.", richtig: false }
   - titel: Form Requests
     inhalt: |
       Wird die Prüfung länger, lagerst du sie in einen **Form Request** aus. Das ist eine
@@ -138,30 +138,30 @@ abschnitte:
       - frage: "Aus welchen Teilen besteht der Schlüssel in `messages()`?"
         erklaerung: "Aus Feldname und Regelname, mit Punkt getrennt, z. B. `distanz_km.gt`."
         antworten:
-          - { text: "Der Statuscode und die Methode.", richtig: false }
+          - { text: "Nur der Name des Controllers.", richtig: false }
+          - { text: "Der Statuscode und die HTTP-Methode.", richtig: false }
           - { text: "Feldname und Regel, mit Punkt getrennt.", richtig: true }
-          - { text: "Nur dem Controller-Namen.", richtig: false }
       - frage: "Warum braucht man Validierung und `#[Fillable]`?"
         erklaerung: "Validierung prüft Werte, `#[Fillable]` begrenzt die schreibbaren Felder."
         antworten:
           - { text: "Das eine prüft die Werte, das andere begrenzt die schreibbaren Felder.", richtig: true }
-          - { text: "Sie tun genau dasselbe.", richtig: false }
-          - { text: "Nur eines von beiden funktioniert.", richtig: false }
+          - { text: "Sie tun genau dasselbe, man braucht nur eines davon.", richtig: false }
+          - { text: "Nur eines von beiden funktioniert in aktuellen Versionen.", richtig: false }
 test:
   zeitlimit_minuten: 15
   fragen:
     - frage: "Welche Regel verlangt, dass ein Feld vorhanden ist?"
       erklaerung: "`required`."
       antworten:
+        - { text: "needed", richtig: false }
         - { text: "required", richtig: true }
         - { text: "present_only", richtig: false }
-        - { text: "needed", richtig: false }
     - frage: "Welche Regel prüft, dass eine Zahl größer als 0 ist?"
       erklaerung: "`gt:0` (greater than)."
       antworten:
-        - { text: "gt:0", richtig: true }
         - { text: "bigger:0", richtig: false }
         - { text: "positive", richtig: false }
+        - { text: "gt:0", richtig: true }
     - frage: "Mit welchem Befehl legst du einen Form Request an?"
       erklaerung: "`php artisan make:request Name`."
       antworten:
@@ -171,12 +171,12 @@ test:
     - frage: "Wann läuft die Prüfung eines Form Requests?"
       erklaerung: "Vor dem Code der Controller-Methode."
       antworten:
+        - { text: "Nach dem Speichern der Daten.", richtig: false }
         - { text: "Vor dem Code der Controller-Methode.", richtig: true }
-        - { text: "Nach dem Speichern.", richtig: false }
-        - { text: "Nur beim Start des Servers.", richtig: false }
+        - { text: "Nur einmal beim Start des Servers.", richtig: false }
     - frage: "Was bewirkt die Regel `sometimes`?"
       erklaerung: "Die übrigen Regeln des Feldes werden nur geprüft, wenn das Feld in den Daten vorkommt."
       antworten:
-        - { text: "Das Feld wird nur geprüft, wenn es vorhanden ist.", richtig: true }
-        - { text: "Das Feld wird zufällig geprüft.", richtig: false }
         - { text: "Das Feld wird immer übersprungen.", richtig: false }
+        - { text: "Das Feld wird nur zufällig bei manchen Anfragen geprüft.", richtig: false }
+        - { text: "Das Feld wird nur geprüft, wenn es vorhanden ist.", richtig: true }

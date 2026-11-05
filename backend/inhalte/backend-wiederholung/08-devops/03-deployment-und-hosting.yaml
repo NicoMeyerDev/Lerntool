@@ -27,15 +27,15 @@ abschnitte:
       - frage: "Wie sollte der SECRET_KEY im Betrieb in Django gelangen?"
         erklaerung: "Aus einer Umgebungsvariablen oder Datei, nicht aus der Versionsverwaltung."
         antworten:
-          - { text: "Fest im Code und im Git.", richtig: false }
-          - { text: "Aus der URL der Anfrage.", richtig: false }
+          - { text: "Aus der URL der jeweiligen Anfrage.", richtig: false }
           - { text: "Aus einer Umgebungsvariablen, nicht aus dem Git-Repository.", richtig: true }
+          - { text: "Fest im Code und damit auch im Git.", richtig: false }
       - frage: "Welcher Befehl prüft einen Teil der Deployment-Checkliste automatisch?"
         erklaerung: "python manage.py check --deploy."
         antworten:
+          - { text: "python manage.py runserver --prod", richtig: false }
           - { text: "python manage.py deploy", richtig: false }
           - { text: "python manage.py check --deploy", richtig: true }
-          - { text: "python manage.py runserver --prod", richtig: false }
   - titel: Deploys bei einem Host wie Render
     inhalt: |
       Dieses Projekt ist für **Render** vorgesehen. Laut Render-Doku gilt:
@@ -55,45 +55,45 @@ abschnitte:
       - frage: "Was passiert laut Render-Doku, wenn ein Build fehlschlägt?"
         erklaerung: "Der Deploy scheitert, und die vorherige erfolgreiche Version läuft weiter."
         antworten:
-          - { text: "Render ersetzt den Code durch eine Vorlage.", richtig: false }
           - { text: "Der Deploy scheitert, die vorherige Version läuft weiter.", richtig: true }
-          - { text: "Die Seite wird gelöscht.", richtig: false }
+          - { text: "Die bisherige Seite wird gelöscht und bleibt offline.", richtig: false }
+          - { text: "Render ersetzt den Code durch eine leere Vorlage.", richtig: false }
       - frage: "Wofür ist der optionale Pre-Deploy-Befehl gedacht?"
         erklaerung: "Für Aufgaben wie Datenbank-Migrationen zwischen Build und Deploy."
         antworten:
-          - { text: "Zum Löschen der Logs.", richtig: false }
-          - { text: "Zum Ändern des Domain-Namens.", richtig: false }
+          - { text: "Zum Ändern des Domain-Namens des Dienstes.", richtig: false }
           - { text: "Für Aufgaben wie Datenbank-Migrationen.", richtig: true }
+          - { text: "Zum Löschen der alten Logs vor dem Deploy.", richtig: false }
 test:
   zeitlimit_minuten: 10
   fragen:
     - frage: "Welche Einstellung darf im Betrieb nie auf True stehen?"
       erklaerung: "DEBUG darf im Betrieb nie eingeschaltet sein."
       antworten:
-        - { text: "DEBUG", richtig: true }
         - { text: "ALLOWED_HOSTS", richtig: false }
         - { text: "STATIC_ROOT", richtig: false }
+        - { text: "DEBUG", richtig: true }
     - frage: "Was braucht Django bei DEBUG = False unbedingt?"
       erklaerung: "Einen passenden Wert für ALLOWED_HOSTS."
       antworten:
         - { text: "Einen passenden Wert für ALLOWED_HOSTS.", richtig: true }
-        - { text: "Einen zweiten SECRET_KEY.", richtig: false }
-        - { text: "Eine Datei debug.txt.", richtig: false }
+        - { text: "Eine Datei debug.txt im Projektordner.", richtig: false }
+        - { text: "Einen zweiten SECRET_KEY für den Betrieb.", richtig: false }
     - frage: "Wozu dient collectstatic?"
       erklaerung: "Es kopiert statische Dateien in das STATIC_ROOT-Verzeichnis."
       antworten:
-        - { text: "Es löscht alte Migrationen.", richtig: false }
+        - { text: "Es startet die Datenbank des Projekts.", richtig: false }
         - { text: "Es kopiert statische Dateien nach STATIC_ROOT.", richtig: true }
-        - { text: "Es startet die Datenbank.", richtig: false }
+        - { text: "Es löscht alte Migrationen der Anwendung.", richtig: false }
     - frage: "Welche beiden Cookie-Einstellungen empfiehlt die Doku nach dem Einrichten von HTTPS?"
       erklaerung: "CSRF_COOKIE_SECURE und SESSION_COOKIE_SECURE jeweils auf True."
       antworten:
+        - { text: "DEBUG_COOKIE und HTTP_ONLY", richtig: false }
         - { text: "ALLOWED_COOKIES und STATIC_COOKIE", richtig: false }
         - { text: "CSRF_COOKIE_SECURE und SESSION_COOKIE_SECURE", richtig: true }
-        - { text: "DEBUG_COOKIE und HTTP_ONLY", richtig: false }
     - frage: "Wann baut Render bei der Standard-Einstellung den Dienst neu?"
       erklaerung: "Wenn du in den verknüpften Branch pushst oder mergst."
       antworten:
         - { text: "Wenn du in den verknüpften Branch pushst oder mergst.", richtig: true }
-        - { text: "Nur wenn du es um Mitternacht anstößt.", richtig: false }
-        - { text: "Nie automatisch.", richtig: false }
+        - { text: "Nur wenn du es um Mitternacht manuell anstößt.", richtig: false }
+        - { text: "Nie automatisch, immer nur nach Freigabe durch den Support.", richtig: false }

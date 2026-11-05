@@ -39,9 +39,9 @@ abschnitte:
       - frage: "Welche Art von Test ruft zum Beispiel eine Route auf und prüft die Antwort?"
         erklaerung: "Das ist ein Feature-Test."
         antworten:
+          - { text: "Eine Migration", richtig: false }
           - { text: "Ein Feature-Test", richtig: true }
           - { text: "Ein Seeder", richtig: false }
-          - { text: "Eine Migration", richtig: false }
   - titel: HTTP-Tests für JSON
     inhalt: |
       In einem Feature-Test rufst du deine API auf, ohne einen Server zu starten:
@@ -85,8 +85,8 @@ abschnitte:
         erklaerung: "Es prüft, ob eine passende Zeile in der Tabelle steht."
         antworten:
           - { text: "Es prüft, ob eine passende Zeile in der Tabelle steht.", richtig: true }
-          - { text: "Es legt die Tabelle an.", richtig: false }
-          - { text: "Es löscht die Datenbank.", richtig: false }
+          - { text: "Es legt die Tabelle für den Test an.", richtig: false }
+          - { text: "Es löscht die Datenbank nach dem Test.", richtig: false }
   - titel: Datenbank in Tests zurücksetzen
     inhalt: |
       Tests dürfen sich nicht gegenseitig stören. Ein Test legt Daten an, der nächste soll
@@ -126,15 +126,15 @@ abschnitte:
       - frage: "Wozu dient `RefreshDatabase`?"
         erklaerung: "Es setzt die Datenbank zwischen den Tests zurück."
         antworten:
-          - { text: "Es installiert Pakete.", richtig: false }
+          - { text: "Es lädt die getestete Seite im Browser neu.", richtig: false }
           - { text: "Es setzt die Datenbank zwischen den Tests zurück.", richtig: true }
-          - { text: "Es lädt die Seite neu.", richtig: false }
+          - { text: "Es installiert die Pakete für den Test.", richtig: false }
       - frage: "Wie erzeugst du in einem Test drei Trainings?"
         erklaerung: "`Training::factory()->count(3)->create()`."
         antworten:
-          - { text: "Training::factory()->count(3)->create();", richtig: true }
-          - { text: "Training::make(3);", richtig: false }
           - { text: "$this->seed(3);", richtig: false }
+          - { text: "Training::make(3);", richtig: false }
+          - { text: "Training::factory()->count(3)->create();", richtig: true }
 test:
   zeitlimit_minuten: 15
   fragen:
@@ -153,18 +153,18 @@ test:
     - frage: "Warum nutzt man in Tests `RefreshDatabase`?"
       erklaerung: "Damit jeder Test mit einer sauberen Datenbank startet."
       antworten:
-        - { text: "Damit jeder Test mit einer sauberen Datenbank startet.", richtig: true }
         - { text: "Damit Tests schneller geschrieben werden können.", richtig: false }
         - { text: "Damit die Migrationen gelöscht werden.", richtig: false }
+        - { text: "Damit jeder Test mit einer sauberen Datenbank startet.", richtig: true }
     - frage: "Welches Werkzeug erzeugt Testdaten?"
       erklaerung: "Factories."
       antworten:
-        - { text: "Routen", richtig: false }
         - { text: "Factories", richtig: true }
         - { text: "Middleware", richtig: false }
+        - { text: "Routen", richtig: false }
     - frage: "Welche Prüfung stellt fest, dass eine Zeile in der Tabelle `trainings` steht?"
       erklaerung: "`assertDatabaseHas` prüft, ob eine passende Zeile in der Tabelle vorhanden ist."
       antworten:
+        - { text: "assertRoute('trainings')", richtig: false }
         - { text: "assertDatabaseHas('trainings', [...])", richtig: true }
         - { text: "assertTableFull('trainings')", richtig: false }
-        - { text: "assertRoute('trainings')", richtig: false }

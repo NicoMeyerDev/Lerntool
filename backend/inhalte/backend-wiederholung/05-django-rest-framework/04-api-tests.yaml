@@ -29,9 +29,9 @@ abschnitte:
       - frage: "Was prüft das Beispiel der Doku nach dem POST?"
         erklaerung: "Den Statuscode 201 und die Zahl der Objekte in der Datenbank."
         antworten:
-          - { text: "Den Namen des Servers.", richtig: false }
           - { text: "Statuscode 201 und die Anzahl der Objekte in der Datenbank.", richtig: true }
-          - { text: "Nur die Farbe der Seite.", richtig: false }
+          - { text: "Die Farbe der Seite, die im Browser erscheint.", richtig: false }
+          - { text: "Den Namen des Servers, der geantwortet hat.", richtig: false }
       - frage: "Was ist das Standardformat des APIRequestFactory und APIClient laut Doku?"
         erklaerung: "multipart."
         antworten:
@@ -55,42 +55,42 @@ abschnitte:
       - frage: "Wie machst du alle folgenden Anfragen eines APIClient als Benutzer user angemeldet?"
         erklaerung: "Mit client.force_authenticate(user=user)."
         antworten:
-          - { text: "client.force_authenticate(user=user)", richtig: true }
           - { text: "client.login_as(user)", richtig: false }
           - { text: "client.format = user", richtig: false }
+          - { text: "client.force_authenticate(user=user)", richtig: true }
       - frage: "Was macht client.credentials() ohne Argumente?"
         erklaerung: "Es löscht gesetzte Zugangsdaten."
         antworten:
-          - { text: "Es startet den Server.", richtig: false }
           - { text: "Es löscht gesetzte Zugangsdaten.", richtig: true }
-          - { text: "Es legt einen neuen Benutzer an.", richtig: false }
+          - { text: "Es legt einen neuen Benutzer für den Test an.", richtig: false }
+          - { text: "Es startet den Testserver neu.", richtig: false }
 test:
   zeitlimit_minuten: 10
   fragen:
     - frage: "Von welcher Klasse erweitert der APIClient die Funktionen?"
       erklaerung: "Er erweitert den Client von Django."
       antworten:
-        - { text: "Vom QuerySet", richtig: false }
-        - { text: "Vom Django-Client", richtig: true }
         - { text: "Vom Serializer", richtig: false }
+        - { text: "Vom Django-Client", richtig: true }
+        - { text: "Vom QuerySet", richtig: false }
     - frage: "Was bekommt die Anfrage mit format='json' im Test?"
       erklaerung: "Der Körper der Anfrage wird als JSON gesendet."
       antworten:
-        - { text: "Eine Datei.", richtig: false }
-        - { text: "Nur Query-Parameter.", richtig: false }
+        - { text: "Eine hochgeladene Datei als Anhang.", richtig: false }
+        - { text: "Nur Query-Parameter in der URL.", richtig: false }
         - { text: "Einen JSON-Körper.", richtig: true }
     - frage: "Womit lässt du eine Testanfrage ohne Passwort als angemeldet gelten?"
       erklaerung: "force_authenticate umgeht die normale Prüfung der Zugangsdaten."
       antworten:
-        - { text: "Ein leeres Passwort", richtig: false }
-        - { text: "Eine neue Migration", richtig: false }
         - { text: "force_authenticate(user=...)", richtig: true }
+        - { text: "Eine neue Migration", richtig: false }
+        - { text: "Ein leeres Passwort", richtig: false }
     - frage: "Wie sieht der Autorisierungs-Header bei Token-Authentifizierung im Test aus?"
       erklaerung: "HTTP_AUTHORIZATION mit dem Präfix Token und dem Schlüssel."
       antworten:
-        - { text: "HTTP_USER='token'", richtig: false }
         - { text: "HTTP_COOKIE='Token'", richtig: false }
         - { text: "HTTP_AUTHORIZATION='Token ' + token.key", richtig: true }
+        - { text: "HTTP_USER='token'", richtig: false }
     - frage: "Welchen Statuscode erwartest du laut Doku-Beispiel nach dem erfolgreichen Anlegen?"
       erklaerung: "HTTP_201_CREATED."
       antworten:

@@ -2,6 +2,12 @@
 
 Punkte, die eine Entscheidung oder Aktion des Nutzers brauchen.
 
+## 2026-11-05 – Quizqualität: Überarbeitung Backend, PHP/Laravel, AI Engineering, Englisch
+
+- **Stand:** Alle Themen sind überarbeitet bis auf die Quizzes der D3-CI-Lektion (nach Merge von PR #27).
+- **Positionsrotation:** Die Rotation ist zyklisch und damit vorhersagbar. Mischen im Frontend wäre besser.
+- **Vom `quellenpruefer` bestätigen lassen** (der `reviewer` konnte sie ohne Websuche nicht prüfen): Laravel 13.x mit PHP 8.3 als Mindestversion, Attribut `#[Fillable]`, Ausgabenlimit-Verhalten der Claude-API.
+
 ## 2026-11-05 – D3 Konzept-Vergleiche: Notizen
 
 - **PHP-GitHub-Actions-Quelle fehlt:** Für die PHP/Laravel-Schritte in der CI-Lektion gibt es keine belegte offizielle Quelle. Die Schritte sind als ungeprüft gekennzeichnet und müssen nachgeprüft werden.

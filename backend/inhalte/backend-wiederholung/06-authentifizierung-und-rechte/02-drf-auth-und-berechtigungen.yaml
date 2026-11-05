@@ -24,15 +24,15 @@ abschnitte:
       - frage: "Was klärt die Authentifizierung?"
         erklaerung: "Wer die anfragende Person ist."
         antworten:
+          - { text: "Welche Daten in der Datenbank gespeichert werden.", richtig: false }
+          - { text: "Ob die Person ein bestimmtes Recht hat.", richtig: false }
           - { text: "Wer die Person ist.", richtig: true }
-          - { text: "Ob die Person ein Recht hat.", richtig: false }
-          - { text: "Welche Daten gespeichert werden.", richtig: false }
       - frage: "Was ist request.user, wenn keine Authentifizierungs-Klasse erfolgreich war?"
         erklaerung: "Ein AnonymousUser, request.auth ist None."
         antworten:
-          - { text: "Die Anfrage wird abgebrochen", richtig: false }
           - { text: "Ein AnonymousUser", richtig: true }
-          - { text: "Ein Superuser", richtig: false }
+          - { text: "Ein Superuser mit allen Rechten", richtig: false }
+          - { text: "Die Anfrage wird abgebrochen und es gibt keinen request.user", richtig: false }
   - titel: Token und Sitzung
     inhalt: |
       **TokenAuthentication:**
@@ -56,15 +56,15 @@ abschnitte:
       - frage: "Wie sieht der Header bei der Token-Authentifizierung aus?"
         erklaerung: "Authorization: Token mit Leerzeichen und Schlüssel."
         antworten:
-          - { text: "X-Login: <key>", richtig: false }
-          - { text: "Authorization: Token <key>", richtig: true }
           - { text: "Token: <key>", richtig: false }
+          - { text: "Authorization: Token <key>", richtig: true }
+          - { text: "X-Login: <key>", richtig: false }
       - frage: "Wofür braucht die SessionAuthentication ein CSRF-Token?"
         erklaerung: "Für angemeldete Anfragen mit unsicheren Methoden wie POST, PUT, PATCH und DELETE."
         antworten:
+          - { text: "Für jede GET-Anfrage, auch ohne Anmeldung.", richtig: false }
+          - { text: "Nie, die Sitzung ersetzt das CSRF-Token vollständig.", richtig: false }
           - { text: "Für angemeldete Anfragen mit POST, PUT, PATCH oder DELETE.", richtig: true }
-          - { text: "Für jede GET-Anfrage.", richtig: false }
-          - { text: "Nie.", richtig: false }
   - titel: Berechtigungs-Klassen und 401 gegen 403
     inhalt: |
       Eingebaute Klassen:
@@ -90,15 +90,15 @@ abschnitte:
       - frage: "Was gilt, wenn DEFAULT_PERMISSION_CLASSES nicht gesetzt ist?"
         erklaerung: "Standard ist AllowAny, also uneingeschränkter Zugriff."
         antworten:
-          - { text: "IsAuthenticated", richtig: false }
-          - { text: "IsAdminUser", richtig: false }
           - { text: "AllowAny, also uneingeschränkter Zugriff.", richtig: true }
+          - { text: "IsAuthenticated, also nur angemeldete Nutzer", richtig: false }
+          - { text: "IsAdminUser, also nur Mitarbeitende", richtig: false }
       - frage: "Welchen Status gibt DRF, wenn jemand angemeldet ist, aber kein Recht hat?"
         erklaerung: "Immer 403 Forbidden."
         antworten:
+          - { text: "200 OK", richtig: false }
           - { text: "403 Forbidden", richtig: true }
           - { text: "401 Unauthorized", richtig: false }
-          - { text: "200 OK", richtig: false }
 test:
   zeitlimit_minuten: 10
   fragen:
@@ -112,23 +112,23 @@ test:
       erklaerung: "'rest_framework.authtoken' in INSTALLED_APPS und migrate."
       antworten:
         - { text: "rest_framework.authtoken in INSTALLED_APPS und migrate", richtig: true }
-        - { text: "Nur eine Zeile im Template", richtig: false }
-        - { text: "Einen zweiten Server", richtig: false }
+        - { text: "Einen zweiten Server für die Anmeldung", richtig: false }
+        - { text: "Nur eine zusätzliche Zeile im Template", richtig: false }
     - frage: "Welche Methode prüft Berechtigungen für ein einzelnes Objekt?"
       erklaerung: "has_object_permission()."
       antworten:
+        - { text: "authenticate()", richtig: false }
         - { text: "has_object_permission()", richtig: true }
         - { text: "has_permission()", richtig: false }
-        - { text: "authenticate()", richtig: false }
     - frage: "Wann sollte eine API mit Token- oder Basic-Authentifizierung nur über HTTPS erreichbar sein?"
       erklaerung: "In Produktion."
       antworten:
+        - { text: "Nie, HTTP genügt immer", richtig: false }
         - { text: "Nur in Tests", richtig: false }
-        - { text: "Nie", richtig: false }
         - { text: "In Produktion", richtig: true }
     - frage: "Wer darf mit der Klasse IsAdminUser zugreifen?"
       erklaerung: "Nur Nutzer, bei denen is_staff True ist."
       antworten:
         - { text: "Nur Nutzer mit is_staff=True", richtig: true }
+        - { text: "Alle Besucher, auch ohne Anmeldung", richtig: false }
         - { text: "Alle angemeldeten Nutzer", richtig: false }
-        - { text: "Alle Besucher", richtig: false }

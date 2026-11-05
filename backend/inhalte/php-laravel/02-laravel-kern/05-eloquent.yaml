@@ -44,15 +44,15 @@ abschnitte:
       - frage: "Zu welcher Tabelle gehört das Modell `Training` nach Konvention?"
         erklaerung: "Der Tabellenname ist der Plural in snake_case: `trainings`."
         antworten:
-          - { text: "trainings", richtig: true }
           - { text: "Training", richtig: false }
           - { text: "training_model", richtig: false }
+          - { text: "trainings", richtig: true }
       - frage: "Was passiert bei `Training::findOrFail(99)`, wenn es die Zeile nicht gibt?"
         erklaerung: "Es wird ein Fehler geworfen, der als 404-Antwort endet."
         antworten:
           - { text: "Es wird ein Fehler geworfen (404 in der Antwort).", richtig: true }
           - { text: "Es wird die Zeile 99 neu angelegt.", richtig: false }
-          - { text: "Es wird null zurückgegeben.", richtig: false }
+          - { text: "Es wird null zurückgegeben und das Skript läuft weiter.", richtig: false }
   - titel: Massenzuweisung und Fillable
     inhalt: |
       `Training::create([...])` setzt viele Felder auf einmal (**Massenzuweisung**). Das ist
@@ -87,13 +87,13 @@ abschnitte:
         antworten:
           - { text: "Es füllt die Tabelle mit Testdaten.", richtig: false }
           - { text: "Es legt die per Massenzuweisung setzbaren Felder fest.", richtig: true }
-          - { text: "Es legt die Tabellennamen fest.", richtig: false }
+          - { text: "Es legt den Namen der Tabelle fest.", richtig: false }
       - frage: "Welches Risiko schützt `#[Fillable]`?"
         erklaerung: "Es verhindert, dass Nutzer Felder setzen, die sie nicht setzen dürfen."
         antworten:
+          - { text: "Dass der Server durch viele Anfragen zu langsam wird.", richtig: false }
+          - { text: "Dass die Datenbank durch zu viele Zeilen voll läuft.", richtig: false }
           - { text: "Dass Nutzer unerlaubte Felder mitschreiben.", richtig: true }
-          - { text: "Dass der Server zu langsam wird.", richtig: false }
-          - { text: "Dass die Datenbank voll läuft.", richtig: false }
   - titel: Beziehungen und N+1
     inhalt: |
       Tabellen hängen oft zusammen. (Die Beispiele hier sind nur zur Veranschaulichung und
@@ -159,15 +159,15 @@ abschnitte:
       - frage: "Welche Beziehung beschreibt „ein Sportler hat viele Trainings“?"
         erklaerung: "Das ist `hasMany` auf der Seite des Sportlers."
         antworten:
+          - { text: "hasNothing", richtig: false }
           - { text: "hasMany", richtig: true }
           - { text: "belongsTo", richtig: false }
-          - { text: "hasNothing", richtig: false }
       - frage: "Was löst das N+1-Problem?"
         erklaerung: "Eager Loading mit `with()` lädt die Beziehung in wenigen Abfragen mit."
         antworten:
-          - { text: "Eager Loading mit with()", richtig: true }
           - { text: "Mehr Arbeitsspeicher", richtig: false }
           - { text: "Weniger Spalten", richtig: false }
+          - { text: "Eager Loading mit with()", richtig: true }
   - titel: Factories
     inhalt: |
       Eine **Factory** erzeugt Modelle mit Beispieldaten. Du brauchst sie für Tests und zum
@@ -214,30 +214,30 @@ abschnitte:
       - frage: "Welche Methode der Factory legt die Standardwerte fest?"
         erklaerung: "`definition()` gibt die Standardwerte als Array zurück."
         antworten:
+          - { text: "boot()", richtig: false }
           - { text: "definition()", richtig: true }
           - { text: "fill()", richtig: false }
-          - { text: "boot()", richtig: false }
 test:
   zeitlimit_minuten: 20
   fragen:
     - frage: "Welcher Befehl erzeugt Modell und Migration zusammen?"
       erklaerung: "`php artisan make:model Name -m`."
       antworten:
-        - { text: "php artisan make:model Training -m", richtig: true }
         - { text: "php artisan make:table Training", richtig: false }
         - { text: "php artisan model Training --db", richtig: false }
+        - { text: "php artisan make:model Training -m", richtig: true }
     - frage: "Welche Zeile ändert die Dauer eines gefundenen Trainings?"
       erklaerung: "`$t->update([...])` ändert die Felder und speichert."
       antworten:
         - { text: "$t->update(['dauer_min' => 28]);", richtig: true }
-        - { text: "Training::change($t, 28);", richtig: false }
         - { text: "$t = 28;", richtig: false }
+        - { text: "Training::change($t, 28);", richtig: false }
     - frage: "Warum nutzt man `with('trainings')`?"
       erklaerung: "Damit vermeidet man viele Einzelabfragen (N+1)."
       antworten:
+        - { text: "Um die Migration für Trainings auszuführen.", richtig: false }
         - { text: "Um viele Einzelabfragen (N+1) zu vermeiden.", richtig: true }
-        - { text: "Um Trainings zu löschen.", richtig: false }
-        - { text: "Um die Migration auszuführen.", richtig: false }
+        - { text: "Um Trainings aus der Datenbank zu löschen.", richtig: false }
     - frage: "Was passiert mit einem Feld, das nicht in `#[Fillable]` steht, bei `create()`?"
       erklaerung: "Es wird nicht per Massenzuweisung übernommen."
       antworten:

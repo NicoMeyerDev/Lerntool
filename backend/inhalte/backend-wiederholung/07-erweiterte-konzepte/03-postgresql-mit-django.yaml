@@ -30,14 +30,14 @@ abschnitte:
       - frage: "Welchen Treiber empfiehlt die Django-Doku für PostgreSQL?"
         erklaerung: "psycopg 3."
         antworten:
-          - { text: "mysqlclient", richtig: false }
           - { text: "psycopg 3", richtig: true }
           - { text: "sqlite3", richtig: false }
+          - { text: "mysqlclient", richtig: false }
       - frage: "Wie heißt die ENGINE für PostgreSQL?"
         erklaerung: "django.db.backends.postgresql."
         antworten:
-          - { text: "django.db.backends.postgresql", richtig: true }
           - { text: "django.db.backends.mysql", richtig: false }
+          - { text: "django.db.backends.postgresql", richtig: true }
           - { text: "django.cache.postgres", richtig: false }
   - titel: Verbindungen und Besonderheiten
     inhalt: |
@@ -59,15 +59,15 @@ abschnitte:
       - frage: "Was bedeutet `CONN_MAX_AGE = 0`?"
         erklaerung: "Die Verbindung wird am Ende jeder Anfrage geschlossen."
         antworten:
-          - { text: "Die Verbindung bleibt für immer offen.", richtig: false }
-          - { text: "Die Datenbank ist abgeschaltet.", richtig: false }
+          - { text: "Die Verbindung bleibt dauerhaft offen und wird immer wiederverwendet.", richtig: false }
+          - { text: "Die Datenbank ist abgeschaltet und nimmt keine Anfragen an.", richtig: false }
           - { text: "Die Verbindung wird am Ende jeder Anfrage geschlossen.", richtig: true }
       - frage: "Was empfiehlt die Doku unter ASGI statt dauerhafter Verbindungen?"
         erklaerung: "Einen Verbindungs-Pool."
         antworten:
           - { text: "Einen Verbindungs-Pool.", richtig: true }
-          - { text: "Gar keine Datenbank.", richtig: false }
-          - { text: "Mehr Passwörter.", richtig: false }
+          - { text: "Für jeden Nutzer ein eigenes Datenbank-Passwort.", richtig: false }
+          - { text: "Gar keine Datenbank zu verwenden.", richtig: false }
 test:
   zeitlimit_minuten: 10
   fragen:
@@ -76,28 +76,28 @@ test:
       antworten:
         - { text: "Nur Version 9", richtig: false }
         - { text: "PostgreSQL 14 und höher", richtig: true }
-        - { text: "Keine", richtig: false }
+        - { text: "Keine, nur SQLite", richtig: false }
     - frage: "Welche Isolationsstufe ist der Standard?"
       erklaerung: "READ COMMITTED."
       antworten:
-        - { text: "READ COMMITTED", richtig: true }
         - { text: "SERIALIZABLE", richtig: false }
         - { text: "READ UNCOMMITTED", richtig: false }
+        - { text: "READ COMMITTED", richtig: true }
     - frage: "Wozu dient `sqlsequencereset`?"
       erklaerung: "Es erzeugt das SQL zum Korrigieren der Sequenzen, wenn Primärschlüssel von Hand vergeben wurden."
       antworten:
-        - { text: "Es löscht alle Tabellen.", richtig: false }
         - { text: "Es erzeugt das SQL zum Korrigieren der Sequenzen, wenn Primärschlüssel von Hand vergeben wurden.", richtig: true }
-        - { text: "Es startet den Server.", richtig: false }
+        - { text: "Es löscht alle Tabellen der Anwendung.", richtig: false }
+        - { text: "Es startet den Datenbankserver neu.", richtig: false }
     - frage: "Wie aktivierst du die PostgreSQL-Erweiterung `hstore`?"
       erklaerung: "Mit einer Migrations-Operation wie HStoreExtension (eine Variante von CreateExtension)."
       antworten:
-        - { text: "Mit einer E-Mail an den Support.", richtig: false }
+        - { text: "Gar nicht, sie ist in jeder Datenbank immer aktiv.", richtig: false }
         - { text: "Mit einer Migrations-Operation wie HStoreExtension (eine Variante von CreateExtension).", richtig: true }
-        - { text: "Gar nicht, sie ist immer aktiv.", richtig: false }
+        - { text: "Mit einer Anfrage an den Support des Hosting-Anbieters.", richtig: false }
     - frage: "Warum gehört das Datenbank-Passwort nicht in `settings.py` im Klartext?"
       erklaerung: "Es könnte versehentlich im Repository landen. Zugangsdaten kommen aus Umgebungsvariablen."
       antworten:
-        - { text: "Weil Django keine Passwörter kennt.", richtig: false }
-        - { text: "Weil es dann schneller ist.", richtig: false }
+        - { text: "Weil Django keine Passwörter für Datenbanken kennt.", richtig: false }
+        - { text: "Weil die Datenbank dann deutlich schneller antwortet.", richtig: false }
         - { text: "Es könnte versehentlich im Repository landen. Zugangsdaten kommen aus Umgebungsvariablen.", richtig: true }

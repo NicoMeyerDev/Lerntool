@@ -24,15 +24,15 @@ abschnitte:
       - frage: "Was bewirkt `EXPIRE` bei einem Redis-Schlüssel?"
         erklaerung: "Der Schlüssel wird nach der angegebenen Zeit automatisch gelöscht."
         antworten:
-          - { text: "Der Schlüssel wird verschlüsselt.", richtig: false }
+          - { text: "Der Schlüssel wird verschlüsselt abgelegt.", richtig: false }
           - { text: "Der Schlüssel wird nach der angegebenen Zeit automatisch gelöscht.", richtig: true }
-          - { text: "Der Schlüssel wird kopiert.", richtig: false }
+          - { text: "Der Schlüssel wird in einen zweiten Cache kopiert.", richtig: false }
       - frage: "Wofür ist ein Cache gedacht?"
         erklaerung: "Er merkt sich das Ergebnis teurer Arbeit, damit sie nicht wiederholt werden muss."
         antworten:
+          - { text: "Er ersetzt die Datenbank vollständig und speichert alle Daten dauerhaft.", richtig: false }
+          - { text: "Er verschlüsselt Passwörter, bevor sie gespeichert werden.", richtig: false }
           - { text: "Er merkt sich das Ergebnis teurer Arbeit, damit sie nicht wiederholt werden muss.", richtig: true }
-          - { text: "Er ersetzt die Datenbank vollständig.", richtig: false }
-          - { text: "Er verschlüsselt Passwörter.", richtig: false }
   - titel: Redis in Django einrichten
     inhalt: |
       Django bringt ein Cache-Framework mit. Für Redis brauchst du einen laufenden Redis-Server und den
@@ -56,15 +56,15 @@ abschnitte:
       - frage: "Was ist der Standardwert von `TIMEOUT` im Django-Cache?"
         erklaerung: "300 Sekunden (5 Minuten)."
         antworten:
-          - { text: "60 Sekunden", richtig: false }
           - { text: "300 Sekunden", richtig: true }
           - { text: "Unbegrenzt", richtig: false }
+          - { text: "60 Sekunden", richtig: false }
       - frage: "Wohin gehört die Redis-Adresse mit Passwort?"
         erklaerung: "In eine Umgebungsvariable, nicht fest in den Code."
         antworten:
-          - { text: "Fest in die views.py.", richtig: false }
-          - { text: "In die README-Datei.", richtig: false }
+          - { text: "In die README-Datei, damit das Team sie findet.", richtig: false }
           - { text: "In eine Umgebungsvariable, nicht fest in den Code.", richtig: true }
+          - { text: "Fest in die Datei views.py, damit sie überall verfügbar ist.", richtig: false }
   - titel: Seiten und Werte zwischenspeichern
     inhalt: |
       **Pro View** mit dem Decorator `cache_page` (Zeit in Sekunden):
@@ -94,45 +94,45 @@ abschnitte:
       - frage: "Was liefert `cache.get('x')`, wenn der Schlüssel fehlt?"
         erklaerung: "None (oder einen angegebenen Standardwert)."
         antworten:
+          - { text: "Eine leere Liste.", richtig: false }
           - { text: "Einen Fehler (KeyError).", richtig: false }
           - { text: "None (oder einen angegebenen Standardwert).", richtig: true }
-          - { text: "Eine leere Liste.", richtig: false }
       - frage: "Wofür steht der Wert in `@cache_page(60 * 15)`?"
         erklaerung: "Für die Zeit in Sekunden, die die Antwort zwischengespeichert wird (hier 15 Minuten)."
         antworten:
-          - { text: "Für die Anzahl der Nutzer.", richtig: false }
           - { text: "Für die Zeit in Sekunden, die die Antwort zwischengespeichert wird (hier 15 Minuten).", richtig: true }
-          - { text: "Für die Dateigröße.", richtig: false }
+          - { text: "Für die Anzahl der Nutzer, die die Seite gleichzeitig sehen dürfen.", richtig: false }
+          - { text: "Für die Größe der Antwort in Kilobyte.", richtig: false }
 test:
   zeitlimit_minuten: 10
   fragen:
     - frage: "Welches Backend nutzt du in Django für Redis?"
       erklaerung: "django.core.cache.backends.redis.RedisCache."
       antworten:
+        - { text: "django.contrib.sessions", richtig: false }
         - { text: "django.core.cache.backends.redis.RedisCache", richtig: true }
         - { text: "django.db.backends.postgresql", richtig: false }
-        - { text: "django.contrib.sessions", richtig: false }
     - frage: "Was bedeutet `TIMEOUT: None`?"
       erklaerung: "Die Schlüssel laufen standardmäßig nie ab."
       antworten:
+        - { text: "Die Schlüssel laufen sofort nach dem Speichern ab.", richtig: false }
         - { text: "Der Cache ist abgeschaltet.", richtig: false }
         - { text: "Die Schlüssel laufen standardmäßig nie ab.", richtig: true }
-        - { text: "Die Schlüssel laufen sofort ab.", richtig: false }
     - frage: "Was bewirkt `cache.delete('x')`?"
       erklaerung: "Es entfernt den Schlüssel x aus dem Cache."
       antworten:
         - { text: "Es entfernt den Schlüssel x aus dem Cache.", richtig: true }
-        - { text: "Es löscht die Datenbank.", richtig: false }
-        - { text: "Es startet Redis neu.", richtig: false }
+        - { text: "Es leert die gesamte Datenbank.", richtig: false }
+        - { text: "Es startet den Redis-Server neu.", richtig: false }
     - frage: "Welche Gefahr besteht, wenn persönliche Seitenteile ohne Schlüsselteil zwischengespeichert werden?"
       erklaerung: "Andere Nutzer könnten die zwischengespeicherten Inhalte einer fremden Person sehen."
       antworten:
-        - { text: "Der Server stürzt ab.", richtig: false }
+        - { text: "Die Seite wird beim Zwischenspeichern kleiner und unvollständig.", richtig: false }
         - { text: "Andere Nutzer könnten die zwischengespeicherten Inhalte einer fremden Person sehen.", richtig: true }
-        - { text: "Die Seite wird kleiner.", richtig: false }
+        - { text: "Der Server stürzt bei der nächsten Anfrage ab.", richtig: false }
     - frage: "Welche Aussage über Caches ist richtig?"
       erklaerung: "Ein Cache kann veralten, deshalb braucht er eine Ablaufzeit oder eine gezielte Löschung."
       antworten:
-        - { text: "Ein Cache ist immer aktuell.", richtig: false }
+        - { text: "Ein Cache ist immer aktuell, weil er sich selbst abgleicht.", richtig: false }
+        - { text: "Ein Cache speichert ausschließlich Bilder und Dateien.", richtig: false }
         - { text: "Ein Cache kann veralten, deshalb braucht er eine Ablaufzeit oder eine gezielte Löschung.", richtig: true }
-        - { text: "Ein Cache speichert nur Bilder.", richtig: false }

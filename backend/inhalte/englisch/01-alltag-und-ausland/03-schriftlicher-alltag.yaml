@@ -53,9 +53,9 @@ abschnitte:
       - frage: "Was rät die Aufgabe, wenn du zu einem Vorschlag Nein sagst?"
         erklaerung: "Man macht stattdessen einen anderen Vorschlag."
         antworten:
+          - { text: "Gar nicht antworten, bis ein neuer Vorschlag kommt.", richtig: false }
           - { text: "Einen anderen Vorschlag machen.", richtig: true }
-          - { text: "Gar nicht antworten.", richtig: false }
-          - { text: "Den Chat löschen.", richtig: false }
+          - { text: "Den Chat verlassen und nicht mehr schreiben.", richtig: false }
   - titel: Höfliche Bitten und Angebote
     inhalt: |
       Laut LearnEnglish sind **could you** und **would you** höfliche Wege, jemanden um etwas zu
@@ -85,15 +85,15 @@ abschnitte:
       - frage: "Welche Bitte ist laut LearnEnglish höflicher?"
         erklaerung: "Could you ist höflicher als can you."
         antworten:
-          - { text: "Could you take a message, please?", richtig: true }
           - { text: "Can you take a message, please?", richtig: false }
           - { text: "Take a message.", richtig: false }
+          - { text: "Could you take a message, please?", richtig: true }
       - frage: "Welcher Satz ist eine Einladung?"
         erklaerung: "Would you like to ...? lädt jemanden ein."
         antworten:
-          - { text: "Shall I call you on your mobile?", richtig: false }
           - { text: "Would you like to come round tomorrow?", richtig: true }
           - { text: "Could you take a message, please?", richtig: false }
+          - { text: "Shall I call you on your mobile?", richtig: false }
   - titel: Vergleiche
     inhalt: |
       Mit einem **Vergleich** (comparative) sagst du, dass etwas „mehr“ ist als etwas anderes.
@@ -125,15 +125,15 @@ abschnitte:
       - frage: "Wie lautet der Vergleich von „big“?"
         erklaerung: "Bei Vokal plus Konsonant wird der Konsonant verdoppelt: bigger."
         antworten:
-          - { text: "biger", richtig: false }
           - { text: "more big", richtig: false }
           - { text: "bigger", richtig: true }
+          - { text: "biger", richtig: false }
       - frage: "Welcher Satz ist richtig?"
         erklaerung: "Lange Adjektive wie interesting bekommen more, und than nennt das Verglichene."
         antworten:
-          - { text: "The city is more interesting than the countryside.", richtig: true }
           - { text: "The city is interestinger than the countryside.", richtig: false }
           - { text: "The city is more interesting as the countryside.", richtig: false }
+          - { text: "The city is more interesting than the countryside.", richtig: true }
   - titel: Persönliche E-Mails beginnen
     inhalt: |
       Eine E-Mail an einen Freund klingt anders als eine an ein Hotel. Aus der
@@ -163,9 +163,9 @@ abschnitte:
       - frage: "Womit kannst du eine persönliche E-Mail anfangen?"
         erklaerung: "Eine Frage wie How are you? passt, weil die E-Mail wie ein Gespräch sein darf."
         antworten:
-          - { text: "Nur mit dem Betreff.", richtig: false }
+          - { text: "Nur mit dem Betreff und ohne Anrede.", richtig: false }
           - { text: "Mit der Frage How are you?", richtig: true }
-          - { text: "Mit einem Passwort.", richtig: false }
+          - { text: "Mit einem langen Zitat aus einem Gesetz.", richtig: false }
 test:
   zeitlimit_minuten: 15
   fragen:
@@ -178,30 +178,30 @@ test:
     - frage: "Welcher Satz stimmt einem Vorschlag zu?"
       erklaerung: "Sure! Sunday works for me stimmt im Beispielchat zu."
       antworten:
+        - { text: "Sure! Sunday works for me.", richtig: true }
         - { text: "Sunday is never.", richtig: false }
         - { text: "Where is Sunday?", richtig: false }
-        - { text: "Sure! Sunday works for me.", richtig: true }
     - frage: "Welche Bitte ist laut LearnEnglish die höflichere?"
       erklaerung: "Would you ... ist höflicher als will you ..."
       antworten:
+        - { text: "Carry this for me.", richtig: false }
         - { text: "Would you carry this for me, please?", richtig: true }
         - { text: "Will you carry this for me, please?", richtig: false }
-        - { text: "Carry this for me.", richtig: false }
     - frage: "Wie lautet der Vergleich von „happy“?"
       erklaerung: "Bei Konsonant plus -y wird das y zu i: happier."
       antworten:
+        - { text: "happyer", richtig: false }
         - { text: "happyier", richtig: false }
         - { text: "happier", richtig: true }
-        - { text: "happyer", richtig: false }
     - frage: "Welche Form ist die Steigerung von „good“?"
       erklaerung: "Good ist unregelmäßig: better."
       antworten:
-        - { text: "worse", richtig: false }
         - { text: "better", richtig: true }
         - { text: "gooder", richtig: false }
+        - { text: "worse", richtig: false }
     - frage: "Welches Wort brauchst du, um zu sagen, womit du vergleichst?"
       erklaerung: "Than entspricht dem deutschen „als“."
       antworten:
+        - { text: "ago", richtig: false }
         - { text: "than", richtig: true }
         - { text: "then", richtig: false }
-        - { text: "ago", richtig: false }

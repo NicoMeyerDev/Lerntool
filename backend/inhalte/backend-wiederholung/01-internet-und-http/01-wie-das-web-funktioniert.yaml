@@ -20,14 +20,14 @@ abschnitte:
         erklaerung: "Ein Gerät des Nutzers und die Software darauf, meist der Browser."
         antworten:
           - { text: "Ein Gerät des Nutzers und die Software darauf, meist der Browser.", richtig: true }
-          - { text: "Ein Rechner, der Webseiten speichert.", richtig: false }
-          - { text: "Ein Kabel zwischen zwei Servern.", richtig: false }
+          - { text: "Eine Leitung, über die zwei Server Daten austauschen.", richtig: false }
+          - { text: "Ein Rechner, der Webseiten, Sites oder Apps speichert und ausliefert.", richtig: false }
       - frage: "Woraus besteht eine Webseite?"
         erklaerung: "Aus Code (HTML, CSS, JavaScript) und Dateien wie Bildern."
         antworten:
-          - { text: "Nur aus Bildern.", richtig: false }
+          - { text: "Nur aus Texten, die der Server bei jedem Aufruf neu schreibt.", richtig: false }
           - { text: "Aus Code (HTML, CSS, JavaScript) und Dateien wie Bildern.", richtig: true }
-          - { text: "Nur aus Passwörtern.", richtig: false }
+          - { text: "Nur aus Bildern und Videos, die der Browser abspielt.", richtig: false }
   - titel: DNS, IP-Adresse und Pakete
     inhalt: |
       Menschen merken sich Namen wie `mozilla.org`. Rechner brauchen **IP-Adressen** wie `192.0.2.172`.
@@ -42,15 +42,15 @@ abschnitte:
       - frage: "Wofür ist DNS da?"
         erklaerung: "Es übersetzt einen Domainnamen in eine IP-Adresse."
         antworten:
-          - { text: "Es verschlüsselt Passwörter.", richtig: false }
+          - { text: "Es verschlüsselt die Verbindung zwischen Browser und Server.", richtig: false }
+          - { text: "Es speichert eine Kopie der Webseite für schnellere Aufrufe.", richtig: false }
           - { text: "Es übersetzt einen Domainnamen in eine IP-Adresse.", richtig: true }
-          - { text: "Es speichert die Webseite.", richtig: false }
       - frage: "Warum werden Daten in Pakete zerlegt?"
         erklaerung: "Verlorene Pakete lassen sich einzeln neu anfordern, und Pakete können verschiedene Wege nehmen."
         antworten:
-          - { text: "Weil Browser nur kleine Dateien anzeigen können.", richtig: false }
-          - { text: "Damit Webseiten teurer werden.", richtig: false }
           - { text: "Verlorene Pakete lassen sich einzeln neu anfordern, und Pakete können verschiedene Wege nehmen.", richtig: true }
+          - { text: "Damit die Übertragung für jeden Nutzer einzeln abgerechnet werden kann.", richtig: false }
+          - { text: "Weil Browser nur kleine Dateien auf einmal anzeigen können.", richtig: false }
   - titel: Was beim Laden einer Seite passiert
     inhalt: |
       Die Quelle beschreibt vier Schritte:
@@ -67,9 +67,9 @@ abschnitte:
       - frage: "Was geschieht als Erstes, wenn du eine Adresse im Browser eingibst?"
         erklaerung: "Der Browser fragt das DNS nach der IP-Adresse des Servers."
         antworten:
+          - { text: "Der Browser löscht den Cache und lädt alle Dateien neu herunter.", richtig: false }
           - { text: "Der Browser fragt das DNS nach der IP-Adresse des Servers.", richtig: true }
-          - { text: "Der Server schickt sofort alle Dateien.", richtig: false }
-          - { text: "Der Browser löscht den Cache.", richtig: false }
+          - { text: "Der Server schickt sofort alle Dateien der Seite an den Browser.", richtig: false }
       - frage: "Was ist in `https://developer.mozilla.org/en-US/` der Pfad?"
         erklaerung: "Der Pfad ist /en-US/."
         antworten:
@@ -83,29 +83,29 @@ test:
       erklaerung: "Ein Rechner, der Webseiten, Sites oder Apps speichert."
       antworten:
         - { text: "Ein Rechner, der Webseiten, Sites oder Apps speichert.", richtig: true }
-        - { text: "Das Programm, mit dem man Seiten anschaut.", richtig: false }
-        - { text: "Ein Passwortmanager.", richtig: false }
+        - { text: "Ein Gerät, das Passwörter für den Browser verwaltet.", richtig: false }
+        - { text: "Das Programm, mit dem Nutzer Webseiten anschauen.", richtig: false }
     - frage: "Was bedeutet DNS?"
       erklaerung: "Domain Name System."
       antworten:
-        - { text: "Digital Network Service", richtig: false }
         - { text: "Data Name Standard", richtig: false }
         - { text: "Domain Name System", richtig: true }
+        - { text: "Digital Network Service", richtig: false }
     - frage: "Was steht im Kopf eines Pakets?"
       erklaerung: "Zum Beispiel Adressen von Client und Server und die Paketnummer."
       antworten:
+        - { text: "Das Passwort des Nutzers, damit der Server ihn erkennt.", richtig: false }
+        - { text: "Nur die Farbe und das Layout der Seite, die geladen wird.", richtig: false }
         - { text: "Zum Beispiel Adressen von Client und Server und die Paketnummer.", richtig: true }
-        - { text: "Das Passwort des Nutzers.", richtig: false }
-        - { text: "Nur die Farbe der Seite.", richtig: false }
     - frage: "Was bedeutet das S in https?"
       erklaerung: "Es kennzeichnet die sichere (verschlüsselte) Variante von HTTP."
       antworten:
-        - { text: "Server", richtig: false }
         - { text: "Es kennzeichnet die sichere (verschlüsselte) Variante von HTTP.", richtig: true }
-        - { text: "Schnell", richtig: false }
+        - { text: "Es steht für Server und zeigt, dass ein eigener Server genutzt wird.", richtig: false }
+        - { text: "Es steht für schnell und kennzeichnet beschleunigte Übertragung.", richtig: false }
     - frage: "Was passiert, wenn Pakete in falscher Reihenfolge ankommen?"
       erklaerung: "Der Client setzt sie anhand der Köpfe wieder richtig zusammen."
       antworten:
-        - { text: "Die Seite wird nie angezeigt.", richtig: false }
-        - { text: "Der Server löscht die Seite.", richtig: false }
+        - { text: "Der Server löscht die Seite und sendet sie später erneut.", richtig: false }
         - { text: "Der Client setzt sie anhand der Köpfe wieder richtig zusammen.", richtig: true }
+        - { text: "Die Seite wird nie angezeigt, weil die Übertragung abbricht.", richtig: false }

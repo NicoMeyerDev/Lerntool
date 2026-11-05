@@ -26,15 +26,15 @@ abschnitte:
       - frage: "Was macht der Broker bei Celery?"
         erklaerung: "Er vermittelt die Nachrichten zwischen Client und Worker."
         antworten:
-          - { text: "Er führt die Tasks selbst aus.", richtig: false }
           - { text: "Er vermittelt die Nachrichten zwischen Client und Worker.", richtig: true }
-          - { text: "Er speichert die Webseite.", richtig: false }
+          - { text: "Er speichert die fertig gerenderte Webseite.", richtig: false }
+          - { text: "Er führt die Tasks selbst aus.", richtig: false }
       - frage: "Welche Aufgabe gehört in eine Task-Queue?"
         erklaerung: "Eine langsame Arbeit wie ein umfangreicher Bericht, damit die Anfrage nicht blockiert."
         antworten:
-          - { text: "Das Anzeigen einer Überschrift.", richtig: false }
-          - { text: "Das Setzen eines Cookies.", richtig: false }
+          - { text: "Das Setzen eines Cookies in der Antwort.", richtig: false }
           - { text: "Eine langsame Arbeit wie ein umfangreicher Bericht, damit die Anfrage nicht blockiert.", richtig: true }
+          - { text: "Das Anzeigen einer Überschrift auf der Startseite.", richtig: false }
   - titel: Celery in Django einbinden
     inhalt: |
       Die Doku beschreibt diese Schritte:
@@ -63,24 +63,24 @@ abschnitte:
       - frage: "Wie stellst du eine Task in die Warteschlange?"
         erklaerung: "Mit task.delay(...)."
         antworten:
-          - { text: "Mit task.delay(...)", richtig: true }
           - { text: "Mit task.delete()", richtig: false }
           - { text: "Mit task.stop()", richtig: false }
+          - { text: "Mit task.delay(...)", richtig: true }
       - frage: "Wozu dient `delay_on_commit()`?"
         erklaerung: "Die Task wird erst gesendet, wenn die Datenbank-Transaktion abgeschlossen ist."
         antworten:
           - { text: "Die Task wird erst gesendet, wenn die Datenbank-Transaktion abgeschlossen ist.", richtig: true }
-          - { text: "Die Task läuft doppelt.", richtig: false }
-          - { text: "Die Task wird gelöscht.", richtig: false }
+          - { text: "Die Task wird nach der Ausführung wieder aus der Queue gelöscht.", richtig: false }
+          - { text: "Die Task läuft zur Sicherheit zweimal hintereinander.", richtig: false }
 test:
   zeitlimit_minuten: 10
   fragen:
     - frage: "Welche Aufgabe haben Worker?"
       erklaerung: "Sie beobachten die Warteschlange und führen Tasks aus."
       antworten:
+        - { text: "Sie zeigen die fertige HTML-Seite im Browser an.", richtig: false }
         - { text: "Sie beobachten die Warteschlange und führen Tasks aus.", richtig: true }
-        - { text: "Sie verwalten Git-Branches.", richtig: false }
-        - { text: "Sie zeigen HTML an.", richtig: false }
+        - { text: "Sie verwalten die Git-Branches des Projekts.", richtig: false }
     - frage: "Mit welchem Dekorator wird in einer wiederverwendbaren App eine Task markiert?"
       erklaerung: "@shared_task."
       antworten:
@@ -90,18 +90,18 @@ test:
     - frage: "Welches Präfix tragen Celery-Einstellungen in `settings.py` bei `namespace='CELERY'`?"
       erklaerung: "CELERY_."
       antworten:
-        - { text: "DJANGO_", richtig: false }
         - { text: "CELERY_", richtig: true }
         - { text: "TASK_", richtig: false }
+        - { text: "DJANGO_", richtig: false }
     - frage: "Wie startest du laut Doku einen Worker?"
       erklaerung: "Mit celery -A proj worker -l INFO."
       antworten:
         - { text: "python manage.py worker", richtig: false }
         - { text: "celery -A proj worker -l INFO", richtig: true }
-        - { text: "pytest worker", richtig: false }
+        - { text: "pytest --worker", richtig: false }
     - frage: "Welche Broker nennt die Doku als vollständig unterstützt?"
       erklaerung: "RabbitMQ und Redis."
       antworten:
-        - { text: "Nur SQLite", richtig: false }
+        - { text: "Nur Git und Subversion", richtig: false }
+        - { text: "Nur SQLite und PostgreSQL", richtig: false }
         - { text: "RabbitMQ und Redis", richtig: true }
-        - { text: "Nur Git", richtig: false }

@@ -40,14 +40,14 @@ abschnitte:
         erklaerung: "is_valid() muss immer zuerst aufgerufen werden."
         antworten:
           - { text: "is_valid()", richtig: true }
-          - { text: "migrate()", richtig: false }
           - { text: "render()", richtig: false }
+          - { text: "save()", richtig: false }
       - frage: "Wo findest du die Fehlermeldungen nach einem fehlgeschlagenen is_valid()?"
         erklaerung: "In serializer.errors, einem Wörterbuch mit den Meldungen je Feld."
         antworten:
           - { text: "In serializer.data", richtig: false }
-          - { text: "In settings.py", richtig: false }
           - { text: "In serializer.errors", richtig: true }
+          - { text: "In serializer.validated_data", richtig: false }
   - titel: ModelSerializer und save()
     inhalt: |
       Der **ModelSerializer** spart Schreibarbeit. Gegenüber einem normalen Serializer
@@ -73,15 +73,15 @@ abschnitte:
       - frage: "Was empfiehlt die Doku für Meta.fields im ModelSerializer?"
         erklaerung: "Alle Felder ausdrücklich auflisten."
         antworten:
-          - { text: "Nie fields angeben.", richtig: false }
-          - { text: "Nur das Feld id angeben.", richtig: false }
+          - { text: "Nur das Feld id angeben, weil alle anderen Felder abrufbar sind.", richtig: false }
+          - { text: "Nie fields angeben, damit alle Felder automatisch enthalten sind.", richtig: false }
           - { text: "Alle zu serialisierenden Felder ausdrücklich aufzählen.", richtig: true }
       - frage: "Wann ruft save() die Methode update() auf?"
         erklaerung: "Wenn dem Serializer eine Instanz übergeben wurde."
         antworten:
-          - { text: "Nur wenn die Daten ungültig sind.", richtig: false }
           - { text: "Wenn dem Serializer eine Instanz übergeben wurde.", richtig: true }
-          - { text: "Immer.", richtig: false }
+          - { text: "Nur wenn die übergebenen Daten ungültig sind.", richtig: false }
+          - { text: "Immer, unabhängig davon, was dem Serializer übergeben wurde.", richtig: false }
   - titel: Eigene Prüfungen schreiben
     inhalt: |
       Du kannst Eingaben auf zwei Ebenen prüfen.
@@ -112,35 +112,35 @@ abschnitte:
       - frage: "Wie heißt die Methode, die ein einzelnes Feld namens title prüft?"
         erklaerung: "validate_title, also validate_ plus der Feldname."
         antworten:
+          - { text: "title_validate", richtig: false }
           - { text: "validate_title", richtig: true }
           - { text: "check_title", richtig: false }
-          - { text: "title_validate", richtig: false }
       - frage: "Wofür nutzt du validate(self, data)?"
         erklaerung: "Für Prüfungen, die mehrere Felder gemeinsam betreffen."
         antworten:
-          - { text: "Zum Löschen von Daten.", richtig: false }
+          - { text: "Zum Löschen der gespeicherten Daten nach dem Prüfen.", richtig: false }
+          - { text: "Nur für die Prüfung des Feldes id.", richtig: false }
           - { text: "Für Prüfungen, die mehrere Felder betreffen.", richtig: true }
-          - { text: "Nur für das Feld id.", richtig: false }
 test:
   zeitlimit_minuten: 10
   fragen:
     - frage: "Wofür steht der Begriff Deserialisieren?"
       erklaerung: "Eingehende Daten werden geprüft und in native Python-Typen zurückverwandelt."
       antworten:
-        - { text: "Ein Template rendern.", richtig: false }
         - { text: "Eingehende Daten prüfen und in Python-Objekte umwandeln.", richtig: true }
-        - { text: "Eine Tabelle löschen.", richtig: false }
+        - { text: "Python-Objekte aus der Datenbank löschen.", richtig: false }
+        - { text: "Ein Template zu einer HTML-Seite rendern.", richtig: false }
     - frage: "Was löst is_valid(raise_exception=True) bei ungültigen Daten aus?"
       erklaerung: "Eine ValidationError, die DRF in eine Antwort mit Status 400 verwandelt."
       antworten:
-        - { text: "Ein stilles False.", richtig: false }
-        - { text: "Einen Neustart des Servers.", richtig: false }
+        - { text: "Ein stilles False ohne Fehlermeldung.", richtig: false }
         - { text: "Eine ValidationError, die zu Status 400 führt.", richtig: true }
+        - { text: "Einen Neustart des Entwicklungsservers.", richtig: false }
     - frage: "Was erzeugt ein ModelSerializer automatisch?"
       erklaerung: "Felder und passende Prüfungen sowie einfache create() und update()."
       antworten:
-        - { text: "Nur die URL-Routen.", richtig: false }
-        - { text: "Die Datenbank selbst.", richtig: false }
+        - { text: "Nur die URL-Routen für das Modell.", richtig: false }
+        - { text: "Die Datenbanktabelle für das Modell.", richtig: false }
         - { text: "Felder, Prüfungen und einfache create()/update().", richtig: true }
     - frage: "Wie übergibst du beim Speichern einen zusätzlichen Wert, etwa den Besitzer?"
       erklaerung: "Als Argument von save(), zum Beispiel serializer.save(owner=request.user)."
@@ -151,6 +151,6 @@ test:
     - frage: "Was enthält data in validate() bei einem PATCH?"
       erklaerung: "Nur die gesendeten Felder."
       antworten:
-        - { text: "Nichts.", richtig: false }
+        - { text: "Immer alle Felder des Modells mit ihren aktuellen Werten.", richtig: false }
         - { text: "Nur die gesendeten Felder.", richtig: true }
-        - { text: "Immer alle Felder des Modells.", richtig: false }
+        - { text: "Nichts, weil bei PATCH keine Daten geprüft werden.", richtig: false }

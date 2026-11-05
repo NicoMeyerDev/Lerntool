@@ -63,21 +63,21 @@ abschnitte:
       - frage: "An welchen Pfad schickst du eine Anfrage an die Messages API?"
         erklaerung: "Die Anfrage geht per POST an /v1/messages."
         antworten:
-          - { text: "GET /v1/chat", richtig: false }
           - { text: "DELETE /v1/models", richtig: false }
           - { text: "POST /v1/messages", richtig: true }
+          - { text: "GET /v1/chat", richtig: false }
       - frage: "Warum musst du bei einem Gespräch den Verlauf bei jeder Anfrage mitschicken?"
         erklaerung: "Die API ist zustandslos und merkt sich nichts zwischen den Anfragen."
         antworten:
-          - { text: "Weil das Modell sonst die Sprache wechselt.", richtig: false }
+          - { text: "Weil sonst der API-Schlüssel nach kurzer Zeit abläuft.", richtig: false }
+          - { text: "Weil das Modell sonst mitten im Gespräch die Sprache wechselt.", richtig: false }
           - { text: "Weil die API zustandslos ist.", richtig: true }
-          - { text: "Weil sonst der API-Schlüssel abläuft.", richtig: false }
       - frage: "Was legt `max_tokens` fest?"
         erklaerung: "Die maximale Zahl an Tokens, die das Modell vor dem Stopp erzeugt."
         antworten:
           - { text: "Die höchste Zahl an Tokens, die das Modell erzeugen darf.", richtig: true }
-          - { text: "Die Größe des Kontextfensters.", richtig: false }
-          - { text: "Die Anzahl der erlaubten Anfragen pro Minute.", richtig: false }
+          - { text: "Die Zahl der erlaubten Anfragen pro Minute.", richtig: false }
+          - { text: "Die Größe des Kontextfensters des Modells.", richtig: false }
   - titel: Die Antwort lesen
     inhalt: |
       Die Antwort kommt als JSON. Für den Einstieg sind drei Dinge wichtig:
@@ -104,13 +104,13 @@ abschnitte:
         antworten:
           - { text: "Im Feld model der Anfrage.", richtig: false }
           - { text: "Im Feld usage der Antwort.", richtig: true }
-          - { text: "Im Header content-type.", richtig: false }
+          - { text: "Im Header content-type der Antwort.", richtig: false }
       - frage: "Wie holst du den Antworttext sicher aus `content`?"
         erklaerung: "`content` ist eine Liste von Blöcken. Du suchst den Block vom Typ text."
         antworten:
           - { text: "Den Wert von stop_reason nehmen.", richtig: false }
+          - { text: "Immer die ganze Antwort als einen einzigen String lesen.", richtig: false }
           - { text: "Den Block vom Typ text in der Liste suchen.", richtig: true }
-          - { text: "Immer die ganze Antwort als einen String lesen.", richtig: false }
   - titel: Fehler behandeln
     inhalt: |
       Eine API-Anfrage kann scheitern. Die Fehler erkennst du am **HTTP-Statuscode**. Der Body
@@ -148,20 +148,20 @@ abschnitte:
         erklaerung: "401 `authentication_error`: Es gibt ein Problem mit dem API-Schlüssel."
         antworten:
           - { text: "Problem mit dem API-Schlüssel.", richtig: true }
-          - { text: "Die API ist überlastet.", richtig: false }
+          - { text: "Die API ist gerade überlastet.", richtig: false }
           - { text: "Die Anfrage war zu groß.", richtig: false }
       - frage: "Was tust du bei einem 429-Fehler mit Header `retry-after`?"
         erklaerung: "Du wartest die angegebene Zahl an Sekunden, bevor du es erneut versuchst."
         antworten:
-          - { text: "So viele Sekunden warten, wie der Header angibt.", richtig: true }
-          - { text: "Sofort mehrfach wiederholen.", richtig: false }
           - { text: "Den API-Schlüssel neu erzeugen.", richtig: false }
+          - { text: "So viele Sekunden warten, wie der Header angibt.", richtig: true }
+          - { text: "Sofort mehrfach hintereinander wiederholen.", richtig: false }
       - frage: "Wozu nutzt du die `request-id`?"
         erklaerung: "Mit ihr identifiziert der Support eine bestimmte Anfrage."
         antworten:
-          - { text: "Um eine bestimmte Anfrage beim Support zu benennen.", richtig: true }
-          - { text: "Um das Modell auszuwählen.", richtig: false }
+          - { text: "Um das gewünschte Modell auszuwählen.", richtig: false }
           - { text: "Um das Kontextfenster zu vergrößern.", richtig: false }
+          - { text: "Um eine bestimmte Anfrage beim Support zu benennen.", richtig: true }
   - titel: Kosten, Limits und Schlüssel
     inhalt: |
       **Kosten.** Du zahlst nach **Tokens**. Die Preisseite nennt den Preis pro **Million
@@ -198,21 +198,21 @@ abschnitte:
       - frage: "Wo gehört der API-Schlüssel hin?"
         erklaerung: "In eine Umgebungsvariable (oder einen Secrets-Manager), nie in den Code."
         antworten:
-          - { text: "In die README im Git.", richtig: false }
           - { text: "In eine Umgebungsvariable wie ANTHROPIC_API_KEY.", richtig: true }
+          - { text: "In die README im Git-Repository.", richtig: false }
           - { text: "In den Quelltext des Frontends.", richtig: false }
       - frage: "Warum sollte die Claude-API nicht direkt aus dem Browser aufgerufen werden?"
         erklaerung: "Jeder Besucher kann einen Schlüssel im Seitencode lesen. Der Aufruf gehört ins Backend."
         antworten:
+          - { text: "Weil die API nur nachts erreichbar ist.", richtig: false }
           - { text: "Weil der Schlüssel im Browser für alle lesbar wäre.", richtig: true }
           - { text: "Weil Browser kein JSON verstehen.", richtig: false }
-          - { text: "Weil die API nur nachts erreichbar ist.", richtig: false }
       - frage: "In welcher Einheit nennt die Preisseite die Preise?"
         erklaerung: "Pro Million Tokens (MTok), getrennt für Eingabe und Ausgabe."
         antworten:
-          - { text: "Pro Million Tokens (MTok).", richtig: true }
           - { text: "Pro Anfrage, unabhängig von der Länge.", richtig: false }
           - { text: "Pro Minute Rechenzeit.", richtig: false }
+          - { text: "Pro Million Tokens (MTok).", richtig: true }
 test:
   zeitlimit_minuten: 20
   fragen:
@@ -225,15 +225,15 @@ test:
     - frage: "Du schickst ein Gespräch mit drei Runden. Was musst du bei der vierten Frage mitsenden?"
       erklaerung: "Die API ist zustandslos. Der bisherige Verlauf muss mit."
       antworten:
+        - { text: "Nur die letzte Antwort des Modells.", richtig: false }
         - { text: "Den bisherigen Verlauf mit abwechselnden user- und assistant-Nachrichten.", richtig: true }
         - { text: "Nur die neue Frage.", richtig: false }
-        - { text: "Nur die letzte Antwort des Modells.", richtig: false }
     - frage: "Du bekommst 529 `overloaded_error`. Was ist sinnvoll?"
       erklaerung: "Die API ist vorübergehend überlastet. Mit wachsendem Abstand erneut versuchen."
       antworten:
-        - { text: "Die Anfrage dauerhaft aufgeben, ohne zu loggen.", richtig: false }
-        - { text: "Mit wachsendem Abstand erneut versuchen.", richtig: true }
         - { text: "Den API-Schlüssel ändern.", richtig: false }
+        - { text: "Die Anfrage dauerhaft aufgeben, ohne etwas zu protokollieren.", richtig: false }
+        - { text: "Mit wachsendem Abstand erneut versuchen.", richtig: true }
     - frage: "Welcher Fehlercode zeigt ein Problem mit dem Schlüssel an?"
       erklaerung: "401 `authentication_error`."
       antworten:
@@ -243,12 +243,12 @@ test:
     - frage: "Wie begrenzt du die monatlichen Kosten selbst?"
       erklaerung: "Du kannst in der Konsole ein eigenes Ausgabenlimit unterhalb des Tarif-Limits setzen."
       antworten:
-        - { text: "Mit einer höheren Temperatur.", richtig: false }
-        - { text: "Gar nicht, das geht nicht.", richtig: false }
+        - { text: "Gar nicht, das ist nicht möglich.", richtig: false }
         - { text: "Mit einem eigenen Ausgabenlimit in der Konsole.", richtig: true }
+        - { text: "Mit einer höheren Temperatur.", richtig: false }
     - frage: "Welche Aussage zu Antworten eines Modells stimmt für ein Backend?"
       erklaerung: "Die Antwort ist Modelltext. Sie kann falsch sein und wird vor der Weiterverarbeitung geprüft."
       antworten:
         - { text: "Sie muss nie geprüft werden, wenn die Temperatur 0 ist.", richtig: false }
-        - { text: "Sie ist Modelltext und sollte vor der Weiterverarbeitung geprüft werden.", richtig: true }
         - { text: "Sie ist immer korrekt, wenn der Statuscode 200 ist.", richtig: false }
+        - { text: "Sie ist Modelltext und sollte vor der Weiterverarbeitung geprüft werden.", richtig: true }

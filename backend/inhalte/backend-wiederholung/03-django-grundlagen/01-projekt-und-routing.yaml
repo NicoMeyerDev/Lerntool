@@ -25,15 +25,15 @@ abschnitte:
       - frage: "Was ist der Unterschied zwischen Projekt und App?"
         erklaerung: "Ein Projekt sammelt Einstellungen und Apps für eine Website, eine App erledigt eine bestimmte Aufgabe."
         antworten:
+          - { text: "Projekt und App sind zwei Namen für dieselbe Sache.", richtig: false }
           - { text: "Das Projekt enthält Einstellungen und mehrere Apps, eine App erledigt eine bestimmte Aufgabe.", richtig: true }
-          - { text: "Eine App enthält mehrere Projekte.", richtig: false }
-          - { text: "Projekt und App sind dasselbe.", richtig: false }
+          - { text: "Eine App enthält mehrere Projekte und deren Einstellungen.", richtig: false }
       - frage: "Welche Datei ist laut Tutorial ein Inhaltsverzeichnis der URLs des Projekts?"
         erklaerung: "Die Datei mysite/urls.py enthält die URL-Deklarationen des Projekts."
         antworten:
-          - { text: "mysite/urls.py", richtig: true }
-          - { text: "manage.py", richtig: false }
           - { text: "mysite/wsgi.py", richtig: false }
+          - { text: "manage.py", richtig: false }
+          - { text: "mysite/urls.py", richtig: true }
   - titel: Routing mit path() und include()
     inhalt: |
       Die Datei `urls.py` verbindet eine URL mit einer View.
@@ -68,14 +68,14 @@ abschnitte:
         erklaerung: "Es schneidet den bisher passenden Teil der URL ab und gibt den Rest an die eingebundene URLconf weiter."
         antworten:
           - { text: "Es schneidet den passenden Teil ab und übergibt den Rest an die eingebundene URLconf.", richtig: true }
-          - { text: "Es lädt die Datenbank neu.", richtig: false }
-          - { text: "Es startet den Server neu.", richtig: false }
+          - { text: "Es startet den Entwicklungsserver neu, damit die Routen gelten.", richtig: false }
+          - { text: "Es lädt die Datenbankverbindung neu und startet die Anfrage erneut.", richtig: false }
       - frage: "Welche zwei Angaben braucht path() mindestens?"
         erklaerung: "path() erwartet mindestens route und view."
         antworten:
           - { text: "Template und Modell", richtig: false }
-          - { text: "Benutzername und Passwort", richtig: false }
           - { text: "Route und View", richtig: true }
+          - { text: "Benutzername und Passwort", richtig: false }
   - titel: Die einfachste View
     inhalt: |
       Eine **View** ist bei Django eine Funktion, die eine Anfrage bekommt und eine Antwort
@@ -97,24 +97,24 @@ abschnitte:
       - frage: "Was gibt die einfachste View aus dem Tutorial zurück?"
         erklaerung: "Sie gibt ein HttpResponse-Objekt mit einem Text zurück."
         antworten:
-          - { text: "Eine Migration.", richtig: false }
+          - { text: "Eine Migration, die das Schema anpasst.", richtig: false }
+          - { text: "Eine Datenbanktabelle mit den Umfragen.", richtig: false }
           - { text: "Ein HttpResponse-Objekt.", richtig: true }
-          - { text: "Eine Datenbanktabelle.", richtig: false }
       - frage: "Was bekommt eine View als erstes Argument?"
         erklaerung: "Eine View bekommt das request-Objekt der Anfrage."
         antworten:
-          - { text: "Die settings.py.", richtig: false }
           - { text: "Das request-Objekt.", richtig: true }
-          - { text: "Den Namen der Datenbank.", richtig: false }
+          - { text: "Den Namen der verwendeten Datenbank.", richtig: false }
+          - { text: "Die Datei settings.py mit allen Einstellungen.", richtig: false }
 test:
   zeitlimit_minuten: 10
   fragen:
     - frage: "Wie nennt man eine Sammlung aus Einstellungen und Apps für eine Website?"
       erklaerung: "Das ist ein Projekt."
       antworten:
-        - { text: "View", richtig: false }
         - { text: "Template", richtig: false }
         - { text: "Projekt", richtig: true }
+        - { text: "View", richtig: false }
     - frage: "Welcher Befehl legt eine neue App an?"
       erklaerung: "python manage.py startapp erzeugt den App-Ordner."
       antworten:
@@ -130,12 +130,12 @@ test:
     - frage: "Was bedeutet path('polls/', include('polls.urls'))?"
       erklaerung: "Alles unter polls/ wird an die URLconf der App polls weitergegeben."
       antworten:
-        - { text: "Die App polls wird gelöscht.", richtig: false }
         - { text: "Die Seite polls wird als Template geladen.", richtig: false }
         - { text: "URLs unter polls/ werden an die URLs der App polls weitergegeben.", richtig: true }
+        - { text: "Die App polls wird beim Start gelöscht.", richtig: false }
     - frage: "Was liefert eine View zurück?"
       erklaerung: "Eine View liefert eine Antwort, zum Beispiel ein HttpResponse."
       antworten:
-        - { text: "Nur eine Zahl.", richtig: false }
+        - { text: "Nur eine einzelne Zahl als Statuscode.", richtig: false }
+        - { text: "Eine Migration für die Datenbank.", richtig: false }
         - { text: "Eine Antwort, zum Beispiel ein HttpResponse.", richtig: true }
-        - { text: "Eine Migration.", richtig: false }

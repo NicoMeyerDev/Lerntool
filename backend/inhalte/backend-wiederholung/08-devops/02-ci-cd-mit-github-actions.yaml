@@ -36,9 +36,9 @@ abschnitte:
       - frage: "Was ist ein Runner?"
         erklaerung: "Ein Server, der den Workflow ausführt."
         antworten:
-          - { text: "Ein Befehl zum Starten des Browsers.", richtig: false }
-          - { text: "Ein Passwort-Manager.", richtig: false }
           - { text: "Ein Server, der einen Job des Workflows ausführt.", richtig: true }
+          - { text: "Ein Programm, das Passwörter für den Workflow verwaltet.", richtig: false }
+          - { text: "Ein Befehl, der den Browser für Tests startet.", richtig: false }
   - titel: Aufbau einer Workflow-Datei
     inhalt: |
       Die wichtigsten Schlüssel in der YAML-Datei (laut Syntax-Referenz):
@@ -69,15 +69,15 @@ abschnitte:
       - frage: "Mit welchem Schlüssel legst du fest, dass ein Workflow bei einem Push startet?"
         erklaerung: "Mit on, zum Beispiel on: push."
         antworten:
+          - { text: "needs: push", richtig: false }
           - { text: "on: push", richtig: true }
           - { text: "runs-on: push", richtig: false }
-          - { text: "needs: push", richtig: false }
       - frage: "Wie lässt du einen Job erst nach einem anderen laufen?"
         erklaerung: "Mit needs, das eine Abhängigkeit zu einem anderen Job festlegt."
         antworten:
+          - { text: "Mit env", richtig: false }
           - { text: "Mit name", richtig: false }
           - { text: "Mit needs", richtig: true }
-          - { text: "Mit env", richtig: false }
   - titel: Geheimnisse in der Pipeline
     inhalt: |
       Zugangsdaten gehören **nie in die Workflow-Datei oder ins Repository**. GitHub bietet dafür den
@@ -103,44 +103,44 @@ abschnitte:
         erklaerung: "Über den secrets-Kontext: ${{ secrets.API_KEY }}."
         antworten:
           - { text: "${{ secrets.API_KEY }}", richtig: true }
+          - { text: "Du speicherst ihn in der README und liest ihn von dort.", richtig: false }
           - { text: "Du schreibst den Schlüssel direkt in die YAML-Datei.", richtig: false }
-          - { text: "Du speicherst ihn in der README.", richtig: false }
       - frage: "Wo gehören Zugangsdaten laut Projektregel hin?"
         erklaerung: "In Umgebungsvariablen, nie in den Code."
         antworten:
+          - { text: "In den Text der Commit-Nachricht.", richtig: false }
           - { text: "In Umgebungsvariablen, nicht in den Code.", richtig: true }
-          - { text: "Direkt in settings.py im Git.", richtig: false }
-          - { text: "In den Commit-Text.", richtig: false }
+          - { text: "Direkt in settings.py, die im Git liegt.", richtig: false }
 test:
   zeitlimit_minuten: 10
   fragen:
     - frage: "Welche Aussage über Jobs in einem Workflow stimmt standardmäßig?"
       erklaerung: "Jobs laufen standardmäßig parallel, außer du legst Abhängigkeiten fest."
       antworten:
-        - { text: "Sie laufen immer nacheinander.", richtig: false }
-        - { text: "Es darf nur einen Job geben.", richtig: false }
+        - { text: "Sie laufen immer streng nacheinander.", richtig: false }
+        - { text: "Es darf in einem Workflow nur einen Job geben.", richtig: false }
         - { text: "Sie laufen parallel, solange keine Abhängigkeiten definiert sind.", richtig: true }
     - frage: "Was bedeutet uses: in einem Step?"
       erklaerung: "uses führt eine Action aus."
       antworten:
-        - { text: "Er löscht den Runner.", richtig: false }
         - { text: "Er führt eine Action aus.", richtig: true }
         - { text: "Er führt einen Shell-Befehl aus.", richtig: false }
+        - { text: "Er löscht den Runner nach dem Lauf.", richtig: false }
     - frage: "Was bedeutet run: in einem Step?"
       erklaerung: "run führt einen Shell-Befehl aus."
       antworten:
+        - { text: "Er definiert die Größe des Runners.", richtig: false }
         - { text: "Er führt einen Shell-Befehl aus.", richtig: true }
-        - { text: "Er legt einen neuen Branch an.", richtig: false }
-        - { text: "Er definiert die Runner-Größe.", richtig: false }
+        - { text: "Er legt einen neuen Branch für den Lauf an.", richtig: false }
     - frage: "Was bedeutet runs-on: ubuntu-latest?"
       erklaerung: "Der Job läuft auf einem Ubuntu-Runner in der neuesten Version."
       antworten:
-        - { text: "Der Job installiert Ubuntu auf deinem Rechner.", richtig: false }
-        - { text: "Der Workflow startet nur bei Linux-Commits.", richtig: false }
+        - { text: "Der Job installiert Ubuntu auf deinem eigenen Rechner.", richtig: false }
+        - { text: "Der Workflow startet nur bei Commits unter Linux.", richtig: false }
         - { text: "Der Job läuft auf einem Ubuntu-Runner.", richtig: true }
     - frage: "Was ist ein Event im Sinne von GitHub Actions?"
       erklaerung: "Ein Ereignis im Repository, das einen Workflow startet, etwa ein Push."
       antworten:
-        - { text: "Ein fertiger, wiederverwendbarer Baustein.", richtig: false }
         - { text: "Ein Ereignis im Repository, zum Beispiel ein Push, das einen Workflow startet.", richtig: true }
         - { text: "Ein einzelner Schritt innerhalb eines Jobs.", richtig: false }
+        - { text: "Ein fertiger, wiederverwendbarer Baustein.", richtig: false }

@@ -36,15 +36,15 @@ abschnitte:
       - frage: "Wo stehen die Datenbank-Einstellungen?"
         erklaerung: "In der `.env` als `DB_*`-Werte."
         antworten:
-          - { text: "Im Browser.", richtig: false }
           - { text: "In der .env-Datei.", richtig: true }
           - { text: "In der Route.", richtig: false }
+          - { text: "Im Browser.", richtig: false }
       - frage: "Welcher Befehl führt die Migrationen aus?"
         erklaerung: "`php artisan migrate`."
         antworten:
-          - { text: "php artisan db:start", richtig: false }
           - { text: "composer migrate", richtig: false }
           - { text: "php artisan migrate", richtig: true }
+          - { text: "php artisan db:start", richtig: false }
   - titel: Migrationen
     inhalt: |
       Eine **Migration** beschreibt in PHP, wie die Datenbank aussehen soll. Sie ist wie ein
@@ -85,15 +85,15 @@ abschnitte:
       - frage: "Wozu dient die Methode `down()` in einer Migration?"
         erklaerung: "Sie macht die Änderung von `up()` rückgängig."
         antworten:
+          - { text: "Sie löscht das gesamte Projekt.", richtig: false }
           - { text: "Sie startet den Server neu.", richtig: false }
           - { text: "Sie macht die Änderung rückgängig.", richtig: true }
-          - { text: "Sie löscht das Projekt.", richtig: false }
       - frage: "Warum nutzt man Migrationen statt Tabellen von Hand anzulegen?"
         erklaerung: "Die Struktur ist als Code festgehalten und überall mit einem Befehl reproduzierbar."
         antworten:
-          - { text: "Weil Migrationen schneller laufen als SQL.", richtig: false }
           - { text: "Die Struktur ist Code und überall mit einem Befehl herstellbar.", richtig: true }
-          - { text: "Weil PHP keine Tabellen anlegen kann.", richtig: false }
+          - { text: "Weil Migrationen immer schneller laufen als SQL.", richtig: false }
+          - { text: "Weil PHP selbst keine Tabellen anlegen kann.", richtig: false }
   - titel: Query Builder und Seeder
     inhalt: |
       Der **Query Builder** baut Datenbankabfragen in PHP. Die Werte werden dabei sicher
@@ -147,9 +147,9 @@ abschnitte:
       - frage: "Wofür ist ein Seeder da?"
         erklaerung: "Er füllt die Datenbank mit Testdaten."
         antworten:
-          - { text: "Er löscht alte Migrationen.", richtig: false }
-          - { text: "Er prüft Eingaben.", richtig: false }
+          - { text: "Er prüft Eingaben vor dem Speichern.", richtig: false }
           - { text: "Er füllt die Datenbank mit Testdaten.", richtig: true }
+          - { text: "Er löscht alte Migrationen aus dem Projekt.", richtig: false }
       - frage: "Welche Zeile liest alle Zeilen der Tabelle `trainings`?"
         erklaerung: "`DB::table('trainings')->get()` liefert alle Zeilen."
         antworten:
@@ -162,15 +162,15 @@ test:
     - frage: "Welcher Befehl erzeugt eine neue Migrationsdatei?"
       erklaerung: "`php artisan make:migration name`."
       antworten:
-        - { text: "composer make migration", richtig: false }
         - { text: "php artisan make:migration create_trainings_table", richtig: true }
         - { text: "php artisan new:table trainings", richtig: false }
+        - { text: "composer make migration", richtig: false }
     - frage: "Was erzeugt `$table->timestamps()`?"
       erklaerung: "Die Spalten `created_at` und `updated_at`."
       antworten:
-        - { text: "Eine Spalte für das Passwort.", richtig: false }
-        - { text: "Einen Zeitplan für Backups.", richtig: false }
+        - { text: "Einen Zeitplan für automatische Backups.", richtig: false }
         - { text: "Die Spalten created_at und updated_at.", richtig: true }
+        - { text: "Eine Spalte für das Passwort des Nutzers.", richtig: false }
     - frage: "Welche Zeile gehört in `down()` für eine Migration, die `trainings` anlegt?"
       erklaerung: "`Schema::dropIfExists('trainings')` löscht die Tabelle wieder."
       antworten:
@@ -180,12 +180,12 @@ test:
     - frage: "Warum ist der Query Builder gegen SQL-Injection geschützt?"
       erklaerung: "Er übergibt die Werte getrennt vom SQL-Text (Parameterbindung)."
       antworten:
-        - { text: "Er erlaubt nur Zahlen.", richtig: false }
-        - { text: "Er verschlüsselt die Datenbank.", richtig: false }
         - { text: "Er übergibt Werte getrennt vom SQL-Text.", richtig: true }
+        - { text: "Er erlaubt ausschließlich Zahlen als Eingabe.", richtig: false }
+        - { text: "Er verschlüsselt die gesamte Datenbank.", richtig: false }
     - frage: "Wie startest du nur den Seeder `TrainingSeeder`?"
       erklaerung: "Mit `php artisan db:seed --class=TrainingSeeder`."
       antworten:
-        - { text: "php artisan db:seed --class=TrainingSeeder", richtig: true }
         - { text: "php artisan seed TrainingSeeder", richtig: false }
+        - { text: "php artisan db:seed --class=TrainingSeeder", richtig: true }
         - { text: "php artisan migrate --seed-only", richtig: false }

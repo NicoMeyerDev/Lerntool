@@ -28,15 +28,15 @@ abschnitte:
       - frage: "Was liefert aggregate()?"
         erklaerung: "aggregate() liefert ein Wörterbuch mit Namen und Werten."
         antworten:
+          - { text: "Ein neues QuerySet mit zusätzlichen Spalten.", richtig: false }
           - { text: "Ein Wörterbuch mit den berechneten Werten.", richtig: true }
-          - { text: "Ein neues QuerySet.", richtig: false }
-          - { text: "Ein einzelnes Modell-Objekt.", richtig: false }
+          - { text: "Ein einzelnes Modell-Objekt aus der Tabelle.", richtig: false }
       - frage: "Was liefert Sum() über eine leere Menge ohne default?"
         erklaerung: "Das Ergebnis ist None."
         antworten:
+          - { text: "0", richtig: false }
           - { text: "Einen Fehler", richtig: false }
           - { text: "None", richtig: true }
-          - { text: "0", richtig: false }
   - titel: annotate() für jedes Objekt
     inhalt: |
       `annotate()` rechnet einen Wert **für jedes Objekt** aus und hängt ihn an. Das Ergebnis ist
@@ -66,15 +66,15 @@ abschnitte:
       - frage: "Was ist der Unterschied zwischen aggregate() und annotate()?"
         erklaerung: "aggregate() liefert ein Wörterbuch für das ganze QuerySet, annotate() ergänzt jedes Objekt um einen Wert und bleibt ein QuerySet."
         antworten:
-          - { text: "Beide liefern dasselbe.", richtig: false }
-          - { text: "annotate() löscht Objekte.", richtig: false }
           - { text: "aggregate() fasst alles zusammen, annotate() ergänzt jedes Objekt um einen Wert.", richtig: true }
+          - { text: "Beide liefern dasselbe Ergebnis in unterschiedlicher Schreibweise.", richtig: false }
+          - { text: "annotate() löscht Objekte, aggregate() legt neue an.", richtig: false }
       - frage: "Was bewirkt values('name') vor annotate()?"
         erklaerung: "Die Ergebnisse werden nach den eindeutigen Werten von name gruppiert."
         antworten:
-          - { text: "Es entsteht eine neue Migration.", richtig: false }
+          - { text: "Es entsteht dadurch automatisch eine neue Migration.", richtig: false }
           - { text: "Die Ergebnisse werden nach name gruppiert.", richtig: true }
-          - { text: "Die Tabelle wird sortiert und gelöscht.", richtig: false }
+          - { text: "Die Tabelle wird nach name sortiert und danach geleert.", richtig: false }
   - titel: Der Django-Admin
     inhalt: |
       Der **Admin** liest die Metadaten deiner Modelle und baut daraus eine fertige
@@ -104,45 +104,45 @@ abschnitte:
       - frage: "Wozu dient list_display im Admin?"
         erklaerung: "Es legt fest, welche Felder auf der Listenseite angezeigt werden."
         antworten:
+          - { text: "Es legt neue Benutzer für den Admin an.", richtig: false }
+          - { text: "Es aktiviert die Suchleiste auf der Listenseite.", richtig: false }
           - { text: "Es bestimmt die Spalten der Listenseite.", richtig: true }
-          - { text: "Es aktiviert die Suche.", richtig: false }
-          - { text: "Es legt Benutzer an.", richtig: false }
       - frage: "Welcher Befehl legt einen Benutzer für den Admin an?"
         erklaerung: "python manage.py createsuperuser."
         antworten:
+          - { text: "python manage.py createsuperuser", richtig: true }
           - { text: "python manage.py startadmin", richtig: false }
           - { text: "python manage.py migrate admin", richtig: false }
-          - { text: "python manage.py createsuperuser", richtig: true }
 test:
   zeitlimit_minuten: 10
   fragen:
     - frage: "Wie berechnest du den Durchschnittspreis aller Bücher mit einem Befehl?"
       erklaerung: "Mit aggregate(Avg('price')), das Ergebnis ist ein Wörterbuch."
       antworten:
-        - { text: "Book.objects.aggregate(Avg('price'))", richtig: true }
         - { text: "Book.objects.get(Avg('price'))", richtig: false }
-        - { text: "Book.objects.delete(Avg('price'))", richtig: false }
+        - { text: "Book.objects.aggregate(Avg('price'))", richtig: true }
+        - { text: "Book.objects.filter(Avg('price'))", richtig: false }
     - frage: "Wie bekommst du für jedes Buch die Zahl seiner Autoren?"
       erklaerung: "Mit annotate(num_authors=Count('authors'))."
       antworten:
-        - { text: "Book.objects.annotate(num_authors=Count('authors'))", richtig: true }
+        - { text: "Book.objects.exclude(num_authors=Count('authors'))", richtig: false }
         - { text: "Book.objects.aggregate(num_authors=Count('authors'))", richtig: false }
-        - { text: "Book.objects.exclude(num_authors)", richtig: false }
+        - { text: "Book.objects.annotate(num_authors=Count('authors'))", richtig: true }
     - frage: "Wie bekommst du 0 statt None, wenn Sum über eine leere Menge rechnet?"
       erklaerung: "Mit dem Argument default=0 bei Sum."
       antworten:
-        - { text: "Sum('price', None=0)", richtig: false }
-        - { text: "Sum('price').delete()", richtig: false }
         - { text: "Sum('price', default=0)", richtig: true }
+        - { text: "Sum('price', None=0)", richtig: false }
+        - { text: "Sum('price', empty=0)", richtig: false }
     - frage: "Welche Zeile registriert ein Modell mit einer eigenen Admin-Klasse?"
       erklaerung: "Der Dekorator @admin.register(Modell) über der ModelAdmin-Klasse."
       antworten:
         - { text: "@views.register(Author)", richtig: false }
-        - { text: "admin.delete(Author)", richtig: false }
         - { text: "@admin.register(Author) über der ModelAdmin-Klasse", richtig: true }
+        - { text: "@models.register(Author)", richtig: false }
     - frage: "Wofür empfiehlt die Doku den Admin?"
       erklaerung: "Als internes Verwaltungswerkzeug, nicht als gesamtes Frontend."
       antworten:
+        - { text: "Als Ersatz für die Datenbank selbst.", richtig: false }
+        - { text: "Als Frontend, das alle Besucher der Website nutzen.", richtig: false }
         - { text: "Als internes Verwaltungswerkzeug einer Organisation.", richtig: true }
-        - { text: "Als Frontend für alle Besucher.", richtig: false }
-        - { text: "Als Ersatz für die Datenbank.", richtig: false }

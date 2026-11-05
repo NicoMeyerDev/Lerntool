@@ -36,8 +36,8 @@ abschnitte:
       - frage: "Was macht `continue` in einer Schleife?"
         erklaerung: "Es springt zum nächsten Durchlauf."
         antworten:
-          - { text: "Es beendet die ganze Schleife.", richtig: false }
-          - { text: "Es beendet das Programm.", richtig: false }
+          - { text: "Es überspringt den Rest der Schleife und beendet die Funktion.", richtig: false }
+          - { text: "Es beendet die ganze Schleife sofort.", richtig: false }
           - { text: "Es springt zum nächsten Durchlauf.", richtig: true }
   - titel: Funktionen
     inhalt: |
@@ -65,15 +65,15 @@ abschnitte:
       - frage: "Was gibt eine Funktion ohne `return` zurück?"
         erklaerung: "None."
         antworten:
-          - { text: "0", richtig: false }
           - { text: "None", richtig: true }
           - { text: "Einen leeren String", richtig: false }
+          - { text: "0", richtig: false }
       - frage: "Warum ist `def f(a, L=[])` problematisch?"
         erklaerung: "Der Standardwert wird einmal beim Definieren erzeugt und von allen Aufrufen geteilt."
         antworten:
-          - { text: "Python erlaubt keine Listen als Parameter.", richtig: false }
+          - { text: "Die Funktion läuft dadurch bei jedem Aufruf deutlich langsamer.", richtig: false }
           - { text: "Der Standardwert wird einmal beim Definieren erzeugt und von allen Aufrufen geteilt.", richtig: true }
-          - { text: "Die Funktion läuft dadurch langsamer.", richtig: false }
+          - { text: "Python erlaubt Listen nicht als Standardwert eines Parameters.", richtig: false }
 test:
   zeitlimit_minuten: 10
   fragen:
@@ -87,23 +87,23 @@ test:
       erklaerung: "Weitere Positionsargumente, als Tupel."
       antworten:
         - { text: "Weitere Positionsargumente, als Tupel.", richtig: true }
+        - { text: "Nur Argumente vom Typ Zahl, als Liste.", richtig: false }
         - { text: "Alle Schlüsselwort-Argumente, als Wörterbuch.", richtig: false }
-        - { text: "Nur Zahlen.", richtig: false }
     - frage: "Was liefert `list(range(0, 10, 3))`?"
       erklaerung: "[0, 3, 6, 9]."
       antworten:
-        - { text: "[0, 3, 6, 9, 12]", richtig: false }
         - { text: "[3, 6, 9]", richtig: false }
         - { text: "[0, 3, 6, 9]", richtig: true }
+        - { text: "[0, 3, 6, 9, 12]", richtig: false }
     - frage: "Wo steht ein Docstring?"
       erklaerung: "Als String an erster Stelle im Funktionskörper."
       antworten:
+        - { text: "Hinter dem Wort return am Ende der Funktion.", richtig: false }
+        - { text: "In einer eigenen Datei neben dem Modul.", richtig: false }
         - { text: "Als String an erster Stelle im Funktionskörper.", richtig: true }
-        - { text: "Hinter dem Wort return.", richtig: false }
-        - { text: "In einer eigenen Datei.", richtig: false }
     - frage: "Für `def parrot(voltage, state='tot')` wird `parrot(voltage=5.0, 'dead')` aufgerufen. Was passiert?"
       erklaerung: "Der Aufruf ist ungültig (in CPython ein SyntaxError), weil ein positionales Argument nicht hinter einem Schlüsselwort-Argument stehen darf."
       antworten:
-        - { text: "Es läuft ohne Fehler.", richtig: false }
         - { text: "Ein SyntaxError, weil ein positionales Argument nicht hinter einem Schlüsselwort-Argument stehen darf.", richtig: true }
-        - { text: "Es wird 5.0 ausgegeben.", richtig: false }
+        - { text: "Es läuft ohne Fehler, weil Python die Reihenfolge selbst anpasst.", richtig: false }
+        - { text: "Es wird nur das erste Argument genutzt, das zweite wird ignoriert.", richtig: false }

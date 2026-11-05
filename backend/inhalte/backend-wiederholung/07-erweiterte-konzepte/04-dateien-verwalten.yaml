@@ -31,15 +31,15 @@ abschnitte:
       - frage: "Was speichert die Datenbank bei einem `FileField`?"
         erklaerung: "Den relativen Dateinamen, nicht die Datei selbst."
         antworten:
-          - { text: "Die komplette Datei.", richtig: false }
           - { text: "Den relativen Dateinamen, nicht die Datei selbst.", richtig: true }
-          - { text: "Nur die Dateigröße.", richtig: false }
+          - { text: "Nur die Größe der Datei in Byte.", richtig: false }
+          - { text: "Die komplette Datei als Inhalt.", richtig: false }
       - frage: "Wofür steht `MEDIA_ROOT`?"
         erklaerung: "Für den Ordner im Dateisystem, in dem hochgeladene Dateien liegen."
         antworten:
-          - { text: "Für die URL der Seite.", richtig: false }
+          - { text: "Für die URL, unter der die Seite erreichbar ist.", richtig: false }
           - { text: "Für den Ordner im Dateisystem, in dem hochgeladene Dateien liegen.", richtig: true }
-          - { text: "Für den Namen der Datenbank.", richtig: false }
+          - { text: "Für den Namen der Datenbank, in der die Dateien liegen.", richtig: false }
   - titel: Uploads empfangen und absichern
     inhalt: |
       Hochgeladene Dateien liegen in `request.FILES`. Das gilt nur, wenn die Anfrage ein `POST` ist und
@@ -59,45 +59,45 @@ abschnitte:
       - frage: "Was braucht ein Formular, damit `request.FILES` gefüllt wird?"
         erklaerung: "Eine POST-Anfrage und enctype=\"multipart/form-data\"."
         antworten:
-          - { text: "Nur einen Button.", richtig: false }
+          - { text: "Nur einen Senden-Button.", richtig: false }
+          - { text: "Eine GET-Anfrage mit dem Dateinamen in der URL.", richtig: false }
           - { text: "Eine POST-Anfrage und enctype=\"multipart/form-data\".", richtig: true }
-          - { text: "Eine GET-Anfrage.", richtig: false }
       - frage: "Wie liest du große Uploads speicherschonend?"
         erklaerung: "Mit f.chunks() Stück für Stück."
         antworten:
-          - { text: "Mit f.read() auf einmal.", richtig: false }
           - { text: "Mit f.chunks() Stück für Stück.", richtig: true }
-          - { text: "Gar nicht, sie sind verboten.", richtig: false }
+          - { text: "Gar nicht, große Uploads sind in Django verboten.", richtig: false }
+          - { text: "Mit f.read() auf einmal.", richtig: false }
 test:
   zeitlimit_minuten: 10
   fragen:
     - frage: "Wofür steht `upload_to` bei einem FileField?"
       erklaerung: "Für den Unterordner relativ zu MEDIA_ROOT (siehe Feldreferenz zu FileField)."
       antworten:
-        - { text: "Für die maximale Dateigröße.", richtig: false }
+        - { text: "Für den Benutzernamen, dem die Datei gehört.", richtig: false }
         - { text: "Für den Unterordner relativ zu MEDIA_ROOT.", richtig: true }
-        - { text: "Für den Benutzernamen.", richtig: false }
+        - { text: "Für die maximale Dateigröße in Megabyte.", richtig: false }
     - frage: "Welches Feld ist für Bilder gedacht?"
       erklaerung: "ImageField."
       antworten:
-        - { text: "ImageField", richtig: true }
         - { text: "CharField", richtig: false }
         - { text: "BooleanField", richtig: false }
+        - { text: "ImageField", richtig: true }
     - frage: "Warum sind Uploads ein Sicherheitsrisiko?"
       erklaerung: "Nicht vertrauenswürdige Nutzer können gefährliche Dateien hochladen."
       antworten:
         - { text: "Nicht vertrauenswürdige Nutzer können gefährliche Dateien hochladen.", richtig: true }
-        - { text: "Weil Dateien immer zu groß sind.", richtig: false }
-        - { text: "Es gibt kein Risiko.", richtig: false }
+        - { text: "Es gibt kein Risiko, weil Django Uploads automatisch prüft.", richtig: false }
+        - { text: "Weil hochgeladene Dateien immer zu groß für den Server sind.", richtig: false }
     - frage: "Welche Klasse ist Djangos Wrapper für Dateien?"
       erklaerung: "django.core.files.File."
       antworten:
-        - { text: "django.http.Request", richtig: false }
         - { text: "django.db.Model", richtig: false }
         - { text: "django.core.files.File", richtig: true }
+        - { text: "django.http.Request", richtig: false }
     - frage: "Was liefert `photo.url`?"
       erklaerung: "Die URL, die aus MEDIA_URL und dem Dateinamen gebildet wird."
       antworten:
+        - { text: "Den vollständigen Inhalt der Datei.", richtig: false }
+        - { text: "Den Pfad der Datei auf der Festplatte des Servers.", richtig: false }
         - { text: "Die URL, die aus MEDIA_URL und dem Dateinamen gebildet wird.", richtig: true }
-        - { text: "Den Dateiinhalt.", richtig: false }
-        - { text: "Das Passwort des Nutzers.", richtig: false }

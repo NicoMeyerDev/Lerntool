@@ -32,15 +32,15 @@ abschnitte:
       - frage: "Welche Schlüssel hat die Antwort bei PageNumberPagination?"
         erklaerung: "count, next, previous und results."
         antworten:
-          - { text: "page, size, total", richtig: false }
           - { text: "data, error, status", richtig: false }
           - { text: "count, next, previous, results", richtig: true }
+          - { text: "page, size, total", richtig: false }
       - frage: "Was gilt, wenn DEFAULT_PAGINATION_CLASS und PAGE_SIZE nicht gesetzt sind?"
         erklaerung: "Beide sind standardmäßig None, es gibt keine Pagination."
         antworten:
-          - { text: "DRF startet nicht.", richtig: false }
+          - { text: "DRF startet nicht und meldet einen Konfigurationsfehler.", richtig: false }
+          - { text: "Die Seitengröße beträgt dann immer 10 Einträge.", richtig: false }
           - { text: "Es gibt keine Pagination.", richtig: true }
-          - { text: "Die Seitengröße ist immer 10.", richtig: false }
   - titel: Die Reihenfolge nicht vergessen
     inhalt: |
       Eine saubere Pagination braucht eine **feste Reihenfolge** der Daten. Setze sie über `Meta`
@@ -58,15 +58,15 @@ abschnitte:
       - frage: "Warum braucht Pagination eine feste Reihenfolge?"
         erklaerung: "Sonst können Einträge fehlen oder doppelt erscheinen."
         antworten:
-          - { text: "Sonst gibt es keine JSON-Antwort.", richtig: false }
           - { text: "Sonst können Einträge fehlen oder doppelt erscheinen.", richtig: true }
-          - { text: "Sonst läuft der Server langsamer als 1 Sekunde.", richtig: false }
+          - { text: "Sonst läuft jede Abfrage länger als eine Sekunde.", richtig: false }
+          - { text: "Sonst gibt es keine JSON-Antwort.", richtig: false }
       - frage: "Nach welchem Feld sortiert die CursorPagination standardmäßig?"
         erklaerung: "Standardmäßig wird nach -created sortiert, solange keine eigene Sortierung eingestellt ist."
         antworten:
+          - { text: "name", richtig: false }
           - { text: "created", richtig: true }
           - { text: "updated", richtig: false }
-          - { text: "name", richtig: false }
   - titel: Filter, Suche und Sortierung
     inhalt: |
       **Nach dem aktuellen Nutzer:** In `get_queryset()` filterst du auf `request.user`, damit
@@ -93,41 +93,41 @@ abschnitte:
         erklaerung: "Mit einem Minuszeichen: ?ordering=-username."
         antworten:
           - { text: "?desc=username", richtig: false }
-          - { text: "?ordering=-username", richtig: true }
           - { text: "?sort=username", richtig: false }
+          - { text: "?ordering=-username", richtig: true }
       - frage: "Wann wirkt der SearchFilter?"
         erklaerung: "Nur wenn die View search_fields gesetzt hat."
         antworten:
-          - { text: "Nur bei LimitOffsetPagination.", richtig: false }
           - { text: "Nur wenn die View search_fields setzt.", richtig: true }
-          - { text: "Immer, auf alle Felder.", richtig: false }
+          - { text: "Immer, und zwar auf alle Felder des Modells.", richtig: false }
+          - { text: "Nur zusammen mit LimitOffsetPagination.", richtig: false }
 test:
   zeitlimit_minuten: 10
   fragen:
     - frage: "Wozu dient Pagination in einer API?"
       erklaerung: "Sie teilt lange Listen in Seiten auf."
       antworten:
+        - { text: "Sie prüft die Zugangsdaten der Nutzer.", richtig: false }
         - { text: "Sie teilt lange Listen in Seiten auf.", richtig: true }
-        - { text: "Sie verschlüsselt die Antwort.", richtig: false }
-        - { text: "Sie prüft Passwörter.", richtig: false }
+        - { text: "Sie verschlüsselt die Antwort der API.", richtig: false }
     - frage: "Welche Parameter nutzt LimitOffsetPagination?"
       erklaerung: "limit und offset."
       antworten:
+        - { text: "page und size", richtig: false }
         - { text: "start und end", richtig: false }
         - { text: "limit und offset", richtig: true }
-        - { text: "page und size", richtig: false }
     - frage: "Was ist die Besonderheit der CursorPagination?"
       erklaerung: "Der Client kann nicht zu beliebigen Positionen springen, nur vor und zurück."
       antworten:
-        - { text: "Sie funktioniert ohne Reihenfolge.", richtig: false }
-        - { text: "Sie ersetzt die Datenbank.", richtig: false }
         - { text: "Der Client kann nur vor und zurück blättern.", richtig: true }
+        - { text: "Sie funktioniert auch ohne feste Reihenfolge der Einträge.", richtig: false }
+        - { text: "Sie ersetzt die Datenbank durch einen eigenen Speicher.", richtig: false }
     - frage: "Wo setzt du global die Pagination-Klasse?"
       erklaerung: "In den REST_FRAMEWORK-Einstellungen mit DEFAULT_PAGINATION_CLASS."
       antworten:
-        - { text: "In REST_FRAMEWORK mit DEFAULT_PAGINATION_CLASS", richtig: true }
         - { text: "In der Datei manage.py", richtig: false }
-        - { text: "Im Template", richtig: false }
+        - { text: "In REST_FRAMEWORK mit DEFAULT_PAGINATION_CLASS", richtig: true }
+        - { text: "Im Template der Listenseite", richtig: false }
     - frage: "Wie erlaubst du dem OrderingFilter nur bestimmte Felder?"
       erklaerung: "Mit ordering_fields."
       antworten:

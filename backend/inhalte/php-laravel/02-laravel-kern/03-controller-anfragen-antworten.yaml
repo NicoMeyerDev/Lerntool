@@ -98,8 +98,8 @@ abschnitte:
         erklaerung: "Er bündelt zusammengehörigen Code zum Bearbeiten von Anfragen in einer Klasse."
         antworten:
           - { text: "Er bündelt den Code, der Anfragen bearbeitet, in einer Klasse.", richtig: true }
-          - { text: "Er speichert Daten dauerhaft.", richtig: false }
-          - { text: "Er startet den Server.", richtig: false }
+          - { text: "Er startet den Webserver bei jeder Anfrage neu.", richtig: false }
+          - { text: "Er speichert Daten dauerhaft in Dateien.", richtig: false }
       - frage: "Was passiert bei `show(Training $training)`, wenn es die Zeile mit dieser ID nicht gibt?"
         erklaerung: "Route-Model-Binding antwortet automatisch mit 404."
         antworten:
@@ -138,15 +138,15 @@ abschnitte:
       - frage: "Wie liest du den Wert `sportart` aus der Anfrage?"
         erklaerung: "`$request->input('sportart')` liest den Wert."
         antworten:
+          - { text: "$request->input('sportart')", richtig: true }
           - { text: "Request::sportart", richtig: false }
           - { text: "$_GLOBAL['sportart']", richtig: false }
-          - { text: "$request->input('sportart')", richtig: true }
       - frage: "Warum darf man Eingaben nicht blind vertrauen?"
         erklaerung: "Sie kommen von außen und können falsch oder bösartig sein."
         antworten:
-          - { text: "Weil sie immer zu groß sind.", richtig: false }
+          - { text: "Weil PHP sie nach der Anfrage sofort wieder löscht.", richtig: false }
           - { text: "Sie kommen von außen und können falsch oder bösartig sein.", richtig: true }
-          - { text: "Weil PHP sie sofort löscht.", richtig: false }
+          - { text: "Weil sie immer zu groß für den Speicher sind.", richtig: false }
   - titel: Antworten und Statuscodes
     inhalt: |
       Ein Controller gibt eine Antwort zurück. Für eine JSON-API nutzt du:
@@ -184,9 +184,9 @@ abschnitte:
       - frage: "Wie sendest du eine JSON-Antwort mit Status 201?"
         erklaerung: "`response()->json($daten, 201)`."
         antworten:
-          - { text: "return 201->json($daten)", richtig: false }
           - { text: "response()->json($daten, 201)", richtig: true }
           - { text: "echo json($daten) . 201", richtig: false }
+          - { text: "return 201->json($daten)", richtig: false }
 test:
   zeitlimit_minuten: 15
   fragen:
@@ -199,8 +199,8 @@ test:
     - frage: "Was liefert `$request->all()`?"
       erklaerung: "Alle Eingaben der Anfrage als Array."
       antworten:
-        - { text: "Nur die Adresse.", richtig: false }
-        - { text: "Alle Routen.", richtig: false }
+        - { text: "Alle Routen der Anwendung.", richtig: false }
+        - { text: "Nur die Adresse der Anfrage.", richtig: false }
         - { text: "Alle Eingaben der Anfrage als Array.", richtig: true }
     - frage: "Welcher Statuscode passt nach einem erfolgreichen Löschen ohne Antwortinhalt?"
       erklaerung: "204 bedeutet „No Content“."
@@ -211,12 +211,12 @@ test:
     - frage: "Welcher Statuscode steht für ungültige Eingaben?"
       erklaerung: "422 bedeutet, dass die Anfrage nicht verarbeitet werden kann, weil Eingaben ungültig sind."
       antworten:
-        - { text: "200", richtig: false }
         - { text: "301", richtig: false }
         - { text: "422", richtig: true }
+        - { text: "200", richtig: false }
     - frage: "Was passiert bei `show(Training $training)`, wenn die ID nicht existiert?"
       erklaerung: "Das implizit gebundene Modell wird nicht gefunden, Laravel antwortet mit 404."
       antworten:
-        - { text: "Laravel antwortet mit 404.", richtig: true }
         - { text: "Laravel legt ein neues Training an.", richtig: false }
         - { text: "Laravel antwortet mit 201.", richtig: false }
+        - { text: "Laravel antwortet mit 404.", richtig: true }
