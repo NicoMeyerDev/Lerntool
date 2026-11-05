@@ -1,0 +1,92 @@
+titel: API bauen
+zusammenfassung: Du erinnerst dich, wie Django REST Framework und Laravel Daten als JSON ausliefern, Routen festlegen und Ausgaben formen.
+quellen:
+  - titel: Django REST Framework – Serializers
+    url: https://www.django-rest-framework.org/api-guide/serializers/
+  - titel: Django REST Framework – Views
+    url: https://www.django-rest-framework.org/api-guide/views/
+  - titel: Laravel 13.x – Eloquent API Resources
+    url: https://laravel.com/docs/13.x/eloquent-resources
+  - titel: Laravel 13.x – Routing
+    url: https://laravel.com/docs/13.x/routing
+abschnitte:
+  - titel: Routen, Views und Controller
+    inhalt: |
+      Eine REST-API verbindet eine **Adresse** und eine **HTTP-Methode** mit Code, der eine JSON-Antwort liefert.
+
+      | Baustein | Django REST Framework | Laravel |
+      | --- | --- | --- |
+      | Adresse festlegen | `urls.py` mit Router | Routen-Dateien, zum Beispiel für die API |
+      | Code für die Anfrage | View oder ViewSet | Controller |
+      | Eingabe prüfen | Serializer (`is_valid()`) | Validierung im Controller oder Form Request |
+
+      **Gemeinsame Idee:** Die Route entscheidet, wer zuständig ist. Eingaben werden geprüft, bevor sie verarbeitet
+      werden. Geschäftslogik gehört nach unserer Projektregel in eigene Klassen und nicht in die Views.
+    quiz:
+      - frage: "Was entscheidet in einer API, welcher Code eine Anfrage bearbeitet?"
+        erklaerung: "Die Route, also Adresse und HTTP-Methode."
+        antworten:
+          - { text: "Die Farbe der Seite.", richtig: false }
+          - { text: "Die Route, also Adresse und HTTP-Methode.", richtig: true }
+          - { text: "Die Größe der Datenbank.", richtig: false }
+      - frage: "Warum werden Eingaben vor der Verarbeitung geprüft?"
+        erklaerung: "Weil Eingaben von außen nicht vertrauenswürdig sind."
+        antworten:
+          - { text: "Weil das die Seite schöner macht.", richtig: false }
+          - { text: "Weil Eingaben von außen nicht vertrauenswürdig sind.", richtig: true }
+          - { text: "Weil JSON sonst nicht lesbar wäre.", richtig: false }
+  - titel: Ausgabe formen
+    inhalt: |
+      Du gibst nicht einfach die ganze Tabellenzeile heraus. Du wählst, welche Felder nach außen gehen.
+
+      - **DRF:** Ein **Serializer** wandelt Modelle in einfache Datentypen um, die als JSON ausgeliefert werden (und umgekehrt), und prüft Eingaben.
+      - **Laravel:** Eine **API Resource** wandelt laut Doku ein Modell in ein Array für die JSON-Antwort um.
+
+      **Gemeinsame Idee:** Eine Schicht zwischen Modell und Antwort. Das schützt vor versehentlich
+      veröffentlichten Feldern, zum Beispiel einem Passwort-Hash.
+    quiz:
+      - frage: "Welche Laravel-Klasse formt ein Modell für die JSON-Antwort?"
+        erklaerung: "Eine API Resource."
+        antworten:
+          - { text: "Eine API Resource.", richtig: true }
+          - { text: "Ein Migrationsskript.", richtig: false }
+          - { text: "Ein Docker-Image.", richtig: false }
+      - frage: "Warum gibst du nicht einfach alle Felder eines Modells aus?"
+        erklaerung: "Sonst könnten interne Felder wie ein Passwort-Hash versehentlich nach außen gelangen."
+        antworten:
+          - { text: "Weil Browser nur drei Felder anzeigen.", richtig: false }
+          - { text: "Weil JSON höchstens fünf Felder erlaubt.", richtig: false }
+          - { text: "Sonst könnten interne Felder wie ein Passwort-Hash versehentlich nach außen gelangen.", richtig: true }
+test:
+  zeitlimit_minuten: 10
+  fragen:
+    - frage: "Welcher DRF-Baustein wandelt Modelle in einfache, als JSON auslieferbare Datentypen um?"
+      erklaerung: "Der Serializer."
+      antworten:
+        - { text: "Der Serializer", richtig: true }
+        - { text: "Das Dockerfile", richtig: false }
+        - { text: "Der Linter", richtig: false }
+    - frage: "Was entspricht in Laravel grob einem DRF-ViewSet als Ort für die Anfrage-Logik?"
+      erklaerung: "Ein Controller."
+      antworten:
+        - { text: "Eine Migration", richtig: false }
+        - { text: "Ein Controller", richtig: true }
+        - { text: "Eine .env-Datei", richtig: false }
+    - frage: "Welche Schicht schützt vor versehentlich veröffentlichten Feldern?"
+      erklaerung: "Die Schicht zwischen Modell und Antwort, also Serializer oder API Resource."
+      antworten:
+        - { text: "Die Schicht zwischen Modell und Antwort, also Serializer oder API Resource.", richtig: true }
+        - { text: "Der Browser-Cache.", richtig: false }
+        - { text: "Das Betriebssystem.", richtig: false }
+    - frage: "Wohin gehört nach der Projektregel die Geschäftslogik?"
+      erklaerung: "In eigene Services und nicht in die Views."
+      antworten:
+        - { text: "In die Views.", richtig: false }
+        - { text: "In die Templates.", richtig: false }
+        - { text: "In eigene Services.", richtig: true }
+    - frage: "Was liefert eine REST-API typischerweise als Antwort?"
+      erklaerung: "Daten, meist als JSON, mit einem HTTP-Statuscode."
+      antworten:
+        - { text: "Ein fertiges Bild der ganzen Webseite.", richtig: false }
+        - { text: "Daten, meist als JSON, mit einem HTTP-Statuscode.", richtig: true }
+        - { text: "Eine Installationsdatei für den Server.", richtig: false }

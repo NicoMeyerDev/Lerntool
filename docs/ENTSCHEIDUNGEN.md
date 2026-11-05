@@ -213,3 +213,8 @@ Abweichungen von `docs/CURRICULUM_ENGLISCH.md`:
 - **(c) Keine Rechtsberatung:** Die Lektionen zu Datenschutz und Recht erklären nur Grundlagen und sind keine Rechtsberatung. Alternative: Rechtsthemen weglassen (wäre für den Kurs zu lückenhaft).
 - **Freigaben:** `quellenpruefer`: Nachbesserungen in Runde 1, KRITIS-Quelle korrigiert. `reviewer`: FREIGABE in Runde 2 (nur Nachprüfung).
 
+## 2026-11-05 – D3 Konzept-Vergleiche Django und Laravel
+
+- **(a) Aufbau:** Neues Thema `django-laravel-vergleich` (Reihenfolge 6) mit einer Phase und sechs Vergleichs-Lektionen: Anmeldung und Passwörter, Datenbank und Migrationen, API, Tests, Docker, CI/CD. Jede Lektion zeigt dieselbe Aufgabe in Django und Laravel. Alternative: getrennte Lektionen je Framework (verdeckt die gemeinsame Idee).
+- **(b) PHP-CI-Schritte ungeprüft:** Die Schritte für PHP/Laravel in GitHub Actions sind bewusst als ungeprüft gekennzeichnet, weil eine belegte Quelle fehlt (siehe `OFFEN.md`). Nichts wurde erfunden. Alternative: den Abschnitt weglassen (Vergleich wäre unvollständig).
+- **(c) Nur Theorie:** Es wird nichts eingerichtet, keine Konten, keine Kosten.

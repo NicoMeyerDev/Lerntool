@@ -1,0 +1,24 @@
+titel: Konzepte im Vergleich
+beschreibung: Sechs Themen, je mit der Django-Umsetzung und der Laravel-Umsetzung. Du erinnerst dich an die gemeinsame Idee und kannst Wissen aus der einen Welt in die andere übertragen.
+projekt:
+  titel: Übersetzungstabelle Django und Laravel
+  beschreibung: |
+    Du baust dir eine eigene Übersetzungstabelle, mit der du dein Django-Wissen in Laravel nutzen kannst.
+
+    **Aufgabe:** Lege eine Tabelle mit sechs Zeilen an (Anmeldung, Datenbank, API, Tests, Docker, CI/CD). Schreibe pro Zeile
+    in zwei Spalten, wie die Aufgabe in Django und in Laravel heißt und wie sie dort gelöst wird (je ein Stichwort wie
+    „`login_required`“ oder „`auth`-Middleware“). Ergänze eine dritte Spalte „Gemeinsame Idee“ in einem Satz. Wähle zum
+    Schluss zwei Zeilen und beschreibe je einen Unterschied, den du dir merken willst, mit einer kurzen Begründung.
+
+    **Regeln:**
+
+    - Es wird nichts installiert und kein Konto angelegt. Die Tabelle bleibt auf dem Papier.
+    - Zugangsdaten, Tokens und Passwörter kommen nicht in die Tabelle, auch keine Beispiele.
+
+    **Tipp:** Beginne mit der Zeile, die du am besten kennst, und übersetze dann in die andere Welt.
+    Quellen: [Django, Authentifizierung](https://docs.djangoproject.com/en/5.2/topics/auth/) und [Laravel 13.x, Authentifizierung](https://laravel.com/docs/13.x/authentication).
+  punkte:
+    - Die Tabelle hat sechs Zeilen mit je einer Django- und einer Laravel-Umsetzung.
+    - Zu jeder Zeile steht die gemeinsame Idee in einem Satz.
+    - Zwei Unterschiede sind mit Begründung genannt.
+    - Es stehen keine Zugangsdaten oder Tokens in der Tabelle.
