@@ -56,15 +56,15 @@ abschnitte:
       - frage: "Was macht Fail2Ban?"
         erklaerung: "Es sperrt IP-Adressen mit zu vielen Fehlversuchen über Firewall-Regeln."
         antworten:
-          - { text: "Es verschlüsselt die Festplatte.", richtig: false }
-          - { text: "Es installiert automatisch Updates.", richtig: false }
+          - { text: "Es installiert automatisch alle verfügbaren Sicherheitsupdates auf dem Server.", richtig: false }
           - { text: "Es sperrt IP-Adressen mit zu vielen Fehlversuchen über Firewall-Regeln.", richtig: true }
+          - { text: "Es verschlüsselt die Festplatte des Servers mit einem zufälligen Schlüssel.", richtig: false }
       - frage: "Was ist vor dem Abschalten der Passwort-Anmeldung wichtig?"
         erklaerung: "Testen, dass die Anmeldung per Schlüssel funktioniert, damit man sich nicht aussperrt."
         antworten:
+          - { text: "Den SSH-Port auf 0 stellen, damit keine Passwörter mehr ankommen.", richtig: false }
+          - { text: "Den Server ausschalten, damit während der Änderung niemand zugreifen kann.", richtig: false }
           - { text: "Testen, dass die Anmeldung per Schlüssel funktioniert, damit man sich nicht aussperrt.", richtig: true }
-          - { text: "Den Server ausschalten.", richtig: false }
-          - { text: "Den Port auf 0 stellen.", richtig: false }
   - titel: Dateirechte mit chmod
     inhalt: |
       `chmod` ändert die **Zugriffsrechte** von Dateien. Nur die besitzende Person (oder ein Prozess mit
@@ -85,24 +85,24 @@ abschnitte:
       - frage: "Wer darf laut GNU-Handbuch die Rechte einer Datei mit `chmod` ändern?"
         erklaerung: "Die besitzende Person oder ein Prozess mit passenden Rechten."
         antworten:
-          - { text: "Jeder, der sich im Netz befindet.", richtig: false }
           - { text: "Die besitzende Person oder ein Prozess mit passenden Rechten.", richtig: true }
-          - { text: "Nur der Webbrowser.", richtig: false }
+          - { text: "Jede Person, die sich im selben Netzwerk wie der Rechner befindet.", richtig: false }
+          - { text: "Nur das Programm, das die Datei zuletzt geöffnet hat.", richtig: false }
       - frage: "Was bewirkt `chmod ug+x foo`?"
         erklaerung: "Besitzer und Gruppe dürfen die Datei ausführen."
         antworten:
-          - { text: "Besitzer und Gruppe dürfen die Datei löschen.", richtig: false }
           - { text: "Alle verlieren alle Rechte.", richtig: false }
           - { text: "Besitzer und Gruppe dürfen die Datei ausführen.", richtig: true }
+          - { text: "Besitzer und Gruppe dürfen die Datei löschen.", richtig: false }
 test:
   zeitlimit_minuten: 10
   fragen:
     - frage: "Welcher Wert ist laut Handbuch der Standard für `PermitRootLogin`?"
       erklaerung: "prohibit-password."
       antworten:
+        - { text: "no", richtig: false }
         - { text: "yes", richtig: false }
         - { text: "prohibit-password", richtig: true }
-        - { text: "no", richtig: false }
     - frage: "Welcher Port ist der Standard von sshd?"
       erklaerung: "22."
       antworten:
@@ -112,18 +112,18 @@ test:
     - frage: "Welcher Schlüssel darf öffentlich sein?"
       erklaerung: "Der öffentliche Schlüssel mit der Endung .pub."
       antworten:
-        - { text: "Der private Schlüssel.", richtig: false }
+        - { text: "Die Passphrase, weil sie ohne den privaten Schlüssel nutzlos ist.", richtig: false }
         - { text: "Der öffentliche Schlüssel mit der Endung .pub.", richtig: true }
-        - { text: "Die Passphrase.", richtig: false }
+        - { text: "Der private Schlüssel, solange er mit einer Passphrase geschützt ist.", richtig: false }
     - frage: "Welche Grenze nennt das Fail2Ban-README?"
       erklaerung: "Es beseitigt das Risiko schwacher Anmeldung nicht."
       antworten:
-        - { text: "Es funktioniert nur unter Windows.", richtig: false }
-        - { text: "Es kann nur Webseiten sperren.", richtig: false }
+        - { text: "Es kann ausschließlich Webserver schützen, aber keine SSH-Dienste.", richtig: false }
+        - { text: "Es funktioniert ausschließlich auf Rechnern mit dem Betriebssystem Windows.", richtig: false }
         - { text: "Es beseitigt das Risiko schwacher Anmeldung nicht.", richtig: true }
     - frage: "Was bedeutet die Option `-R` bei `chmod`?"
       erklaerung: "Die Änderung wirkt auf Verzeichnisse und ihren Inhalt."
       antworten:
         - { text: "Die Änderung wirkt auf Verzeichnisse und ihren Inhalt.", richtig: true }
-        - { text: "Die Datei wird gelöscht.", richtig: false }
-        - { text: "Die Rechte werden nur angezeigt.", richtig: false }
+        - { text: "Die Datei wird nach der Änderung der Rechte zusätzlich gelöscht.", richtig: false }
+        - { text: "Die Rechte werden nur angezeigt, aber nicht verändert.", richtig: false }

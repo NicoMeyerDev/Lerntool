@@ -24,15 +24,15 @@ abschnitte:
       - frage: "Was bündelt ein Container?"
         erklaerung: "Die Anwendung und ihre Umgebung."
         antworten:
-          - { text: "Nur die Bilder einer Webseite.", richtig: false }
           - { text: "Die Anwendung und ihre Umgebung.", richtig: true }
-          - { text: "Nur das Betriebssystem des Handys.", richtig: false }
+          - { text: "Nur das Betriebssystem des Entwicklungsrechners.", richtig: false }
+          - { text: "Nur den Quellcode, ohne Abhängigkeiten und Einstellungen.", richtig: false }
       - frage: "Was ist Laravel Sail laut Doku?"
         erklaerung: "Eine Kommandozeilen-Oberfläche für Laravels Docker-Entwicklungsumgebung."
         antworten:
+          - { text: "Ein Test-Framework für Laravel-Anwendungen.", richtig: false }
           - { text: "Eine Kommandozeilen-Oberfläche für Laravels Docker-Entwicklungsumgebung.", richtig: true }
-          - { text: "Ein Datenbanktyp.", richtig: false }
-          - { text: "Ein Passwort-Verfahren.", richtig: false }
+          - { text: "Ein Paketmanager für PHP-Abhängigkeiten.", richtig: false }
   - titel: Geheimnisse gehören nicht ins Image
     inhalt: |
       Ein Image enthält alles, was beim Bauen hineinkommt. Landet dort ein Passwort, ist es für jeden sichtbar,
@@ -47,45 +47,45 @@ abschnitte:
       - frage: "Wie kommen Zugangsdaten in einen Container?"
         erklaerung: "Zur Laufzeit über Umgebungsvariablen oder einen Geheimnisspeicher."
         antworten:
-          - { text: "Fest im Dockerfile eingetragen.", richtig: false }
+          - { text: "Fest im Dockerfile eingetragen, damit sie beim Bau schon vorhanden sind.", richtig: false }
+          - { text: "In der README des Projekts, damit das Team sie findet.", richtig: false }
           - { text: "Zur Laufzeit über Umgebungsvariablen oder einen Geheimnisspeicher.", richtig: true }
-          - { text: "In der README.", richtig: false }
       - frage: "Wozu dient eine .dockerignore?"
         erklaerung: "Sie hält unnötige oder geheime Dateien aus dem Build heraus."
         antworten:
-          - { text: "Sie startet den Container.", richtig: false }
-          - { text: "Sie erhöht die Rechenleistung.", richtig: false }
           - { text: "Sie hält unnötige oder geheime Dateien aus dem Build heraus.", richtig: true }
+          - { text: "Sie beschränkt die Rechenleistung eines laufenden Containers.", richtig: false }
+          - { text: "Sie legt fest, welche Container beim Start automatisch laufen.", richtig: false }
 test:
   zeitlimit_minuten: 10
   fragen:
     - frage: "Welche Datei beschreibt bei Django meist den Bau des Images?"
       erklaerung: "Das Dockerfile."
       antworten:
+        - { text: "Die Datei requirements.txt", richtig: false }
         - { text: "Das Dockerfile", richtig: true }
         - { text: "Die Datei models.py", richtig: false }
-        - { text: "Die Datei LICENSE", richtig: false }
     - frage: "Was ist ein Unterschied zwischen Django-Docker und Sail?"
       erklaerung: "Bei Django baust du die Umgebung selbst, bei Laravel liefert Sail eine fertige."
       antworten:
-        - { text: "Beide kennen kein Docker.", richtig: false }
+        - { text: "Django kennt kein Docker, Laravel schon.", richtig: false }
+        - { text: "Sail ist ein Werkzeug, das nur für Python-Projekte gebaut wurde.", richtig: false }
         - { text: "Bei Django baust du die Umgebung selbst, bei Laravel liefert Sail eine fertige.", richtig: true }
-        - { text: "Sail ist ein Linter.", richtig: false }
     - frage: "Warum gehört die .env-Datei nicht ins Image?"
       erklaerung: "Sonst wären die Geheimnisse für jeden sichtbar, der das Image bekommt."
       antworten:
-        - { text: "Weil sie zu klein ist.", richtig: false }
         - { text: "Sonst wären die Geheimnisse für jeden sichtbar, der das Image bekommt.", richtig: true }
-        - { text: "Weil Docker sie nicht lesen kann.", richtig: false }
+        - { text: "Weil Docker keine Dateien lesen kann, die mit einem Punkt beginnen.", richtig: false }
+        - { text: "Weil die Datei das Image unnötig groß machen würde.", richtig: false }
     - frage: "Was ist die gemeinsame Idee hinter Containern?"
       erklaerung: "Dieselbe Umgebung für alle, beschrieben in Dateien im Repository."
       antworten:
+        - { text: "Die Umgebung wird mündlich weitergegeben und von Hand nachgebaut.", richtig: false }
         - { text: "Dieselbe Umgebung für alle, beschrieben in Dateien im Repository.", richtig: true }
-        - { text: "Jeder Entwickler richtet seinen Rechner anders ein.", richtig: false }
-        - { text: "Die Umgebung wird mündlich weitergegeben.", richtig: false }
+        - { text: "Jeder Entwickler richtet seine Umgebung nach eigenem Geschmack ein.", richtig: false }
     - frage: "Was gehört typischerweise in ein Dockerfile für eine Python-Anwendung?"
       erklaerung: "Basis-Image, Abhängigkeiten installieren, Code kopieren und Startbefehl."
       antworten:
-        - { text: "Die Passwörter aller Nutzer.", richtig: false }
-        - { text: "Nur die Lizenz des Projekts.", richtig: false }
+        - { text: "Die Zugangsdaten aller Nutzer, damit die Anwendung sie kennt.", richtig: false }
+        - { text: "Nur die Lizenz und die README des Projekts.", richtig: false }
         - { text: "Basis-Image, Abhängigkeiten installieren, Code kopieren und Startbefehl.", richtig: true }

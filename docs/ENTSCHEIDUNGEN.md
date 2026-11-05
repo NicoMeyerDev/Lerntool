@@ -218,3 +218,9 @@ Abweichungen von `docs/CURRICULUM_ENGLISCH.md`:
 - **(a) Aufbau:** Neues Thema `django-laravel-vergleich` (Reihenfolge 6) mit einer Phase und sechs Vergleichs-Lektionen: Anmeldung und Passwörter, Datenbank und Migrationen, API, Tests, Docker, CI/CD. Jede Lektion zeigt dieselbe Aufgabe in Django und Laravel. Alternative: getrennte Lektionen je Framework (verdeckt die gemeinsame Idee).
 - **(b) PHP-CI-Schritte ungeprüft:** Die Schritte für PHP/Laravel in GitHub Actions sind bewusst als ungeprüft gekennzeichnet, weil eine belegte Quelle fehlt (siehe `OFFEN.md`). Nichts wurde erfunden. Alternative: den Abschnitt weglassen (Vergleich wäre unvollständig).
 - **(c) Nur Theorie:** Es wird nichts eingerichtet, keine Konten, keine Kosten.
+
+## 2026-11-05 – Quizqualität D2/D3
+
+- **Vorgehen:** Die Antwortzeilen wurden skriptgestützt ersetzt. Falsche Antworten sind typische Verwechslungen in ähnlicher Länge wie die richtige Antwort. Die richtige Antwort wird gleichmäßig auf Position 1, 2 und 3 gedreht (zyklisch). Alternative: nur im Frontend mischen (löst die Längenauffälligkeit nicht).
+- **Grenze:** Bei Fachdefinitionen und Rechtstexten bleibt die richtige Antwort oft die längste, weil Genauigkeit Länge braucht. Das wurde nicht künstlich erzwungen, um keine Fakten zu verfälschen.
+- **Freigabe:** `reviewer`: FREIGABE (nur Hinweise, behoben).

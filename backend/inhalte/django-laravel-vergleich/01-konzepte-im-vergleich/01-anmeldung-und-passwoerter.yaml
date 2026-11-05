@@ -33,15 +33,15 @@ abschnitte:
       - frage: "Was haben Django und Laravel bei Passwörtern gemeinsam?"
         erklaerung: "Beide speichern Passwörter als Hash und nicht im Klartext."
         antworten:
-          - { text: "Beide speichern das Passwort im Klartext, damit man es zurückschicken kann.", richtig: false }
           - { text: "Beide speichern Passwörter als Hash und nicht im Klartext.", richtig: true }
-          - { text: "Beide verlangen, dass Nutzer ihr Passwort selbst verschlüsseln.", richtig: false }
+          - { text: "Beide überlassen das Speichern der Passwörter dem Browser der Nutzer.", richtig: false }
+          - { text: "Beide speichern Passwörter verschlüsselt, damit sie bei Bedarf wieder lesbar sind.", richtig: false }
       - frage: "Welches Laravel-Mittel entspricht dem Django-Dekorator @login_required?"
         erklaerung: "Die Middleware auth lässt nur angemeldete Nutzer durch."
         antworten:
+          - { text: "Die Fassade Hash, die Passwörter prüft und erzeugt.", richtig: false }
           - { text: "Die Middleware auth.", richtig: true }
-          - { text: "Die Funktion Hash::make().", richtig: false }
-          - { text: "Der Befehl php artisan migrate.", richtig: false }
+          - { text: "Die CSRF-Middleware, die Formulare mit einem Token schützt.", richtig: false }
   - titel: Anmeldung für APIs
     inhalt: |
       Eine reine API hat oft keinen Browser mit Sitzung. Dafür gibt es eigene Wege:
@@ -59,45 +59,45 @@ abschnitte:
       - frage: "Was bietet Laravel Sanctum laut Doku?"
         erklaerung: "API-Tokens und eine Anmeldung für Single-Page-Anwendungen."
         antworten:
-          - { text: "Nur eine Datenbank-Verwaltung.", richtig: false }
-          - { text: "Einen Ersatz für den Webserver.", richtig: false }
+          - { text: "Ein Verfahren, das Passwörter mit bcrypt hasht und prüft.", richtig: false }
+          - { text: "Ein Test-Framework, das API-Anfragen simuliert.", richtig: false }
           - { text: "API-Tokens und eine Anmeldung für Single-Page-Anwendungen.", richtig: true }
       - frage: "Wo gehört ein API-Token hin?"
         erklaerung: "In eine Umgebungsvariable oder einen Geheimnisspeicher, nie ins Repository."
         antworten:
           - { text: "In eine Umgebungsvariable oder einen Geheimnisspeicher.", richtig: true }
-          - { text: "Fest in den Quellcode, damit er nicht verloren geht.", richtig: false }
-          - { text: "In die README im Repository.", richtig: false }
+          - { text: "Fest in den Quellcode, damit er beim Start immer verfügbar ist.", richtig: false }
+          - { text: "In eine Konfigurationsdatei, die im Repository mit eingecheckt wird.", richtig: false }
 test:
   zeitlimit_minuten: 10
   fragen:
     - frage: "Welche Django-Funktion hasht ein Passwort?"
       erklaerung: "make_password()."
       antworten:
+        - { text: "login()", richtig: false }
         - { text: "make_password()", richtig: true }
-        - { text: "runserver()", richtig: false }
-        - { text: "collectstatic()", richtig: false }
+        - { text: "logout()", richtig: false }
     - frage: "Wie heißt die Laravel-Fassade zum Hashen?"
       erklaerung: "Hash, zum Beispiel Hash::make()."
       antworten:
+        - { text: "Route", richtig: false }
         - { text: "Cache", richtig: false }
         - { text: "Hash", richtig: true }
-        - { text: "Route", richtig: false }
     - frage: "Warum speichert man Passwörter als Hash?"
       erklaerung: "Auch bei einem Datenbank-Leck liegt kein Klartext-Passwort vor."
       antworten:
-        - { text: "Weil Hashes weniger Speicher brauchen.", richtig: false }
-        - { text: "Weil Nutzer sonst keine Passwörter wählen dürfen.", richtig: false }
         - { text: "Auch bei einem Datenbank-Leck liegt kein Klartext-Passwort vor.", richtig: true }
+        - { text: "Weil ein Hash das Passwort automatisch länger und damit nicht mehr erratbar macht.", richtig: false }
+        - { text: "Weil sich ein Hash bei jeder Anmeldung wieder in das Passwort zurückrechnen lässt.", richtig: false }
     - frage: "Woher weißt du, welches Hash-Verfahren dein Projekt nutzt?"
       erklaerung: "Aus der Konfiguration des Projekts und der Doku, nicht aus einer Annahme."
       antworten:
+        - { text: "Aus der Version des Browsers, mit dem sich die Nutzer anmelden.", richtig: false }
         - { text: "Aus der Konfiguration des Projekts und der Doku.", richtig: true }
-        - { text: "Es ist in jedem Projekt gleich.", richtig: false }
-        - { text: "Aus dem Namen der Datenbank.", richtig: false }
+        - { text: "Es ist in allen Django- und Laravel-Projekten und Versionen gleich.", richtig: false }
     - frage: "Was prüft die Anmeldung beim Vergleich des eingegebenen Passworts?"
       erklaerung: "Das eingegebene Passwort wird gehasht und mit dem gespeicherten Hash verglichen."
       antworten:
-        - { text: "Es wird entschlüsselt und im Klartext verglichen.", richtig: false }
-        - { text: "Es wird per E-Mail an den Nutzer zurückgeschickt.", richtig: false }
+        - { text: "Das Passwort wird an den Nutzer zurückgeschickt und dort bestätigt.", richtig: false }
+        - { text: "Der gespeicherte Hash wird entschlüsselt und mit dem eingegebenen Passwort verglichen.", richtig: false }
         - { text: "Das eingegebene Passwort wird gehasht und mit dem gespeicherten Hash verglichen.", richtig: true }

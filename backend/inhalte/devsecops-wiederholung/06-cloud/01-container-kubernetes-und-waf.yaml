@@ -26,15 +26,15 @@ abschnitte:
       - frage: "Was ist ein Container laut Docker?"
         erklaerung: "Ein isolierter Prozess mit allen Dateien, die er zum Laufen braucht."
         antworten:
-          - { text: "Ein komplettes eigenes Betriebssystem mit eigenem Kern.", richtig: false }
           - { text: "Ein isolierter Prozess mit allen Dateien, die er zum Laufen braucht.", richtig: true }
-          - { text: "Eine Datenbank für Passwörter.", richtig: false }
+          - { text: "Ein komplettes eigenes Betriebssystem mit eigenem Kern.", richtig: false }
+          - { text: "Eine virtuelle Festplatte, die nur Daten speichert und keinen Code ausführt.", richtig: false }
       - frage: "Worin unterscheiden sich Container von virtuellen Maschinen?"
         erklaerung: "Container teilen sich den Kern des Rechners, eine VM bringt ein eigenes Betriebssystem mit."
         antworten:
-          - { text: "Container bringen ein eigenes Betriebssystem mit.", richtig: false }
+          - { text: "Es gibt keinen Unterschied, beide Begriffe meinen dieselbe Technik.", richtig: false }
           - { text: "Container teilen sich den Kern des Rechners, eine VM bringt ein eigenes Betriebssystem mit.", richtig: true }
-          - { text: "Es gibt keinen Unterschied.", richtig: false }
+          - { text: "Container bringen jeweils ein eigenes vollständiges Betriebssystem mit.", richtig: false }
   - titel: Kubernetes
     inhalt: |
       **Kubernetes** ist laut Doku eine quelloffene Plattform zur Verwaltung containerisierter Anwendungen. Du
@@ -54,15 +54,15 @@ abschnitte:
       - frage: "Was versteht man unter horizontaler Skalierung in Kubernetes?"
         erklaerung: "Die Zahl der laufenden Instanzen wird erhöht oder verringert."
         antworten:
-          - { text: "Ein einzelner Container bekommt eine größere Festplatte.", richtig: false }
-          - { text: "Der Quellcode wird in mehrere Dateien aufgeteilt.", richtig: false }
+          - { text: "Ein einzelner Container bekommt mehr CPU und Arbeitsspeicher.", richtig: false }
+          - { text: "Der Quellcode wird auf mehrere Repositories verteilt.", richtig: false }
           - { text: "Die Zahl der laufenden Instanzen wird erhöht oder verringert.", richtig: true }
       - frage: "Was bedeutet Selbstheilung bei Kubernetes?"
         erklaerung: "Ausgefallene Container werden neu gestartet oder ersetzt."
         antworten:
           - { text: "Ausgefallene Container werden neu gestartet oder ersetzt.", richtig: true }
-          - { text: "Fehler im Quellcode werden automatisch repariert.", richtig: false }
-          - { text: "Die Hardware repariert sich selbst.", richtig: false }
+          - { text: "Sicherheitslücken in Bibliotheken werden automatisch geschlossen.", richtig: false }
+          - { text: "Fehler im Quellcode werden automatisch erkannt und repariert.", richtig: false }
   - titel: Web Application Firewall (WAF)
     inhalt: |
       Eine **WAF** ist laut OWASP eine Anwendungs-Firewall für **HTTP-Anwendungen**. Sie filtert Verkehr nach
@@ -79,15 +79,15 @@ abschnitte:
       - frage: "Was schützt eine WAF?"
         erklaerung: "Die Web-Anwendung auf dem Server vor verbreiteten HTTP-Angriffen."
         antworten:
-          - { text: "Die Festplatte des Nutzers vor Hardwarefehlern.", richtig: false }
+          - { text: "Die Festplatte des Nutzers vor Hardwarefehlern und Datenverlust.", richtig: false }
           - { text: "Die Web-Anwendung auf dem Server vor verbreiteten HTTP-Angriffen.", richtig: true }
-          - { text: "Den Browser vor falschen Zertifikaten.", richtig: false }
+          - { text: "Den Browser des Nutzers vor ungültigen oder abgelaufenen Zertifikaten.", richtig: false }
       - frage: "Warum ersetzt eine WAF sicheren Code nicht?"
         erklaerung: "Sie ist eine zusätzliche Schutzschicht und braucht Anpassung und Pflege."
         antworten:
+          - { text: "Sie funktioniert ausschließlich bei Verbindungen, die kein HTTP verwenden.", richtig: false }
+          - { text: "Sie wird nur in Spielen und nicht in Web-Anwendungen eingesetzt.", richtig: false }
           - { text: "Sie ist nur eine zusätzliche Schutzschicht und braucht Anpassung und Pflege.", richtig: true }
-          - { text: "Sie funktioniert nur ohne HTTP.", richtig: false }
-          - { text: "Sie wird nur in Spielen eingesetzt.", richtig: false }
 test:
   zeitlimit_minuten: 10
   fragen:
@@ -95,29 +95,29 @@ test:
       erklaerung: "Die Isolation vom Rechner und von anderen Containern."
       antworten:
         - { text: "Die Isolation vom Rechner und von anderen Containern.", richtig: true }
-        - { text: "Dass sie immer laufen.", richtig: false }
-        - { text: "Dass sie sehr groß sind.", richtig: false }
+        - { text: "Die Tatsache, dass sie nach dem Start dauerhaft weiterlaufen.", richtig: false }
+        - { text: "Die große Dateigröße, weil mehr Inhalt mehr Schutz bietet.", richtig: false }
     - frage: "Wie funktioniert Kubernetes laut Überblick im Kern?"
       erklaerung: "Du beschreibst den Soll-Zustand, Kubernetes gleicht den Ist-Zustand daran an."
       antworten:
-        - { text: "Du startest jeden Container von Hand neu.", richtig: false }
+        - { text: "Du startest jeden Container von Hand neu, sobald einer ausfällt.", richtig: false }
         - { text: "Du beschreibst den Soll-Zustand, Kubernetes gleicht den Ist-Zustand daran an.", richtig: true }
-        - { text: "Es ersetzt den Quellcode.", richtig: false }
+        - { text: "Es ersetzt den Quellcode deiner Anwendung durch eigene Bausteine.", richtig: false }
     - frage: "Was liefert Kubernetes laut Doku nicht?"
       erklaerung: "Eine eingebaute Datenbank."
       antworten:
+        - { text: "Lastverteilung", richtig: false }
         - { text: "Selbstheilung", richtig: false }
         - { text: "Eine eingebaute Datenbank", richtig: true }
-        - { text: "Lastverteilung", richtig: false }
     - frage: "Gegen welche Angriffe hilft eine WAF laut OWASP?"
       erklaerung: "Gegen verbreitete Angriffe wie XSS und SQL-Injection."
       antworten:
         - { text: "Gegen verbreitete Angriffe wie XSS und SQL-Injection.", richtig: true }
-        - { text: "Gegen Stromausfall.", richtig: false }
-        - { text: "Gegen Tippfehler in Mails.", richtig: false }
+        - { text: "Gegen Stromausfälle und andere Probleme der Hardware im Rechenzentrum.", richtig: false }
+        - { text: "Gegen Tippfehler in E-Mails, die an Kunden verschickt werden.", richtig: false }
     - frage: "Was ist eine Grenze von WAFs laut OWASP?"
       erklaerung: "Sie brauchen Anpassung und laufende Pflege."
       antworten:
-        - { text: "Sie funktionieren nur mit Fotos.", richtig: false }
-        - { text: "Sie sind immer perfekt eingestellt.", richtig: false }
+        - { text: "Sie funktionieren nur für Anwendungen ohne Anmeldung.", richtig: false }
         - { text: "Sie brauchen Anpassung und laufende Pflege.", richtig: true }
+        - { text: "Sie schützen nur die Clients, aber nicht die Server.", richtig: false }

@@ -19,15 +19,15 @@ abschnitte:
       - frage: "Was sind personenbezogene Daten nach Art. 4 Nr. 1 DSGVO?"
         erklaerung: "Informationen, die sich auf eine identifizierte oder identifizierbare natürliche Person beziehen."
         antworten:
-          - { text: "Nur Daten, die einen vollen Namen enthalten.", richtig: false }
-          - { text: "Alle Daten, die auf einem Server liegen.", richtig: false }
+          - { text: "Nur Daten, die einen vollständigen Vor- und Nachnamen enthalten.", richtig: false }
           - { text: "Informationen, die sich auf eine identifizierte oder identifizierbare natürliche Person beziehen.", richtig: true }
+          - { text: "Alle Daten, die auf irgendeinem Server gespeichert sind.", richtig: false }
       - frage: "Wann gilt eine Person als identifizierbar?"
         erklaerung: "Wenn sie direkt oder indirekt erkannt werden kann, zum Beispiel über eine Online-Kennung."
         antworten:
+          - { text: "Nur wenn sie dem Betreiber schriftlich eine Vollmacht erteilt hat.", richtig: false }
+          - { text: "Nur wenn von ihr ein Foto im System gespeichert ist.", richtig: false }
           - { text: "Wenn sie direkt oder indirekt erkannt werden kann, zum Beispiel über eine Online-Kennung.", richtig: true }
-          - { text: "Nur wenn ihr Foto vorliegt.", richtig: false }
-          - { text: "Nur wenn sie eine Vollmacht unterschrieben hat.", richtig: false }
   - titel: Die Grundsätze nach Art. 5
     inhalt: |
       Art. 5 Abs. 1 DSGVO nennt Grundsätze für die Verarbeitung:
@@ -45,15 +45,15 @@ abschnitte:
       - frage: "Was verlangt der Grundsatz der Datenminimierung?"
         erklaerung: "Nur die Daten erheben, die für den Zweck nötig sind."
         antworten:
-          - { text: "Möglichst viele Daten für spätere Zwecke sammeln.", richtig: false }
           - { text: "Nur die Daten erheben, die für den Zweck nötig sind.", richtig: true }
           - { text: "Alle Daten nach einem Tag löschen.", richtig: false }
+          - { text: "Möglichst viele Daten für spätere Zwecke sammeln.", richtig: false }
       - frage: "Was bedeutet Speicherbegrenzung?"
         erklaerung: "Daten nur so lange speichern, wie es für den Zweck nötig ist."
         antworten:
+          - { text: "Daten dürfen ausschließlich auf USB-Sticks und nicht auf Servern liegen.", richtig: false }
           - { text: "Daten nur so lange speichern, wie es für den Zweck nötig ist.", richtig: true }
-          - { text: "Nur eine bestimmte Menge an Daten speichern.", richtig: false }
-          - { text: "Daten nur auf USB-Sticks speichern.", richtig: false }
+          - { text: "Es darf insgesamt nur eine bestimmte Menge an Daten gespeichert werden.", richtig: false }
   - titel: Rechtsgrundlagen nach Art. 6
     inhalt: |
       Die Verarbeitung ist nur rechtmäßig, wenn mindestens eine Grundlage nach Art. 6 Abs. 1 DSGVO zutrifft:
@@ -71,15 +71,15 @@ abschnitte:
       - frage: "Welche Rechtsgrundlage nennt Art. 6 Abs. 1 Buchstabe a?"
         erklaerung: "Die Einwilligung der betroffenen Person."
         antworten:
-          - { text: "Die Einwilligung der betroffenen Person.", richtig: true }
           - { text: "Die Steuernummer des Unternehmens.", richtig: false }
           - { text: "Die Genehmigung des Webhosters.", richtig: false }
+          - { text: "Die Einwilligung der betroffenen Person.", richtig: true }
       - frage: "Wie viele Rechtsgrundlagen zählt Art. 6 Abs. 1 auf?"
         erklaerung: "Sechs, die Buchstaben a bis f."
         antworten:
-          - { text: "Zwei", richtig: false }
           - { text: "Sechs", richtig: true }
           - { text: "Zwölf", richtig: false }
+          - { text: "Zwei", richtig: false }
 test:
   zeitlimit_minuten: 10
   fragen:
@@ -92,24 +92,24 @@ test:
     - frage: "Welcher Grundsatz entspricht dem Schutzziel Vertraulichkeit und Integrität?"
       erklaerung: "Integrität und Vertraulichkeit (angemessene Sicherheit)."
       antworten:
-        - { text: "Integrität und Vertraulichkeit (angemessene Sicherheit)", richtig: true }
-        - { text: "Zweckbindung", richtig: false }
-        - { text: "Richtigkeit", richtig: false }
+        - { text: "Richtigkeit, also Daten sachlich korrekt und auf dem neuesten Stand halten.", richtig: false }
+        - { text: "Zweckbindung, also Daten nur für festgelegte Zwecke verwenden.", richtig: false }
+        - { text: "Integrität und Vertraulichkeit, also angemessene Sicherheit der Daten.", richtig: true }
     - frage: "Auf welche Rechtsgrundlage stützt sich eine Verarbeitung, die zur Erfüllung eines Vertrags nötig ist?"
       erklaerung: "Art. 6 Abs. 1 Buchstabe b."
       antworten:
+        - { text: "Art. 6 Abs. 1 Buchstabe b", richtig: true }
         - { text: "Art. 6 Abs. 1 Buchstabe d", richtig: false }
         - { text: "Art. 6 Abs. 1 Buchstabe e", richtig: false }
-        - { text: "Art. 6 Abs. 1 Buchstabe b", richtig: true }
     - frage: "Was muss bei der Rechtsgrundlage der berechtigten Interessen (Buchstabe f) beachtet werden?"
       erklaerung: "Es dürfen keine überwiegenden Rechte der betroffenen Person entgegenstehen."
       antworten:
+        - { text: "Die verarbeiteten Daten müssen immer vollständig verschlüsselt sein.", richtig: false }
         - { text: "Es dürfen keine überwiegenden Rechte der betroffenen Person entgegenstehen.", richtig: true }
-        - { text: "Die Person muss unterschreiben.", richtig: false }
-        - { text: "Die Daten müssen verschlüsselt sein.", richtig: false }
+        - { text: "Die betroffene Person muss die Verarbeitung schriftlich unterschreiben.", richtig: false }
     - frage: "Warum ist ein Login-Name mit Lernfortschritt für den Datenschutz relevant?"
       erklaerung: "Er kann sich auf eine identifizierbare Person beziehen und ist dann ein personenbezogenes Datum."
       antworten:
-        - { text: "Er ist nie relevant.", richtig: false }
+        - { text: "Er ist nur dann relevant, wenn er Zahlen oder Sonderzeichen enthält.", richtig: false }
+        - { text: "Er ist für den Datenschutz grundsätzlich nie relevant.", richtig: false }
         - { text: "Er kann sich auf eine identifizierbare Person beziehen und ist dann ein personenbezogenes Datum.", richtig: true }
-        - { text: "Er ist nur relevant, wenn er Zahlen enthält.", richtig: false }

@@ -29,15 +29,15 @@ abschnitte:
       - frage: "Wofür steht bei einem ORM ein Objekt der Modell-Klasse?"
         erklaerung: "Für eine Zeile der Tabelle."
         antworten:
-          - { text: "Für die ganze Datenbank.", richtig: false }
           - { text: "Für eine Zeile der Tabelle.", richtig: true }
-          - { text: "Für einen Webserver.", richtig: false }
+          - { text: "Für eine ganze Tabelle mit allen ihren Zeilen.", richtig: false }
+          - { text: "Für die komplette Datenbank mit allen Tabellen.", richtig: false }
       - frage: "Wo legst du in Laravel die Spalten einer Tabelle fest?"
         erklaerung: "In der Migration."
         antworten:
+          - { text: "Im Eloquent-Modell, als Liste aller Felder.", richtig: false }
           - { text: "In der Migration.", richtig: true }
-          - { text: "In der Datei .gitignore.", richtig: false }
-          - { text: "In der Route.", richtig: false }
+          - { text: "In der Routen-Datei, vor der Definition der Route.", richtig: false }
   - titel: Migrationen versionieren das Schema
     inhalt: |
       Eine **Migration** ist eine versionierte Änderung am Datenbankschema. Sie liegt im Repository und lässt sich auf
@@ -56,45 +56,45 @@ abschnitte:
       - frage: "Welcher Django-Befehl erzeugt Migrationen aus Modelländerungen?"
         erklaerung: "makemigrations."
         antworten:
-          - { text: "python manage.py runserver", richtig: false }
-          - { text: "python manage.py makemigrations", richtig: true }
           - { text: "python manage.py check", richtig: false }
+          - { text: "python manage.py migrate", richtig: false }
+          - { text: "python manage.py makemigrations", richtig: true }
       - frage: "Warum gehören Migrationen ins Repository?"
         erklaerung: "Damit das Schema auf jedem Rechner gleich aufgebaut werden kann."
         antworten:
-          - { text: "Damit sie niemand lesen kann.", richtig: false }
           - { text: "Damit das Schema auf jedem Rechner gleich aufgebaut werden kann.", richtig: true }
-          - { text: "Damit die Datenbank schneller wird.", richtig: false }
+          - { text: "Damit die Datenbank schneller auf Abfragen antwortet.", richtig: false }
+          - { text: "Damit niemand sonst das Schema der Datenbank ändern kann.", richtig: false }
 test:
   zeitlimit_minuten: 10
   fragen:
     - frage: "Welcher Laravel-Befehl wendet Migrationen an?"
       erklaerung: "php artisan migrate."
       antworten:
-        - { text: "php artisan migrate", richtig: true }
         - { text: "php artisan serve", richtig: false }
-        - { text: "php artisan down", richtig: false }
+        - { text: "php artisan migrate", richtig: true }
+        - { text: "php artisan make:migration", richtig: false }
     - frage: "Welche Django-Beziehung bildet eine Many-to-One-Verbindung ab?"
       erklaerung: "ForeignKey."
       antworten:
-        - { text: "CharField", richtig: false }
+        - { text: "ManyToManyField", richtig: false }
+        - { text: "OneToOneField", richtig: false }
         - { text: "ForeignKey", richtig: true }
-        - { text: "DateField", richtig: false }
     - frage: "Was ist ein Unterschied beim Aufbau von Modell und Spalten?"
       erklaerung: "Django beschreibt Felder im Modell, Laravel beschreibt Spalten in der Migration."
       antworten:
         - { text: "Django beschreibt Felder im Modell, Laravel beschreibt Spalten in der Migration.", richtig: true }
-        - { text: "Beide kennen keine Migrationen.", richtig: false }
-        - { text: "In beiden schreibt man nur SQL von Hand.", richtig: false }
+        - { text: "In beiden Frameworks schreibt man das Schema nur direkt in SQL.", richtig: false }
+        - { text: "Django kennt keine Migrationen, Laravel schon.", richtig: false }
     - frage: "Worauf solltest du vor dem Anwenden einer Migration auf echten Daten achten?"
       erklaerung: "Sie kann Daten verändern oder löschen, deshalb prüfen und vorher sichern."
       antworten:
-        - { text: "Auf nichts, Migrationen sind immer harmlos.", richtig: false }
+        - { text: "Nur darauf, dass der Entwicklungsserver gerade nicht läuft.", richtig: false }
         - { text: "Sie kann Daten verändern oder löschen, deshalb prüfen und vorher sichern.", richtig: true }
-        - { text: "Nur auf die Farbe der Konsole.", richtig: false }
+        - { text: "Auf nichts Besonderes, denn Migrationen verändern nie vorhandene Daten.", richtig: false }
     - frage: "Was ist die gemeinsame Idee von Django-Modellen und Eloquent-Modellen?"
       erklaerung: "Eine Klasse steht für eine Tabelle, ein Objekt für eine Zeile."
       antworten:
+        - { text: "Eine Klasse steht für eine Zeile, ein Objekt für eine ganze Tabelle.", richtig: false }
+        - { text: "Eine Klasse steht für eine Datenbank, ein Objekt für eine Tabelle.", richtig: false }
         - { text: "Eine Klasse steht für eine Tabelle, ein Objekt für eine Zeile.", richtig: true }
-        - { text: "Eine Klasse steht für einen Browser-Tab.", richtig: false }
-        - { text: "Ein Objekt steht für eine ganze Datenbank.", richtig: false }
