@@ -2,6 +2,14 @@
 
 Punkte, die eine Entscheidung oder Aktion des Nutzers brauchen.
 
+## 2026-11-05 – D1 Teil 3: Notizen zu Quizqualität, Review und Datenbankverbindung
+
+Reine Notizen, keine Entscheidung des Lernenden nötig.
+
+- **Quizqualität:** In D1 Teil 3 ist die richtige Antwort oft die längste Option und häufig an Position 2 (ca. 30, 48 und 21 Prozent auf Position 1, 2 und 3). Das Frontend mischt noch nicht (Backlog). Später die Falschantworten plausibel und gleich lang formulieren.
+- **Review-Umfang:** Der `reviewer` hat in Runde 2 nur 7 von 18 Dateien erneut gelesen; Runde 1 hat alle gelesen.
+- **Datenbankverbindung:** Das Projekt nutzt `DATABASE_URL` mit `conn_max_age=600`; die Django-Doku rät für ASGI bzw. die Entwicklung zu anderen Einstellungen. Beim Deployment prüfen.
+
 ## 2026-11-04 – D1 Teil 2: Kleine Lücken in DevOps und Monitoring
 
 Reine Notiz, keine Entscheidung des Lernenden nötig.

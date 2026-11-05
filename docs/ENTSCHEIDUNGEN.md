@@ -199,3 +199,9 @@ Abweichungen von `docs/CURRICULUM_ENGLISCH.md`:
 - **(c) Eigene Regeln gekennzeichnet:** Regeln aus diesem Projekt (z. B. keine Secrets im Code, Zugangsdaten nur über Umgebungsvariablen) und eigene Ratschläge sind in den Lektionen als „Eigene Regel“ bzw. „Eigener Rat“ markiert und nicht als Aussage der Quelle dargestellt.
 - **(d) Sentry SDK 3.0:** Die Lektion weist darauf hin, dass sich Einrichtung und Optionen mit SDK 3.0 ändern können; maßgeblich ist die aktuelle Sentry-Doku. Alternative: nur die ältere Variante zeigen (würde veralten).
 - **Freigaben:** `quellenpruefer`: FREIGABE (alle Quellen erreichbar). `reviewer`: FREIGABE nach 2 Runden.
+
+## 2026-11-05 – D1 Backend-Wiederholung, Teil 3 (HTTP, Python, erweiterte Konzepte, SQL)
+
+- **(a) Versionen der Quellen:** Python-Quellen sind auf Version 3.13 festgelegt (`/3.13/`), Django auf 5.2. Grund: `/3/` zeigt auf 3.14, und dort ist `except` ohne Klammern erlaubt (PEP 758); das hätte eine Quizfrage mehrdeutig gemacht. Alternative: `/3/` ohne Version.
+- **(b) Nur Theorie und Papier:** Redis, Celery und PostgreSQL werden nur erklärt und im Projekt auf Papier bearbeitet. Es wird kein Dienst eingerichtet, es entstehen keine Kosten. Alternative: Dienste lokal oder gehostet einrichten (Aufwand, Kosten).
+- **(c) Celery unter Windows:** Laut Doku wird Celery unter Windows nicht offiziell unterstützt. Die Lektion enthält einen Hinweis; die Empfehlung WSL oder Docker ist eine eigene Empfehlung und als solche gekennzeichnet.
