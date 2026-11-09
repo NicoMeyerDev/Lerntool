@@ -1,5 +1,8 @@
 # Changelog
 
+## 2026-11-09
+- fix: Render-Backend ist in `render.yaml` auf die Region Frankfurt festgelegt. Datenbank und Backend müssen in derselben Region liegen, sonst scheitert der Start mit `failed to resolve host`. Hinweis in `docs/DEPLOYMENT.md` ergänzt.
+
 ## 2026-11-05
 - fix: Render-Blueprint ohne eigene Datenbank: Die Datenbank legt der Nutzer selbst im Dashboard an (freie Tarifwahl), `DATABASE_URL` wird beim Apply eingetragen. Anleitung und README angepasst.
 - docs: README neu gegliedert (Inhaltsverzeichnis, Schnellstart, kürzere Ordnerstruktur und API-Tabelle, Doppelungen entfernt).
