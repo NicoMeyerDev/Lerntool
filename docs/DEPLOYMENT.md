@@ -46,6 +46,17 @@ Die App besteht auf Render aus drei Teilen. Die Datenbank legst du selbst im Das
 
 `python manage.py migrate` legt die Tabellen an, `import_inhalte` lädt die Lerninhalte, `anlegen_nutzer` legt deinen Zugang an (nur wenn noch kein Nutzer existiert, ein vorhandenes Passwort wird nie überschrieben). Danach startet gunicorn. Das Passwort ändern: in Render `LERNTOOL_PASSWORT` ändern reicht **nicht**, weil der Nutzer schon existiert. Dafür braucht es einen Shell-Zugang (kostenpflichtiger Tarif) oder eine neu angelegte Datenbank.
 
+## Backend läuft in der falschen Region
+
+Meldet das Backend `failed to resolve host 'dpg-…'`, liegen Backend und Datenbank in verschiedenen Regionen (die interne Datenbank-Adresse gilt nur innerhalb einer Region). Die Region eines bestehenden Dienstes lässt sich nicht nachträglich ändern, `region: frankfurt` in `render.yaml` greift daher nur bei einem neu angelegten Dienst. So legst du `lerntool-api` neu an:
+
+1. Im Dashboard den Dienst `lerntool-api` löschen. Datenbank und Frontend bleiben unberührt.
+2. Den Blueprint neu synchronisieren (**Blueprints → Sync**). Der Dienst entsteht in Frankfurt neu.
+3. Die Variablen mit `sync: false` neu eintragen: `DATABASE_URL` (Internal Database URL), `DJANGO_CORS_ORIGINS`, `LERNTOOL_BENUTZER`, `LERNTOOL_PASSWORT`.
+4. Hat sich die Adresse des Backends geändert: `VITE_API_URL` im Frontend anpassen und es neu bauen (siehe Schritt 6 oben).
+
+Liegt deine Datenbank nicht in Frankfurt, trage in `render.yaml` stattdessen die Region der Datenbank ein.
+
 ## Grenzen des kostenlosen Tarifs (Stand Render-Doku)
 
 - Das Backend schläft nach 15 Minuten ohne Aufruf ein und braucht beim nächsten Aufruf etwa eine Minute zum Aufwachen.
@@ -64,4 +75,5 @@ Die App besteht auf Render aus drei Teilen. Die Datenbank legst du selbst im Das
 
 - Blueprint-Format: <https://render.com/docs/blueprint-spec>
 - Kostenloser Tarif: <https://render.com/docs/free>
+- Regionen: <https://render.com/docs/regions>
 - Django-Checkliste für den Betrieb: <https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/>
