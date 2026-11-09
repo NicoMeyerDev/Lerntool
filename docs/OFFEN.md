@@ -8,6 +8,12 @@ Punkte, die eine Entscheidung oder Aktion des Nutzers brauchen.
 - **Positionsrotation:** Die Rotation ist zyklisch und damit vorhersagbar. Mischen im Frontend wäre besser.
 - **Vom `quellenpruefer` bestätigen lassen** (der `reviewer` konnte sie ohne Websuche nicht prüfen): Laravel 13.x mit PHP 8.3 als Mindestversion, Attribut `#[Fillable]`, Ausgabenlimit-Verhalten der Claude-API.
 
+## 2026-11-09 – Einheitenlänge: Notizen zur Musterlektion
+
+- **Ältere schwache Falschantworten** in `backend/inhalte/php-laravel/01-php-basics/02-operatoren-und-kontrollstrukturen.yaml` (nicht Teil der Erweiterung, bei der Überarbeitung der Lektion mitnehmen): Im Quiz zu `foreach` ist „um eine Datei nach Ablauf einer Frist zu löschen“ zu offensichtlich falsch. Im Test ist bei der Frage nach der Schleife für feste Durchläufe „continue“ und „match“ keine Schleife; besser `while` und `foreach`, dann muss die Frage eindeutig bleiben (z. B. Zusatz „mit Zähler und fester Anzahl“).
+- **Dauer prüfen:** Der `reviewer` schätzt einen Abschnitt der Musterlektion auf 14 bis 19 Minuten. Der Lernende entscheidet, ob das genügt; sonst je Abschnitt eine Aufgabe oder Erklärung ergänzen. Erst danach werden die übrigen Lektionen umgebaut (Backlog F1).
+- **Lokale PHP-Installation:** Die Aufgaben setzen voraus, dass `php` im Terminal läuft. Ob und wie das beim Lernenden eingerichtet ist, steht nirgends. Klären, bevor weitere Lektionen mit Aufgaben folgen.
+
 ## 2026-11-05 – Render-Deployment: Entscheidungen für dich
 
 - **Kostenlose Datenbank läuft nach 30 Tagen ab** (Render-Doku). Danach 14 Tage Gnadenfrist, dann werden Daten gelöscht. Für dauerhaften Fortschritt ist ein bezahlter Datenbank-Tarif nötig (Kosten, Entscheidung beim Nutzer).
