@@ -1,6 +1,7 @@
 # Changelog
 
 ## 2026-11-09
+- docs: Lernreihenfolge geändert (Laravel, Englisch, Django-Laravel-Vergleich, DevSecOps, AI Engineering, Backend-Wiederholung). Curriculum Laravel um Phase 4 „Fortgeschrittenes Laravel“ erweitert, Docker, Kubernetes und AWS sind nun Phase 5 bis 7.
 - feat: Wochenplan zum Abarbeiten (Backlog F3): Montag bis Donnerstag je vier Abschnitte der Haupt-Themen in Lernreihenfolge, täglich ein Englisch-Abschnitt. Jeder Eintrag ist ein Link in die Lektion, erledigt heißt gelesen und Quiz abgegeben. Was an einem früheren Tag offen blieb, steht unter „Nachholen“, der Plan rutscht nicht nach. Beginn über `LERNTOOL_LERNSTART` (Standard 16.11.2026). Die Logik liegt im Service `lernen/wochenplan.py`.
 - feat: Musterlektion „Operatoren und Kontrollstrukturen“ auf mindestens 20 Minuten je Abschnitt ausgebaut: zusätzliche Erklärkästen, 6 bis 7 Aufgaben mit Kontrolle je Abschnitt, mehr Quizfragen, drei weitere Quellenlinks. Backlog F1 (Mindestdauer 20 Minuten) und F2, Entscheidungen in `docs/ENTSCHEIDUNGEN.md`.
 - docs: Backlog F3 (Wochenplan zum Abarbeiten) mit Lernstart Montag 16.11.2026 und Regel „nachholen“ ergänzt.

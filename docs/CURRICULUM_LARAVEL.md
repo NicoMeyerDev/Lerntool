@@ -1,6 +1,6 @@
 # Curriculum Laravel (Gliederung)
 
-Grundlage: [LERNPLAN.md](LERNPLAN.md), Themenblock 1. Diese Datei legt nur die **Gliederung** fest (Phasen, Themenfelder, Abschnitte, Projekte). Die ausgearbeiteten Lektionen kommen in C2 (Phase 1) und C3 (Phase 2); Phasen 3 bis 6 stehen später im Backlog.
+Grundlage: [LERNPLAN.md](LERNPLAN.md), Themenblock 1. Diese Datei legt nur die **Gliederung** fest (Phasen, Themenfelder, Abschnitte, Projekte). Die ausgearbeiteten Lektionen kommen in C2 (Phase 1) und C3 (Phase 2); Phasen 3 bis 7 stehen später im Backlog.
 
 ## Regeln dieser Gliederung
 
@@ -8,7 +8,7 @@ Grundlage: [LERNPLAN.md](LERNPLAN.md), Themenblock 1. Diese Datei legt nur die *
 - **Kein Vorwissen** in PHP und Laravel vorausgesetzt. Python-Vergleiche nur als Eselsbrücke.
 - **Frontend ausgeklammert.** Laravel wird als reines Backend mit JSON-Antworten gelernt. Blade, Vite, Livewire und Inertia kommen nicht vor.
 - **Eine Version:** Laravel 13 mit PHP 8.3 oder neuer (siehe „Versionen“). Vor jeder Ausarbeitung wird die Version in der Doku erneut geprüft.
-- **Zeitangaben sind Richtwerte** für die Planung (eigene Schätzung, kein Fakt aus einer Quelle). Gesamt ca. 20 Wochen bei 5 Lerntagen pro Woche.
+- **Zeitangaben sind Richtwerte** für die Planung (eigene Schätzung, kein Fakt aus einer Quelle). Gesamt ca. 24 Wochen bei 5 Lerntagen pro Woche.
 
 ## Versionen (Stand 2026-11-03, geprüft)
 
@@ -27,10 +27,11 @@ Grundlage: [LERNPLAN.md](LERNPLAN.md), Themenblock 1. Diese Datei legt nur die *
 | 1 | PHP-Basics | 3 Wochen | Trainingslog auf der Kommandozeile |
 | 2 | Laravel-Kern | 5 Wochen | Trainingstagebuch (JSON-Backend mit Tests) |
 | 3 | API und Authentifizierung | 4 Wochen | **Garmin-Auswertung, Teil 1:** Login, TCX-Import |
-| 4 | Docker | 2 Wochen | **Garmin-Auswertung, Teil 2:** in Containern |
-| 5 | Kubernetes (Grundlagen) | 2 Wochen | Manifeste für die Garmin-Auswertung |
-| 6 | AWS und Cloudflare (Konzepte) | 2 Wochen | Architekturskizze für den Betrieb |
-| Abschluss | Garmin-Auswertung fertigstellen (beim Import zweite Projektaufgabe von Phase 6, siehe „Hinweise zum Import“) | 2 Wochen | Kennzahlen und Auswertung |
+| 4 | Fortgeschrittenes Laravel | 4 Wochen | **Garmin-Auswertung, Teil 2:** Service, Events, Scheduler, Cache, Logging, OpenAPI |
+| 5 | Docker | 2 Wochen | **Garmin-Auswertung, Teil 3:** in Containern |
+| 6 | Kubernetes (Grundlagen) | 2 Wochen | Manifeste für die Garmin-Auswertung |
+| 7 | AWS und Cloudflare (Konzepte) | 2 Wochen | Architekturskizze für den Betrieb |
+| Abschluss | Garmin-Auswertung fertigstellen (beim Import zweite Projektaufgabe von Phase 7, siehe „Hinweise zum Import“) | 2 Wochen | Kennzahlen und Auswertung |
 
 ---
 
@@ -170,83 +171,112 @@ Quelle: [Laravel 13.x Dokumentation](https://laravel.com/docs/13.x) und [PHP-Han
 
 ---
 
-## Phase 4: Docker
+## Phase 4: Fortgeschrittenes Laravel
+
+Quelle: [Laravel 13.x Dokumentation](https://laravel.com/docs/13.x). Diese Phase baut auf der API aus Phase 3 auf und deckt Themen aus dem Qualifizierungsplan des künftigen Arbeitgebers ab. Genaue Seiten und Namen in Version 13 vor der Ausarbeitung erneut prüfen.
+
+### 4.1 Struktur und Konsistenz
+1. Dependency Injection und Service-Container ([Service Container](https://laravel.com/docs/13.x/container))
+2. Logik in Service-Klassen auslagern (Bezug zum Django-Vergleich)
+3. Datenbank-Transaktionen ([Database: Transactions](https://laravel.com/docs/13.x/database#database-transactions))
+
+### 4.2 Ereignisse und Zeitplan
+1. Events und Listener ([Events](https://laravel.com/docs/13.x/events))
+2. Wiederkehrende Aufgaben mit dem Scheduler ([Task Scheduling](https://laravel.com/docs/13.x/scheduling))
+
+### 4.3 Geschwindigkeit (N+1 vertieft 2.5.4)
+1. Zwischenspeicher mit Cache ([Cache](https://laravel.com/docs/13.x/cache))
+2. N+1-Problem und Eager Loading ([Eloquent: Relationships, Eager Loading](https://laravel.com/docs/13.x/eloquent-relationships#eager-loading))
+3. Langsame Abfragen finden und Indizes setzen
+
+### 4.4 Betrieb und Dokumentation
+1. Logging in Laravel ([Logging](https://laravel.com/docs/13.x/logging))
+2. Eine API mit OpenAPI beschreiben ([OpenAPI Specification](https://spec.openapis.org/oas/latest.html))
+
+### 4.5 Yii2 im Überblick
+1. Aufbau einer Yii2-Anwendung lesen können, um bestehenden Code zu verstehen ([Yii 2.0 Guide](https://www.yiiframework.com/doc/guide/2.0/en)); nur Überblick, kein eigenes Yii2-Projekt
+
+**Projekt Phase 4 – Garmin-Auswertung, Teil 2:** Import als Service mit Transaktion, Ereignis nach erfolgreichem Import, Wochenzusammenfassung per Scheduler, zwischengespeicherte Kennzahlen, Logging, OpenAPI-Beschreibung der Endpunkte, ein N+1-Problem gefunden und behoben, Tests.
+
+---
+
+## Phase 5: Docker
 
 Quelle: [Docker-Dokumentation](https://docs.docker.com/).
 
-### 4.1 Container verstehen
+### 5.1 Container verstehen
 1. Image, Container, Registry ([Docker overview](https://docs.docker.com/get-started/docker-overview/))
 2. Wichtige Befehle: `run`, `ps`, `logs`, `exec`, `stop`
 
-### 4.2 Eigene Images
+### 5.2 Eigene Images
 1. Dockerfile schreiben ([Dockerfile reference](https://docs.docker.com/reference/dockerfile/))
 2. Eine Laravel-Anwendung in einen Container packen
 3. Schichten, Cache und `.dockerignore`
 
-### 4.3 Mehrere Container mit Compose
+### 5.3 Mehrere Container mit Compose
 1. `compose.yaml` für App und Datenbank ([Docker Compose](https://docs.docker.com/compose/))
 2. Netzwerk zwischen Containern
 3. Daten behalten mit Volumes ([Volumes](https://docs.docker.com/engine/storage/volumes/))
 
-### 4.4 Konfiguration und Sicherheit
+### 5.4 Konfiguration und Sicherheit
 1. Umgebungsvariablen statt fest eingebauter Werte; Umgang mit Secrets
 2. Gute Praxis: kleine Images, kein Root-Nutzer ([Build best practices](https://docs.docker.com/build/building/best-practices/))
 
-**Projekt Phase 4 – Garmin-Auswertung, Teil 2:** App, Datenbank und Warteschlangen-Worker laufen per `docker compose up`. Zugangsdaten nur über Umgebungsvariablen, `.env` nicht im Image.
+**Projekt Phase 5 – Garmin-Auswertung, Teil 3:** App, Datenbank und Warteschlangen-Worker laufen per `docker compose up`. Zugangsdaten nur über Umgebungsvariablen, `.env` nicht im Image.
 
 ---
 
-## Phase 5: Kubernetes (Grundlagen)
+## Phase 6: Kubernetes (Grundlagen)
 
 Quelle: [Kubernetes-Dokumentation](https://kubernetes.io/docs/home/). Schwerpunkt: Konzepte verstehen und Manifeste lesen und schreiben. Ein lokaler Cluster ist optional.
 
-### 5.1 Konzepte
+### 6.1 Konzepte
 1. Wozu Kubernetes: Cluster, Node, Pod ([Kubernetes components](https://kubernetes.io/docs/concepts/overview/components/))
 2. Objekte und YAML-Manifeste ([Objects in Kubernetes](https://kubernetes.io/docs/concepts/overview/working-with-objects/))
 
-### 5.2 Anwendungen betreiben
+### 6.2 Anwendungen betreiben
 1. Pods und Deployments ([Deployments](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/))
 2. Services und Ingress; die Ingress-API ist eingefroren, die Doku empfiehlt stattdessen die Gateway API ([Service](https://kubernetes.io/docs/concepts/services-networking/service/), [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/), [Gateway API](https://gateway-api.sigs.k8s.io/))
 3. ConfigMaps und Secrets ([ConfigMaps](https://kubernetes.io/docs/concepts/configuration/configmap/), [Secrets](https://kubernetes.io/docs/concepts/configuration/secret/))
 4. Daten dauerhaft speichern ([Persistent Volumes](https://kubernetes.io/docs/concepts/storage/persistent-volumes/))
 
-### 5.3 Bedienen und Fehler suchen
+### 6.3 Bedienen und Fehler suchen
 1. `kubectl` ([kubectl Quick Reference](https://kubernetes.io/docs/reference/kubectl/quick-reference/))
 2. Logs lesen, Pods untersuchen, typische Fehlerbilder
 
-**Projekt Phase 5:** Manifeste (Deployment, Service, ConfigMap, Secret-Vorlage ohne echte Werte) für die Garmin-Auswertung schreiben und mit der Kubernetes-Doku Punkt für Punkt prüfen. Ausführen nur in einem lokalen Cluster.
+**Projekt Phase 6:** Manifeste (Deployment, Service, ConfigMap, Secret-Vorlage ohne echte Werte) für die Garmin-Auswertung schreiben und mit der Kubernetes-Doku Punkt für Punkt prüfen. Ausführen nur in einem lokalen Cluster.
 
 ---
 
-## Phase 6: AWS und Cloudflare (Konzepte)
+## Phase 7: AWS und Cloudflare (Konzepte)
 
 Quellen: [AWS-Dokumentation](https://docs.aws.amazon.com/) und [Cloudflare-Dokumentation](https://developers.cloudflare.com/). Nur Konzepte und Theorie. **Kein echtes Konto und keine kostenpflichtigen Ressourcen ohne vorherige Rücksprache** (Kosten, CLAUDE.md Abschnitt 7).
 
-### 6.1 Cloud-Grundlagen
+### 7.1 Cloud-Grundlagen
 1. Regionen, Verfügbarkeitszonen, geteilte Verantwortung ([AWS Shared Responsibility Model](https://aws.amazon.com/compliance/shared-responsibility-model/))
 
-### 6.2 AWS-Bausteine
+### 7.2 AWS-Bausteine
 1. Zugriffsrechte mit IAM ([IAM](https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html))
 2. Rechnen und Container-Dienste im Überblick
 3. Objektspeicher S3 und Datenbank RDS ([S3](https://docs.aws.amazon.com/AmazonS3/latest/userguide/Welcome.html), [RDS](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Welcome.html))
 4. Netzwerk: VPC, Subnetze, Sicherheitsgruppen ([VPC](https://docs.aws.amazon.com/vpc/latest/userguide/what-is-amazon-vpc.html))
 
-### 6.3 Cloudflare
+### 7.3 Cloudflare
 1. DNS und Proxy ([Cloudflare DNS](https://developers.cloudflare.com/dns/))
 2. HTTPS/TLS und Zwischenspeicher (CDN) ([SSL/TLS](https://developers.cloudflare.com/ssl/), [Cache](https://developers.cloudflare.com/cache/))
 3. Schutz: WAF und DDoS-Schutz im Überblick ([WAF](https://developers.cloudflare.com/waf/))
 
-### 6.4 Betrieb
+### 7.4 Betrieb
 1. Kosten im Blick behalten, Budgets und Warnungen
 2. Sicherheit: geringste Rechte, keine Schlüssel im Code
 
-**Projekt Phase 6:** Eine Architekturskizze (Text und Diagramm) für den Betrieb der Garmin-Auswertung: Wo laufen App, Datenbank und Dateien, wer darf was, was kostet es ungefähr (Annahmen offen benennen). Keine Umsetzung in der Cloud.
+**Projekt Phase 7:** Eine Architekturskizze (Text und Diagramm) für den Betrieb der Garmin-Auswertung: Wo laufen App, Datenbank und Dateien, wer darf was, was kostet es ungefähr (Annahmen offen benennen). Keine Umsetzung in der Cloud.
 
 ---
 
 ## Abschlussprojekt: Garmin-Auswertung
 
-Baut über die Phasen 3 und 4 auf (Teile 1 und 2) und wird in der Abschlusszeit fertiggestellt. Backend in Laravel, kein Frontend. Beim Import ist es die **zweite Projektaufgabe von Phase 6** (Reihenfolge nach dem Architektur-Projekt); Checkliste mit 8 bis 10 Punkten.
+Baut über die Phasen 3, 4 und 5 auf (Teile 1 bis 3) und wird in der Abschlusszeit fertiggestellt. Backend in Laravel, kein Frontend. Beim Import ist es die **zweite Projektaufgabe von Phase 7** (Reihenfolge nach dem Architektur-Projekt); Checkliste mit 8 bis 10 Punkten.
 
 1. **Kennzahlen:** Gesamtdistanz, Dauer, Durchschnittstempo und -herzfrequenz je Aktivität und je Woche.
 2. **Auswertung:** Vergleich von Wochen, beste Aktivität, einfache Trends als JSON-Endpunkte.
@@ -255,15 +285,15 @@ Baut über die Phasen 3 und 4 auf (Teile 1 und 2) und wird in der Abschlusszeit 
 
 ## Hinweise zum Import in die App
 
-- **Zuordnung zum Datenmodell:** Thema „PHP/Laravel“ → Phase (1 bis 6) → Lektion = Themenfeld (z. B. 1.1) → Abschnitt (z. B. 1.1.3). Quiz hängt am Abschnitt, Test am Themenfeld, Projektaufgabe an der Phase. Das Abschlussprojekt ist eine zweite Projektaufgabe von Phase 6, damit es bei sechs Phasen bleibt.
+- **Zuordnung zum Datenmodell:** Thema „PHP/Laravel“ → Phase (1 bis 7) → Lektion = Themenfeld (z. B. 1.1) → Abschnitt (z. B. 1.1.3). Quiz hängt am Abschnitt, Test am Themenfeld, Projektaufgabe an der Phase. Das Abschlussprojekt ist eine zweite Projektaufgabe von Phase 7, damit es bei sieben Phasen bleibt.
 - **Quellen:** Jede Lektion bekommt beim Import mindestens eine Quelle (Pflicht laut CLAUDE.md Abschnitt 5). Wo ein Abschnitt hier keinen eigenen Link hat, gilt die Phasenquelle als Mindestangabe und wird in der Ausarbeitung durch die konkrete Seite ersetzt.
 - **Schreibweise:** Titel und Kurznamen (Slugs) je Phase und Themenfeld werden bei der Ausarbeitung (C2, C3) einmal festgelegt und danach nicht mehr geändert.
-- **Kleine Themenfelder:** Hat ein Themenfeld nur einen oder zwei Abschnitte (z. B. 6.1, 2.2, 5.1), kann der Test dort kurz ausfallen oder das Feld wird bei der Ausarbeitung mit einem Nachbarn zusammengelegt.
+- **Kleine Themenfelder:** Hat ein Themenfeld nur einen oder zwei Abschnitte (z. B. 7.1, 2.2, 6.1), kann der Test dort kurz ausfallen oder das Feld wird bei der Ausarbeitung mit einem Nachbarn zusammengelegt.
 
 ## Offene Punkte (für die Ausarbeitung zu prüfen)
 
 - **TCX-Format:** Belegt ist nur die XSD-Schemadatei von Garmin (siehe Projekt Phase 3). Eine erklärende Garmin-Dokumentation dazu wurde nicht gefunden; Erklärtexte müssen sich auf das Schema stützen, Sekundärseiten reichen nicht als Quelle.
-- **Fehlende Links auf Abschnittsebene:** Einige Abschnitte nennen nur die Quelle der Phase (z. B. 4.1.2 Docker-Befehle, 4.2.3 `.dockerignore`, 6.1 Regionen und Verfügbarkeitszonen, 6.4 Kosten und Sicherheit). Die genauen Seiten werden bei der Ausarbeitung ergänzt und vom `quellenpruefer` geprüft.
+- **Fehlende Links auf Abschnittsebene:** Einige Abschnitte nennen nur die Quelle der Phase (z. B. 5.1.2 Docker-Befehle, 5.2.3 `.dockerignore`, 7.1.1 Regionen und Verfügbarkeitszonen, 7.4 Kosten und Sicherheit). Die genauen Seiten werden bei der Ausarbeitung ergänzt und vom `quellenpruefer` geprüft.
 - **Seiten-Adressen der Laravel-Doku:** Die Links oben folgen dem Schema `laravel.com/docs/13.x/<seite>`. Der `quellenpruefer` prüft jede Adresse; ein Link, der nicht erreichbar ist, wird in der Ausarbeitung ersetzt.
 - **Pest oder PHPUnit:** Welches Test-Werkzeug die Laravel-Doku für ein neues Projekt vorschlägt, wird in C3 anhand der Version 13 festgelegt und in `docs/ENTSCHEIDUNGEN.md` vermerkt.
 - **Rate Limiting und Sanctum-Details:** Genaue Seiten und Namen in Version 13 vor der Ausarbeitung von Phase 3 erneut prüfen.

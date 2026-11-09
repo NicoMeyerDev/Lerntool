@@ -128,3 +128,5 @@ Reine Notiz für die spätere Ausarbeitung (Backlog C6), keine Entscheidung des 
 - **Stand:** Erledigt für D2 (`devsecops-wiederholung`) und D3 (`django-laravel-vergleich`); die D3-CI-Lektion folgt nach dem Merge von PR #27.
 - **Offen:** `backend-wiederholung` (310 Fragen), `php-laravel` (233), `ai-engineering` (45), `englisch` (47).
 - **Hinweis:** Die Positionsrotation ist zyklisch und daher vorhersagbar. Besser wäre Mischen im Frontend (siehe Backlog, Später).
+
+- **Vergleich vor Phase 3 bis 7 (2026-11-09):** Der Django-Laravel-Vergleich steht an Position 3, setzt aber Inhalte aus Phase 3 (API, Anmeldung) und Phase 5 (Docker) voraus, die noch nicht ausgearbeitet sind. Bis dahin besser überspringen oder zurückstellen.

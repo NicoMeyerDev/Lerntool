@@ -23,9 +23,10 @@ Phasen:
 1. PHP-Basics (Variablen, Typen, Kontrollstrukturen, Funktionen, Arrays, Klassen, Namespaces, Composer, Fehlerbehandlung)
 2. Laravel-Kern (Routing, Controller, Eloquent, Migrationen, Validierung, Tests)
 3. API-first und Authentifizierung
-4. Docker
-5. Kubernetes (Grundlagen)
-6. AWS und Cloudflare (Konzepte)
+4. Fortgeschrittenes Laravel (Service-Container, Events, Scheduler, Cache, Logging, OpenAPI; ergänzt am 2026-11-09, siehe `ENTSCHEIDUNGEN.md`)
+5. Docker
+6. Kubernetes (Grundlagen)
+7. AWS und Cloudflare (Konzepte)
 
 Frontend ist ausgeklammert. Abschlussprojekt: Auswertung eigener Garmin-Sportdaten (TCX-Import, Kennzahlen, Auswertung), Backend in Laravel.
 
