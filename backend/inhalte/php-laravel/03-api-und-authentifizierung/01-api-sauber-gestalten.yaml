@@ -1,0 +1,516 @@
+titel: API sauber gestalten
+zusammenfassung: REST-Grundregeln, einheitliche JSON-Antworten mit API-Ressourcen, seitenweise Ausgabe und klare Fehlerantworten.
+quellen:
+  - titel: "RFC 9110 – HTTP Semantics (Methoden und Statuscodes)"
+    url: https://www.rfc-editor.org/rfc/rfc9110
+  - titel: Laravel 13.x – Eloquent API resources
+    url: https://laravel.com/docs/13.x/eloquent-resources
+  - titel: Laravel 13.x – Pagination
+    url: https://laravel.com/docs/13.x/pagination
+  - titel: Laravel 13.x – Error handling
+    url: https://laravel.com/docs/13.x/errors
+  - titel: Laravel 13.x – Controllers (Resource Controllers, API Resource Routes)
+    url: https://laravel.com/docs/13.x/controllers#api-resource-routes
+  - titel: Laravel 13.x – Validation (Antwortformat bei Fehlern)
+    url: https://laravel.com/docs/13.x/validation
+  - titel: Laravel 13.x – Logging
+    url: https://laravel.com/docs/13.x/logging
+  - titel: PostgreSQL-Dokumentation – LIMIT und OFFSET
+    url: https://www.postgresql.org/docs/current/queries-limit.html
+  - titel: "RFC 6585 – Additional HTTP Status Codes (429 Too Many Requests)"
+    url: https://www.rfc-editor.org/rfc/rfc6585
+abschnitte:
+  - titel: REST-Grundregeln – Ressourcen, Methoden, Statuscodes
+    inhalt: |
+      Eine API ist wie eine Speisekarte mit Bestellnummern. Der Client (dein späteres Frontend, eine App,
+      ein Test) bestellt über eine Adresse und eine Methode. Der Server liefert das Gericht und sagt
+      mit einer Zahl, ob es geklappt hat. **REST** ist ein Satz von Gewohnheiten, damit jede API
+      auf dieselbe Art „bestellt“ wird.
+
+      **Ressourcen sind Dinge, keine Tätigkeiten.** Die Adresse benennt das Ding (ein Substantiv,
+      meist Mehrzahl). Was passiert, sagt die Methode.
+
+      | Methode | Bedeutung | Beispiel | Üblicher Erfolg |
+      | --- | --- | --- | --- |
+      | `GET` | lesen | `GET /api/trainings` | 200 |
+      | `GET` | eines lesen | `GET /api/trainings/5` | 200 |
+      | `POST` | neu anlegen | `POST /api/trainings` | 201 |
+      | `PUT` / `PATCH` | ändern (ganz / teilweise) | `PATCH /api/trainings/5` | 200 |
+      | `DELETE` | löschen | `DELETE /api/trainings/5` | 204 |
+
+      Schlecht wäre `POST /api/trainingLoeschen`. Das Verb steckt dann in der Adresse, und jede API sähe anders aus.
+      Gut ist `DELETE /api/trainings/5`. Du kennst das bereits: `Route::apiResource('trainings', ...)` aus
+      Phase 2 legt genau diese fünf Routen an.
+
+      **Sicher und wiederholbar.** `GET` ändert nie etwas. Du darfst es beliebig oft aufrufen.
+      `DELETE` und `PUT` sind „idempotent“, das heißt: Zweimal aufrufen hinterlässt denselben Zustand wie einmal.
+      `POST` ist es nicht: Zweimal abschicken legt zwei Einträge an.
+
+      **Statuscodes sind die Kurzantwort.** Die erste Ziffer sagt, wer „schuld“ ist oder ob alles gut ging:
+
+      - `2xx` – erfolgreich: `200` (OK), `201` (angelegt), `204` (OK, aber kein Inhalt, zum Beispiel nach `DELETE`).
+      - `4xx` – der Client hat etwas falsch gemacht: `401` (nicht angemeldet), `403` (angemeldet, aber nicht erlaubt),
+        `404` (gibt es nicht), `422` (Eingabe ungültig), `429` (zu viele Anfragen).
+      - `5xx` – der Server hat ein Problem: `500` (unerwarteter Fehler).
+
+      **Typische Fehler:** Immer `200` zu liefern, auch bei einem Fehler im Text („success: false“), zwingt jeden Client,
+      den Text zu lesen. Nutze den Statuscode, dafür ist er da. Verwechsle auch `401` und `403` nicht:
+      `401` heißt „ich weiß nicht, wer du bist“, `403` heißt „ich weiß es, aber du darfst das nicht“.
+
+      **Merkhilfe:** *Adresse = Nomen, Methode = Verb, Statuscode = Ergebnis.*
+
+      ## Probier es selbst
+
+      Öffne dein Trainingstagebuch aus Phase 2. Starte den Server mit `php artisan serve`
+      und nutze ein Werkzeug deiner Wahl (`curl`, oder in PowerShell `Invoke-WebRequest`).
+      Schicke bei jedem Aufruf den Header `Accept: application/json` mit (bei `curl`: `-H "Accept: application/json"`).
+      Er sagt Laravel, dass du JSON erwartest. Ohne ihn antwortet Laravel auf ungültige Eingaben mit einer Weiterleitung (302)
+      statt mit 422.
+
+      1. Führe `php artisan route:list --path=api` aus. Wie viele Zeilen gehören zu `trainings` (andere Routen zählst du nicht mit), und welche Methode hat jede?
+         *Kontrolle:* Bei `apiResource` sind es fünf: index, store, show, update (PUT und PATCH) und destroy.
+      2. Rufe `GET /api/trainings` auf. Welchen Statuscode bekommst du?
+         *Kontrolle:* 200.
+      3. Rufe `GET /api/trainings/99999` mit einer Nummer auf, die es nicht gibt. Welchen Code bekommst du?
+         *Kontrolle:* 404.
+      4. Schicke `POST /api/trainings` mit leerem Text (mit dem Header `Accept: application/json`). Welchen Code bekommst du, und warum nicht 500?
+         *Kontrolle:* 422, weil der Form Request die Eingabe abfängt, bevor etwas schiefgehen kann.
+      5. Lege einen Eintrag an und lösche ihn zweimal mit `DELETE`. Was liefern beide Aufrufe?
+         *Kontrolle:* Erst 204, dann 404 (der Eintrag ist ja schon weg). Der Zustand bleibt gleich: Es gibt ihn nicht mehr.
+      6. Schreibe drei Adressen auf, die Garmin-Aktivitäten verwalten würden (anlegen, ansehen, löschen) – im REST-Stil mit Methode.
+         *Kontrolle:* `POST /api/activities`, `GET /api/activities/{id}`, `DELETE /api/activities/{id}`.
+    quiz:
+      - frage: "Welche Adresse passt am besten zu REST?"
+        erklaerung: "Die Adresse benennt die Ressource (Nomen). Die Aktion steckt in der Methode, hier `DELETE`."
+        antworten:
+          - { text: "DELETE /api/trainings/5", richtig: true }
+          - { text: "POST /api/trainings/delete/5", richtig: false }
+          - { text: "GET /api/trainings/5/delete", richtig: false }
+      - frage: "Welchen Statuscode liefert eine API üblicherweise, wenn ein neuer Eintrag angelegt wurde?"
+        erklaerung: "`201 Created` sagt: Es gibt jetzt etwas Neues. `200` ist die allgemeine Erfolgsmeldung."
+        antworten:
+          - { text: "201", richtig: true }
+          - { text: "200", richtig: false }
+          - { text: "204", richtig: false }
+      - frage: "Ein Nutzer ist angemeldet, darf die Aktivität eines anderen aber nicht löschen. Welcher Code passt?"
+        erklaerung: "`403` heißt: bekannt, aber nicht erlaubt. `401` wäre für „nicht angemeldet“."
+        antworten:
+          - { text: "401", richtig: false }
+          - { text: "403", richtig: true }
+          - { text: "404", richtig: false }
+      - frage: "Welche Methode ändert nie Daten auf dem Server?"
+        erklaerung: "`GET` ist nur zum Lesen da. `POST`, `PUT` und `DELETE` verändern Daten."
+        antworten:
+          - { text: "GET", richtig: true }
+          - { text: "PUT", richtig: false }
+          - { text: "PATCH", richtig: false }
+  - titel: API-Ressourcen für einheitliche JSON-Antworten
+    inhalt: |
+      Wenn du ein Eloquent-Modell einfach zurückgibst, wandelt Laravel **alle** Spalten in JSON um.
+      Das ist bequem, hat aber zwei Nachteile: Interne Felder (zum Beispiel ein Passwort-Hash oder `updated_at`)
+      landen vielleicht in der Antwort, und wenn du eine Spalte umbenennst, bricht jeder Client.
+
+      Eine **API-Ressource** ist ein Übersetzer zwischen deinem Modell und dem JSON, das du wirklich versprichst.
+      Stell dir ein Schaufenster vor: Dahinter steht das ganze Lager (das Modell). Im Fenster liegt nur,
+      was du zeigen willst (die Ressource).
+
+      ```bash
+      php artisan make:resource TrainingResource
+      ```
+
+      Das legt `app/Http/Resources/TrainingResource.php` an. In `toArray` legst du fest, was im JSON steht:
+
+      ```php
+      <?php
+
+      namespace App\Http\Resources;
+
+      use Illuminate\Http\Request;
+      use Illuminate\Http\Resources\Json\JsonResource;
+
+      class TrainingResource extends JsonResource
+      {
+          public function toArray(Request $request): array
+          {
+              return [
+                  'id' => $this->id,
+                  'sport' => $this->sportart,
+                  'distanz_km' => (float) $this->distanz_km,
+                  'dauer_min' => $this->dauer_min,
+                  'datum' => $this->datum,
+              ];
+          }
+      }
+      ```
+
+      In der Ressource greifst du mit `$this->` auf das Modell zu. Im Controller verwendest du sie so:
+
+      ```php
+      use App\Http\Resources\TrainingResource;
+
+      public function show(Training $training): TrainingResource
+      {
+          return new TrainingResource($training);
+      }
+
+      public function index()
+      {
+          return TrainingResource::collection(Training::all());
+      }
+      ```
+
+      **Der Mantel `data`.** Laravel packt die Antwort standardmäßig in einen Schlüssel `data`:
+
+      ```json
+      {
+        "data": { "id": 5, "sport": "Laufen", "distanz_km": 10.5, "dauer_min": 52, "datum": "2026-11-02" }
+      }
+      ```
+
+      Das ist gewollt: Später können neben `data` weitere Schlüssel stehen (Seiteninfos, Links), ohne dass sich
+      die eigentlichen Daten verschieben. Bleib bei dieser Form, wenn du keinen guten Grund hast.
+
+      **Bedingte Felder.** Mit `$this->when(...)` kommt ein Feld nur unter einer Bedingung ins JSON.
+      Mit `whenLoaded('beziehung')` kommt eine Beziehung nur dann mit, wenn sie schon geladen wurde.
+      Das verhindert, dass die Ressource heimlich zusätzliche Datenbankabfragen auslöst. (Dein Trainingstagebuch hat noch
+      keine Beziehungen. Sie kommen mit den Nutzern in den nächsten Lektionen dazu.)
+
+      ```php
+      'lang' => $this->when($this->dauer_min > 60, true),
+      ```
+
+      Das Feld `lang` erscheint nur bei Einheiten über 60 Minuten.
+
+      **Status und Header.** Wird ein Modell frisch angelegt, setzt Laravel beim Zurückgeben der Ressource den Code 201 meist selbst.
+      Willst du den Code ausdrücklich festlegen, hängst du ihn an die Antwort:
+
+      ```php
+      return (new TrainingResource($training))
+          ->response()
+          ->setStatusCode(201);
+      ```
+
+      **Typische Fehler:** (1) Du vergisst `collection(...)` und übergibst eine Liste an `new TrainingResource(...)`.
+      Dann behandelt die Ressource die ganze Liste wie einen einzigen Eintrag, und `$this->id` ist leer. Für viele Einträge: `::collection`. (2) Du fügst eine neue Spalte hinzu und wunderst dich,
+      dass sie in der Antwort fehlt. Die Ressource zeigt nur, was in `toArray` steht. Das schützt dich vor
+      Versehen, du musst neue Felder aber bewusst ergänzen.
+
+      **Merkhilfe:** *Modell = Lager, Ressource = Schaufenster.*
+
+      ## Probier es selbst
+
+      Arbeite in deinem Trainingstagebuch. Alle Befehle in diesem Abschnitt laufen im Projektordner.
+
+      1. Lege mit `php artisan make:resource TrainingResource` die Ressource an. Wo liegt die Datei?
+         *Kontrolle:* `app/Http/Resources/TrainingResource.php`.
+      2. Trage in `toArray` `id`, `sport`, `distanz_km` und `dauer_min` ein. Das Feld `sport` kommt aus der Spalte `sportart`
+         (`'sport' => $this->sportart`). So siehst du, dass der JSON-Name vom Spaltennamen abweichen darf.
+         *Kontrolle:* Die Antwort enthält den Schlüssel `sport`, aber keinen Schlüssel `sportart`.
+      3. Gib im Controller bei `show` die Ressource zurück: `return new TrainingResource($training);`. Rufe `GET /api/trainings/1` auf.
+         *Kontrolle:* Die Antwort hat einen Schlüssel `data` mit deinen Feldern, und nur mit diesen.
+      4. Ändere `index` auf `TrainingResource::collection(Training::all())`.
+         *Kontrolle:* `data` ist jetzt eine Liste (eckige Klammern) von Einträgen.
+      5. Gib bei `store` die Ressource mit Status 201 zurück (`->response()->setStatusCode(201)`).
+         *Kontrolle:* Dein Test aus Phase 2 für `POST` meldet weiter 201, und der Body enthält `data`.
+      6. Passe deine vorhandenen Tests an die neue Form an (zum Beispiel `assertJsonPath('data.sport', 'Laufen')`).
+         *Kontrolle:* `php artisan test` ist grün.
+      7. Füge `'lang' => $this->when($this->dauer_min > 60, true)` hinzu. Lege eine Einheit mit 90 und eine mit 30 Minuten an und rufe beide ab.
+         *Kontrolle:* Bei 90 Minuten steht `"lang": true` in `data`, bei 30 Minuten fehlt der Schlüssel `lang` ganz.
+    quiz:
+      - frage: "Wofür benutzt du eine API-Ressource?"
+        erklaerung: "Sie legt fest, welche Felder im JSON stehen, und entkoppelt die Antwort von den Spalten des Modells."
+        antworten:
+          - { text: "Um festzulegen, welche Felder die JSON-Antwort enthält.", richtig: true }
+          - { text: "Um Eingaben zu prüfen, bevor sie gespeichert werden.", richtig: false }
+          - { text: "Um Tabellen in der Datenbank anzulegen.", richtig: false }
+      - frage: "Wie gibst du eine ganze Liste von Modellen über eine Ressource zurück?"
+        erklaerung: "`TrainingResource::collection(...)` verpackt jedes Element mit derselben Ressource."
+        antworten:
+          - { text: "new TrainingResource(Training::all())", richtig: false }
+          - { text: "TrainingResource::collection(Training::all())", richtig: true }
+          - { text: "Training::all()->resource()", richtig: false }
+      - frage: "In welchem Schlüssel steht der Inhalt einer Ressource standardmäßig?"
+        erklaerung: "Laravel umhüllt die Daten mit `data`, damit daneben weitere Schlüssel Platz haben."
+        antworten:
+          - { text: "items", richtig: false }
+          - { text: "data", richtig: true }
+          - { text: "resource", richtig: false }
+      - frage: "Was bewirkt `whenLoaded('user')` in einer Ressource?"
+        erklaerung: "Die Beziehung kommt nur ins JSON, wenn sie bereits geladen ist. So löst die Ressource keine versteckten Abfragen aus."
+        antworten:
+          - { text: "Es lädt den Nutzer immer nach.", richtig: false }
+          - { text: "Es nimmt die Beziehung nur auf, wenn sie schon geladen wurde.", richtig: true }
+          - { text: "Es löscht den Nutzer nach der Ausgabe.", richtig: false }
+  - titel: Seitenweise Ausgabe mit Pagination
+    inhalt: |
+      Stell dir vor, ein Läufer hat 3.000 Aktivitäten. `Training::all()` lädt alle auf einmal: Die Antwort ist
+      riesig, langsam und belastet die Datenbank. Besser ist es wie bei einem Buch: Du zeigst eine Seite
+      nach der anderen. Das heißt **Pagination**.
+
+      Statt `all()` rufst du `paginate()` auf und sagst, wie viele Einträge eine Seite hat:
+
+      ```php
+      public function index()
+      {
+          return TrainingResource::collection(
+              Training::orderByDesc('datum')->orderByDesc('id')->paginate(15)
+          );
+      }
+      ```
+
+      Laravel liest die gewünschte Seite selbst aus der Adresse: `GET /api/trainings?page=2` liefert die zweite Seite.
+      Ohne Angabe gilt Seite 1. Die Antwort enthält neben `data` zwei weitere Bereiche:
+
+      ```json
+      {
+        "data": [ { "id": 16, "...": "..." } ],
+        "links": { "first": "http://.../api/trainings?page=1", "last": "...?page=4", "prev": "...?page=1", "next": "...?page=3" },
+        "meta": { "current_page": 2, "per_page": 15, "total": 52, "last_page": 4, "from": 16, "to": 30 }
+      }
+      ```
+
+      `links` sagt dem Client, wohin er blättern kann. `meta` beschreibt, wo er gerade ist. Der Client muss
+      nichts ausrechnen.
+
+      **Drei Arten, zu blättern.** Laravel kennt drei Methoden. Sie unterscheiden sich im Preis:
+
+      | Methode | Zählt alle Einträge? | Passt für |
+      | --- | --- | --- |
+      | `paginate()` | ja (eine zusätzliche Zählabfrage) | Listen mit Seitenzahlen |
+      | `simplePaginate()` | nein, nur „vor“ und „zurück“ | große Tabellen, in denen die Gesamtzahl egal ist |
+      | `cursorPaginate()` | nein, merkt sich die Position | sehr große Tabellen, endloses Scrollen |
+
+      Für den Anfang reicht `paginate()`. Wechsle nur, wenn die Zählabfrage spürbar langsam wird.
+
+      **Immer sortieren.** Ohne `orderBy` ist die Reihenfolge nicht festgelegt. Dann können Einträge auf zwei Seiten
+      doppelt oder gar nicht auftauchen. Sortiere nach einem Merkmal und ergänze die `id` als zweites Kriterium, weil mehrere Einträge dasselbe Datum haben können (`orderByDesc('datum')->orderByDesc('id')`). Auch die PostgreSQL-Dokumentation warnt, dass ohne `ORDER BY` die Auswahl bei `LIMIT` und `OFFSET` unvorhersehbar ist.
+
+      **Obergrenze setzen.** Erlaubst du dem Client, die Seitengröße selbst zu wählen (`?per_page=100000`), hebelst du
+      den Schutz aus. Begrenze den Wert:
+
+      ```php
+      $proSeite = max(1, min((int) request('per_page', 15), 100));
+      return TrainingResource::collection(Training::orderByDesc('datum')->orderByDesc('id')->paginate($proSeite));
+      ```
+
+      **Typischer Fehler:** Erst `all()` und dann in PHP zerschneiden. Das lädt trotzdem alles. Der Schnitt
+      muss in der Datenbank passieren, also mit `paginate()`.
+
+      **Merkhilfe:** *Nie alles auf einmal – blättern wie in einem Buch, mit festem Maximum.*
+
+      ## Probier es selbst
+
+      Dein Trainingstagebuch braucht ein paar Dutzend Einträge. Erzeuge sie schnell mit der Factory (in `php artisan tinker`
+      zum Beispiel `Training::factory()->count(40)->create();`).
+
+      1. Ersetze in `index` `all()` durch `orderByDesc('datum')->orderByDesc('id')->paginate(10)`, weiterhin über die Ressource.
+         *Kontrolle:* Die Antwort enthält `data`, `links` und `meta`.
+      2. Wie viele Einträge stehen in `data`, und welcher Wert steht in `meta.total`?
+         *Kontrolle:* 10 Einträge in `data`, `meta.total` ist 40 (oder deine Anzahl).
+      3. Rufe `GET /api/trainings?page=2` auf. Was steht in `meta.current_page` und `meta.from`?
+         *Kontrolle:* `current_page` ist 2, `from` ist 11.
+      4. Rufe eine Seite auf, die es nicht gibt (`?page=99`). Was liefert die API? Schau dir Status und `data` an.
+         *Kontrolle:* In der Praxis kommt Status 200 mit leerem `data` (die Doku beschreibt das nicht ausdrücklich, deshalb probierst du es selbst aus).
+      5. Baue `per_page` ein: `max(1, min((int) request('per_page', 10), 50))`. Ohne Angabe bleibt es also bei 10. Teste `?per_page=1000`.
+         *Kontrolle:* `meta.per_page` ist 50. Ohne Parameter ist es weiter 10.
+      6. Tausche zum Vergleich `paginate` gegen `simplePaginate`. Welches Feld in `meta` fehlt jetzt?
+         *Kontrolle:* `total` (und `last_page`) fehlen, weil nichts gezählt wird.
+      7. Schreibe einen Feature-Test, der 15 Einträge anlegt, `GET /api/trainings` aufruft und `assertJsonCount(10, 'data')` prüft.
+         *Kontrolle:* `php artisan test` ist grün.
+    quiz:
+      - frage: "Warum nutzt du in `index` besser `paginate()` als `all()`?"
+        erklaerung: "`all()` lädt jede Zeile. Bei vielen Einträgen wird die Antwort riesig und langsam."
+        antworten:
+          - { text: "paginate() lädt nur die Einträge der gewünschten Seite.", richtig: true }
+          - { text: "paginate() sortiert die Einträge automatisch nach Datum.", richtig: false }
+          - { text: "paginate() lädt alle Einträge, zeigt aber nur eine Seite an.", richtig: false }
+      - frage: "Wie wählt ein Client Seite 3 aus?"
+        erklaerung: "Laravel liest den Parameter `page` aus der Adresse."
+        antworten:
+          - { text: "GET /api/trainings/page/3", richtig: false }
+          - { text: "GET /api/trainings?page=3", richtig: true }
+          - { text: "POST /api/trainings mit page=3", richtig: false }
+      - frage: "Was liefert `meta` in der Antwort?"
+        erklaerung: "`meta` beschreibt die Seite: aktuelle Seite, Einträge pro Seite, Gesamtzahl. `links` enthält die Adressen zum Blättern."
+        antworten:
+          - { text: "Die Adressen zum Blättern.", richtig: false }
+          - { text: "Angaben wie current_page, per_page und total.", richtig: true }
+          - { text: "Die Namen der Spalten der Tabelle.", richtig: false }
+      - frage: "Welche Methode zählt nicht alle Einträge und spart die Zählabfrage?"
+        erklaerung: "`simplePaginate()` kennt nur „weiter“ und „zurück“ und fragt die Gesamtzahl nicht ab."
+        antworten:
+          - { text: "paginate()", richtig: false }
+          - { text: "simplePaginate()", richtig: true }
+          - { text: "all()", richtig: false }
+  - titel: Fehlerantworten und Ausnahmen
+    inhalt: |
+      Eine gute API zeigt auch im Fehlerfall ein klares, gleichbleibendes Gesicht. Ein Client, der auf JSON wartet,
+      soll bei „nicht gefunden“ nicht plötzlich eine HTML-Seite bekommen.
+
+      **Was Laravel schon kann.** Wirfst du in einer Route eine Ausnahme, übersetzt Laravel sie in eine Antwort:
+
+      - Ein Modell, das `findOrFail` oder die automatische Modellbindung nicht findet, ergibt `404`.
+      - Eine ungültige Eingabe (Form Request, `validate`) ergibt `422` mit einer Liste der Fehler, **wenn die Anfrage JSON erwartet**
+        (Header `Accept: application/json`). Sonst leitet Laravel zurück (302), wie bei einem Formular im Browser.
+      - Mit `abort(403, 'Das darfst du nicht.')` löst du selbst einen Fehlercode aus.
+      - Alles Unerwartete wird zu `500`.
+
+      **Der Header `Accept: application/json`.** Laravel entscheidet anhand der Anfrage, ob es JSON oder eine
+      HTML-Fehlerseite schickt. Ein API-Client sollte diesen Header immer mitsenden. Für Routen unter `/api`
+      kannst du das auch fest einstellen. In Laravel 13 geschieht das in `bootstrap/app.php`:
+
+      ```php
+      use Illuminate\Http\Request;
+      use Illuminate\Foundation\Configuration\Exceptions;
+
+      ->withExceptions(function (Exceptions $exceptions): void {
+          $exceptions->shouldRenderJsonWhen(function (Request $request, Throwable $e) {
+              return $request->is('api/*') || $request->expectsJson();
+          });
+      })
+      ```
+
+      **Eigene Fehlertexte.** Mit `render` änderst du die Antwort für eine bestimmte Ausnahme. Beispiel: Ein einheitlicher
+      Text für „nicht gefunden“:
+
+      ```php
+      use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
+      $exceptions->render(function (NotFoundHttpException $e, Request $request) {
+          if ($request->is('api/*')) {
+              return response()->json(['message' => 'Eintrag nicht gefunden.'], 404);
+          }
+      });
+      ```
+
+      Gibt die Funktion nichts zurück, nutzt Laravel seine normale Behandlung. Eine einheitliche Form
+      (zum Beispiel immer ein Feld `message`) hilft jedem Client, der Fehler anzeigen muss.
+
+      **Fehler protokollieren, aber nichts verraten.** Unerwartete Fehler (zum Beispiel ein Fehler im Code, der 500 auslöst) schreibt Laravel ins Log
+      (im Standard-Projekt in die Datei `storage/logs/laravel.log`, einstellbar in `config/logging.php`).
+      Erwartete Fehler wie 404 ignoriert Laravel dabei standardmäßig. Die Details im Log helfen dir beim Suchen. Der Client braucht aber keine Details. In der
+      Entwicklung ist `APP_DEBUG=true` praktisch. **Im Betrieb muss es `false` sein**, sonst zeigt Laravel interne Pfade
+      und Daten an. Das wäre ein Sicherheitsrisiko.
+
+      **Typische Fehler:** (1) Einen Fehler abfangen und `200` mit „error“ im Text zurückgeben. (2) Ein leerer
+      `catch`-Block, der den Fehler verschluckt, sodass niemand ihn bemerkt. (3) `APP_DEBUG=true` auf dem Server.
+
+      **Merkhilfe:** *Richtiger Statuscode, klarer Text, Details ins Log, nicht zum Client.*
+
+      ## Probier es selbst
+
+      1. Rufe `GET /api/trainings/99999` mit dem Header `Accept: application/json` auf (zum Beispiel
+         `curl -H "Accept: application/json" ...`). Was kommt zurück?
+         *Kontrolle:* Status 404 und ein JSON mit `message`.
+      2. Rufe dieselbe Adresse ohne den Header auf. Bekommst du auch JSON?
+         *Kontrolle:* Der Code ist weiter 404. Im Standard-Projekt ist der Body aber eine HTML-Seite, nicht JSON.
+      3. Trage in `bootstrap/app.php` `shouldRenderJsonWhen` für `api/*` ein. Wiederhole Schritt 2.
+         *Kontrolle:* Jetzt kommt auch ohne Header JSON.
+      4. Füge ein `render` für `NotFoundHttpException` hinzu, das `{"message": "Eintrag nicht gefunden."}` mit Status 404 liefert.
+         *Kontrolle:* Der Text in der Antwort ist genau dein Text.
+      5. Schreibe einen Test: `getJson('/api/trainings/99999')` muss `assertNotFound()` erfüllen.
+         *Kontrolle:* Der Test ist grün.
+      6. Schicke ein ungültiges `POST` (`distanz_km` = -5) mit dem Header `Accept: application/json` und sieh dir die Antwort an. Wie ist sie aufgebaut?
+         *Kontrolle:* Status 422, ein Feld `message` und ein Feld `errors`, in dem `distanz_km` mit einer Meldung steht.
+      7. Schlage in der `.env` nach: Welcher Wert steht bei `APP_DEBUG`, und warum muss er auf einem Server `false` sein?
+         *Kontrolle:* In der Entwicklung `true`. Auf dem Server `false`, weil sonst interne Details sichtbar werden.
+    quiz:
+      - frage: "Welcher Statuscode kommt, wenn ein Modell über die Routen-Bindung nicht gefunden wird?"
+        erklaerung: "Laravel wandelt die Ausnahme „Modell nicht gefunden“ in `404` um."
+        antworten:
+          - { text: "404", richtig: true }
+          - { text: "422", richtig: false }
+          - { text: "500", richtig: false }
+      - frage: "Warum sollte `APP_DEBUG` auf einem Server `false` sein?"
+        erklaerung: "Mit `true` zeigt Laravel bei Fehlern interne Details wie Pfade und Konfiguration. Das hilft Angreifern."
+        antworten:
+          - { text: "Weil Fehlerseiten sonst interne Details verraten können.", richtig: true }
+          - { text: "Weil Laravel sonst keine Fehler ins Log schreibt.", richtig: false }
+          - { text: "Weil die Datenbank sonst nicht erreichbar ist.", richtig: false }
+      - frage: "Wo stellst du in Laravel 13 ein, dass Routen unter `api/*` Fehler als JSON ausgeben?"
+        erklaerung: "In `bootstrap/app.php` über `withExceptions` und `shouldRenderJsonWhen`."
+        antworten:
+          - { text: "In bootstrap/app.php über withExceptions.", richtig: true }
+          - { text: "In routes/api.php über Route::json().", richtig: false }
+          - { text: "In config/app.php über den Schlüssel 'format'.", richtig: false }
+      - frage: "Was ist ein schlechter Umgang mit einem Fehler in einer API?"
+        erklaerung: "Ein Fehler mit `200` zu melden, verwirrt Clients. Sie verlassen sich auf den Statuscode."
+        antworten:
+          - { text: "Status 404 mit klarer Meldung liefern.", richtig: false }
+          - { text: "Den Fehler ins Log schreiben.", richtig: false }
+          - { text: "Status 200 zurückgeben und den Fehler nur im Text erwähnen.", richtig: true }
+test:
+  zeitlimit_minuten: 15
+  fragen:
+    - frage: "Welche Methode legt nach REST-Gewohnheit einen neuen Eintrag an?"
+      erklaerung: "`POST` legt an. `GET` liest, `PATCH` ändert, `DELETE` löscht."
+      antworten:
+        - { text: "POST", richtig: true }
+        - { text: "GET", richtig: false }
+        - { text: "DELETE", richtig: false }
+    - frage: "Was bedeutet Status 204?"
+      erklaerung: "`204 No Content`: erfolgreich, aber ohne Inhalt in der Antwort, typisch nach `DELETE`."
+      antworten:
+        - { text: "Erfolgreich, aber ohne Inhalt.", richtig: true }
+        - { text: "Der Eintrag wurde nicht gefunden.", richtig: false }
+        - { text: "Die Eingabe ist ungültig.", richtig: false }
+    - frage: "Was unterscheidet 401 von 403?"
+      erklaerung: "`401`: nicht angemeldet. `403`: angemeldet, aber ohne Erlaubnis."
+      antworten:
+        - { text: "401 heißt nicht angemeldet, 403 heißt nicht erlaubt.", richtig: true }
+        - { text: "401 ist ein Serverfehler, 403 ein Clientfehler.", richtig: false }
+        - { text: "Es gibt keinen Unterschied.", richtig: false }
+    - frage: "Was ist ein Vorteil einer API-Ressource gegenüber dem direkten Zurückgeben des Modells?"
+      erklaerung: "Du bestimmst die Felder selbst, interne Spalten wandern nicht ungewollt in die Antwort."
+      antworten:
+        - { text: "Du legst fest, welche Felder ausgegeben werden.", richtig: true }
+        - { text: "Sie ersetzt die Datenbank.", richtig: false }
+        - { text: "Sie macht Migrationen überflüssig.", richtig: false }
+    - frage: "Wie liefert ein Controller eine Liste über eine Ressource zurück?"
+      erklaerung: "`::collection(...)` wendet die Ressource auf jedes Element an."
+      antworten:
+        - { text: "TrainingResource::collection($liste)", richtig: true }
+        - { text: "new TrainingResource($liste)->all()", richtig: false }
+        - { text: "TrainingResource::list($liste)", richtig: false }
+    - frage: "Welche Schlüssel enthält die Antwort einer paginierten Ressourcen-Liste neben `data`?"
+      erklaerung: "`links` für das Blättern und `meta` für Angaben zur Seite."
+      antworten:
+        - { text: "links und meta", richtig: true }
+        - { text: "errors und status", richtig: false }
+        - { text: "page und error", richtig: false }
+    - frage: "Warum sollte eine paginierte Abfrage immer sortiert sein?"
+      erklaerung: "Ohne feste Reihenfolge können Einträge auf zwei Seiten doppelt oder gar nicht erscheinen."
+      antworten:
+        - { text: "Damit die Seiten eine feste Reihenfolge haben.", richtig: true }
+        - { text: "Damit Laravel weniger Speicher braucht.", richtig: false }
+        - { text: "Weil paginate() sonst einen Fehler wirft.", richtig: false }
+    - frage: "Was ist beim Setzen von `per_page` durch den Client wichtig?"
+      erklaerung: "Ohne Obergrenze kann ein Client riesige Seiten anfordern und den Schutz umgehen."
+      antworten:
+        - { text: "Eine Obergrenze festzulegen.", richtig: true }
+        - { text: "Den Wert ungeprüft zu übernehmen, damit der Client frei wählen kann.", richtig: false }
+        - { text: "Den Wert in der Datenbank zu speichern.", richtig: false }
+    - frage: "Was bewirkt `whenLoaded('beziehung')` in einer Ressource?"
+      erklaerung: "Die Beziehung kommt nur ins JSON, wenn sie schon geladen wurde. So entstehen keine versteckten Zusatzabfragen."
+      antworten:
+        - { text: "Sie wird nur aufgenommen, wenn sie bereits geladen ist.", richtig: true }
+        - { text: "Sie wird bei jeder Ausgabe neu aus der Datenbank geladen.", richtig: false }
+        - { text: "Sie wird beim Speichern des Modells angelegt.", richtig: false }
+    - frage: "Wo änderst du die Fehlerantwort für eine bestimmte Ausnahme (zum Beispiel NotFoundHttpException)?"
+      erklaerung: "In `bootstrap/app.php` in `withExceptions` mit `$exceptions->render(...)`."
+      antworten:
+        - { text: "In bootstrap/app.php mit $exceptions->render(...)", richtig: true }
+        - { text: "In der Ressource mit toArray()", richtig: false }
+        - { text: "In der Migration der Tabelle", richtig: false }
+    - frage: "Welchen Wert sollte `APP_DEBUG` auf einem Server haben?"
+      erklaerung: "`false`, damit Fehlerseiten keine internen Details preisgeben."
+      antworten:
+        - { text: "false", richtig: true }
+        - { text: "true", richtig: false }
+        - { text: "Das ist egal.", richtig: false }
+    - frage: "Welcher Statuscode passt zu einer ungültigen Eingabe in einer JSON-API?"
+      erklaerung: "`422` (Unprocessable Content): Die Anfrage ist verständlich, der Inhalt aber ungültig."
+      antworten:
+        - { text: "422", richtig: true }
+        - { text: "404", richtig: false }
+        - { text: "409", richtig: false }

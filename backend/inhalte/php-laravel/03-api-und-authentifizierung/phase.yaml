@@ -1,0 +1,41 @@
+titel: API und Authentifizierung
+beschreibung: Aus deinem Trainingstagebuch wird eine saubere, geschützte API (Laravel 13.x). Danach kannst du Antworten einheitlich gestalten, Nutzer anmelden, Rechte prüfen und Dateien verarbeiten.
+projekt:
+  titel: "Garmin-Auswertung, Teil 1: Anmeldung und TCX-Import"
+  beschreibung: |
+    Du baust den ersten Teil der Garmin-Auswertung, dem Abschlussprojekt des Laravel-Blocks.
+    Es gibt weiterhin kein Frontend. Alle Antworten sind JSON.
+
+    **Aufgabe:** Nutzer registrieren sich und melden sich per Token an. Angemeldet laden sie
+    eine TCX-Datei hoch (so exportiert eine Garmin-Uhr eine Aktivität). Die API liest
+    Startzeit, Distanz, Dauer und Herzfrequenz aus der Datei und speichert die Aktivität.
+    Jeder Nutzer sieht und ändert nur seine eigenen Aktivitäten.
+
+    **Regeln:**
+
+    - Registrieren, Anmelden und Abmelden laufen über die API mit Sanctum-Tokens.
+    - Passwörter werden nie im Klartext gespeichert.
+    - Alle Aktivitäts-Routen verlangen eine Anmeldung (ohne Token Status 401).
+    - Eine Policy sorgt dafür, dass fremde Aktivitäten Status 403 oder 404 liefern.
+    - Die Antworten laufen über API-Ressourcen, die Liste ist seitenweise.
+    - Eine ungültige oder fehlerhafte Datei liefert Status 422 mit klarer Meldung, nicht 500.
+    - Die Anmelde-Routen haben eine Begrenzung der Anfragen.
+    - Jede Route hat mindestens einen Feature-Test, auch für „fremde Daten“ und „nicht angemeldet“.
+
+    **Tipp:** Baue zuerst Registrieren und Anmelden mit Tests. Dann die Aktivität ohne Upload
+    (Daten per JSON), erst zuletzt das Lesen der TCX-Datei.
+    Quellen: [Laravel 13.x Dokumentation](https://laravel.com/docs/13.x) und das offizielle
+    Garmin-Schema [TrainingCenterDatabasev2.xsd](https://www8.garmin.com/xmlschemas/TrainingCenterDatabasev2.xsd).
+  punkte:
+    - Das Projekt läuft lokal, `php artisan install:api` ist ausgeführt und Sanctum ist eingerichtet.
+    - Registrieren und Anmelden liefern ein Token, Abmelden löscht es.
+    - Passwörter sind gehasht gespeichert (kein Klartext in der Datenbank).
+    - Die Tabelle `activities` hat eine Migration mit Nutzer, Startzeit, Distanz, Dauer und Herzfrequenz.
+    - Ohne Token liefern die Aktivitäts-Routen Status 401.
+    - Eine Policy erlaubt nur dem Besitzer Zugriff auf eine Aktivität.
+    - Die Antworten laufen über eine API-Ressource, die Liste ist mit `paginate` seitenweise.
+    - Der Upload prüft Dateityp und Größe und liest die TCX-Datei mit SimpleXML.
+    - Eine kaputte Datei führt zu Status 422 statt zu einem Serverfehler.
+    - Die Anmelde-Routen haben ein Rate Limit.
+    - Feature-Tests decken Anmeldung, Zugriff ohne Token, fremde Daten und den Upload ab.
+    - '`php artisan test` läuft komplett grün.'

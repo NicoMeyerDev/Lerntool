@@ -1,0 +1,497 @@
+titel: Authentifizierung mit Sanctum
+zusammenfassung: Authentifizierung gegen Autorisierung, API-Tokens mit Sanctum, Registrieren, Anmelden, Abmelden und sicheres Speichern von Passwörtern.
+quellen:
+  - titel: Laravel 13.x – Authentication
+    url: https://laravel.com/docs/13.x/authentication
+  - titel: Laravel 13.x – Sanctum
+    url: https://laravel.com/docs/13.x/sanctum
+  - titel: Laravel 13.x – Hashing
+    url: https://laravel.com/docs/13.x/hashing
+  - titel: Laravel 13.x – Validation (Passwort-Regeln)
+    url: https://laravel.com/docs/13.x/validation#validating-passwords
+  - titel: PHP-Handbuch – password_hash (Bcrypt-Format $2y$)
+    url: https://www.php.net/manual/en/function.password-hash.php
+  - titel: Laravel 13.x – Skeleton, Modell User (Cast hashed)
+    url: https://github.com/laravel/laravel/blob/13.x/app/Models/User.php
+  - titel: OWASP – Password Storage Cheat Sheet
+    url: https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html
+abschnitte:
+  - titel: Authentifizierung gegen Autorisierung
+    inhalt: |
+      Zwei Wörter, die oft verwechselt werden, aber verschiedene Fragen beantworten:
+
+      - **Authentifizierung** fragt: *Wer bist du?* (Ausweis zeigen am Eingang)
+      - **Autorisierung** fragt: *Was darfst du?* (Zutritt nur zu bestimmten Räumen)
+
+      Stell dir ein Hotel vor. An der Rezeption zeigst du deinen Ausweis und bekommst eine Schlüsselkarte
+      (Authentifizierung). Die Karte öffnet aber nur dein Zimmer, nicht das der anderen Gäste (Autorisierung).
+      Bei einer API ist es genauso: Erst muss klar sein, **wer** anfragt, danach wird entschieden, **was** er darf.
+
+      Die Statuscodes aus Lektion 3.1 passen dazu: `401` heißt, die Authentifizierung fehlt oder ist ungültig.
+      `403` heißt, die Person ist bekannt, aber nicht berechtigt.
+
+      **Wie Laravel das denkt.** Laravel trennt zwei Begriffe:
+
+      - **Guard:** *Wie* wird jemand erkannt? Zum Beispiel über eine Sitzung (Cookie) oder über ein Token im Header.
+      - **Provider:** *Woher* kommen die Nutzerdaten? Bei dir aus der Tabelle `users` über das Modell `User`.
+
+      Die Einstellungen stehen in `config/auth.php`. Du musst sie für den Anfang nicht ändern. Wichtig ist nur: Eine Route
+      kann mit einem Guard „geschützt“ werden, und Laravel liefert dann `401`, wenn niemand erkannt wurde (bei Anfragen, die JSON erwarten, siehe Header `Accept: application/json`).
+
+      **Warum Tokens bei einer API?** Eine Webseite im Browser merkt sich dich über ein Cookie. Eine reine API wird
+      aber auch von Apps, Skripten und Tests aufgerufen. Dort ist ein **Token** üblich: ein langer, geheimer Text, den der Client
+      bei jeder Anfrage im Header mitschickt:
+
+      ```text
+      Authorization: Bearer 1|abcdef...
+      ```
+
+      „Bearer“ heißt „Inhaber“: Wer das Token hat, wird behandelt wie der Nutzer. Deshalb muss ein Token so geheim bleiben wie ein Passwort.
+
+      **Typische Fehler:** (1) `401` und `403` verwechseln. (2) Glauben, Anmelden reiche aus. Auch angemeldete Nutzer dürfen
+      nicht alles. Die Rechte prüfst du extra (Lektion 3.3). (3) Tokens in Adressen (`?token=...`) schicken. Adressen landen in Logs, den Header nicht.
+
+      **Merkhilfe:** *Authentifizierung = Ausweis, Autorisierung = Schlüsselkarte.*
+
+      ## Probier es selbst
+
+      Dies ist ein Denk- und Leseabschnitt. Einige Aufgaben brauchen dein Projekt, die meisten nur Papier oder ein Textfeld.
+
+      1. Ordne zu: „Der Nutzer gibt E-Mail und Passwort ein“ – Authentifizierung oder Autorisierung?
+         *Kontrolle:* Authentifizierung.
+      2. Ordne zu: „Nutzer A versucht, die Aktivität von Nutzer B zu löschen“ – was wird geprüft, und welcher Code kommt?
+         *Kontrolle:* Autorisierung, Code 403.
+      3. Öffne `config/auth.php`. Welcher Guard heißt unter `defaults` als Standard, und welches Modell nutzt der Provider `users`?
+         *Kontrolle:* Standard-Guard ist `web`, der Provider nutzt `App\Models\User`.
+      4. Öffne die vorhandene Migration der Tabelle `users`. Nenne drei Spalten.
+         *Kontrolle:* zum Beispiel `name`, `email`, `password`.
+      5. Rufe eine Route auf, die es mit Anmeldung geben soll, aber noch nicht gibt, mit `curl`. Warum zeigt `404` das Gegenteil von „nicht angemeldet“?
+         *Kontrolle:* 404 heißt „gibt es nicht“, 401 hieße „gibt es, aber du bist nicht erkannt“.
+      6. Schreibe in einem Satz, warum ein Token wie ein Passwort geheim gehalten werden muss.
+         *Kontrolle:* Wer das Token hat, wird als der Nutzer behandelt (Bearer = Inhaber).
+    quiz:
+      - frage: "Welche Frage beantwortet die Authentifizierung?"
+        erklaerung: "Authentifizierung stellt fest, wer jemand ist. Was er darf, ist Sache der Autorisierung."
+        antworten:
+          - { text: "Wer bist du?", richtig: true }
+          - { text: "Was darfst du?", richtig: false }
+          - { text: "Wie schnell ist die Anfrage?", richtig: false }
+      - frage: "Ein Client sendet kein Token an eine geschützte Route. Welcher Code ist üblich?"
+        erklaerung: "`401 Unauthorized` steht für fehlende oder ungültige Authentifizierung."
+        antworten:
+          - { text: "401", richtig: true }
+          - { text: "403", richtig: false }
+          - { text: "404", richtig: false }
+      - frage: "Wie wird ein Bearer-Token an die API geschickt?"
+        erklaerung: "Im Header `Authorization: Bearer <token>`. In der Adresse würde es in Logs landen."
+        antworten:
+          - { text: "Im Header Authorization.", richtig: true }
+          - { text: "Als Teil der Adresse nach ?token=.", richtig: false }
+          - { text: "Im Cookie mit dem Namen XSRF-TOKEN.", richtig: false }
+      - frage: "Was bestimmt in Laravel ein Guard?"
+        erklaerung: "Der Guard legt fest, wie Nutzer pro Anfrage erkannt werden (zum Beispiel Sitzung oder Token)."
+        antworten:
+          - { text: "Wie Nutzer pro Anfrage erkannt werden.", richtig: true }
+          - { text: "Welche Spalten eine Tabelle hat.", richtig: false }
+          - { text: "In welcher Sprache Fehler erscheinen.", richtig: false }
+  - titel: API-Tokens mit Sanctum
+    inhalt: |
+      **Sanctum** ist das offizielle, leichte Anmeldesystem von Laravel für APIs. Es kann zwei Dinge:
+      Tokens für Apps und Skripte ausgeben, und Cookie-Anmeldung für ein eigenes Frontend. Wir nutzen hier die
+      **Tokens**.
+
+      **Einrichten.** Der Befehl, den du aus Phase 2 kennst, installiert Sanctum und legt die Tabelle für die Tokens an:
+
+      ```bash
+      php artisan install:api
+      php artisan migrate
+      ```
+
+      Danach gibt es eine neue Tabelle `personal_access_tokens`. Dort steht je Token eine Zeile: wem es gehört,
+      wie es heißt, wann es zuletzt benutzt wurde, und eine **Prüfsumme** des Tokens (nicht das Token selbst).
+
+      Den Trait `HasApiTokens` trägst du **selbst** ins Modell `User` ein. Der Befehl macht das nicht für dich. Du importierst ihn mit `use Laravel\Sanctum\HasApiTokens;` und nennst ihn in der Klasse:
+
+      ```php
+      use Laravel\Sanctum\HasApiTokens;
+
+      class User extends Authenticatable
+      {
+          use HasApiTokens, HasFactory, Notifiable;
+          // ...
+      }
+      ```
+
+      **Ein Token ausstellen.** Das geht mit `createToken`:
+
+      ```php
+      $token = $user->createToken('handy')->plainTextToken;
+      // z. B. "7|aB3d...": die Nummer vor dem | ist die ID des Tokens
+      ```
+
+      Der Name (`handy`) hilft dir später zu erkennen, welches Token zu welchem Gerät gehört. `plainTextToken`
+      zeigt den Klartext **nur jetzt**. Danach ist er nicht mehr abrufbar, weil in der Datenbank nur die Prüfsumme steht.
+      Zeig ihn dem Nutzer also sofort, und speichere ihn nicht selbst.
+
+      **Eine Route schützen.** Du hängst die Middleware `auth:sanctum` an:
+
+      ```php
+      Route::middleware('auth:sanctum')->group(function () {
+          Route::apiResource('trainings', TrainingController::class);
+      });
+      ```
+
+      Jetzt liefert jede dieser Routen ohne gültiges Token `401`. Im Controller bekommst du den Nutzer mit
+      `$request->user()`.
+
+      **Ablauf der Tokens.** Standardmäßig laufen Sanctum-Tokens nicht ab. In `config/sanctum.php` kannst du bei `expiration`
+      eine Zeit in Minuten eintragen, nach der Tokens ungültig werden. Für eine App mit sensiblen Daten ist ein Ablauf sinnvoll.
+
+      **Fähigkeiten („abilities“).** Ein Token kann auf bestimmte Dinge beschränkt werden:
+
+      ```php
+      $token = $user->createToken('lesezugriff', ['trainings:read'])->plainTextToken;
+      // später: if ($request->user()->tokenCan('trainings:read')) { ... }
+      ```
+
+      **Typische Fehler:** (1) Der Befehl `install:api` wurde nicht ausgeführt, dann fehlt die Tabelle und `createToken` bricht ab.
+      (2) `HasApiTokens` fehlt im Modell (PHP meldet dann „Call to undefined method … createToken()“). (3) Der Client schickt das Token ohne das Wort `Bearer`. (4) Das Token wird im Code oder in Git gespeichert.
+
+      **Merkhilfe:** *Token = Hotelkarte. Sanctum druckt sie, `auth:sanctum` hält die Lesegeräte an den Türen.*
+
+      ## Probier es selbst
+
+      Nutze dein Trainingstagebuch. Bei Aufgaben mit Datenbank hilft `php artisan tinker`.
+      Schicke bei jedem Aufruf die Header `Accept: application/json` und `Content-Type: application/json` mit (bei `curl`: `-H "Accept: application/json" -H "Content-Type: application/json"`). Ohne `Accept` liefert Laravel bei Fehlern keine JSON-Antwort mit 401 oder 422, sondern leitet um oder zeigt eine HTML-Seite. Ohne `Content-Type` schickt `curl` den Inhalt als Formular statt als JSON.
+
+      1. Trage `HasApiTokens` selbst im Modell `User` ein (Import und `use` in der Klasse). Führe danach `php artisan migrate:status` aus.
+         *Kontrolle:* Die Migration für `personal_access_tokens` steht als „Ran“ da. Wenn nicht: `php artisan install:api` und `php artisan migrate`.
+         Ob der Trait wirkt, siehst du in der nächsten Aufgabe: Fehlt er, meldet `createToken` einen Fehler.
+      2. Lege in `tinker` einen Nutzer an (`User::factory()->create()`) und erzeuge `$u->createToken('test')->plainTextToken`.
+         *Kontrolle:* Ein Text der Form `1|…` kommt zurück.
+      3. Schütze `apiResource('trainings', ...)` mit `auth:sanctum`. Rufe `GET /api/trainings` ohne Token auf.
+         *Kontrolle:* Status 401.
+      4. Rufe dieselbe Adresse mit `Authorization: Bearer <dein Token>` auf (und `Accept: application/json`).
+         *Kontrolle:* Status 200.
+      5. Lass dir in `tinker` `\DB::table('personal_access_tokens')->get()` zeigen. Steht dort dein Klartext-Token?
+         *Kontrolle:* Nein, nur eine Prüfsumme (`token`-Spalte) und der Name.
+      6. Setze `'expiration' => 1` in `config/sanctum.php`, erzeuge danach ein neues Token, warte zwei Minuten und rufe die Route erneut auf.
+         *Kontrolle:* Status 401. Danach den Wert wieder zurücksetzen.
+      7. Schreibe einen Test mit `Sanctum::actingAs(User::factory()->create())` und `getJson('/api/trainings')->assertOk()`.
+         *Kontrolle:* Der Test ist grün. Ein zweiter Test ohne `actingAs` erwartet `assertUnauthorized()`.
+    quiz:
+      - frage: "Was steht in der Tabelle `personal_access_tokens` für ein Token?"
+        erklaerung: "Sanctum speichert eine Prüfsumme (Hash) des Tokens. Den Klartext zeigt es nur einmal beim Erstellen."
+        antworten:
+          - { text: "Der Klartext des Tokens.", richtig: false }
+          - { text: "Eine Prüfsumme des Tokens.", richtig: true }
+          - { text: "Das Passwort des Nutzers.", richtig: false }
+      - frage: "Welche Middleware schützt eine Route mit Sanctum-Tokens?"
+        erklaerung: "`auth:sanctum` verlangt ein gültiges Token, sonst antwortet Laravel mit 401."
+        antworten:
+          - { text: "auth:sanctum", richtig: true }
+          - { text: "throttle:sanctum", richtig: false }
+          - { text: "verified:api", richtig: false }
+      - frage: "Wie lange gelten Sanctum-Tokens standardmäßig?"
+        erklaerung: "Standardmäßig laufen sie nicht ab. Der Ablauf wird mit `expiration` in `config/sanctum.php` eingestellt."
+        antworten:
+          - { text: "Eine Stunde.", richtig: false }
+          - { text: "Sie laufen standardmäßig nicht ab.", richtig: true }
+          - { text: "Bis zum nächsten Neustart des Servers.", richtig: false }
+      - frage: "Was braucht das Modell `User`, damit `createToken` funktioniert?"
+        erklaerung: "Der Trait `HasApiTokens` stellt `createToken` und die Beziehung zu den Tokens bereit."
+        antworten:
+          - { text: "Den Trait HasApiTokens.", richtig: true }
+          - { text: "Eine Spalte api_key.", richtig: false }
+          - { text: "Eine eigene Middleware.", richtig: false }
+  - titel: Registrieren, anmelden, abmelden über die API
+    inhalt: |
+      Jetzt baust du die drei Wege, über die ein Nutzer ein Token bekommt oder loswird. Jeder ist ein eigener
+      Endpunkt, ganz im REST-Stil von Lektion 3.1:
+
+      | Aktion | Methode und Adresse | Geschützt? | Erfolg |
+      | --- | --- | --- | --- |
+      | Registrieren | `POST /api/register` | nein | 201 mit Token |
+      | Anmelden | `POST /api/login` | nein | 200 mit Token |
+      | Abmelden | `POST /api/logout` | ja (`auth:sanctum`) | 204 |
+
+      Lege dafür einen Controller an: `php artisan make:controller AuthController`.
+
+      **Registrieren.** Prüfe die Eingabe, lege den Nutzer an, gib ein Token zurück:
+
+      ```php
+      public function register(Request $request)
+      {
+          $daten = $request->validate([
+              'name' => ['required', 'string', 'max:255'],
+              'email' => ['required', 'email', 'max:255', 'unique:users,email'],
+              'password' => ['required', 'string', 'min:8', 'confirmed'],
+          ]);
+
+          $user = User::create($daten);
+
+          return response()->json([
+              'token' => $user->createToken('api')->plainTextToken,
+          ], 201);
+      }
+      ```
+
+      `confirmed` verlangt zusätzlich ein Feld `password_confirmation` mit demselben Wert. `unique:users,email` verhindert doppelte E-Mail-Adressen.
+      Das Passwort speichert Laravel dabei nicht im Klartext: Im Modell `User` sorgt die Angabe `'password' => 'hashed'`
+      in den Casts dafür, dass es beim Speichern automatisch gehasht wird (Abschnitt 4).
+
+      **Anmelden.** Hier gibst du bewusst keine Details preis. Egal ob die E-Mail unbekannt ist oder das Passwort falsch: dieselbe Meldung.
+
+      ```php
+      use Illuminate\Support\Facades\Hash;
+      use Illuminate\Validation\ValidationException;
+
+      public function login(Request $request)
+      {
+          $daten = $request->validate([
+              'email' => ['required', 'email'],
+              'password' => ['required'],
+          ]);
+
+          $user = User::where('email', $daten['email'])->first();
+
+          if (! $user || ! Hash::check($daten['password'], $user->password)) {
+              throw ValidationException::withMessages([
+                  'email' => ['Die Anmeldedaten sind falsch.'],
+              ]);
+          }
+
+          return response()->json([
+              'token' => $user->createToken('api')->plainTextToken,
+          ]);
+      }
+      ```
+
+      Warum die gleiche Meldung? Sagte die API „E-Mail unbekannt“, könnte ein Angreifer erraten, welche Adressen registriert sind.
+
+      **Abmelden.** Du löschst nur das Token, mit dem die Anfrage kam. Andere Geräte bleiben angemeldet:
+
+      ```php
+      public function logout(Request $request)
+      {
+          $request->user()->currentAccessToken()->delete();
+
+          return response()->noContent();
+      }
+      ```
+
+      Willst du **alle** Geräte abmelden, löschst du alle Tokens: `$request->user()->tokens()->delete();`.
+
+      **Typische Fehler:** (1) Beim Registrieren das Passwort selbst mit `Hash::make` hashen, obwohl der Cast `hashed` es schon tut. Das ist überflüssig und zeigt, dass der Cast nicht verstanden wurde.
+      (2) Beim Anmelden verschiedene Meldungen für „E-Mail unbekannt“ und „Passwort falsch“. (3) Die Route `logout` ohne `auth:sanctum` lassen: Dann gibt es keinen `$request->user()`.
+
+      **Merkhilfe:** *Registrieren und Anmelden = Token holen (offen), Abmelden = Token abgeben (geschützt).*
+
+      ## Probier es selbst
+
+      Schicke bei jedem Aufruf die Header `Accept: application/json` und `Content-Type: application/json` mit (bei `curl`: `-H "Accept: application/json" -H "Content-Type: application/json"`). Ohne `Accept` liefert Laravel bei Fehlern keine JSON-Antwort mit 401 oder 422, sondern leitet um oder zeigt eine HTML-Seite. Ohne `Content-Type` schickt `curl` den Inhalt als Formular statt als JSON.
+
+      1. Lege `AuthController` an und trage die drei Routen in `routes/api.php` ein. `logout` kommt in die Gruppe mit `auth:sanctum`.
+         *Kontrolle:* `php artisan route:list --path=api` zeigt `register`, `login`, `logout`.
+      2. Schicke `POST /api/register` mit Name, E-Mail, Passwort und Passwort-Bestätigung (JSON).
+         *Kontrolle:* Status 201 und ein Feld `token`.
+      3. Schicke dieselbe Registrierung nochmals.
+         *Kontrolle:* Status 422, `errors.email` meldet, dass die Adresse schon vergeben ist.
+      4. Melde dich mit falschem Passwort an.
+         *Kontrolle:* Status 422 mit der Meldung „Die Anmeldedaten sind falsch.“.
+      5. Melde dich mit dem richtigen Passwort an und rufe mit dem Token `GET /api/trainings` auf.
+         *Kontrolle:* Status 200.
+      6. Rufe `POST /api/logout` mit dem Token auf und dann nochmals `GET /api/trainings` mit demselben Token.
+         *Kontrolle:* Logout liefert 204, danach kommt 401.
+      7. Schreibe Tests für: Registrieren (201), doppelte E-Mail (422), Anmelden richtig (200), Anmelden falsch (422).
+         *Kontrolle:* `php artisan test` ist grün.
+    quiz:
+      - frage: "Welchen Statuscode liefert das erfolgreiche Registrieren üblicherweise?"
+        erklaerung: "Ein neuer Nutzer wurde angelegt: `201 Created`."
+        antworten:
+          - { text: "201", richtig: true }
+          - { text: "204", richtig: false }
+          - { text: "401", richtig: false }
+      - frage: "Warum liefert Anmelden bei unbekannter E-Mail und bei falschem Passwort dieselbe Meldung?"
+        erklaerung: "Verschiedene Meldungen würden verraten, welche E-Mail-Adressen registriert sind."
+        antworten:
+          - { text: "Damit Angreifer nicht erfahren, welche Adressen existieren.", richtig: true }
+          - { text: "Weil Laravel keine zwei Meldungen unterstützt.", richtig: false }
+          - { text: "Damit die Antwort kürzer wird.", richtig: false }
+      - frage: "Was macht `$request->user()->currentAccessToken()->delete()`?"
+        erklaerung: "Es löscht nur das Token der aktuellen Anfrage. Andere Geräte bleiben angemeldet."
+        antworten:
+          - { text: "Es löscht alle Tokens des Nutzers.", richtig: false }
+          - { text: "Es löscht den Nutzer.", richtig: false }
+          - { text: "Es löscht das Token dieser Anfrage.", richtig: true }
+      - frage: "Was bewirkt die Regel `confirmed` bei `password`?"
+        erklaerung: "Sie verlangt ein Feld `password_confirmation` mit demselben Wert, um Tippfehler zu vermeiden."
+        antworten:
+          - { text: "Das Passwort wird per E-Mail bestätigt.", richtig: false }
+          - { text: "Ein Feld password_confirmation muss denselben Wert haben.", richtig: true }
+          - { text: "Das Passwort wird gehasht.", richtig: false }
+  - titel: Passwörter sicher speichern
+    inhalt: |
+      Ein Passwort darf **nie im Klartext** in der Datenbank stehen. Wird die Datenbank gestohlen, wären sonst
+      alle Konten offen, und viele Menschen nutzen dasselbe Passwort bei mehreren Diensten.
+
+      **Hashing** ist die Lösung. Ein Hash ist wie ein Fingerabdruck: Aus dem Passwort wird ein langer, scheinbar zufälliger Text.
+      Aus diesem Text lässt sich das Passwort nicht zurückrechnen. Beim Anmelden hasht Laravel die Eingabe erneut und vergleicht
+      die Ergebnisse.
+
+      ```php
+      use Illuminate\Support\Facades\Hash;
+
+      $hash = Hash::make('geheim123');        // z. B. "$2y$12$..."
+      Hash::check('geheim123', $hash);        // true
+      Hash::check('falsch',    $hash);        // false
+      ```
+
+      Zweimal `Hash::make('geheim123')` liefert zwei **verschiedene** Texte. Das ist gewollt: Jeder Hash enthält ein
+      zufälliges „Salz“, damit gleiche Passwörter nicht gleich aussehen. Darum vergleichst du nie mit `==`,
+      sondern immer mit `Hash::check`.
+
+      **Langsam mit Absicht.** Passwort-Hashes (Standard in Laravel: **Bcrypt**, wählbar auch Argon2) rechnen bewusst aufwendig.
+      Ein Angreifer, der Milliarden Passwörter durchprobieren will, braucht dadurch viel länger. Einen schnellen Hash wie
+      MD5 oder SHA-1 nimmst du für Passwörter nie.
+
+      **Der Aufwand lässt sich erhöhen.** Der Aufwandsfaktor („rounds“) steht in der Konfiguration. Mit
+      `Hash::needsRehash($hash)` erkennst du alte, zu schwache Hashes und kannst sie beim nächsten Anmelden erneuern.
+
+      **Automatisch im Modell.** Das mitgelieferte Modell `User` hasht das Passwort selbst, sobald es gesetzt wird:
+
+      ```php
+      protected function casts(): array
+      {
+          return [
+              'email_verified_at' => 'datetime',
+              'password' => 'hashed',
+          ];
+      }
+      ```
+
+      Darum reicht `User::create(['password' => 'geheim123', ...])`. Ein zusätzliches `Hash::make` ist deshalb überflüssig.
+
+      **Regeln für gute Passwörter.** Laravel bietet die Klasse `Password`, mit der du Anforderungen bündelst:
+
+      ```php
+      use Illuminate\Validation\Rules\Password;
+
+      'password' => ['required', 'confirmed', Password::min(8)->letters()->numbers()],
+      ```
+
+      Das Verfahren Bcrypt ist der Standard in Laravel. Die OWASP-Empfehlung nennt Argon2id an erster Stelle; Laravel kann es ebenfalls (Einstellung `hashing.driver`).
+
+      Mit `->uncompromised()` prüft Laravel zusätzlich, ob das Passwort in bekannten Datenlecks aufgetaucht ist.
+
+      **Typische Fehler:** (1) Passwörter im Log ausgeben (zum Beispiel die ganze Anfrage protokollieren). (2) Passwörter per E-Mail
+      verschicken. (3) Ein eigenes Hash-Verfahren erfinden. Nutze die Funktionen des Frameworks.
+
+      **Merkhilfe:** *Speichere nie das Passwort, nur seinen Fingerabdruck – und vergleiche mit `Hash::check`.*
+
+      ## Probier es selbst
+
+      Arbeite mit `php artisan tinker`.
+
+      1. Berechne `Hash::make('geheim123')` zweimal. Sind die Ergebnisse gleich?
+         *Kontrolle:* Nein, wegen des zufälligen Salzes.
+      2. Prüfe mit `Hash::check('geheim123', $hash)` mit dem richtigen und mit einem falschen Passwort.
+         *Kontrolle:* `true` und `false`.
+      3. Mit welchen Zeichen beginnt dein Hash, und wie lang ist er (`strlen`)?
+         *Kontrolle:* Er beginnt mit `$2y$` (Bcrypt) und hat 60 Zeichen (die PHP-Dokumentation nennt eine Spalte von mehr als 60 Bytes als Richtwert).
+      4. Lege `User::factory()->create(['password' => 'geheim123'])` an und lies die Spalte `password` des Nutzers. Steht dort `geheim123`?
+         *Kontrolle:* Nein, dort steht ein Hash, weil der Cast `hashed` greift.
+      5. Suche im Modell `User` die Stelle mit `'password' => 'hashed'`.
+         *Kontrolle:* Sie steht in der Methode `casts()`.
+      6. Ändere die Registrierung auf `Password::min(10)->letters()->numbers()` und teste ein zu kurzes Passwort (mit `Accept: application/json`).
+         *Kontrolle:* Status 422 mit einer Meldung zu `password`.
+      7. Schreibe einen Test, der prüft, dass `$user->password` nach dem Anlegen nicht gleich dem Klartext ist, aber `Hash::check` `true` liefert.
+         *Kontrolle:* Der Test ist grün.
+    quiz:
+      - frage: "Wie speicherst du Passwörter in der Datenbank?"
+        erklaerung: "Nur als Hash. Aus dem Hash lässt sich das Passwort nicht zurückrechnen."
+        antworten:
+          - { text: "Als Hash, nie im Klartext.", richtig: true }
+          - { text: "Im Klartext, damit man sie wiederherstellen kann.", richtig: false }
+          - { text: "Mit MD5, weil das schnell ist.", richtig: false }
+      - frage: "Wie prüfst du ein eingegebenes Passwort gegen den gespeicherten Hash?"
+        erklaerung: "`Hash::check($eingabe, $hash)`. Ein Vergleich mit `==` funktioniert nicht, weil jeder Hash ein eigenes Salz hat."
+        antworten:
+          - { text: "$eingabe == $hash", richtig: false }
+          - { text: "Hash::check($eingabe, $hash)", richtig: true }
+          - { text: "Hash::make($eingabe) == $hash", richtig: false }
+      - frage: "Warum liefert `Hash::make` für dasselbe Passwort bei jedem Aufruf einen anderen Text?"
+        erklaerung: "Jeder Hash enthält ein zufälliges Salz. So sehen gleiche Passwörter unterschiedlich aus."
+        antworten:
+          - { text: "Wegen eines zufälligen Salzes im Hash.", richtig: true }
+          - { text: "Weil die Datenbank ihn ändert.", richtig: false }
+          - { text: "Das ist ein Fehler in Laravel.", richtig: false }
+      - frage: "Was bewirkt `'password' => 'hashed'` in den Casts von `User`?"
+        erklaerung: "Das Passwort wird beim Setzen automatisch gehasht. Ein eigenes `Hash::make` wäre dann überflüssig."
+        antworten:
+          - { text: "Es verschlüsselt die ganze Tabelle.", richtig: false }
+          - { text: "Es hasht das Passwort automatisch beim Speichern.", richtig: true }
+          - { text: "Es verbirgt das Passwort in der API-Antwort.", richtig: false }
+test:
+  zeitlimit_minuten: 15
+  fragen:
+    - frage: "Welche Aufgabe hat die Authentifizierung?"
+      erklaerung: "Sie stellt fest, wer jemand ist. Die Rechte prüft die Autorisierung."
+      antworten:
+        - { text: "Feststellen, wer anfragt.", richtig: true }
+        - { text: "Festlegen, welche Rechte jemand hat.", richtig: false }
+        - { text: "Die Antwort in JSON umwandeln.", richtig: false }
+    - frage: "Eine angemeldete Person darf eine Aktion nicht ausführen. Welcher Code passt?"
+      erklaerung: "`403 Forbidden`: bekannt, aber nicht erlaubt."
+      antworten:
+        - { text: "403", richtig: true }
+        - { text: "401", richtig: false }
+        - { text: "404", richtig: false }
+    - frage: "Mit welchem Befehl wird Sanctum samt API-Routen in ein Projekt aufgenommen?"
+      erklaerung: "`php artisan install:api` richtet die API-Unterstützung und Sanctum ein."
+      antworten:
+        - { text: "php artisan install:api", richtig: true }
+        - { text: "composer require laravel/sanctum-api", richtig: false }
+        - { text: "php artisan make:api", richtig: false }
+    - frage: "Wie sieht der Header einer Anfrage mit Token aus?"
+      erklaerung: "`Authorization: Bearer <token>`."
+      antworten:
+        - { text: "Authorization: Bearer <token>", richtig: true }
+        - { text: "X-Api-Token: <token>", richtig: false }
+        - { text: "Cookie: user=<token>", richtig: false }
+    - frage: "Was steht in `personal_access_tokens`?"
+      erklaerung: "Eine Prüfsumme des Tokens, nicht der Klartext."
+      antworten:
+        - { text: "Die Prüfsumme des Tokens.", richtig: true }
+        - { text: "Das Klartext-Token.", richtig: false }
+        - { text: "Das Klartext-Passwort.", richtig: false }
+    - frage: "Warum zeigt `plainTextToken` den Klartext nur direkt nach dem Erstellen?"
+      erklaerung: "Später existiert nur die Prüfsumme in der Datenbank. Den Klartext kann Laravel nicht wiederherstellen."
+      antworten:
+        - { text: "Weil in der Datenbank nur eine Prüfsumme gespeichert ist.", richtig: true }
+        - { text: "Weil der Klartext nach 5 Sekunden abläuft.", richtig: false }
+        - { text: "Weil der Klartext im Log steht.", richtig: false }
+    - frage: "Wie meldest du nur das aktuelle Gerät ab?"
+      erklaerung: "`currentAccessToken()->delete()` löscht nur das Token dieser Anfrage."
+      antworten:
+        - { text: "$request->user()->currentAccessToken()->delete()", richtig: true }
+        - { text: "$request->user()->delete()", richtig: false }
+        - { text: "$request->user()->tokens()->truncate()", richtig: false }
+    - frage: "Warum bekommt ein Angreifer bei der Anmeldung dieselbe Fehlermeldung für falsche E-Mail und falsches Passwort?"
+      erklaerung: "So lässt sich nicht herausfinden, welche Adressen registriert sind."
+      antworten:
+        - { text: "Damit keine Adressen verraten werden.", richtig: true }
+        - { text: "Weil Laravel nur eine Fehlermeldung kennt.", richtig: false }
+        - { text: "Damit die Datenbank entlastet wird.", richtig: false }
+    - frage: "Wie prüfst du ein Passwort gegen den gespeicherten Hash?"
+      erklaerung: "Mit `Hash::check`. Jeder Hash hat ein eigenes Salz."
+      antworten:
+        - { text: "Hash::check($eingabe, $hash)", richtig: true }
+        - { text: "$eingabe === $hash", richtig: false }
+        - { text: "md5($eingabe) === $hash", richtig: false }
+    - frage: "Welches Verfahren wählst du für Passwörter?"
+      erklaerung: "Ein bewusst langsames Verfahren wie Bcrypt oder Argon2, das Laravel mit `Hash` bereitstellt."
+      antworten:
+        - { text: "Bcrypt oder Argon2 über Hash::make", richtig: true }
+        - { text: "MD5", richtig: false }
+        - { text: "SHA-1", richtig: false }
