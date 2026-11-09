@@ -1,6 +1,7 @@
 # Changelog
 
 ## 2026-11-09
+- feat: Musterlektion „Operatoren und Kontrollstrukturen“ auf Einheiten von 20 bis 30 Minuten ausgebaut (Erklärung, typische Fehler, „Probier es selbst“-Aufgaben, zusätzliche Quizfragen). Backlog F1 und F2, Entscheidungen in `docs/ENTSCHEIDUNGEN.md`.
 - fix: Render-Backend ist in `render.yaml` auf die Region Frankfurt festgelegt. Datenbank und Backend müssen in derselben Region liegen, sonst scheitert der Start mit `failed to resolve host`. Hinweis in `docs/DEPLOYMENT.md` ergänzt.
 
 ## 2026-11-05
