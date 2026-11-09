@@ -1,9 +1,11 @@
 """Tests für die Hilfsfunktionen in `config/env.py`."""
 
+from datetime import date
+
 import pytest
 from django.core.exceptions import ImproperlyConfigured
 
-from config.env import env_bool, env_list, env_required
+from config.env import env_bool, env_date, env_list, env_required
 
 NAME = "LERNTOOL_TESTVARIABLE"
 
@@ -66,3 +68,30 @@ def test_env_required_meldet_fehlende_oder_leere_variable(
 
     with pytest.raises(ImproperlyConfigured, match=NAME):
         env_required(NAME)
+
+
+def test_env_date_liest_datum(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Ein Datum im Format JJJJ-MM-TT wird gelesen, Leerzeichen stören nicht."""
+    monkeypatch.setenv(NAME, " 2026-11-16 ")
+
+    assert env_date(NAME, "2000-01-01") == date(2026, 11, 16)
+
+
+@pytest.mark.parametrize("wert", [None, "", "   "])
+def test_env_date_nutzt_standard(monkeypatch: pytest.MonkeyPatch, wert: str | None) -> None:
+    """Fehlt die Variable oder ist sie leer, gilt der Standardwert."""
+    if wert is None:
+        monkeypatch.delenv(NAME, raising=False)
+    else:
+        monkeypatch.setenv(NAME, wert)
+
+    assert env_date(NAME, "2026-11-16") == date(2026, 11, 16)
+
+
+@pytest.mark.parametrize("wert", ["morgen", "16.11.2026", "2026-13-01"])
+def test_env_date_meldet_ungueltiges_datum(monkeypatch: pytest.MonkeyPatch, wert: str) -> None:
+    """Ein ungültiges Datum führt zu einer klaren Fehlermeldung."""
+    monkeypatch.setenv(NAME, wert)
+
+    with pytest.raises(ImproperlyConfigured, match=NAME):
+        env_date(NAME, "2026-11-16")

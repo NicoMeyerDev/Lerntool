@@ -1,6 +1,7 @@
 """Hilfsfunktionen zum Lesen von Umgebungsvariablen für die Einstellungen."""
 
 import os
+from datetime import date
 
 from django.core.exceptions import ImproperlyConfigured
 
@@ -52,3 +53,25 @@ def env_required(name: str) -> str:
     if not wert:
         raise ImproperlyConfigured(f"Umgebungsvariable {name} fehlt. Siehe backend/.env.example.")
     return wert
+
+
+def env_date(name: str, default: str) -> date:
+    """Liest eine Umgebungsvariable als Datum im Format JJJJ-MM-TT.
+
+    Args:
+        name: Name der Umgebungsvariable.
+        default: Standardwert im Format JJJJ-MM-TT, wenn die Variable fehlt oder leer ist.
+
+    Returns:
+        Das Datum.
+
+    Raises:
+        ImproperlyConfigured: Wenn der Wert kein gültiges Datum im Format JJJJ-MM-TT ist.
+    """
+    roh = os.environ.get(name, "").strip() or default
+    try:
+        return date.fromisoformat(roh)
+    except ValueError as fehler:
+        raise ImproperlyConfigured(
+            f"Umgebungsvariable {name} muss ein Datum im Format JJJJ-MM-TT sein, ist aber {roh!r}."
+        ) from fehler

@@ -4,6 +4,7 @@ from dataclasses import asdict
 from datetime import date
 from typing import Any
 
+from django.conf import settings
 from django.db.models import Prefetch, QuerySet
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
@@ -197,7 +198,7 @@ class WochenplanView(APIView):
                     status=status.HTTP_400_BAD_REQUEST,
                 )
             tag = gewuenscht
-        plan = erstelle_wochenplan(angemeldeter_nutzer(request), tag, heute)
+        plan = erstelle_wochenplan(angemeldeter_nutzer(request), tag, heute, settings.LERNSTART)
         return Response(asdict(plan))
 
 

@@ -15,6 +15,7 @@ const THEORIE = {
   titel: 'Theorie',
   beschreibung: 'Lektion lesen, danach das Quiz zum Abschnitt.',
   dauer: 'ca. 3 Std.',
+  aufgaben: [],
 }
 const PRAXIS = {
   schluessel: 'praxis',
@@ -22,6 +23,7 @@ const PRAXIS = {
   titel: 'Praxis und Quiz',
   beschreibung: 'Das Gelernte selbst anwenden.',
   dauer: 'ca. 2–3 Std.',
+  aufgaben: [],
 }
 const TEST_BLOCK = {
   schluessel: 'test',
@@ -29,6 +31,7 @@ const TEST_BLOCK = {
   titel: 'Test',
   beschreibung: 'Test zum Themenfeld der Woche.',
   dauer: 'ca. 1 Std.',
+  aufgaben: [],
 }
 
 /** Eine Woche (2.–8. November 2026) mit zwei Tagen zur Kürze. */
@@ -52,6 +55,9 @@ const PLAN = {
       bloecke: [TEST_BLOCK],
     },
   ],
+  lernstart: '2026-11-02',
+  nachholen: [],
+  nachholen_anzahl: 0,
   auswertung: {
     abschnitte_gelesen: 4,
     quizze_bearbeitet: 2,
@@ -59,6 +65,51 @@ const PLAN = {
     projekte_erledigt: 0,
     trefferquote_prozent: 75,
   },
+}
+
+/**
+ * Baut eine Aufgabe wie vom Backend geliefert.
+ *
+ * @param nummer - Nummer des Abschnitts in der Lektion.
+ * @param ueberschreiben - Felder, die vom Standard abweichen.
+ * @returns Eine Aufgabe für den Plan.
+ */
+function aufgabe(nummer: number, ueberschreiben: Record<string, unknown> = {}) {
+  return {
+    abschnitt_id: 100 + nummer,
+    lektion_id: 7,
+    nummer,
+    titel: `Abschnitt ${String(nummer)}`,
+    lektion_titel: 'Operatoren',
+    thema_titel: 'PHP/Laravel',
+    erledigt: false,
+    status: 'offen',
+    datum: '2026-11-02',
+    ...ueberschreiben,
+  }
+}
+
+/** Ein Plan, dessen Montag vier Abschnitte hat, einer davon erledigt. */
+const PLAN_MIT_AUFGABEN = {
+  ...PLAN,
+  tage: [
+    {
+      ...PLAN.tage[0],
+      bloecke: [
+        {
+          ...THEORIE,
+          aufgaben: [
+            aufgabe(1, { erledigt: true, status: 'erledigt' }),
+            aufgabe(2),
+            aufgabe(3),
+            aufgabe(4),
+          ],
+        },
+        PRAXIS,
+      ],
+    },
+    PLAN.tage[1],
+  ],
 }
 
 describe('Wochenplan', () => {
@@ -140,5 +191,79 @@ describe('Wochenplan', () => {
     renderMitProvidern(<App />, { pfad: '/plan' })
 
     expect(await screen.findByText('Der Plan konnte nicht geladen werden.')).toBeInTheDocument()
+  })
+
+  it('zeigt die Abschnitte des Tages als Links in die Lektion', async () => {
+    mockeApi({ 'GET /api/wochenplan/': { json: PLAN_MIT_AUFGABEN } })
+    renderMitProvidern(<App />, { pfad: '/plan' })
+
+    const montag = (await screen.findByRole('heading', { name: /Montag/ })).closest('li')
+    const link = within(montag as HTMLElement).getByRole('link', { name: /Abschnitt 2/ })
+    expect(link).toHaveAttribute('href', '/lektionen/7?abschnitt=2')
+    expect(within(link).getByText('Heute dran')).toBeInTheDocument()
+    expect(within(link).getByText(/PHP\/Laravel · Operatoren/)).toBeInTheDocument()
+  })
+
+  it('zeigt den Fortschritt des Tages und markiert Erledigtes', async () => {
+    mockeApi({ 'GET /api/wochenplan/': { json: PLAN_MIT_AUFGABEN } })
+    renderMitProvidern(<App />, { pfad: '/plan' })
+
+    const montag = (await screen.findByRole('heading', { name: /Montag/ })).closest('li')
+    expect(
+      within(montag as HTMLElement).getByText('1 von 4 Abschnitten erledigt'),
+    ).toBeInTheDocument()
+    expect(within(montag as HTMLElement).getByText('✓ erledigt')).toBeInTheDocument()
+  })
+
+  it('zeigt keinen Tagesfortschritt an Tagen ohne Abschnitte', async () => {
+    mockeApi({ 'GET /api/wochenplan/': { json: PLAN } })
+    renderMitProvidern(<App />, { pfad: '/plan' })
+
+    await screen.findByRole('heading', { name: /Montag/ })
+    expect(screen.queryByText(/Abschnitten erledigt/)).not.toBeInTheDocument()
+  })
+
+  it('zeigt überfällige Abschnitte unter „Nachholen“', async () => {
+    const mitNachholen = {
+      ...PLAN_MIT_AUFGABEN,
+      nachholen_anzahl: 3,
+      nachholen: [
+        aufgabe(5, { status: 'nachholen', datum: '2026-10-30' }),
+        aufgabe(6, { status: 'nachholen', datum: '2026-10-30' }),
+      ],
+    }
+    mockeApi({ 'GET /api/wochenplan/': { json: mitNachholen } })
+    renderMitProvidern(<App />, { pfad: '/plan' })
+
+    const bereich = await screen.findByRole('region', { name: 'Nachholen (3)' })
+    const link = within(bereich).getByRole('link', { name: /Abschnitt 5/ })
+    expect(link).toHaveAttribute('href', '/lektionen/7?abschnitt=5')
+    expect(within(link).getByText('Nachholen')).toBeInTheDocument()
+    expect(within(link).getByText(/30\.10\.2026/)).toBeInTheDocument()
+    expect(within(bereich).getByText('… und 1 weitere.')).toBeInTheDocument()
+  })
+
+  it('zeigt keinen Bereich „Nachholen“, wenn nichts offen ist', async () => {
+    mockeApi({ 'GET /api/wochenplan/': { json: PLAN_MIT_AUFGABEN } })
+    renderMitProvidern(<App />, { pfad: '/plan' })
+
+    await screen.findByRole('heading', { name: /Montag/ })
+    expect(screen.queryByRole('region', { name: /Nachholen/ })).not.toBeInTheDocument()
+  })
+
+  it('nennt den Lernstart, solange die Woche davor liegt', async () => {
+    const vorStart = { ...PLAN, lernstart: '2026-11-16' }
+    mockeApi({ 'GET /api/wochenplan/': { json: vorStart } })
+    renderMitProvidern(<App />, { pfad: '/plan' })
+
+    expect(await screen.findByText(/Der Plan startet am 16\.11\.2026/)).toBeInTheDocument()
+  })
+
+  it('zeigt keinen Starthinweis, wenn der Plan schon läuft', async () => {
+    mockeApi({ 'GET /api/wochenplan/': { json: PLAN } })
+    renderMitProvidern(<App />, { pfad: '/plan' })
+
+    await screen.findByRole('heading', { name: /Montag/ })
+    expect(screen.queryByText(/Der Plan startet am/)).not.toBeInTheDocument()
   })
 })
