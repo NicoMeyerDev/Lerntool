@@ -117,9 +117,9 @@ Format: Datum – Entscheidung – Grund – Alternativen.
 
 - **Laravel 13 statt 12.** Laravel 13 erschien am 17.03.2026 und benötigt PHP 8.3 oder neuer. Laravel 12 bekommt nur noch Sicherheitsfixes (bis 24.02.2027). Wer jetzt neu lernt, soll die aktuelle Version lernen. Quelle: laravel.com/docs/13.x/releases. Alternative: Laravel 12 (läuft früher aus, kein Vorteil).
 - **PHP 8.5 als Lernversion statt 8.4.** PHP 8.4 verliert den aktiven Support am 31.12.2026, mitten im Lernzeitraum; 8.5 ist aktiv bis 31.12.2027. Die Lektionen vermeiden versionsspezifische Besonderheiten, sodass auch 8.4 funktioniert (der Laravel-Installationsbefehl installiert 8.4). Quelle: php.net/supported-versions.php. Alternative: 8.4 (kürzerer Support).
-- **Abschlussprojekt Garmin-Auswertung als zweite Projektaufgabe von Phase 6.** Projektaufgaben sind im Datenmodell an eine Phase gebunden, und es soll bei 6 Phasen bleiben. Beim Import wird es daher als zweites Projekt der Phase 6 geführt. Alternative: eine siebte Phase „Abschluss“ (weicht von der Vorgabe mit 6 Phasen ab).
+- **(überholt durch den Eintrag vom 2026-11-09: jetzt Phase 7 von 7)** **Abschlussprojekt Garmin-Auswertung als zweite Projektaufgabe von Phase 6.** Projektaufgaben sind im Datenmodell an eine Phase gebunden, und es soll bei 6 Phasen bleiben. Beim Import wird es daher als zweites Projekt der Phase 6 geführt. Alternative: eine siebte Phase „Abschluss“ (weicht von der Vorgabe mit 6 Phasen ab).
 - **Teile 1 und 2 der Garmin-Auswertung** sind Projekte der Phasen 3 und 4.
-- **Zeitrichtwerte (20 Wochen) sind eine eigene Schätzung**, nicht aus einer Quelle belegt.
+- **(jetzt ca. 24 Wochen, siehe 2026-11-09)** **Zeitrichtwerte (20 Wochen) sind eine eigene Schätzung**, nicht aus einer Quelle belegt.
 - **TCX ist nur über die Garmin-XSD belegt** (www8.garmin.com/xmlschemas/TrainingCenterDatabasev2.xsd). Eine erklärende Garmin-Dokumentation wurde nicht gefunden; Aussagen zum Format stützen sich deshalb nur auf das Schema.
 
 ## 2026-11-03 – C2 Phase 1 PHP-Basics (Inhalte und Import)
@@ -128,7 +128,7 @@ Format: Datum – Entscheidung – Grund – Alternativen.
 - **Neue Abhängigkeit PyYAML 6.0.3** (ausschließlich `safe_load`) und `types-PyYAML` für mypy.
 - **Befehl `python manage.py import_inhalte [Ordner]`**, Logik in `lernen/inhalte_import.py`. Zuerst wird alles geprüft: Quelle mit http(s)-Link je Lektion, je Frage genau eine richtige Antwort, Test höchstens 30 Minuten, ein Quiz je Abschnitt, ein Test je Lektion, keine doppelten Nummern oder Kurznamen. Danach wird in einer Transaktion gespeichert. Der Import ist wiederholbar und löscht nie (bei fehlenden Lektionen, Abschnitten oder Checkpunkten gibt es nur eine Warnung). Quellen, Fragen und Antworten werden ersetzt, weil daran kein Fortschritt hängt (er hängt an Abschnitt, Quiz, Test und Projekt). Beim Umsortieren werden Positionen vorübergehend verschoben, damit die Eindeutigkeits-Regeln nicht kollidieren.
 - **Bekannte Einschränkung:** Abschnitte, Projekte und Checklistenpunkte werden über ihre Position erkannt. Neue also nur hinten anhängen, sonst zeigt vorhandener Fortschritt auf anderen Inhalt. Ein Import während eines laufenden Tests oder Quiz im Browser kann dessen Abgabe ablehnen, weil sich die Frage-IDs ändern.
-- **`weitere_projekte` in `phase.yaml`** ist für das Abschlussprojekt (Phase 6) vorbereitet, laut `docs/CURRICULUM_LARAVEL.md`.
+- **`weitere_projekte` in `phase.yaml`** ist für das Abschlussprojekt (Phase 7) vorbereitet, laut `docs/CURRICULUM_LARAVEL.md`.
 - **Keine Tabellen in Lerntexten**, weil die Markdown-Darstellung im Frontend keine Tabellen kann (kein `remark-gfm`). Alternative: `remark-gfm` als neue Abhängigkeit.
 - **Umfang Phase 1:** 7 Themenfelder, 32 Abschnitte mit je 3 Quizfragen, 7 Tests mit je 8 Fragen (Zeitlimit 20–25 Minuten), Projekt „Trainingslog“ mit 8 Checklistenpunkten.
 - **Ergebnis der Quellenprüfung:** Klassen werden nie auf den globalen Namespace zurückgeführt, nur Funktionen und Konstanten (php.net, language.namespaces.fallback.php). Der Text wurde korrigiert.
@@ -154,7 +154,7 @@ Format: Datum – Entscheidung – Grund – Alternativen.
 - **Keine Modellnamen, Preise und Limit-Zahlen in den Lektionen**, weil sie schnell veralten. Die Lektionen verweisen stattdessen auf die passenden Doku-Seiten. Alternative: konkrete Werte nennen (wären nach kurzer Zeit falsch und müssten ständig nachgepflegt werden).
 - **Projekt Phase 1 ist ohne echten API-Aufruf lösbar**, weil Aufrufe Kosten und einen API-Schlüssel brauchen (siehe `docs/OFFEN.md`). Alternative: Projekt mit echten Aufrufen (erst nach Entscheidung des Lernenden zu Kosten und Schlüssel).
 - **Phasen 2 bis 6 sind nur grob gegliedert**, die Ausarbeitung folgt in späteren Aufgaben. Grund: Die Doku ändert sich schnell, Details sollen erst kurz vor dem Lernen geprüft werden. Alternative: alle Phasen sofort ausarbeiten (höheres Risiko veralteter Inhalte).
-- **`thema.yaml` hat `reihenfolge: 3`** (PHP/Laravel 1, Englisch 2 reserviert). Alternative: 2 vergeben und Englisch später verschieben (würde die Reihenfolge nachträglich ändern).
+- **(Reihenfolge geändert am 2026-11-09)** **`thema.yaml` hat `reihenfolge: 3`** (PHP/Laravel 1, Englisch 2 reserviert). Alternative: 2 vergeben und Englisch später verschieben (würde die Reihenfolge nachträglich ändern).
 - **Freigaben:** `quellenpruefer` FREIGABE, `reviewer` FREIGABE.
 
 ## 2026-11-04 – Antworten des Lernenden zu C4/E1
@@ -186,7 +186,7 @@ Abweichungen von `docs/CURRICULUM_ENGLISCH.md`:
 
 - **(a) Aufteilung:** D1 wird in mehrere kleine Teile zerlegt, Reihenfolge nach der Priorität im Backlog. Teil 1: Themen 3 Django, 4 Datenbanken, 5 DRF mit Testing, 6 Auth. Teil 2: 8 DevOps/CI/CD, 9 Monitoring. Teil 3: 1 HTTP, 2 Python, 7 erweiterte Konzepte, 10 SQL. Alternative: alles in einem Schritt (zu groß für eine Prüfung und ein Review).
 - **(b) Quelle:** Die versionierte Django-Doku unter `/en/5.2/`, weil das Projekt Django 5.2 nutzt und die Seite „stable“ inzwischen Django 6.1 zeigt. Die DRF-Doku ist unversioniert; Stand geprüft am 2026-11-04. Alternative: „stable“ verlinken (würde Funktionen beschreiben, die im Projekt nicht gelten).
-- **(c) Struktur:** `thema.yaml` hat `reihenfolge: 4`. Die Phasen-Ordner tragen die Nummer des Themas aus dem Lernplan (03 bis 06). Lücken in der Nummerierung sind gewollt und vom Importer erlaubt. Alternative: fortlaufend 01 bis 04 nummerieren (Bezug zum Lernplan ginge verloren).
+- **(c) Struktur (Reihenfolge geändert am 2026-11-09):** `thema.yaml` hat `reihenfolge: 4`. Die Phasen-Ordner tragen die Nummer des Themas aus dem Lernplan (03 bis 06). Lücken in der Nummerierung sind gewollt und vom Importer erlaubt. Alternative: fortlaufend 01 bis 04 nummerieren (Bezug zum Lernplan ginge verloren).
 - **(d) Form:** Als Wiederholung formuliert, je Themenfeld ein bis drei Lektionen mit drei Abschnitten, je Phase ein kleines Projekt. Alternative: ausführliche Einführung (nicht nötig, Vorwissen ist laut Lernplan vorhanden).
 - **(e) Umfang Thema 5:** „DRF“ umfasst Serializer, Views und Router, Pagination und Filter sowie Tests. Themen aus 7 (Caching, Task-Queues, Dateimanagement) kommen bewusst erst in Teil 3. Alternative: alles zu 7 jetzt mitnehmen (Teil 1 würde zu groß).
 - **(f) Antwortreihenfolge:** Die richtige Antwort ist gleichmäßig auf die Positionen verteilt, weil die App die Antworten nicht mischt (siehe `OFFEN.md`). Alternative: immer an erster Stelle (würde erratbar).
@@ -230,7 +230,7 @@ Abweichungen von `docs/CURRICULUM_ENGLISCH.md`:
 
 ## 2026-11-05 – D3 Konzept-Vergleiche Django und Laravel
 
-- **(a) Aufbau:** Neues Thema `django-laravel-vergleich` (Reihenfolge 6) mit einer Phase und sechs Vergleichs-Lektionen: Anmeldung und Passwörter, Datenbank und Migrationen, API, Tests, Docker, CI/CD. Jede Lektion zeigt dieselbe Aufgabe in Django und Laravel. Alternative: getrennte Lektionen je Framework (verdeckt die gemeinsame Idee).
+- **(a) Aufbau:** Neues Thema `django-laravel-vergleich` (Reihenfolge damals 6, seit 2026-11-09 3) mit einer Phase und sechs Vergleichs-Lektionen: Anmeldung und Passwörter, Datenbank und Migrationen, API, Tests, Docker, CI/CD. Jede Lektion zeigt dieselbe Aufgabe in Django und Laravel. Alternative: getrennte Lektionen je Framework (verdeckt die gemeinsame Idee).
 - **(b) PHP-CI-Schritte (2026-11-05 belegt):** Die Schritte für PHP/Laravel in GitHub Actions stützen sich jetzt auf die `setup-php`-README, die Composer-Doku und die Laravel-Testing-Doku statt auf php.net. Grund: php.net beschreibt keine CI-Abläufe. Alternative: Abschnitt weglassen (Vergleich unvollständig).
 - **(c) Nur Theorie:** Es wird nichts eingerichtet, keine Konten, keine Kosten.
 
@@ -252,7 +252,7 @@ Abweichungen von `docs/CURRICULUM_ENGLISCH.md`:
 
 - **Entscheidung:** Der Plan des künftigen Arbeitgebers (Schwerpunkt PHP und Laravel) dient als Orientierung für die Reihenfolge und die Themen des Laravel-Curriculums. Er ersetzt `docs/LERNPLAN.md` nicht, sondern ergänzt ihn. Fehlende Themen stehen im Backlog unter F2.
 - **Datenschutz:** Namen von Firma und Betreuern und andere persönliche Angaben aus dem Plan stehen nicht im Repository, nur die Themen. Grund: Das Repository liegt auf GitHub. Alternative: Plan im Wortlaut ablegen (unnötig, enthält Personendaten).
-- **Reihenfolge (Vorschlag, noch nicht umgesetzt):** Laut Plan folgen auf Laravel-Grundlagen zuerst Datenbank, API, Auth, Queues, Tests und Performance. Docker, Kubernetes und AWS kommen im Plan nicht vor und rücken im Curriculum hinter diese Themen. Die Änderung wird mit F2 gemacht und dort begründet.
+- **Reihenfolge (umgesetzt am 2026-11-09, siehe unten):** Laut Plan folgen auf Laravel-Grundlagen zuerst Datenbank, API, Auth, Queues, Tests und Performance. Docker, Kubernetes und AWS kommen im Plan nicht vor und rücken im Curriculum hinter diese Themen. Die Änderung ist mit dem Eintrag vom 2026-11-09 umgesetzt.
 
 ## 2026-11-09 – F3 Wochenplan zum Abarbeiten
 
@@ -263,3 +263,10 @@ Abweichungen von `docs/CURRICULUM_ENGLISCH.md`:
 - **Nachholen-Liste begrenzt:** Höchstens 20 Einträge einzeln (`MAX_NACHHOLEN`), die Gesamtzahl steht daneben. Grund: Nach langer Pause bliebe die Seite sonst endlos.
 - **Anzahl 4 pro Tag:** Richtwert nach dem Beispiel des Lernenden; mit Abschnitten von mindestens 20 Minuten sind das gut 1,5 Stunden Theorie am Vormittag (Lernplan: ca. 3 Std. Theorie). Änderbar über `THEORIE_PRO_TAG`.
 - **Grenze:** Die Zuteilung ist nur so lang wie die vorhandenen Abschnitte. Sind alle zugeteilt, bleiben die Tage leer. Der Plan wird nicht gespeichert, sondern bei jedem Aufruf berechnet.
+
+## 2026-11-09 – Lernreihenfolge und Curriculum-Umbau
+
+- **Themenreihenfolge:** PHP/Laravel (1), Englisch (2), Django-Laravel-Vergleich (3), DevSecOps-Wiederholung (4), AI-Engineering (5), Backend-Wiederholung (6). Die Django-Wiederholung rückt ans Ende, weil sie Bekanntes auffrischt und der Einstieg beim Arbeitgeber über Laravel läuft. Der Vergleich folgt direkt nach Laravel, solange das Gelernte frisch ist. Alternative: alte Reihenfolge (Django früher) – brächte weniger für den Start.
+- **Neue Phase 4 „Fortgeschrittenes Laravel“:** DI/Service-Container, Transaktionen, Events, Scheduler, Cache, N+1, Logging, OpenAPI, Yii2-Überblick (Themen aus dem Qualifizierungsplan, Backlog F2). Docker, Kubernetes und AWS/Cloudflare werden dadurch Phase 5 bis 7 und kommen nach allen Laravel-Themen. Das Projekt „Garmin-Auswertung“ hat nun drei Teile (Phasen 3, 4, 5). Gesamtrichtwert steigt von ca. 20 auf ca. 24 Wochen.
+- **Hinweis:** Der Vergleich (Anmeldung, API, Docker) setzt Inhalte aus Phase 3 und 5 voraus; er ist erst sinnvoll, wenn diese Phasen ausgearbeitet sind (siehe `docs/OFFEN.md`).
+- **Quellen für Yii2 und OpenAPI:** nur offizielle Seiten (Yii 2.0 Guide, OpenAPI Specification); Seiten werden bei der Ausarbeitung vom `quellenpruefer` geprüft.
