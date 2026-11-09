@@ -5,9 +5,77 @@
 import { Link, useSearchParams } from 'react-router'
 
 import { useWochenplan } from '../api/lernen'
-import type { Wochenplan } from '../api/schemas'
+import type { PlanAufgabe, Wochenplan } from '../api/schemas'
 import { Fehler, Laden } from '../components/Zustand'
 import { formatiereDatum } from '../lib/zeit'
+
+/** Beschriftung und Farbe je Status einer Aufgabe. */
+const STATUS_ANZEIGE: Record<PlanAufgabe['status'], { text: string; klasse: string }> = {
+  erledigt: { text: '✓ erledigt', klasse: 'text-success' },
+  nachholen: { text: 'Nachholen', klasse: 'text-warning' },
+  offen: { text: 'Heute dran', klasse: 'text-accent-cyan' },
+  geplant: { text: 'Geplant', klasse: 'text-text-muted' },
+}
+
+/**
+ * Eine Aufgabe als Link, der den Abschnitt in der Lektion öffnet.
+ *
+ * @param props.aufgabe - Der Abschnitt aus dem Plan.
+ * @param props.mitDatum - Ob das Datum des Tages mit angezeigt wird (bei „Nachholen“).
+ * @returns Ein Listeneintrag mit Link, Lektion und Status.
+ */
+function AufgabeZeile({ aufgabe, mitDatum = false }: { aufgabe: PlanAufgabe; mitDatum?: boolean }) {
+  const anzeige = STATUS_ANZEIGE[aufgabe.status]
+  return (
+    <li>
+      <Link
+        to={`/lektionen/${String(aufgabe.lektion_id)}?abschnitt=${String(aufgabe.nummer)}`}
+        className="flex min-h-12 flex-col justify-center rounded-lg border border-border px-3 py-2 hover:border-accent-cyan focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-cyan sm:flex-row sm:items-center sm:justify-between sm:gap-3"
+      >
+        <span>
+          <span className="font-semibold">{aufgabe.titel}</span>
+          <span className="block text-sm text-text-muted">
+            {aufgabe.thema_titel} · {aufgabe.lektion_titel}
+            {mitDatum && ` · ${formatiereDatum(aufgabe.datum)}`}
+          </span>
+        </span>
+        <span className={`text-sm font-semibold ${anzeige.klasse}`}>{anzeige.text}</span>
+      </Link>
+    </li>
+  )
+}
+
+/**
+ * Überfällige Abschnitte früherer Tage, die noch offen sind.
+ *
+ * @param props.plan - Der Wochenplan.
+ * @returns Der Bereich „Nachholen“ oder nichts, wenn nichts offen ist.
+ */
+function Nachholen({ plan }: { plan: Wochenplan }) {
+  if (plan.nachholen_anzahl === 0) {
+    return null
+  }
+  const weitere = plan.nachholen_anzahl - plan.nachholen.length
+  return (
+    <section
+      aria-labelledby="nachholen"
+      className="space-y-3 rounded-card border border-warning/60 bg-surface p-4"
+    >
+      <h2 id="nachholen" className="text-xl font-bold text-warning">
+        Nachholen ({plan.nachholen_anzahl})
+      </h2>
+      <p className="text-text-muted">
+        Das blieb an früheren Tagen offen. Arbeite es ab, bevor du Neues beginnst.
+      </p>
+      <ul className="space-y-2">
+        {plan.nachholen.map((aufgabe) => (
+          <AufgabeZeile key={aufgabe.abschnitt_id} aufgabe={aufgabe} mitDatum />
+        ))}
+      </ul>
+      {weitere > 0 && <p className="text-sm text-text-muted">… und {weitere} weitere.</p>}
+    </section>
+  )
+}
 
 /**
  * Ein Lerntag mit seinen Blöcken.
@@ -16,6 +84,8 @@ import { formatiereDatum } from '../lib/zeit'
  * @returns Die Tageskarte; der heutige Tag ist hervorgehoben.
  */
 function Tageskarte({ tag }: { tag: Wochenplan['tage'][number] }) {
+  const aufgaben = tag.bloecke.flatMap((block) => block.aufgaben)
+  const erledigt = aufgaben.filter((aufgabe) => aufgabe.erledigt).length
   return (
     <li
       aria-current={tag.ist_heute ? 'date' : undefined}
@@ -27,6 +97,11 @@ function Tageskarte({ tag }: { tag: Wochenplan['tage'][number] }) {
         {tag.wochentag}, {formatiereDatum(tag.datum)}
         {tag.ist_heute && <span className="ml-2 text-sm text-accent-cyan">Heute</span>}
       </h3>
+      {aufgaben.length > 0 && (
+        <p className="text-sm text-text-muted">
+          {erledigt} von {aufgaben.length} Abschnitten erledigt
+        </p>
+      )}
       <ul className="mt-3 space-y-3">
         {tag.bloecke.map((block) => (
           <li key={block.schluessel} className="border-l-4 border-accent-violet pl-3">
@@ -37,6 +112,13 @@ function Tageskarte({ tag }: { tag: Wochenplan['tage'][number] }) {
               </span>
             </p>
             <p className="text-text-muted">{block.beschreibung}</p>
+            {block.aufgaben.length > 0 && (
+              <ul className="mt-2 space-y-2">
+                {block.aufgaben.map((aufgabe) => (
+                  <AufgabeZeile key={aufgabe.abschnitt_id} aufgabe={aufgabe} />
+                ))}
+              </ul>
+            )}
           </li>
         ))}
       </ul>
@@ -119,6 +201,13 @@ export function PlanSeite() {
               Zur aktuellen Woche
             </Link>
           )}
+          {plan.data.woche_ende < plan.data.lernstart && (
+            <p className="rounded-card border border-border bg-surface p-4 text-text-muted">
+              Der Plan startet am {formatiereDatum(plan.data.lernstart)}. Bis dahin sind keine
+              Abschnitte zugeteilt.
+            </p>
+          )}
+          <Nachholen plan={plan.data} />
           <ul className="space-y-4">
             {plan.data.tage.map((tag) => (
               <Tageskarte key={tag.datum} tag={tag} />

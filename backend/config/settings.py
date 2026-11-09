@@ -11,7 +11,7 @@ from pathlib import Path
 import dj_database_url
 from dotenv import load_dotenv
 
-from config.env import env_bool, env_list, env_required
+from config.env import env_bool, env_date, env_list, env_required
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -95,6 +95,9 @@ AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
 ]
+
+# Erster Tag des Wochenplans (Montag, 16.11.2026). Davor zeigt der Plan keine Abschnitte.
+LERNSTART = env_date("LERNTOOL_LERNSTART", "2026-11-16")
 
 LANGUAGE_CODE = "de-de"
 TIME_ZONE = "Europe/Berlin"

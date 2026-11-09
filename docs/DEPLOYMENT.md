@@ -24,6 +24,7 @@ Die App besteht auf Render aus drei Teilen. Die Datenbank legst du selbst im Das
 | `LERNTOOL_BENUTZER`, `LERNTOOL_PASSWORT` | du, beim Apply | dein Zugang zur App |
 | `DJANGO_CORS_ORIGINS` | du, nach dem ersten Start | Adresse des Frontends |
 | `VITE_API_URL` | du, nach dem ersten Start | Adresse des Backends |
+| `LERNTOOL_LERNSTART` | optional | erster Tag des Wochenplans (JJJJ-MM-TT), Standard `2026-11-16` |
 
 ## Schritt für Schritt
 

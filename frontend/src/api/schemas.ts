@@ -192,6 +192,20 @@ export const dashboardSchema = z.object({
 })
 export type Dashboard = z.infer<typeof dashboardSchema>
 
+/** Ein Abschnitt, der an einem Tag dran ist (Zuteilung und Status kommen vom Backend). */
+export const planAufgabeSchema = z.object({
+  abschnitt_id: z.number(),
+  lektion_id: z.number(),
+  nummer: z.number(),
+  titel: z.string(),
+  lektion_titel: z.string(),
+  thema_titel: z.string(),
+  erledigt: z.boolean(),
+  status: z.enum(['erledigt', 'nachholen', 'offen', 'geplant']),
+  datum: z.string(),
+})
+export type PlanAufgabe = z.infer<typeof planAufgabeSchema>
+
 /** Wochen- und Tagesplan mit Wochenauswertung (Berechnung im Backend). */
 export const wochenplanSchema = z.object({
   woche_start: z.string(),
@@ -211,10 +225,14 @@ export const wochenplanSchema = z.object({
           titel: z.string(),
           beschreibung: z.string(),
           dauer: z.string(),
+          aufgaben: z.array(planAufgabeSchema),
         }),
       ),
     }),
   ),
+  lernstart: z.string(),
+  nachholen: z.array(planAufgabeSchema),
+  nachholen_anzahl: z.number(),
   auswertung: z.object({
     abschnitte_gelesen: z.number(),
     quizze_bearbeitet: z.number(),
