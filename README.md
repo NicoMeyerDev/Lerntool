@@ -161,7 +161,7 @@ npm run dev
 Dann **http://localhost:5173** öffnen und mit dem Nutzer aus `createsuperuser` anmelden. Beenden mit `Strg + C`.
 
 **Bedienung:**
-- Die Startseite zeigt Themen, Fortschritt, XP, Abzeichen und den Wochenplan. Ein Klick auf ein Thema öffnet die Lektionen.
+- Die Startseite zeigt Themen, Fortschritt, XP, Abzeichen und den Wochenplan. Der Wochenplan teilt Montag bis Donnerstag je vier Abschnitte und täglich einen Englisch-Abschnitt zu; jeder Eintrag ist anklickbar, Offenes früherer Tage steht unter „Nachholen“. Der Plan beginnt am Lernstart (`LERNTOOL_LERNSTART`, Standard 16.11.2026). Ein Klick auf ein Thema öffnet die Lektionen.
 - Eine Lektion zeigt einen Abschnitt pro Bildschirm. „Gelesen – weiter“ markiert ihn. Das Quiz wertet aus, sobald alle Fragen beantwortet sind.
 - Pro Themenfeld gibt es einen Test mit Zeitlimit und pro Themenblock ein Projekt mit Checkliste.
 - Der „Systemstatus“ unten auf der Startseite zeigt, ob Backend und Datenbank erreichbar sind.
@@ -196,7 +196,7 @@ Alle Endpunkte außer `health` und `login` brauchen den Header `Authorization: T
 | `GET /api/projekte/<id>/`, `PUT …/punkte/<punkt_id>/` | Projektaufgabe, Checklistenpunkt abhaken |
 | `POST /api/abschnitte/<id>/gelesen/` | Abschnitt als gelesen markieren |
 | `GET /api/fortschritt/`, `GET /api/dashboard/` | Fortschritt, XP, Level, Abzeichen, Meilensteine |
-| `GET /api/wochenplan/?datum=JJJJ-MM-TT` | Wochen- und Tagesplan (Mo–So) |
+| `GET /api/wochenplan/?datum=JJJJ-MM-TT` | Wochen- und Tagesplan (Mo–So) mit zugeteilten Abschnitten und Nachholen-Liste |
 
 ## Projektstruktur
 
