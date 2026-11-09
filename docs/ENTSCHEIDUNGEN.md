@@ -239,3 +239,17 @@ Abweichungen von `docs/CURRICULUM_ENGLISCH.md`:
 - **Vorgehen:** Die Antwortzeilen wurden skriptgestützt ersetzt. Falsche Antworten sind typische Verwechslungen in ähnlicher Länge wie die richtige Antwort. Die richtige Antwort wird gleichmäßig auf Position 1, 2 und 3 gedreht (zyklisch). Alternative: nur im Frontend mischen (löst die Längenauffälligkeit nicht).
 - **Grenze:** Bei Fachdefinitionen und Rechtstexten bleibt die richtige Antwort oft die längste, weil Genauigkeit Länge braucht. Das wurde nicht künstlich erzwungen, um keine Fakten zu verfälschen.
 - **Freigabe:** `reviewer`: FREIGABE (nur Hinweise, behoben).
+
+## 2026-11-09 – Einheitenlänge: 20 bis 30 Minuten statt kurzer Lektionen
+
+- **Entscheidung:** Eine Einheit soll rund 20 bis 30 Minuten beschäftigen (Lesen, Aufgaben, Quiz). **Einheit ist ein Abschnitt samt Quiz**, denn die App zeigt eine Lektion Abschnitt für Abschnitt. Eine Lektion hat meist 3 bis 4 Abschnitte und dauert entsprechend länger. Dafür bekommt jeder Abschnitt etwas mehr Erklärung, eine Merkhilfe oder typische Fehler, mindestens eine „Probier es selbst“-Aufgabe mit Kontrolle und zusätzliche Quizfragen.
+- **Abweichung vom Lernplan:** Der Lernstil in `docs/LERNPLAN.md` nennt „kurze bildliche Erklärung“ und „nur wenige Kernpunkte pro Lektion“. Das bleibt der Stil jedes Abschnitts (einfache Sprache, Bilder, Beispiele). Neu ist die Dauer der Einheit. Auslöser: Der Nutzer fand die Einheiten beim Ausprobieren zu kurz (rund 3 bis 5 Minuten Text plus Quiz).
+- **Umsetzung:** Die Aufgaben stehen als Markdown im Lektionstext (Überschrift „Probier es selbst“), das Frontend rendert Markdown schon. Kein neues Datenfeld, keine Änderung an Import oder Frontend. Alternative: eigenes Feld `aufgaben` im Schema (bessere Auswertung, aber Änderungen an Import, API und Frontend, nicht gefordert).
+- **Kontrolle der Aufgaben:** Jede Aufgabe nennt die erwartete Ausgabe. Es gibt keine automatische Auswertung. Alternative: Aufgaben im Browser ausführen (Kosten und Sicherheit, nicht im Backlog).
+- **Vorgehen:** Erst eine Musterlektion, dann Freigabe durch den Nutzer, dann Thema für Thema. Jede Lektion geht durch `quellenpruefer` und `reviewer`.
+
+## 2026-11-09 – Qualifizierungsplan des künftigen Arbeitgebers als Orientierung
+
+- **Entscheidung:** Der Plan des künftigen Arbeitgebers (Schwerpunkt PHP und Laravel) dient als Orientierung für die Reihenfolge und die Themen des Laravel-Curriculums. Er ersetzt `docs/LERNPLAN.md` nicht, sondern ergänzt ihn. Fehlende Themen stehen im Backlog unter F2.
+- **Datenschutz:** Namen von Firma und Betreuern und andere persönliche Angaben aus dem Plan stehen nicht im Repository, nur die Themen. Grund: Das Repository liegt auf GitHub. Alternative: Plan im Wortlaut ablegen (unnötig, enthält Personendaten).
+- **Reihenfolge (Vorschlag, noch nicht umgesetzt):** Laut Plan folgen auf Laravel-Grundlagen zuerst Datenbank, API, Auth, Queues, Tests und Performance. Docker, Kubernetes und AWS kommen im Plan nicht vor und rücken im Curriculum hinter diese Themen. Die Änderung wird mit F2 gemacht und dort begründet.

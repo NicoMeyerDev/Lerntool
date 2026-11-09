@@ -7,6 +7,16 @@ quellen:
     url: https://www.php.net/manual/en/language.control-structures.php
   - titel: PHP-Handbuch – match
     url: https://www.php.net/manual/en/control-structures.match.php
+  - titel: PHP-Handbuch – Operator-Vorrang
+    url: https://www.php.net/manual/en/language.operators.precedence.php
+  - titel: PHP-Handbuch – Vergleichsoperatoren (==, ===, ??)
+    url: https://www.php.net/manual/en/language.operators.comparison.php
+  - titel: PHP-Handbuch – intdiv
+    url: https://www.php.net/manual/en/function.intdiv.php
+  - titel: PHP-Handbuch – foreach
+    url: https://www.php.net/manual/en/control-structures.foreach.php
+  - titel: PHP-Handbuch – break
+    url: https://www.php.net/manual/en/control-structures.break.php
 abschnitte:
   - titel: Operatoren – rechnen, vergleichen, verknüpfen
     inhalt: |
@@ -43,6 +53,46 @@ abschnitte:
       - `!` – nicht (dreht um)
 
       *Eselsbrücke Python:* Dort heißen sie `and`, `or`, `not`. In PHP nimmst du `&&`, `||`, `!`.
+
+      **Reihenfolge beim Rechnen:** Es gilt Punkt vor Strich. Klammern gehen vor.
+
+      ```php
+      echo 2 + 3 * 4;    // 14
+      echo (2 + 3) * 4;  // 20
+      ```
+
+      **Ganzzahl und Rest:** `/` liefert eine Kommazahl, wenn die Division nicht aufgeht
+      (`7 / 2` ergibt `3.5`). Willst du nur den ganzen Teil, nimmst du `intdiv(7, 2)` (ergibt `3`).
+      Den Rest liefert `%`.
+
+      **`==` oder `===`?** Beide vergleichen, aber unterschiedlich streng:
+
+      ```php
+      var_dump("5" == 5);   // bool(true)  – PHP wandelt den Typ um
+      var_dump("5" === 5);  // bool(false) – Text und Zahl sind verschieden
+      ```
+
+      `===` prüft Wert **und** Typ. Als Faustregel nimmst du `===`, dann gibt es keine Überraschungen.
+
+      **Typischer Fehler:** Ein einzelnes `=` speichert, es vergleicht nicht.
+      `if ($alter = 18)` setzt `$alter` auf 18, statt zu fragen, ob es 18 ist.
+      Merke: ein Gleichheitszeichen schreibt, drei Gleichheitszeichen fragen.
+
+      ## Probier es selbst
+
+      Lege eine Datei `uebung.php` an (sie beginnt mit `<?php`) und starte sie mit `php uebung.php`.
+      Wie das geht, steht in der Lektion „Erste Schritte, Variablen und Typen“.
+      Rate vor dem Start jeweils, was herauskommt.
+
+      1. Teile 17 durch 5. Gib mit `intdiv` den ganzen Teil und mit `%` den Rest aus.
+         *Kontrolle:* 3 und 2.
+      2. Setze `$punkte = 10;`. Ziehe mit `-=` 3 ab und multipliziere dann mit `*=` mit 2. Gib `$punkte` aus.
+         *Kontrolle:* 14.
+      3. Was gibt `var_dump(10 === "10");` aus? Rate zuerst, probiere dann.
+         *Kontrolle:* `bool(false)`.
+      4. Schreibe einen Ausdruck, der prüft, ob `$alter` zwischen 18 und 65 liegt (beide eingeschlossen),
+         und gib ihn mit `var_dump` aus. Teste mit `$alter = 30;` und mit `$alter = 70;`.
+         *Kontrolle:* `bool(true)`, dann `bool(false)`.
     quiz:
       - frage: "Was liefert `7 % 2`?"
         erklaerung: "`%` ist der Rest einer Division. 7 geteilt durch 2 ist 3 Rest 1."
@@ -62,6 +112,18 @@ abschnitte:
           - { text: "$a > 1 || $b > 1", richtig: false }
           - { text: "$a > 1 && $b > 1", richtig: true }
           - { text: "!($a > 1)", richtig: false }
+      - frage: "Was gibt `echo 2 + 3 * 4;` aus?"
+        erklaerung: "Punkt vor Strich: erst 3 * 4 = 12, dann 2 + 12 = 14."
+        antworten:
+          - { text: "20", richtig: false }
+          - { text: "14", richtig: true }
+          - { text: "24", richtig: false }
+      - frage: "Was liefert `var_dump(\"5\" === 5);`?"
+        erklaerung: "`===` prüft auch den Typ. Der Text \"5\" und die Zahl 5 haben verschiedene Typen, also `bool(false)`."
+        antworten:
+          - { text: "bool(true)", richtig: false }
+          - { text: "Fehler: Text und Zahl lassen sich nicht vergleichen", richtig: false }
+          - { text: "bool(false)", richtig: true }
   - titel: Verzweigen mit if, else und match
     inhalt: |
       Mit `if` entscheidet dein Programm, welchen Weg es nimmt.
@@ -103,6 +165,33 @@ abschnitte:
       $text = $punkte >= 50 ? "bestanden" : "durchgefallen";
       $name = $eingabe ?? "Gast";  // $eingabe, falls vorhanden und nicht null, sonst "Gast"
       ```
+
+      **Bild:** Stell dir eine Weiche am Bahnhof vor. Der Zug fährt auf das **erste** Gleis, das frei ist,
+      und prüft die weiteren gar nicht mehr. Genauso arbeitet eine `if`-`elseif`-Kette.
+
+      **Typischer Fehler: falsche Reihenfolge.** Prüfe die engste Bedingung zuerst:
+
+      ```php
+      $punkte = 95;
+
+      if ($punkte >= 50) {
+          echo "Bestanden";      // läuft schon hier
+      } elseif ($punkte >= 90) {
+          echo "Sehr gut";       // wird nie erreicht
+      }
+      ```
+
+      Bei 95 Punkten steht dort „Bestanden“, obwohl „Sehr gut“ gemeint war. Drehe die Reihenfolge um.
+
+      ## Probier es selbst
+
+      1. Setze `$temperatur = 25;`. Gib „heiß“ aus ab 30 Grad, „warm“ ab 20 Grad, sonst „kühl“.
+         *Kontrolle:* warm. Teste auch mit 35 und mit 5.
+      2. Schreibe ein `match` für `$groesse` mit den Fällen 1 → „klein“, 2 → „mittel“, 3 → „groß“
+         und `default` → „unbekannt“. *Kontrolle:* bei 2 steht „mittel“, bei 7 steht „unbekannt“.
+      3. Fehlersuche: Die Beispielkette von oben liefert bei 95 Punkten das falsche Ergebnis.
+         Ändere die Reihenfolge so, dass „Sehr gut“ erscheint.
+         *Kontrolle:* „Sehr gut“ bei 95, „Bestanden“ bei 60.
     quiz:
       - frage: "Was gibt der Code aus, wenn `$punkte = 60` ist (siehe Beispiel mit if/elseif/else)?"
         erklaerung: "60 ist nicht >= 90, aber >= 50. Der zweite Block läuft, also „Bestanden“."
@@ -122,6 +211,18 @@ abschnitte:
           - { text: "einen Fehler", richtig: false }
           - { text: "Gast", richtig: true }
           - { text: "null", richtig: false }
+      - frage: "Du schreibst `if ($punkte >= 50) { ... } elseif ($punkte >= 90) { ... }`. Warum läuft der zweite Block nie?"
+        erklaerung: "Alles ab 90 ist auch >= 50. Der erste passende Block läuft, die Kette bricht dort ab. Die engere Bedingung gehört nach oben."
+        antworten:
+          - { text: "Weil elseif nur bei Texten funktioniert.", richtig: false }
+          - { text: "Weil jeder Wert ab 90 schon die erste Bedingung erfüllt.", richtig: true }
+          - { text: "Weil zwischen den Blöcken ein else fehlt.", richtig: false }
+      - frage: "Was gibt `echo 5 > 3 ? 'ja' : 'nein';` aus?"
+        erklaerung: "5 > 3 ist wahr, also gilt der Teil vor dem Doppelpunkt: „ja“."
+        antworten:
+          - { text: "ja", richtig: true }
+          - { text: "nein", richtig: false }
+          - { text: "true", richtig: false }
   - titel: Schleifen – etwas wiederholen
     inhalt: |
       Eine **Schleife** wiederholt Code. Du schreibst ihn einmal, PHP führt ihn mehrfach aus.
@@ -156,6 +257,33 @@ abschnitte:
           echo $zahl . "\n";
       }
       ```
+
+      **foreach mit Position:** Willst du zu jedem Element auch seine Nummer, schreibst du
+      `foreach ($liste as $index => $wert)`. Die Zählung beginnt bei 0.
+
+      **Bild:** Eine Laufbahn mit drei Runden. `for` ist der Trainer, der sagt: „Genau drei Runden.“
+      `while` ist der Trainer, der sagt: „Lauf, bis ich Stopp rufe.“ Und `foreach` heißt: „Lauf an jeder
+      Station auf der Liste vorbei.“
+
+      **Typischer Fehler: um eins verzählt.** Der Unterschied zwischen `<` und `<=` ändert die Anzahl:
+
+      ```php
+      for ($i = 0; $i < 3; $i++)  { }   // $i = 0, 1, 2  → 3 Durchläufe
+      for ($i = 0; $i <= 3; $i++) { }   // $i = 0, 1, 2, 3 → 4 Durchläufe
+      ```
+
+      Zähle im Zweifel die Werte von `$i` auf Papier mit.
+
+      ## Probier es selbst
+
+      1. Gib mit `for` die Zahlen 1 bis 5 aus, jede in einer eigenen Zeile.
+         *Kontrolle:* 1, 2, 3, 4, 5.
+      2. Berechne mit `for` die Summe der Zahlen von 1 bis 10 und gib sie aus.
+         *Kontrolle:* 55.
+      3. Setze `$x = 100;` und halbiere `$x` in einer `while`-Schleife, solange `$x >= 10` gilt.
+         Gib danach `$x` aus. *Kontrolle:* 6.25.
+      4. Gehe mit `foreach` über `[4, 8, 15, 16, 23, 42]` und gib nur die geraden Zahlen aus
+         (gerade heißt: `$zahl % 2 === 0`). *Kontrolle:* 4, 8, 16, 42.
     quiz:
       - frage: "Wie oft läuft `for ($i = 1; $i <= 3; $i++)`?"
         erklaerung: "$i ist nacheinander 1, 2 und 3. Bei 4 ist die Bedingung falsch. Das sind drei Durchläufe."
@@ -175,6 +303,18 @@ abschnitte:
           - { text: "um eine Datei nach Ablauf einer Frist zu löschen", richtig: false }
           - { text: "um die Elemente eines Arrays nacheinander durchzugehen", richtig: true }
           - { text: "um zwei Texte miteinander zu vergleichen", richtig: false }
+      - frage: "Wie oft läuft `for ($i = 0; $i <= 3; $i++)`?"
+        erklaerung: "$i ist 0, 1, 2 und 3. Erst bei 4 ist `$i <= 3` falsch. Das sind vier Durchläufe."
+        antworten:
+          - { text: "3-mal", richtig: false }
+          - { text: "5-mal", richtig: false }
+          - { text: "4-mal", richtig: true }
+      - frage: "Was gibt `$s = 0; for ($i = 1; $i <= 4; $i++) { $s += $i; } echo $s;` aus?"
+        erklaerung: "Es wird 1 + 2 + 3 + 4 gerechnet, das ergibt 10."
+        antworten:
+          - { text: "10", richtig: true }
+          - { text: "4", richtig: false }
+          - { text: "6", richtig: false }
   - titel: break und continue
     inhalt: |
       Manchmal soll eine Schleife früher enden oder einen Durchlauf überspringen.
@@ -210,6 +350,22 @@ abschnitte:
       }
       echo $zaehler; // 2
       ```
+
+      **Wann was?** Frage dich: Will ich nur diesen einen Durchlauf auslassen, oder bin ich fertig?
+      Nur auslassen → `continue`. Fertig, weil ich gefunden habe, was ich suche → `break`.
+      Das spart Arbeit, weil die Schleife nicht unnötig weiterläuft.
+
+      **Gut zu wissen:** Steckt eine Schleife in einer anderen, beendet `break` nur die innere.
+      Mit `break 2;` verlässt du beide auf einmal (die Zahl sagt, wie viele Ebenen).
+
+      ## Probier es selbst
+
+      1. Gib die Zahlen von 1 bis 10 aus, überspringe aber alle Vielfachen von 3 mit `continue`.
+         *Kontrolle:* 1, 2, 4, 5, 7, 8, 10.
+      2. Suche in `[7, 12, 3, 20, 9]` die **erste** Zahl, die größer als 10 ist. Gib sie aus und
+         beende die Schleife mit `break`. *Kontrolle:* 12.
+      3. Du hast die Läufe `[3, 8, 5, 12, 6]` (in km). Zähle die Läufe über 5 km und addiere ihre
+         Strecken. Gib beides aus. *Kontrolle:* 3 Läufe, zusammen 26 km.
     quiz:
       - frage: "Was macht `break` in einer Schleife?"
         erklaerung: "`break` beendet die gesamte Schleife sofort."
@@ -229,6 +385,18 @@ abschnitte:
           - { text: "1, 2, 3", richtig: false }
           - { text: "1 und 3", richtig: true }
           - { text: "1, 3, 5", richtig: false }
+      - frage: "Du suchst in einer Liste den ersten passenden Eintrag und willst danach nicht weitersuchen. Was nutzt du?"
+        erklaerung: "`break` beendet die Schleife, sobald du den Treffer hast. `continue` würde nur den Durchlauf auslassen und weitersuchen."
+        antworten:
+          - { text: "continue", richtig: false }
+          - { text: "break", richtig: true }
+          - { text: "else", richtig: false }
+      - frage: "Was bewirkt `break 2;` in zwei ineinander liegenden Schleifen?"
+        erklaerung: "Die Zahl gibt an, wie viele Schleifenebenen verlassen werden. `break 2;` beendet innere und äußere Schleife."
+        antworten:
+          - { text: "Es beendet beide Schleifen.", richtig: true }
+          - { text: "Es überspringt die nächsten zwei Durchläufe.", richtig: false }
+          - { text: "Es wiederholt die innere Schleife zweimal.", richtig: false }
 test:
   zeitlimit_minuten: 20
   fragen:
