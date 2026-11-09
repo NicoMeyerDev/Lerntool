@@ -10,7 +10,7 @@ Die App besteht auf Render aus drei Teilen. Die Datenbank legst du selbst im Das
 
 ## Was du vorher brauchst
 
-0. Eine PostgreSQL-Datenbank: In Render **New → Postgres**, Name z. B. `lerntool-db`, Tarif nach Wunsch, Region möglichst dieselbe wie später das Backend. Nach dem Anlegen im Dashboard der Datenbank den Wert **Internal Database URL** kopieren (beginnt mit `postgresql://`).
+0. Eine PostgreSQL-Datenbank: In Render **New → Postgres**, Name z. B. `lerntool-db`, Tarif nach Wunsch, Region **Frankfurt** (dort läuft das Backend laut `render.yaml`; Datenbank und Backend müssen in derselben Region liegen, sonst meldet das Backend `failed to resolve host`). Nach dem Anlegen im Dashboard der Datenbank den Wert **Internal Database URL** kopieren (beginnt mit `postgresql://`).
 1. Ein Konto bei [render.com](https://render.com) (Anmeldung mit GitHub ist am einfachsten).
 2. Dein GitHub-Repository `NicoMeyerDev/Lerntool` mit dem Branch, der die Datei `render.yaml` enthält (nach dem Merge: `main`).
 3. Einen Benutzernamen und ein langes Passwort für deinen Zugang zur App (empfohlen mindestens 12 Zeichen, nur für diese App verwenden; zu kurze oder häufige Passwörter lehnt der Start ab).

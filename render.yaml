@@ -7,6 +7,8 @@ services:
     name: lerntool-api
     runtime: python
     plan: free
+    # Muss dieselbe Region wie deine Datenbank sein, sonst ist die interne Adresse nicht erreichbar.
+    region: frankfurt
     rootDir: backend
     buildCommand: pip install -r requirements.txt
     # Der kostenlose Tarif hat keinen Shell-Zugang. Darum laufen Migration, Lerninhalte
