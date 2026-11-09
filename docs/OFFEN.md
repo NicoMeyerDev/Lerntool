@@ -11,7 +11,7 @@ Punkte, die eine Entscheidung oder Aktion des Nutzers brauchen.
 ## 2026-11-09 – Einheitenlänge: Notizen zur Musterlektion
 
 - **Ältere schwache Falschantworten** in `backend/inhalte/php-laravel/01-php-basics/02-operatoren-und-kontrollstrukturen.yaml` (nicht Teil der Erweiterung, bei der Überarbeitung der Lektion mitnehmen): Im Quiz zu `foreach` ist „um eine Datei nach Ablauf einer Frist zu löschen“ zu offensichtlich falsch. Im Test ist bei der Frage nach der Schleife für feste Durchläufe „continue“ und „match“ keine Schleife; besser `while` und `foreach`, dann muss die Frage eindeutig bleiben (z. B. Zusatz „mit Zähler und fester Anzahl“).
-- **Dauer prüfen:** Der `reviewer` schätzt einen Abschnitt der Musterlektion auf 14 bis 19 Minuten. Der Lernende entscheidet, ob das genügt; sonst je Abschnitt eine Aufgabe oder Erklärung ergänzen. Erst danach werden die übrigen Lektionen umgebaut (Backlog F1).
+- **Dauer prüfen:** Der `reviewer` schätzt die Abschnitte der Musterlektion auf etwa 19 bis 28 Minuten (Abschnitte 3 und 4 an der unteren Grenze, ein schneller Lernender kommt dort auf ca. 18 bis 19). Der Lernende verlangt mindestens 20 Minuten. Nach dem Ausprobieren in der App entscheiden, ob Abschnitt 3 und 4 noch eine Aufgabe oder Erklärung bekommen, bevor die übrigen Lektionen umgebaut werden (Backlog F1).
 - **Lokale PHP-Installation:** Die Aufgaben setzen voraus, dass `php` im Terminal läuft. Ob und wie das beim Lernenden eingerichtet ist, steht nirgends. Klären, bevor weitere Lektionen mit Aufgaben folgen.
 
 ## 2026-11-05 – Render-Deployment: Entscheidungen für dich

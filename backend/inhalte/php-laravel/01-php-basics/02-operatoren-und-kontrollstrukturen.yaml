@@ -17,6 +17,12 @@ quellen:
     url: https://www.php.net/manual/en/control-structures.foreach.php
   - titel: PHP-Handbuch – break
     url: https://www.php.net/manual/en/control-structures.break.php
+  - titel: PHP-Handbuch – continue
+    url: https://www.php.net/manual/en/control-structures.continue.php
+  - titel: PHP-Handbuch – for
+    url: https://www.php.net/manual/en/control-structures.for.php
+  - titel: PHP-Handbuch – Inkrement und Dekrement
+    url: https://www.php.net/manual/en/language.operators.increment.php
 abschnitte:
   - titel: Operatoren – rechnen, vergleichen, verknüpfen
     inhalt: |
@@ -78,6 +84,18 @@ abschnitte:
       `if ($alter = 18)` setzt `$alter` auf 18, statt zu fragen, ob es 18 ist.
       Merke: ein Gleichheitszeichen schreibt, drei Gleichheitszeichen fragen.
 
+      **Zählen mit `++`:** `$a++` und `++$a` erhöhen beide `$a` um 1, aber nicht gleich früh.
+      `$a++` liefert zuerst den **alten** Wert und erhöht danach. `++$a` erhöht zuerst und liefert dann den **neuen** Wert.
+
+      ```php
+      $a = 5;
+      echo $a++;   // 5 – gibt den alten Wert aus, danach ist $a = 6
+      echo ++$a;   // 7 – erhöht zuerst auf 7, gibt dann 7 aus
+      ```
+
+      Im Alltag schreibst du meist `$i++` als eigene Zeile. Dann ist der Unterschied egal.
+      Wichtig wird er, wenn du den Wert gleich weiterverwendest.
+
       ## Probier es selbst
 
       Lege eine Datei `uebung.php` an (sie beginnt mit `<?php`) und starte sie mit `php uebung.php`.
@@ -93,6 +111,14 @@ abschnitte:
       4. Schreibe einen Ausdruck, der prüft, ob `$alter` zwischen 18 und 65 liegt (beide eingeschlossen),
          und gib ihn mit `var_dump` aus. Teste mit `$alter = 30;` und mit `$alter = 70;`.
          *Kontrolle:* `bool(true)`, dann `bool(false)`.
+      5. Gerade oder ungerade? Eine Zahl ist gerade, wenn der Rest bei Division durch 2 gleich 0 ist.
+         Schreibe `var_dump($zahl % 2 === 0);` und teste mit `8` und mit `7`.
+         *Kontrolle:* `bool(true)`, dann `bool(false)`.
+      6. Klammern ändern das Ergebnis. Rechne zuerst im Kopf, dann prüfe mit `echo`:
+         `10 - 4 / 2` und `(10 - 4) / 2`. *Kontrolle:* 8 und 3.
+      7. Hoch- und Runterzählen: Setze `$a = 5;`. Gib `$a++` in einer eigenen Zeile aus (mit `echo $a++ . "\n";`),
+         danach in der nächsten Zeile `$a`. Rate vorher, was jeweils herauskommt.
+         *Kontrolle:* erst 5, dann 6. Der Grund steht im Kasten „Zählen mit ++“ oben.
     quiz:
       - frage: "Was liefert `7 % 2`?"
         erklaerung: "`%` ist der Rest einer Division. 7 geteilt durch 2 ist 3 Rest 1."
@@ -124,6 +150,12 @@ abschnitte:
           - { text: "bool(true)", richtig: false }
           - { text: "Fehler: Text und Zahl lassen sich nicht vergleichen", richtig: false }
           - { text: "bool(false)", richtig: true }
+      - frage: "Was gibt `$a = 5; echo $a++;` aus?"
+        erklaerung: "`$a++` liefert zuerst den alten Wert (5) und erhöht `$a` erst danach auf 6."
+        antworten:
+          - { text: "6", richtig: false }
+          - { text: "5", richtig: true }
+          - { text: "4", richtig: false }
   - titel: Verzweigen mit if, else und match
     inhalt: |
       Mit `if` entscheidet dein Programm, welchen Weg es nimmt.
@@ -183,6 +215,22 @@ abschnitte:
 
       Bei 95 Punkten steht dort „Bestanden“, obwohl „Sehr gut“ gemeint war. Drehe die Reihenfolge um.
 
+      **Bedingungen im `match`:** Mit `match (true)` kannst du auch Bereiche prüfen, nicht nur feste Werte.
+      PHP geht die Zeilen von oben nach unten durch und nimmt die erste, deren Bedingung `true` ergibt:
+
+      ```php
+      $punkte = 95;
+
+      $note = match (true) {
+          $punkte >= 90 => "Sehr gut",
+          $punkte >= 50 => "Bestanden",
+          default       => "Nochmal üben",
+      };
+      ```
+
+      Das liest sich oft klarer als eine lange `if`-Kette, vor allem wenn du am Ende **einen** Wert brauchst.
+      Auch hier gilt: Die engste Bedingung steht oben.
+
       ## Probier es selbst
 
       1. Setze `$temperatur = 25;`. Gib „heiß“ aus ab 30 Grad, „warm“ ab 20 Grad, sonst „kühl“.
@@ -192,6 +240,13 @@ abschnitte:
       3. Fehlersuche: Die Beispielkette von oben liefert bei 95 Punkten das falsche Ergebnis.
          Ändere die Reihenfolge so, dass „Sehr gut“ erscheint.
          *Kontrolle:* „Sehr gut“ bei 95, „Bestanden“ bei 60.
+      4. Eintrittspreis: Unter 6 Jahren ist der Eintritt „frei“, unter 18 „ermäßigt“, sonst „voll“.
+         Schreibe das mit einer `if`-Kette für `$alter`. *Kontrolle:* 4 → frei, 12 → ermäßigt, 30 → voll.
+      5. Schreibe die Notenkette aus Aufgabe 3 noch einmal mit `match (true)` (siehe Kasten oben).
+         Die Fälle sind `$punkte >= 90`, `$punkte >= 50` und `default`.
+         *Kontrolle:* 95 → „Sehr gut“, 60 → „Bestanden“, 10 → „Nochmal üben“.
+      6. Standardwert: Schreibe `$name = $eingabe ?? "Gast";` einmal **ohne** vorher `$eingabe` zu setzen
+         und einmal mit `$eingabe = "Nico";`. *Kontrolle:* „Gast“, dann „Nico“.
     quiz:
       - frage: "Was gibt der Code aus, wenn `$punkte = 60` ist (siehe Beispiel mit if/elseif/else)?"
         erklaerung: "60 ist nicht >= 90, aber >= 50. Der zweite Block läuft, also „Bestanden“."
@@ -223,6 +278,12 @@ abschnitte:
           - { text: "ja", richtig: true }
           - { text: "nein", richtig: false }
           - { text: "true", richtig: false }
+      - frage: "Was gibt `match (true) { 5 > 3 => 'a', default => 'b' }` zurück?"
+        erklaerung: "`match (true)` nimmt die erste Zeile, deren Bedingung `true` ist. `5 > 3` ist wahr, also kommt „a“."
+        antworten:
+          - { text: "b", richtig: false }
+          - { text: "Es wird ein Fehler geworfen.", richtig: false }
+          - { text: "a", richtig: true }
   - titel: Schleifen – etwas wiederholen
     inhalt: |
       Eine **Schleife** wiederholt Code. Du schreibst ihn einmal, PHP führt ihn mehrfach aus.
@@ -274,6 +335,17 @@ abschnitte:
 
       Zähle im Zweifel die Werte von `$i` auf Papier mit.
 
+      **Größere Schritte und rückwärts:** Der Schritt muss nicht `$i++` sein.
+
+      ```php
+      for ($i = 0; $i <= 10; $i += 5) { echo $i . "\n"; }   // 0, 5, 10
+      for ($i = 3; $i > 0; $i--)      { echo $i . "\n"; }   // 3, 2, 1
+      ```
+
+      **Den Überblick behalten:** Schreibe bei jeder Schleife kurz auf, was **vor** der Schleife steht (Startwerte),
+      was **in** der Schleife passiert und was **danach** herauskommt. Das hilft dir beim Lesen fremden Codes
+      und beim Suchen von Fehlern.
+
       ## Probier es selbst
 
       1. Gib mit `for` die Zahlen 1 bis 5 aus, jede in einer eigenen Zeile.
@@ -284,6 +356,13 @@ abschnitte:
          Gib danach `$x` aus. *Kontrolle:* 6.25.
       4. Gehe mit `foreach` über `[4, 8, 15, 16, 23, 42]` und gib nur die geraden Zahlen aus
          (gerade heißt: `$zahl % 2 === 0`). *Kontrolle:* 4, 8, 16, 42.
+      5. Gib mit `for` und dem Schritt `$i += 2` alle ungeraden Zahlen von 1 bis 9 aus.
+         *Kontrolle:* 1, 3, 5, 7, 9.
+      6. Gehe mit `foreach ($tage as $index => $tag)` über `["Montag", "Dienstag", "Mittwoch"]` und gib
+         Zeilen wie `0: Montag` aus. *Kontrolle:* 0: Montag, 1: Dienstag, 2: Mittwoch.
+      7. Endlosschleife entschärfen: Der Code `$n = 1; while ($n < 5) { echo $n; }` hört nie auf.
+         Ergänze **eine** Zeile in der Schleife, sodass sie endet. Falls du ihn vorher startest, stoppt
+         `Strg + C` das Programm. *Kontrolle:* Nach der Ergänzung (`$n++;`) steht `1234` auf dem Bildschirm.
     quiz:
       - frage: "Wie oft läuft `for ($i = 1; $i <= 3; $i++)`?"
         erklaerung: "$i ist nacheinander 1, 2 und 3. Bei 4 ist die Bedingung falsch. Das sind drei Durchläufe."
@@ -315,6 +394,12 @@ abschnitte:
           - { text: "10", richtig: true }
           - { text: "4", richtig: false }
           - { text: "6", richtig: false }
+      - frage: "Was gibt `foreach (['a', 'b'] as $i => $w) { echo $i; }` aus?"
+        erklaerung: "Bei einer einfachen Liste sind die Schlüssel 0 und 1. `$i` ist beim ersten Durchlauf 0, beim zweiten 1. Ausgegeben wird 01."
+        antworten:
+          - { text: "ab", richtig: false }
+          - { text: "01", richtig: true }
+          - { text: "12", richtig: false }
   - titel: break und continue
     inhalt: |
       Manchmal soll eine Schleife früher enden oder einen Durchlauf überspringen.
@@ -358,6 +443,23 @@ abschnitte:
       **Gut zu wissen:** Steckt eine Schleife in einer anderen, beendet `break` nur die innere.
       Mit `break 2;` verlässt du beide auf einmal (die Zahl sagt, wie viele Ebenen).
 
+      **Falle bei `while` und `continue`:** In einer `for`-Schleife läuft der Schritt (`$i++`) nach `continue` automatisch.
+      In einer `while`-Schleife nicht, denn dort steht der Schritt im Rumpf. Wird er durch `continue` übersprungen,
+      ändert sich die Bedingung nie, und die Schleife läuft endlos:
+
+      ```php
+      $i = 0;
+      while ($i < 5) {
+          $i++;                  // zuerst erhöhen
+          if ($i === 2) {
+              continue;          // jetzt gefahrlos
+          }
+          echo $i . "\n";        // gibt 1, 3, 4, 5 aus
+      }
+      ```
+
+      **Merkhilfe:** Bei `while` und `continue` zuerst den Zähler erhöhen, dann überspringen.
+
       ## Probier es selbst
 
       1. Gib die Zahlen von 1 bis 10 aus, überspringe aber alle Vielfachen von 3 mit `continue`.
@@ -366,6 +468,16 @@ abschnitte:
          beende die Schleife mit `break`. *Kontrolle:* 12.
       3. Du hast die Läufe `[3, 8, 5, 12, 6]` (in km). Zähle die Läufe über 5 km und addiere ihre
          Strecken. Gib beides aus. *Kontrolle:* 3 Läufe, zusammen 26 km.
+      4. Zähle von 1 bis 20 und höre bei der ersten Zahl auf, die durch 7 teilbar ist. Gib die Zahlen
+         **davor** aus. *Kontrolle:* 1, 2, 3, 4, 5, 6.
+      5. Suche in `["apfel", "birne", "kirsche"]` mit `foreach ($liste as $index => $name)` den Eintrag
+         `"birne"`. Gib bei Fund `gefunden an Position 1` aus (Position = `$index`) und beende die Schleife.
+         *Kontrolle:* `gefunden an Position 1`.
+      6. Fehlersuche: Diese Schleife hört nie auf. Finde den Grund und behebe ihn mit **einer** kleinen
+         Änderung (`Strg + C` stoppt das Programm, falls du sie startest):
+         `$i = 0; while ($i < 5) { if ($i === 2) { continue; } $i++; }`
+         *Kontrolle:* Bei `$i === 2` springt `continue` zurück, ohne `$i++` auszuführen. `$i` bleibt 2.
+         Setze `$i++;` **vor** das `continue;` (oder vor die Prüfung), dann endet die Schleife.
     quiz:
       - frage: "Was macht `break` in einer Schleife?"
         erklaerung: "`break` beendet die gesamte Schleife sofort."
@@ -397,6 +509,12 @@ abschnitte:
           - { text: "Es beendet beide Schleifen.", richtig: true }
           - { text: "Es überspringt die nächsten zwei Durchläufe.", richtig: false }
           - { text: "Es wiederholt die innere Schleife zweimal.", richtig: false }
+      - frage: "Warum läuft `$i = 0; while ($i < 5) { if ($i === 2) { continue; } $i++; }` endlos?"
+        erklaerung: "Bei `$i === 2` springt `continue` zum nächsten Durchlauf, ohne `$i++` auszuführen. `$i` bleibt 2 und die Bedingung `$i < 5` bleibt wahr."
+        antworten:
+          - { text: "Weil `$i` nach `continue` wieder auf 0 gesetzt wird.", richtig: false }
+          - { text: "Weil `continue` den Zähler überspringt und `$i` bei 2 hängen bleibt.", richtig: true }
+          - { text: "Weil `$i === 2` die Bedingung der Schleife verändert.", richtig: false }
 test:
   zeitlimit_minuten: 20
   fragen:

@@ -1,6 +1,8 @@
 # Changelog
 
 ## 2026-11-09
+- feat: Musterlektion „Operatoren und Kontrollstrukturen“ auf mindestens 20 Minuten je Abschnitt ausgebaut: zusätzliche Erklärkästen, 6 bis 7 Aufgaben mit Kontrolle je Abschnitt, mehr Quizfragen, drei weitere Quellenlinks. Backlog F1 (Mindestdauer 20 Minuten) und F2, Entscheidungen in `docs/ENTSCHEIDUNGEN.md`.
+- docs: Backlog F3 (Wochenplan zum Abarbeiten) mit Lernstart Montag 16.11.2026 und Regel „nachholen“ ergänzt.
 - fix: Render-Backend ist in `render.yaml` auf die Region Frankfurt festgelegt. Datenbank und Backend müssen in derselben Region liegen, sonst scheitert der Start mit `failed to resolve host`. Hinweis in `docs/DEPLOYMENT.md` ergänzt. Ein bestehender Dienst ändert seine Region nicht: Er muss gelöscht und der Blueprint neu synchronisiert werden (Schritte in `docs/DEPLOYMENT.md`).
 - feat: Musterlektion „Operatoren und Kontrollstrukturen“ auf Einheiten von 20 bis 30 Minuten ausgebaut (Erklärung, typische Fehler, „Probier es selbst“-Aufgaben, zusätzliche Quizfragen). Backlog F1 und F2, Entscheidungen in `docs/ENTSCHEIDUNGEN.md`.
 
